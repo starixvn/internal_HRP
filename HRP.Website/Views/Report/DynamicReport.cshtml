@@ -19,12 +19,14 @@
     <li class="active">Dynamic Report</li>
 </ol>
 
-<input type="hidden" asp-for="RijndaelIV" />
-<input type="hidden" asp-for="RijndaelKey" />
+<input type="hidden" asp-for="RijndaelIV.Value" id="RijndaelIV" />
+<input type="hidden" asp-for="RijndaelKey.Value" id="RijndaelKey" />
 
 <form class="search-form" asp-controller="Report" asp-action="DynamicReport" method="post" id="dynamic-report-form">
     <input type="hidden" asp-for="EmployeeStatuses" />
     <input type="hidden" asp-for="SelectedIds" />
+    <input hidden asp-for="RijndaelKey.Key" />
+    <input hidden asp-for="RijndaelIV.Key" />
 
     <div class="list-message-error @(ViewData.ModelState.IsValid ? "hidden": "")" id="validation-summary">
         <span asp-validation-for="CompanyId" class="message"></span>

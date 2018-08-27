@@ -676,7 +676,7 @@
             var companyId = 1;
             var employeeId = 31;
             var month = DateTime.Now;
-            var tuple = new Tuple<string, string>("1234", "12345");
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
             var cipherText = "1234abc";
             var filterInfo = new MonthlyPayrollFilterInfoModel();
             var employeePayrolls = new List<EmployeeMonthlyPayrollModel>
@@ -687,7 +687,7 @@
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             monthlyPayrollService.GetFilterInfoAsync(companyId, month).Returns(filterInfo);
             monthlyPayrollService.GetMonthlyPayrollAsync(Arg.Any<EmployeeMonthlyPayrollViewModel>()).Returns(employeePayrolls);
-            rijndaelService.GenerateKey().Returns(tuple);
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(cipherText);
 
             // Act
@@ -702,8 +702,6 @@
             Assert.Equal(employeeId, viewModelResult.EmployeeId);
             Assert.Null(viewModelResult.Employee);
             Assert.Null(viewModelResult.IDNo);
-            Assert.Equal(tuple.Item1, viewResult.ViewData["RijndaelKey"]);
-            Assert.Equal(tuple.Item2, viewResult.ViewData["RijndaelIV"]);
         }
 
         #endregion EmployeeMonthlyPayroll
@@ -768,7 +766,12 @@
             var filterInfo = new MonthlyPayrollFilterInfoModel();
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>();
             var cachingFilter = new CachingFilterViewModel();
-            var keys = new Tuple<string, string>("1234", "12345");
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var cipherText = "1234abc";
             var bankAccounts = new List<BankAccount>
             {
@@ -787,7 +790,7 @@
             monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
             monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId).Returns(filterInfo);
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
-            rijndaelService.GenerateKey().Returns(keys);
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(cipherText);
             commonService.GetSelectList(Arg.Any<IEnumerable<BankAccount>>(), nameof(BankAccount.BankAccountId), nameof(BankAccount.PaymentTransaction))
                 .Returns(bankAccountSelectList);
@@ -897,7 +900,9 @@
             {
                 MonthlySalary = new MonthlySalaryViewModel(),
                 Additions = new List<MonthlySalaryAdditionViewModel> { new MonthlySalaryAdditionViewModel() },
-                Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() }
+                Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() },
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
             var controller = GetPaymentProcessController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
@@ -934,7 +939,9 @@
                 Month = DateTime.Now,
                 MonthlySalary = new MonthlySalaryViewModel(),
                 Additions = new List<MonthlySalaryAdditionViewModel> { new MonthlySalaryAdditionViewModel() },
-                Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() }
+                Deductions = new List<MonthlySalaryDeductionViewModel> { new MonthlySalaryDeductionViewModel() },
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();
@@ -1038,11 +1045,17 @@
         [Fact]
         public async Task EditAllowances_HavePermission_ReturnView()
         {
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var companyId = 1;
             var controller = GetPaymentProcessController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
-            rijndaelService.GenerateKey().Returns(new Tuple<string, string>(string.Empty, string.Empty));
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
             monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
                 .Returns(new MonthlyAllowancesModel
@@ -1080,7 +1093,11 @@
         public async Task EditAllowancesPost_ModelStateIsInvalid_ReturnAsExpectedErrors()
         {
             // Arrange
-            var viewModel = new EditMonthlyAllowancesViewModel();
+            var viewModel = new EditMonthlyAllowancesViewModel
+            {
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            };
             var controller = GetPaymentProcessController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
@@ -1121,7 +1138,9 @@
                     DST = new CurrencyAmountModel(),
                     Addition = new SecurityData(),
                     Deduction = new SecurityData()
-                }
+                },
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
             var commandResult = new CommandResult();
             var controller = GetPaymentProcessController();

@@ -8,11 +8,11 @@ namespace HRP.Website.Controllers
     using Core.Model;
     using Core.Services;
     using Criteria;
-    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Mvc;
-    using Models.Account;
     using Models;
+    using Models.Account;
     using Resources;
     using Services;
 
@@ -64,14 +64,14 @@ namespace HRP.Website.Controllers
 
         public IActionResult Login()
         {
-            Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelKey = tuple.Item1;
-            sessionService.RijndaelIV = tuple.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
 
             var viewModel = new LoginViewModel
             {
-                RijndaelIV = sessionService.RijndaelIV,
-                RijndaelKey = sessionService.RijndaelKey
+                RijndaelKey = tuple.Item1,
+                RijndaelIV = tuple.Item2
             };
             return View(viewModel);
         }
@@ -83,13 +83,13 @@ namespace HRP.Website.Controllers
 
             if (ModelState.IsValid)
             {
+                var rijndaelKey = (string)TempData[viewModel.RijndaelKey.Key];
+                var rijndaelIV = (string)TempData[viewModel.RijndaelIV.Key];
                 User user = await userService.GetUserByUsernameAsync(viewModel.Username);
-                var password = rijndaelService.Decrypt(viewModel.Password, sessionService.RijndaelKey, sessionService.RijndaelIV);
+                var password = rijndaelService.Decrypt(viewModel.Password, rijndaelKey, rijndaelIV);
 
                 if (user != null && userService.IsCorrectPassword(password, user.Password) && user.IsActive)
                 {
-                    sessionService.RijndaelKey = string.Empty;
-                    sessionService.RijndaelIV = string.Empty;
                     return await AfterLoginSuccessful(user);
                 }
 
@@ -99,11 +99,11 @@ namespace HRP.Website.Controllers
             }
 
             ModelState.AddModelError(string.Empty, errorMsg);
-            Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelKey = tuple.Item1;
-            sessionService.RijndaelIV = tuple.Item2;
-            viewModel.RijndaelIV = sessionService.RijndaelIV;
-            viewModel.RijndaelKey = sessionService.RijndaelKey;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            viewModel.RijndaelKey = tuple.Item1;
+            viewModel.RijndaelIV = tuple.Item2;
 
             return View(viewModel);
         }
@@ -124,14 +124,14 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            var tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelKey = tuple.Item1;
-            sessionService.RijndaelIV = tuple.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
 
             var viewModel = new ResetPasswordViewModel
             {
-                RijndaelIV = sessionService.RijndaelIV,
-                RijndaelKey = sessionService.RijndaelKey
+                RijndaelKey = tuple.Item1,
+                RijndaelIV = tuple.Item2
             };
 
             return View(viewModel);
@@ -140,10 +140,12 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(string token, ResetPasswordViewModel model)
         {
+            var rijndaelKey = (string)TempData[model.RijndaelKey.Key];
+            var rijndaelIV = (string)TempData[model.RijndaelIV.Key];
             var user = await baseService.GetDataEntityAsync<User>(new GetUserByTokenResetPasswordCriteria { TokenResetPassword = token });
 
-            model.Password = rijndaelService.Decrypt(model.Password, sessionService.RijndaelKey, sessionService.RijndaelIV);
-            model.PasswordConfirm = rijndaelService.Decrypt(model.PasswordConfirm, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            model.Password = rijndaelService.Decrypt(model.Password, rijndaelKey, rijndaelIV);
+            model.PasswordConfirm = rijndaelService.Decrypt(model.PasswordConfirm, rijndaelKey, rijndaelIV);
 
             if (ModelState.IsValid && user != null)
             {
@@ -161,6 +163,13 @@ namespace HRP.Website.Controllers
 
                 ModelState.AddModelError(string.Empty, result.Message);
             }
+
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+
+            model.RijndaelKey = tuple.Item1;
+            model.RijndaelIV = tuple.Item2;
 
             return View(model);
         }

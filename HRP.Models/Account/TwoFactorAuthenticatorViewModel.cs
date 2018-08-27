@@ -1,7 +1,6 @@
 namespace HRP.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using HRP.Models.SystemSecurity;
     using HRP.Resources;
 
     public class TwoFactorAuthenticatorViewModel : RijndaelData

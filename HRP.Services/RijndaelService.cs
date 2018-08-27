@@ -9,12 +9,21 @@
 
     public class RijndaelService : IRijndaelService
     {
-        public Tuple<string, string> GenerateKey()
+        public Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> GenerateRijndaelKeyValuePair()
         {
-            string ivStr = Guid.NewGuid().ToString("N").Substring(0, 16);
-            string keyStr = Guid.NewGuid().ToString("N").Substring(0, 16);
+            var rijndaelKey = new RijndaelKeyValuePair
+            {
+                Key = "RijndaelKey" + DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                Value = Guid.NewGuid().ToString("N").Substring(0, 16)
+            };
 
-            return new Tuple<string, string>(ivStr, keyStr);
+            var rijndaelIV = new RijndaelKeyValuePair
+            {
+                Key = "RijndaelIV" + DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                Value = Guid.NewGuid().ToString("N").Substring(0, 16)
+            };
+
+            return new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKey, rijndaelIV);
         }
 
         public string Decrypt(string cipherText, string rijndaelKey, string rijndaelIV)

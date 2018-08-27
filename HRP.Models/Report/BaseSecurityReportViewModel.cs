@@ -1,7 +1,6 @@
 ﻿namespace HRP.Models.Report
 {
     using System.ComponentModel.DataAnnotations;
-    using HRP.Models.SystemSecurity;
     using HRP.Resources;
 
     public class BaseSecurityReportViewModel : RijndaelData

@@ -99,7 +99,7 @@
         public async Task Details_PayrollIsExisted_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var tuple = new Tuple<string, string>("1234", "12345");
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
             var cipherText = "1234abc";
             var payslip = new PayslipDetailModel
             {
@@ -111,7 +111,7 @@
             var payslipController = GetPayslipController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
             payslipService.GetPayslipDetailAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(payslip);
-            rijndaelService.GenerateKey().Returns(tuple);
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(cipherText);
 
             // Act
@@ -121,8 +121,6 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewModel = Assert.IsAssignableFrom<PayslipDetailModel>(viewResult.Model);
             Assert.Null(viewResult.ViewName);
-            Assert.Equal(tuple.Item1, viewResult.ViewData["RijndaelKey"]);
-            Assert.Equal(tuple.Item2, viewResult.ViewData["RijndaelIV"]);
             Assert.Equal(payslip.PayrollId, viewModel.PayrollId);
             Assert.Equal(payslip.Month, viewModel.Month);
             Assert.Equal(payslip.FullName, viewModel.FullName);

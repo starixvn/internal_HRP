@@ -15,6 +15,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Options;
     using Microsoft.Extensions.Primitives;
@@ -49,6 +50,7 @@
                 Email = "hunter.tran@nexcel.vn"
             };
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.Username = username;
             userService.GetUserByUsernameAsync(username).Returns(user);
 
@@ -68,8 +70,6 @@
                 });
             Assert.Equal(user.IsOTPRegistered, viewModel.IsOTPRegistered);
             Assert.Equal(tab, viewModel.ActivePanel);
-            Assert.Null(viewModel.SetupOtpViewModel);
-            Assert.Null(viewModel.ChangePasswordViewModel);
             Assert.Equal(user.FullName, viewModel.UserProfileViewModel.FullName);
             Assert.Equal(user.Email, viewModel.UserProfileViewModel.Email);
             Assert.Equal(user.Phone, viewModel.UserProfileViewModel.Phone);
@@ -81,11 +81,17 @@
         public async Task ChangePassword_ModelIsInvalid_ReturnAsExpectedJsonResult()
         {
             // Arrange
+            var viewModel = new ChangePasswordViewModel
+            {
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            };
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             accountController.ModelState.AddModelError("error", "error");
 
             // Act
-            var actual = await accountController.ChangePassword(new ChangePasswordViewModel());
+            var actual = await accountController.ChangePassword(viewModel);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -110,12 +116,15 @@
         {
             //Arrange
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
             var viewModel = new ChangePasswordViewModel
             {
                 OldPassword = string.Empty,
-                Password = "test_password"
+                Password = "test_password",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             // Act
@@ -149,13 +158,16 @@
         {
             // Arrange
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = codeCommandResult });
             var viewModel = new ChangePasswordViewModel
             {
                 OldPassword = string.Empty,
-                Password = "test_password"
+                Password = "test_password",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             // Act
@@ -265,6 +277,7 @@
             var textCode = "TextCode";
             var user = new User { Username = "tim.trinh" };
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             userService.GetUserByTokenOTPRegisterAsync("token").Returns(user);
             twoFactorAuthService.SetupGoogleAuthInfo(Arg.Any<string>(), Arg.Any<string>()).Returns(textCode);
 
@@ -328,6 +341,7 @@
                 Email = "hunter.tran@nexcel.vn"
             };
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             userService.GetUserByTokenOTPRegisterAsync(Arg.Any<string>()).Returns(user);
             twoFactorAuthService.SetupGoogleAuthInfo(Arg.Any<string>(), Arg.Any<string>()).Returns(textCode);
 
@@ -463,8 +477,14 @@
         public void VerifyOTPGet_UserIsNotAuthenticatedAndUsernameIsValid_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var tuple = new Tuple<string, string>("1234", "1234");
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             var controllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
@@ -474,7 +494,7 @@
             };
             accountController.ControllerContext = controllerContext;
             sessionService.Username = "hunter.tran";
-            rijndaelService.GenerateKey().Returns(tuple);
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             // Act
             var actual = accountController.VerifyOTP();
@@ -545,8 +565,8 @@
         public async Task VerifyOTPPost_UserIsNotAuthenticatedAndUserIsExistedAndModelStateIsInvalid_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var tuple = new Tuple<string, string>("1234", "1234");
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             var controllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
@@ -557,11 +577,13 @@
             accountController.ControllerContext = controllerContext;
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             accountController.ModelState.AddModelError("otpcode", "required");
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
 
             // Act
-            var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel());
+            var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel
+            {
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            });
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -569,16 +591,14 @@
             Assert.Equal("VerifyOTP", viewResult.ViewName);
             Assert.Equal("The OTP is invalid or expired. Please try another OTP.", viewResult.ViewData["ErrorMessage"]);
             Assert.Empty(viewModelResult.OTPCode);
-            Assert.Equal(tuple.Item1, viewModelResult.RijndaelIV);
-            Assert.Equal(tuple.Item2, viewModelResult.RijndaelKey);
         }
 
         [Fact]
         public async Task VerifyOTPPost_UserIsNotAuthenticatedAndUserIsExistedAndModelStateIsValidAndOtpIsInvalid_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var tuple = new Tuple<string, string>("1234", "1234");
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             var controllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
@@ -589,11 +609,13 @@
             accountController.ControllerContext = controllerContext;
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
 
             // Act
-            var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel());
+            var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel
+            {
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            });
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
@@ -601,8 +623,6 @@
             Assert.Equal("VerifyOTP", viewResult.ViewName);
             Assert.Equal("The OTP is invalid or expired. Please try another OTP.", viewResult.ViewData["ErrorMessage"]);
             Assert.Empty(viewModelResult.OTPCode);
-            Assert.Equal(tuple.Item1, viewModelResult.RijndaelIV);
-            Assert.Equal(tuple.Item2, viewModelResult.RijndaelKey);
         }
 
         [Fact]
@@ -644,12 +664,17 @@
             otpConfig = FakeOtpConfig();
             rijndaelService = FakeRijndaelService();
             var accountController = Substitute.For<AccountController>(sessionService, baseService, twoFactorAuthService, userService, rijndaelService, otpConfig);
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             accountController.ControllerContext = controllerContext;
             accountController.RedirectToAction(Arg.Any<string>(), Arg.Any<string>())
                 .Returns(x => new RedirectToActionResult(x.ArgAt<string>(0), x.ArgAt<string>(1), null));
 
             // Act
-            var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel { OTPCode = "test" });
+            var actual = await accountController.VerifyOTP(new TwoFactorAuthenticatorViewModel {
+                OTPCode = "test",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            });
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -683,6 +708,7 @@
         {
             // Arrange
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             accountController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             accountController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
                 Arg.Any<string>(), Arg.Any<Object>())).Do(x => accountController.ModelState.AddModelError("otp", "error"));
@@ -691,7 +717,11 @@
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
             // Act
-            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel());
+            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel
+            {
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            });
 
             // Assert
             Assert.IsType<ForbidResult>(actual);
@@ -702,6 +732,7 @@
         {
             // Arrange
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             accountController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             accountController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
@@ -709,7 +740,11 @@
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
             // Act
-            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel());
+            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel
+            {
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            });
 
             // Assert
             Assert.IsType<ForbidResult>(actual);
@@ -720,6 +755,7 @@
         {
             // Arrange
             var accountController = GetAccountController();
+            accountController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(new User());
             accountController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             accountController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
@@ -727,7 +763,11 @@
             twoFactorAuthService.ValidateOTPCode(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
             // Act
-            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel());
+            var actual = await accountController.VerifySetupOTP(new SetupOtpViewModel
+            {
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            });
 
             // Assert
             Assert.IsType<OkResult>(actual);
@@ -773,8 +813,14 @@
 
         private static IRijndaelService FakeRijndaelService()
         {
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var service = Substitute.For<IRijndaelService>();
-            service.GenerateKey().Returns(new Tuple<string, string>("test", "test"));
+            service.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             return service;
         }

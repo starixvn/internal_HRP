@@ -103,38 +103,6 @@
         }
 
         [Fact]
-        public void RijndaelKey_WhenCalled_GetAndSetCorrectly()
-        {
-            // Arrange
-            var key = "99330adcc630";
-            _session = new MockSession();
-            sessionService = GetSessionService(_session);
-            sessionService.RijndaelKey = key;
-
-            // Act
-            var actual = sessionService.RijndaelKey;
-
-            // Assert
-            Assert.Equal(key, actual);
-        }
-
-        [Fact]
-        public void RijndaelIV_WhenCalled_GetAndSetCorrectly()
-        {
-            // Arrange
-            var key = "99330adcc630";
-            _session = new MockSession();
-            sessionService = GetSessionService(_session);
-            sessionService.RijndaelIV = key;
-
-            // Act
-            var actual = sessionService.RijndaelIV;
-
-            // Assert
-            Assert.Equal(key, actual);
-        }
-
-        [Fact]
         public void MenuItems_WhenCalled_GetAndSetCorrectly()
         {
             // Arrange

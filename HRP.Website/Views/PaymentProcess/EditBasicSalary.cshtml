@@ -81,8 +81,8 @@
     <div class="date">@ViewLang.DueDate: <strong>@Html.DisplayFor(x => x.FilterInfo.DueDate)</strong></div>
 </div>
 
-<input type="hidden" asp-for="RijndaelIV" />
-<input type="hidden" asp-for="RijndaelKey" />
+<input type="hidden" asp-for="RijndaelIV.Value" id="RijndaelIV" />
+<input type="hidden" asp-for="RijndaelKey.Value" id="RijndaelKey" />
 
 <form id="edit-basic-salary-form" asp-action="EditBasicSalary" asp-controller="PaymentProcess"
       data-ajax-method="post" data-ajax="true"
@@ -112,6 +112,8 @@
     <input type="hidden" asp-for="CachingFilter.IDNo" />
     <input type="hidden" asp-for="CachingFilter.WorkingDays" />
     <input type="hidden" asp-for="CachingFilter.CostCenterIds" />
+    <input hidden data-val="false" asp-for="RijndaelKey.Key" />
+    <input hidden data-val="false" asp-for="RijndaelIV.Key" />
     <div class="list-message-error hidden">
         <span asp-validation-for="MonthlySalary.Ebanking.CurrencyId" class="message"></span>
         <span asp-validation-for="MonthlySalary.Ebanking.PlainValue" class="message"></span>

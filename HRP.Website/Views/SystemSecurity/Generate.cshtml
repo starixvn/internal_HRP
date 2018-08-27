@@ -51,6 +51,8 @@
             </div>
             <form asp-controller="SystemSecurity" asp-action="Generate" method="POST" autocomplete="off">
                 <input hidden asp-for="IsHost" />
+                <input hidden data-val="false" asp-for="RijndaelKey.Key" />
+                <input hidden data-val="false" asp-for="RijndaelIV.Key" />
 
                 <div class="group">
                     <span asp-validation-for="Password" class="msg-error"></span>
@@ -70,8 +72,8 @@
                     <input type="submit" value="Generate" class="button -primary" />
                 </div>
             </form>
-            <input hidden value="@Model.RijndaelKey" id="RijndaelKey" />
-            <input hidden value="@Model.RijndaelIV" id="RijndaelIV" />
+            <input hidden value="@Model.RijndaelKey.Value" id="RijndaelKey" />
+            <input hidden value="@Model.RijndaelIV.Value" id="RijndaelIV" />
         }
     }
     else

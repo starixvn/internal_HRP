@@ -4,7 +4,7 @@
     using Currency;
     using HRP.Core.Model;
 
-    public class EmployeePayrollViewModel
+    public class EmployeePayrollViewModel : RijndaelData
     {
         public int EmployeeId { get; set; }
 
@@ -41,9 +41,5 @@
         public CachingFilterViewModel CachingFilter { get; set; }
 
         public int? VNDCurrencyId { get; set; }
-
-        public string RijndaelIV { get; set; }
-
-        public string RijndaelKey { get; set; }
     }
 }

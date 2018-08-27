@@ -92,8 +92,8 @@
     <span>@Message.UpdateMonthlyAllowancesSuccessfully</span>
 </div>
 
-<input type="hidden" asp-for="RijndaelIV" />
-<input type="hidden" asp-for="RijndaelKey" />
+<input type="hidden" asp-for="RijndaelIV.Value" id="RijndaelIV" />
+<input type="hidden" asp-for="RijndaelKey.Value" id="RijndaelKey" />
 
 <form asp-action="EditAllowances" method="post" id="edit-allowances-form"
       data-ajax-method="post" data-ajax="true" data-ajax-begin="editAllowances.onUpdateBegin" data-ajax-failure="commonFunctions.handleAjaxError"
@@ -121,6 +121,8 @@
     <input type="hidden" asp-for="EmployeeInfo.CompanyCode" />
     <input type="hidden" asp-for="EmployeeInfo.CompanyId" />
     <input type="hidden" asp-for="EmployeeInfo.WorkingDays" />
+    <input hidden data-val="false" asp-for="RijndaelKey.Key" />
+    <input hidden data-val="false" asp-for="RijndaelIV.Key" />
 
     <input type="hidden" asp-for="BasicAllowance.SubsistenceAmount.PlainValue" asp-encrypt-for="BasicAllowance.SubsistenceAmount.EncryptedValue" data-currency="@Model.BasicAllowance.SubsistenceCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Subsistence)" />
     <input type="hidden" asp-for="BasicAllowance.HomePassageAmount.PlainValue" asp-encrypt-for="BasicAllowance.HomePassageAmount.EncryptedValue" data-currency="@Model.BasicAllowance.HomePassageCurrencyId" class="basic-allowance-amount @((int)AllowanceType.HomePassage)" />

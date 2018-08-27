@@ -19,6 +19,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.AspNetCore.Routing;
     using NSubstitute;
     using Xunit;
@@ -818,8 +819,13 @@
         public async Task Payroll_ValidEmployeeId_ReturnView()
         {
             // Arrange
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var employeeId = 1;
-            var employeeController = GetEmployeeController();
             var serviceModel = new EmployeePayrollModel
             {
                 EmployeeId = employeeId,
@@ -851,10 +857,12 @@
                 }
             };
             var filter = new CachingFilterViewModel();
+            var employeeController = GetEmployeeController();
+            employeeController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             payrollService.GetEmployeePayroll(employeeId, sessionService.UserId).Returns(serviceModel);
             sessionService.HasPermissionOnCompany(serviceModel.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host).Returns(true);
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
-            rijndaelService.GenerateKey().Returns(new Tuple<string, string>(string.Empty, string.Empty));
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
             // Act
             var actual = await employeeController.Payroll(employeeId, filter);
 
@@ -903,11 +911,14 @@
                     EmployeeId = employeeId,
                     RoomingCharges = new CurrencyAmountModel(),
                     FitnessFirst = new CurrencyAmountModel()
-                }
+                },
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             var expected = new CommandResult { Code = 0 };
             var employeeController = GetEmployeeController();
+            employeeController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             rijndaelService.Decrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
             employeeController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             employeeController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
@@ -940,10 +951,13 @@
                     Salary = new CurrencyAmountModel { CurrencyId = 1 }
                 },
                 Allowance = new EmployeePayrollAllowanceViewModel { EmployeeId = employeeId },
-                Deduction = new EmployeePayrollDeductionViewModel { EmployeeId = employeeId }
+                Deduction = new EmployeePayrollDeductionViewModel { EmployeeId = employeeId },
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             var employeeController = GetEmployeeController();
+            employeeController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             employeeController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             employeeController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
                 Arg.Any<string>(), Arg.Any<Object>())).Do(x => employeeController.ModelState.AddModelError("employee", "error"));

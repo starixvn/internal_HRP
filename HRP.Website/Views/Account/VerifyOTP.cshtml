@@ -18,8 +18,8 @@
 }
 
 <section class="block -otp-code-validation">
-    <input type="hidden" class="encryption-key" asp-for="RijndaelKey" />
-    <input type="hidden" class="encryption-iv" asp-for="RijndaelIV" />
+    <input type="hidden" class="encryption-key" asp-for="RijndaelKey.Value" />
+    <input type="hidden" class="encryption-iv" asp-for="RijndaelIV.Value" />
 
     <form asp-action="VerifyOTP" asp-controller="Account" method="post">
         <div class="circle-large">
@@ -39,6 +39,9 @@
                 @ViewData["ErrorMessage"].ToString()
             </div>
         }
+
+        <input hidden data-val="false" asp-for="RijndaelKey.Key" />
+        <input hidden data-val="false" asp-for="RijndaelIV.Key" />
         <div class="group">
             <input asp-for="OTPCode" class="form-control encrypt" data-isencrypted="false" placeholder="OTP Code" maxlength="6" autocomplete="off" />
             <span asp-validation-for="OTPCode" class="msg-error"></span>

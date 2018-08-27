@@ -13,9 +13,11 @@
     using Criteria;
     using Criteria.Employee;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Models;
     using Models.Employee;
     using Models.Report;
@@ -142,7 +144,15 @@
         public async Task DirectBanking_WhenCalled_ReturnExpectedView()
         {
             // Arrange
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             // Act
             var actual = await reportController.DirectBanking();
@@ -157,7 +167,15 @@
         public async Task Ebanking_WhenCalled_ReturnExpectedView()
         {
             // Arrange
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             // Act
             var actual = await reportController.Ebanking();
@@ -169,17 +187,20 @@
         }
 
         [Fact]
-        public async Task GetDirectBankingReport_InValidParams_ReturnEmpty()
+        public async Task GetDirectBankingReport_InvalidParams_ReturnEmpty()
         {
             // Arrange
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 0,
                 SelectedTime = DateTime.Now,
-                TypeOfPayment = PaymentType.BasicSalary
+                TypeOfPayment = PaymentType.BasicSalary,
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
 
             // Act
             var actual = await reportController.GetDirectBankingReport(bankInReportViewModel);
@@ -198,7 +219,9 @@
                 CompanyId = 1,
                 SelectedTime = DateTime.Now,
                 EncryptedPassword = "123",
-                ReusePassword = true
+                ReusePassword = true,
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             var filePassword = "456";
@@ -220,6 +243,7 @@
             };
 
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             reportService.GetDirectBankingBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<PaymentType>(), Arg.Any<string>()).Returns(bankInReport);
             rijndaelService.Decrypt(bankInReportViewModel.EncryptedPassword, Arg.Any<string>(), Arg.Any<string>()).Returns(filePassword);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
@@ -234,17 +258,20 @@
         }
 
         [Fact]
-        public async Task GetEbankingReport_InValidParams_ReturnEmpty()
+        public async Task GetEbankingReport_InvalidParams_ReturnEmpty()
         {
             // Arrange
             var bankInReportViewModel = new BankInReportViewModel
             {
                 CompanyId = 0,
                 SelectedTime = DateTime.Now,
-                TypeOfPayment = PaymentType.Allowances
+                TypeOfPayment = PaymentType.Allowances,
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
 
             // Act
             var actual = await reportController.GetEbankingReport(bankInReportViewModel);
@@ -263,7 +290,9 @@
                 CompanyId = 1,
                 SelectedTime = DateTime.Now,
                 EncryptedPassword = "456",
-                ReusePassword = true
+                ReusePassword = true,
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             var filePassword = "123";
@@ -286,6 +315,7 @@
             };
 
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             reportService.GetEbankingBankInAsync(Arg.Any<int>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(bankInReport);
             rijndaelService.Decrypt(bankInReportViewModel.EncryptedPassword, Arg.Any<string>(), Arg.Any<string>()).Returns(filePassword);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
@@ -305,11 +335,19 @@
         public async Task MonthlyPayroll_WhenCalled_ReturnAsExpectedViewResult()
         {
             // Arrange
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
                         .Returns(companySelectList);
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             // Act
             var actual = await reportController.MonthlyPayroll();
@@ -351,18 +389,27 @@
             {
                 SelectedTime = DateTime.Today,
                 CompanyId = 22,
-                CommonError = "ahihi"
+                CommonError = "ahihi",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
-
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
                         .Returns(companySelectList);
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
                 Arg.Any<string>(), Arg.Any<Object>())).Do(x => reportController.ModelState.AddModelError(nameof(viewModel.FilePassword), "Password is required"));
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);
@@ -381,6 +428,12 @@
         public async Task MonthlyPayrollPost_ReportNotHasAnyEmployees_ReturnMonthlyPayrollViewResult()
         {
             // Arrange
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var report = new MonthlyPayrollReport
             {
                 Employees = new List<EmployeeBasicInfo>(),
@@ -389,12 +442,15 @@
             var viewModel = new MonthlyPayrollReportViewModel
             {
                 SelectedTime = DateTime.Today,
-                CompanyId = 22
+                CompanyId = 22,
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
             var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
 
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
             reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId).Returns(report);
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
@@ -402,6 +458,8 @@
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
+
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);
 
@@ -432,7 +490,9 @@
                 SelectedTime = DateTime.Today,
                 CompanyId = 22,
                 ReusePassword = true,
-                EncryptedPassword = "123"
+                EncryptedPassword = "123",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             var expectedPassword = "456";
@@ -441,6 +501,7 @@
             var fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
             var templatePath = Path.Combine(webRootPath, fileName);
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             hostingEnvironment.WebRootPath.Returns(webRootPath);
             baseService.GetDataEntityAsync<Company>(Arg.Is<GetCompanyByIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(company);
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
@@ -448,9 +509,7 @@
             exportExcelService.ExportMonthlyPayrollReport(templatePath, report, expectedPassword).Returns(bytes);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
-            sessionService.RijndaelIV = "key1";
-            sessionService.RijndaelKey = "key2";
-            rijndaelService.Decrypt(viewModel.EncryptedPassword, sessionService.RijndaelKey, sessionService.RijndaelIV).Returns(expectedPassword);
+            rijndaelService.Decrypt(viewModel.EncryptedPassword, Arg.Any<string>(), Arg.Any<string>()).Returns(expectedPassword);
 
             // Act
             var actual = await reportController.MonthlyPayroll(viewModel);
@@ -481,15 +540,20 @@
 
             var filePassword = "123";
             var encryptedPassword = "456";
-            var rijndaelIV = "key1";
-            var rijndaelKey = "key2";
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
 
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
             baseService.GetDataAsync<MultiSelectViewModel>(Arg.Any<GetEmployeeStatusByUserCriteria>()).Returns(employeeStatuses);
-            rijndaelService.GenerateKey().Returns(new Tuple<string, string>(rijndaelIV, rijndaelKey));
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
             reportService.GetUserFilePasswordAsync(sessionService.UserId).Returns(filePassword);
-            rijndaelService.Encrypt(filePassword, rijndaelKey, rijndaelIV).Returns(encryptedPassword);
+            rijndaelService.Encrypt(filePassword, Arg.Any<string>(), Arg.Any<string>()).Returns(encryptedPassword);
 
             // Act
             var actual = await reportController.DynamicReport();
@@ -502,8 +566,6 @@
             Assert.Equal(companySelectList, viewModel.Companies);
             Assert.True(string.IsNullOrEmpty(viewModel.FilePassword));
             Assert.Equal(encryptedPassword, viewModel.EncryptedPassword);
-            Assert.Equal(rijndaelIV, viewModel.RijndaelIV);
-            Assert.Equal(rijndaelKey, viewModel.RijndaelKey);
         }
 
         [Fact]
@@ -516,7 +578,9 @@
                 EmployeeStatusIds = "1,2",
                 SelectedIds = "1",
                 ReusePassword = true,
-                EncryptedPassword = "456"
+                EncryptedPassword = "456",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
 
             var employeeDatas = new List<DynamicReportModel>
@@ -528,11 +592,10 @@
             };
 
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(true);
-            sessionService.RijndaelIV = "key1";
-            sessionService.RijndaelKey = "key2";
             reportService.GetEmployeeDataForDynamicReport(viewModel.CompanyId, viewModel.EmployeeStatusIds).Returns(employeeDatas);
-            rijndaelService.Decrypt(viewModel.EncryptedPassword, sessionService.RijndaelKey, sessionService.RijndaelIV).Returns("123");
+            rijndaelService.Decrypt(viewModel.EncryptedPassword, Arg.Any<string>(), Arg.Any<string>()).Returns("123");
             exportExcelService.ExportDynamicReport(employeeDatas, viewModel.SelectedIds.Split(',').Select(int.Parse), "123").Returns(new byte[10]);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
@@ -557,15 +620,25 @@
             {
                 CompanyId = 1,
                 EmployeeStatusIds = "1,2",
-                SelectedIds = "1"
+                SelectedIds = "1",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
 
             var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
                  Arg.Any<string>(), Arg.Any<Object>())).Do(x => reportController.ModelState.AddModelError(nameof(viewModel.FilePassword), "Password is required"));
             sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.DynamicReport, Policy.Read).Returns(true);
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(companySelectList);
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             // Act
             var actual = await reportController.DynamicReport(viewModel);
@@ -642,8 +715,8 @@
         private static IRijndaelService FakeRijndaelService()
         {
             var service = Substitute.For<IRijndaelService>();
-            var tuple = new Tuple<string, string>("1234", "12345");
-            service.GenerateKey().Returns(tuple);
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
+            service.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             return service;
         }

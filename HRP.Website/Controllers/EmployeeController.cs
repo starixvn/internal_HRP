@@ -491,9 +491,9 @@
 
             if (payroll != null)
             {
-                var keys = rijndaelService.GenerateKey();
-                sessionService.RijndaelIV = keys.Item1;
-                sessionService.RijndaelKey = keys.Item2;
+                Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+                TempData[tuple.Item1.Key] = tuple.Item1.Value;
+                TempData[tuple.Item2.Key] = tuple.Item2.Value;
 
                 var viewModel = new EmployeePayrollViewModel
                 {
@@ -504,11 +504,11 @@
                     Nickname = payroll.Nickname,
                     CanRead = payroll.CanRead,
                     CanUpdate = payroll.CanUpdate,
-                    RijndaelIV = sessionService.RijndaelIV,
-                    RijndaelKey = sessionService.RijndaelKey,
-                    BasicSalary = InitializeBasicSalaryViewModel(payroll),
-                    Allowance = InitializeAllowanceViewModel(payroll),
-                    Deduction = InitializeDeductionViewModel(payroll)
+                    RijndaelKey = tuple.Item1,
+                    RijndaelIV = tuple.Item2,
+                    BasicSalary = InitializeBasicSalaryViewModel(payroll, tuple.Item1.Value, tuple.Item2.Value),
+                    Allowance = InitializeAllowanceViewModel(payroll, tuple.Item1.Value, tuple.Item2.Value),
+                    Deduction = InitializeDeductionViewModel(payroll, tuple.Item1.Value, tuple.Item2.Value)
                 };
 
                 var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());
@@ -539,7 +539,10 @@
             return null;
         }
 
-        private EmployeePayrollDeductionViewModel InitializeDeductionViewModel(EmployeePayrollModel payroll)
+        private EmployeePayrollDeductionViewModel InitializeDeductionViewModel(
+            EmployeePayrollModel payroll,
+            string rijndaelKey,
+            string rijndaelIV)
         {
             var viewModel = new EmployeePayrollDeductionViewModel
             {
@@ -556,13 +559,16 @@
                 }
             };
 
-            rijndaelService.EncryptObject(viewModel, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            rijndaelService.EncryptObject(viewModel, rijndaelKey, rijndaelIV);
             rijndaelService.CleanPlainValue(viewModel);
 
             return viewModel;
         }
 
-        private EmployeePayrollAllowanceViewModel InitializeAllowanceViewModel(EmployeePayrollModel payroll)
+        private EmployeePayrollAllowanceViewModel InitializeAllowanceViewModel(
+            EmployeePayrollModel payroll,
+            string rijndaelKey,
+            string rijndaelIV)
         {
             var viewModel = new EmployeePayrollAllowanceViewModel
             {
@@ -637,13 +643,16 @@
                 }
             };
 
-            rijndaelService.EncryptObject(viewModel, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            rijndaelService.EncryptObject(viewModel, rijndaelKey, rijndaelIV);
             rijndaelService.CleanPlainValue(viewModel);
 
             return viewModel;
         }
 
-        private EmployeePayrollBasicSalaryViewModel InitializeBasicSalaryViewModel(EmployeePayrollModel payroll)
+        private EmployeePayrollBasicSalaryViewModel InitializeBasicSalaryViewModel(
+            EmployeePayrollModel payroll,
+            string rijndaelKey,
+            string rijndaelIV)
         {
             var viewModel = new EmployeePayrollBasicSalaryViewModel
             {
@@ -692,17 +701,20 @@
                 }
             };
 
-            rijndaelService.EncryptObject(viewModel, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            rijndaelService.EncryptObject(viewModel, rijndaelKey, rijndaelIV);
             rijndaelService.CleanPlainValue(viewModel);
 
             return viewModel;
         }
 
-        private void DecryptData(EmployeePayrollViewModel model)
+        private void DecryptData(EmployeePayrollViewModel viewModel)
         {
-            rijndaelService.DecryptObject(model.BasicSalary, sessionService.RijndaelKey, sessionService.RijndaelIV);
-            rijndaelService.DecryptObject(model.Allowance, sessionService.RijndaelKey, sessionService.RijndaelIV);
-            rijndaelService.DecryptObject(model.Deduction, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            var rijndaelKey = (string)TempData.Peek(viewModel.RijndaelKey.Key);
+            var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
+
+            rijndaelService.DecryptObject(viewModel.BasicSalary, rijndaelKey, rijndaelIV);
+            rijndaelService.DecryptObject(viewModel.Allowance, rijndaelKey, rijndaelIV);
+            rijndaelService.DecryptObject(viewModel.Deduction, rijndaelKey, rijndaelIV);
         }
 
         private EmployeePayrollModel ConvertToServiceModel(EmployeePayrollViewModel model)

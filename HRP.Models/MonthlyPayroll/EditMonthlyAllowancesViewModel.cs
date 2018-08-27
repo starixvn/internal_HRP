@@ -6,7 +6,7 @@
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class EditMonthlyAllowancesViewModel
+    public class EditMonthlyAllowancesViewModel : RijndaelData
     {
         public int EmployeeId { get; set; }
 
@@ -38,9 +38,5 @@
         public int DaysInMonth { get; set; }
 
         public int VNDCurrencyId { get; set; }
-
-        public string RijndaelIV { get; set; }
-
-        public string RijndaelKey { get; set; }
     }
 }

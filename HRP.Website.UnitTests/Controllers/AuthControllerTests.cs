@@ -10,8 +10,9 @@
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Models.Account;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Models;
+    using Models.Account;
     using NSubstitute;
     using Services;
     using Xunit;
@@ -46,8 +47,15 @@
         public void LoginGet_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
-            var tuple = new Tuple<string, string>("1234", "12345");
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var authController = GetAuthController();
+            authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             // Act
             var actual = authController.Login();
@@ -67,10 +75,13 @@
         {
             //Arrange
             var authController = GetAuthController();
+            authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             var model = new LoginViewModel
             {
                 Username = "admin",
-                Password = "r2RzX0EqeQCSjpXCp/GMnA=="
+                Password = "r2RzX0EqeQCSjpXCp/GMnA==",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
@@ -90,10 +101,13 @@
         {
             //Arrange
             var authController = GetAuthController();
+            authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             var model = new LoginViewModel
             {
                 Username = "admin",
-                Password = "r2RzX0EqeQCSjpXCp/GMnA=="
+                Password = "r2RzX0EqeQCSjpXCp/GMnA==",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
@@ -112,16 +126,24 @@
         public async Task Login_IncorrectPassword_ReturnViewResultWithModel()
         {
             //Arrange
-            var tuple = new Tuple<string, string>("1234", "12345");
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var authController = GetAuthController();
+            authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             var model = new LoginViewModel
             {
                 Username = "admin",
-                Password = "r2RzX0EqeQCSjpXCp/GMnA=="
+                Password = "r2RzX0EqeQCSjpXCp/GMnA==",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
             };
             userService.GetUserByUsernameAsync(Arg.Any<string>()).Returns(user);
             userService.IsCorrectPassword(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
-            rijndaelService.GenerateKey().Returns(tuple);
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             //Act
             var actual = await authController.Login(model);
@@ -203,9 +225,16 @@
         public async Task ResetPassword_ValidModelAndUpdateSuccessful_RedirectToAction()
         {
             //Arrange
+            var model = new ResetPasswordViewModel
+            {
+                Password = "1234aa",
+                PasswordConfirm = "1234aa",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            };
             var authController = GetAuthController();
+            authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
-            var model = new ResetPasswordViewModel { Password = "1234aa", PasswordConfirm = "1234aa" };
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = 0, Message = string.Empty });
 
             //Act
@@ -220,10 +249,23 @@
         public async Task ResetPassword_ValidModelAndUpdateFail_ReturnViewResult()
         {
             //Arrange
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var model = new ResetPasswordViewModel
+            {
+                Password = "1234aa",
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            };
             var authController = GetAuthController();
+            authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(new User());
-            var model = new ResetPasswordViewModel { Password = "1234aa" };
             baseService.ExecuteNonQueryAsync(Arg.Any<UpdateUserPasswordCriteria>()).Returns(new CommandResult { Code = -1, Message = string.Empty });
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             //Act
             var actual = await authController.ResetPassword("abc", model);
@@ -253,8 +295,16 @@
         public async Task ResetPassword_CorrectUser_ReturnViewResult()
         {
             //Arrange
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var authController = GetAuthController();
+            authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             //Act
             var actual = await authController.ResetPassword("test");
@@ -268,9 +318,21 @@
         public async Task ResetPassword_InvalidModel_ReturnViewResult()
         {
             //Arrange
+            var model = new ResetPasswordViewModel
+            {
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            };
+            var rijndaelKeyValuePair = new RijndaelKeyValuePair
+            {
+                Key = "key",
+                Value = "value"
+            };
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
             var authController = GetAuthController();
-            var model = new ResetPasswordViewModel();
+            authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             authController.ModelState.AddModelError("", "Error");
+            rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             //Act
             var actual = await authController.ResetPassword("test", model);
@@ -333,8 +395,8 @@
         private static IRijndaelService FakeRijndaelService()
         {
             var service = Substitute.For<IRijndaelService>();
-            var tuple = new Tuple<string, string>("1234", "12345");
-            service.GenerateKey().Returns(tuple);
+            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
+            service.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             return service;
         }

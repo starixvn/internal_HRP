@@ -24,6 +24,8 @@
 
         <form asp-controller="Auth" asp-action="Login" method="POST" id="login" autocomplete="off">
             <div asp-validation-summary="ModelOnly" class="msg-error -has-icon"></div>
+            <input hidden data-val="false" asp-for="RijndaelKey.Key" />
+            <input hidden data-val="false" asp-for="RijndaelIV.Key" />
             <div class="group">
                 <span class="icon-user"></span>
                 <input asp-for="Username" class="form-control" placeholder="Username" />
@@ -41,8 +43,8 @@
             <a class="link" asp-controller="Auth" asp-action="ForgotPassword">@ViewLang.ForgotPassword?</a>
         </div>
     </section>
-    <input hidden value="@Model.RijndaelKey" id="RijndaelKey" />
-    <input hidden value="@Model.RijndaelIV" id="RijndaelIV" />
+    <input hidden value="@Model.RijndaelKey.Value" id="RijndaelKey" />
+    <input hidden value="@Model.RijndaelIV.Value" id="RijndaelIV" />
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>

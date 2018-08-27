@@ -41,12 +41,14 @@
     <li class="active">@ViewLang.EBanking</li>
 </ol>
 
-<input type="hidden" class="encryption-iv" asp-for="RijndaelIV" />
-<input type="hidden" class="encryption-key" asp-for="RijndaelKey" />
+<input type="hidden" class="encryption-iv" asp-for="RijndaelIV.Value" id="RijndaelIV" />
+<input type="hidden" class="encryption-key" asp-for="RijndaelKey.Value" id="RijndaelKey" />
 
 <form class="search-form" asp-action="GetEbankingReport" asp-controller="Report" method="get">
     <a asp-controller="Report" asp-action="GetEbankingPaymentTransactions" class="hidden" id="get-payment-transactions-url"></a>
     <input asp-for="BankType" type="hidden" id="banktype" />
+    <input hidden asp-for="RijndaelKey.Key" />
+    <input hidden asp-for="RijndaelIV.Key" />
 
     <div class="list-message-error hidden" id="validation-summary">
         <span asp-validation-for="FilePassword" class="message"></span>

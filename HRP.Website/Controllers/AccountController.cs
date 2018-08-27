@@ -51,9 +51,9 @@ namespace HRP.Website.Controllers
         [ServiceFilter(typeof(HRPActionFilterAttribute))]
         public async Task<IActionResult> Index(AccountTab tab = AccountTab.Profile)
         {
-            Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
 
             var user = await userService.GetUserByUsernameAsync(sessionService.Username);
 
@@ -69,8 +69,18 @@ namespace HRP.Website.Controllers
                 ActivePanel = tab,
                 IsOTPRegistered = user.IsOTPRegistered,
                 UserProfileViewModel = userProfile,
-                RijndaelIV = sessionService.RijndaelIV,
-                RijndaelKey = sessionService.RijndaelKey
+                SetupOtpViewModel = new SetupOtpViewModel
+                {
+                    RijndaelKey = tuple.Item1,
+                    RijndaelIV = tuple.Item2
+                },
+                ChangePasswordViewModel = new ChangePasswordViewModel
+                {
+                    RijndaelKey = tuple.Item1,
+                    RijndaelIV = tuple.Item2
+                },
+                RijndaelKey = tuple.Item1,
+                RijndaelIV = tuple.Item2
             };
 
             ViewData["Username"] = sessionService.Username;
@@ -82,9 +92,11 @@ namespace HRP.Website.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
-            viewModel.OldPassword = rijndaelService.Decrypt(viewModel.OldPassword, sessionService.RijndaelKey, sessionService.RijndaelIV);
-            viewModel.Password = rijndaelService.Decrypt(viewModel.Password, sessionService.RijndaelKey, sessionService.RijndaelIV);
-            viewModel.PasswordConfirm = rijndaelService.Decrypt(viewModel.PasswordConfirm, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            var rijndaelKey = (string)TempData.Peek(viewModel.RijndaelKey.Key);
+            var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
+            viewModel.OldPassword = rijndaelService.Decrypt(viewModel.OldPassword, rijndaelKey, rijndaelIV);
+            viewModel.Password = rijndaelService.Decrypt(viewModel.Password, rijndaelKey, rijndaelIV);
+            viewModel.PasswordConfirm = rijndaelService.Decrypt(viewModel.PasswordConfirm, rijndaelKey, rijndaelIV);
 
             if (ModelState.IsValid)
             {
@@ -157,17 +169,17 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Logout", "Auth");
             }
 
-            Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
 
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
                 AppName = otpConfig.Value.AppName,
                 Username = user.Username,
-                RijndaelIV = sessionService.RijndaelIV,
-                RijndaelKey = sessionService.RijndaelKey
+                RijndaelKey = tuple.Item1,
+                RijndaelIV = tuple.Item2
             };
 
             return View("SetupOtp", setupOtpViewModel);
@@ -194,17 +206,17 @@ namespace HRP.Website.Controllers
                 Phone = user.Phone
             };
 
-            Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
 
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
                 AppName = otpConfig.Value.AppName,
                 Username = user.Username,
-                RijndaelKey = sessionService.RijndaelKey,
-                RijndaelIV = sessionService.RijndaelIV
+                RijndaelKey = tuple.Item1,
+                RijndaelIV = tuple.Item2
             };
 
             var accountViewModel = new AccountViewModel
@@ -214,8 +226,8 @@ namespace HRP.Website.Controllers
                 SetupOtpViewModel = setupOtpViewModel,
                 ChangePasswordViewModel = new ChangePasswordViewModel(),
                 UserProfileViewModel = userProfile,
-                RijndaelKey = sessionService.RijndaelKey,
-                RijndaelIV = sessionService.RijndaelIV
+                RijndaelKey = tuple.Item1,
+                RijndaelIV = tuple.Item2
             };
 
             return View("Index", accountViewModel);
@@ -257,14 +269,14 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Logout", "Auth");
             }
 
-            Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            sessionService.RijndaelIV = tuple.Item1;
-            sessionService.RijndaelKey = tuple.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
 
             var viewModel = new TwoFactorAuthenticatorViewModel
             {
-                RijndaelIV = sessionService.RijndaelIV,
-                RijndaelKey = sessionService.RijndaelKey
+                RijndaelKey = tuple.Item1,
+                RijndaelIV = tuple.Item2
             };
 
             return View("VerifyOTP", viewModel);
@@ -286,7 +298,9 @@ namespace HRP.Website.Controllers
                 return RedirectToAction("Logout", "Auth");
             }
 
-            viewModel.OTPCode = rijndaelService.Decrypt(viewModel.OTPCode, sessionService.RijndaelKey, sessionService.RijndaelIV);
+            var rijndaelKey = (string)TempData[viewModel.RijndaelKey.Key];
+            var rijndaelIV = (string)TempData[viewModel.RijndaelIV.Key];
+            viewModel.OTPCode = rijndaelService.Decrypt(viewModel.OTPCode, rijndaelKey, rijndaelIV);
 
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.OTPCode);
 
@@ -297,8 +311,13 @@ namespace HRP.Website.Controllers
             }
 
             ViewData["ErrorMessage"] = Message.InvalidOTP;
-            viewModel.RijndaelKey = sessionService.RijndaelKey;
-            viewModel.RijndaelIV = sessionService.RijndaelIV;
+
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+
+            viewModel.RijndaelKey = tuple.Item1;
+            viewModel.RijndaelIV = tuple.Item2;
 
             return View("VerifyOTP", viewModel);
         }
@@ -315,7 +334,10 @@ namespace HRP.Website.Controllers
             {
                 return RedirectToAction("Logout", "Auth");
             }
-            viewModel.Otp = rijndaelService.Decrypt(viewModel.Otp, sessionService.RijndaelKey, sessionService.RijndaelIV);
+
+            var rijndaelKey = (string)TempData.Peek(viewModel.RijndaelKey.Key);
+            var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
+            viewModel.Otp = rijndaelService.Decrypt(viewModel.Otp, rijndaelKey, rijndaelIV);
 
             var isOTPValid = twoFactorAuthService.ValidateOTPCode(user.SecretKey, viewModel.Otp);
 

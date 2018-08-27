@@ -251,8 +251,6 @@ $.validator.setDefaults({
             $(element).addClass(errorClass).removeClass(validClass);
         }
 
-        console.log("custom check form for error");
-
         if ($(".bank-account-form").find(".field-validation-error").length === 0) {
             // Valid
             $(".bank-account-form .list-message-error").addClass("hidden");
@@ -266,8 +264,6 @@ $.validator.setDefaults({
         } else {
             $(element).removeClass(errorClass).addClass(validClass);
         }
-
-        console.log("custom check form for error");
 
         if ($(".bank-account-form").find(".field-validation-error").length === 0) {
             // Valid

@@ -22,8 +22,8 @@
     <li class="active">@ViewLang.MonthlyPayroll</li>
 </ol>
 
-<input type="hidden" asp-for="RijndaelIV" />
-<input type="hidden" asp-for="RijndaelKey" />
+<input type="hidden" asp-for="RijndaelIV.Value" id="RijndaelIV" />
+<input type="hidden" asp-for="RijndaelKey.Value" id="RijndaelKey" />
 
 <form class="search-form" id="filterForm" asp-action="MonthlyPayroll" asp-controller="Report" method="post">
     <div class="list-message-error @(ViewData.ModelState.IsValid ? "hidden": "")" id="validation-summary">
@@ -33,6 +33,9 @@
     </div>
 
     <input type="hidden" asp-for="CommonError" />
+
+    <input hidden asp-for="RijndaelKey.Key" />
+    <input hidden asp-for="RijndaelIV.Key" />
 
     <div class="w-100"></div>
     <div class="group">

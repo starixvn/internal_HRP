@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using HRP.Resources;
 
-    public class GenerateCertificateViewModel
+    public class GenerateCertificateViewModel : RijndaelData
     {
         [DataType(DataType.Password)]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PasswordRequired))]
@@ -13,7 +13,5 @@
         public bool IsHost { get; set; }
         public bool IsSuccessful { get; set; }
         public string MessageResult { get; set; }
-        public string RijndaelKey { get; set; }
-        public string RijndaelIV { get; set; }
     }
 }

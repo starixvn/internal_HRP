@@ -48,11 +48,11 @@
 <input type="hidden" id="get-bank-account-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 <input type="hidden" id="create-bank-account-in-payroll-url" value="@Url.Action("CreateBankAccountInPayroll","BankAccount")" />
 <input type="hidden" id="greater-than-zero-message" value="@Message.GreaterThanZero" />
-<input type="hidden" data-val="false" asp-for="RijndaelIV" />
-<input type="hidden" data-val="false" asp-for="RijndaelKey" />
+<input type="hidden" data-val="false" asp-for="RijndaelIV.Value" id="RijndaelIV" />
+<input type="hidden" data-val="false" asp-for="RijndaelKey.Value" id="RijndaelKey" />
 
 <form class="payroll form-information" method="post" id="payroll-form" asp-action="EditPayroll"
-      data-ajax-method="post" data-ajax="true" @*data-ajax-failure="commonFunctions.handleAjaxError"*@
+      data-ajax-method="post" data-ajax="true" @*data-ajax-failure="commonFunctions.handleAjaxError" *@
       data-ajax-success="employeePayroll.onSaveSuccess" data-ajax-complete="employeePayroll.onSaveComplete">
     <input type="hidden" data-val="false" asp-for="EmployeeId" />
     <input type="hidden" data-val="false" asp-for="CompanyId" />
@@ -64,6 +64,8 @@
     <input type="hidden" data-val="false" asp-for="HaveHostPermissionOnBankAccounts" />
     <input type="hidden" data-val="false" asp-for="BasicSalary.InitFirstTime" />
     <input type="hidden" data-val="false" asp-for="VNDCurrencyId" />
+    <input hidden data-val="false" asp-for="RijndaelKey.Key" />
+    <input hidden data-val="false" asp-for="RijndaelIV.Key" />
 
     <div class="list-message-error hidden" id="validation-summary">
     </div>
@@ -92,7 +94,6 @@
 
                 <input type="text" class="control without-label number total-amount" placeholder="Total Amount" data-msg-required="@Message.EmployeePayrollSettingAmountRequired"
                        asp-for="BasicSalary.Salary.PlainValue" asp-encrypt-for="BasicSalary.Salary.EncryptedValue" />
-
             </div>
             <div class="">
                 <div class="pull-left calendar">

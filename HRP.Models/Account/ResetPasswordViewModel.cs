@@ -1,7 +1,6 @@
 ﻿namespace HRP.Models.Account
 {
     using System.ComponentModel.DataAnnotations;
-    using SystemSecurity;
     using Resources;
 
     public class ResetPasswordViewModel : RijndaelData

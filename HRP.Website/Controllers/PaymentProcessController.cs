@@ -28,11 +28,6 @@
 
     public class PaymentProcessController : BaseController
     {
-        protected const string RijndaelKeyForBasicSalary = "RijndaelKeyForBasicSalary";
-        protected const string RijndaelIVForBasicSalary = "RijndaelIVForBasicSalary";
-        protected const string RijndaelKeyForAllowances = "RijndaelKeyForAllowances";
-        protected const string RijndaelIVForAllowances = "RijndaelIVForAllowances";
-
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ICommonService commonService;
         private readonly IPaymentProcessService paymentProcessService;
@@ -312,20 +307,22 @@
             viewModel.FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month);
             viewModel.Employees = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
 
-            Tuple<string, string> tuple = rijndaelService.GenerateKey();
-            ViewData["RijndaelKey"] = tuple.Item1;
-            ViewData["RijndaelIV"] = tuple.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            var rijndaelKey = tuple.Item1.Value;
+            var rijndaelIV = tuple.Item2.Value;
+            ViewData["RijndaelKey"] = rijndaelKey;
+            ViewData["RijndaelIV"] = rijndaelIV;
 
             foreach (EmployeeMonthlyPayrollModel employeePayroll in viewModel.Employees)
             {
-                employeePayroll.BasicSalary.EbankingAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.EbankingAmount, tuple.Item1, tuple.Item2);
-                employeePayroll.BasicSalary.DirectBanking1Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking1Amount, tuple.Item1, tuple.Item2);
-                employeePayroll.BasicSalary.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking2Amount, tuple.Item1, tuple.Item2);
-                employeePayroll.BasicSalary.CashAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.CashAmount, tuple.Item1, tuple.Item2);
+                employeePayroll.BasicSalary.EbankingAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.EbankingAmount, rijndaelKey, rijndaelIV);
+                employeePayroll.BasicSalary.DirectBanking1Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking1Amount, rijndaelKey, rijndaelIV);
+                employeePayroll.BasicSalary.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.BasicSalary.DirectBanking2Amount, rijndaelKey, rijndaelIV);
+                employeePayroll.BasicSalary.CashAmount = rijndaelService.Encrypt(employeePayroll.BasicSalary.CashAmount, rijndaelKey, rijndaelIV);
 
-                employeePayroll.Allowance.DirectBanking1Amount = rijndaelService.Encrypt(employeePayroll.Allowance.DirectBanking1Amount, tuple.Item1, tuple.Item2);
-                employeePayroll.Allowance.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.Allowance.DirectBanking2Amount, tuple.Item1, tuple.Item2);
-                employeePayroll.Allowance.CashAmount = rijndaelService.Encrypt(employeePayroll.Allowance.CashAmount, tuple.Item1, tuple.Item2);
+                employeePayroll.Allowance.DirectBanking1Amount = rijndaelService.Encrypt(employeePayroll.Allowance.DirectBanking1Amount, rijndaelKey, rijndaelIV);
+                employeePayroll.Allowance.DirectBanking2Amount = rijndaelService.Encrypt(employeePayroll.Allowance.DirectBanking2Amount, rijndaelKey, rijndaelIV);
+                employeePayroll.Allowance.CashAmount = rijndaelService.Encrypt(employeePayroll.Allowance.CashAmount, rijndaelKey, rijndaelIV);
             }
 
             return View("MonthlyPayroll", viewModel);
@@ -353,19 +350,19 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            var keys = rijndaelService.GenerateKey();
-            TempData[RijndaelKeyForBasicSalary] = keys.Item1;
-            TempData[RijndaelIVForBasicSalary] = keys.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
             var viewModel = new EditMonthlySalaryViewModel
             {
                 Month = month,
-                MonthlyBasicSalary = ConvertMonthlyBasicSalaryToViewModel(monthlySalary.Item1, keys.Item1, keys.Item2),
-                MonthlySalary = ConvertMonthlySalaryToViewModel(monthlySalary.Item2, keys.Item1, keys.Item2),
-                Additions = ConvertMonthlySalaryAdditionToViewModel(monthlySalary.Item3, keys.Item1, keys.Item2),
-                Deductions = ConvertMonthlySalaryDeductionToViewModel(monthlySalary.Item4, keys.Item1, keys.Item2),
+                MonthlyBasicSalary = ConvertMonthlyBasicSalaryToViewModel(monthlySalary.Item1, tuple.Item1.Value, tuple.Item2.Value),
+                MonthlySalary = ConvertMonthlySalaryToViewModel(monthlySalary.Item2, tuple.Item1.Value, tuple.Item2.Value),
+                Additions = ConvertMonthlySalaryAdditionToViewModel(monthlySalary.Item3, tuple.Item1.Value, tuple.Item2.Value),
+                Deductions = ConvertMonthlySalaryDeductionToViewModel(monthlySalary.Item4, tuple.Item1.Value, tuple.Item2.Value),
                 FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId),
-                RijndaelKey = keys.Item1,
-                RijndaelIV = keys.Item2,
+                RijndaelKey = tuple.Item1,
+                RijndaelIV = tuple.Item2,
                 CachingFilter = filter
             };
 
@@ -482,13 +479,13 @@
                 return RedirectToAction("AccessDenied", "Error");
             }
 
-            var keys = rijndaelService.GenerateKey();
-            TempData[RijndaelKeyForAllowances] = keys.Item1;
-            TempData[RijndaelIVForAllowances] = keys.Item2;
+            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[tuple.Item1.Key] = tuple.Item1.Value;
+            TempData[tuple.Item2.Key] = tuple.Item2.Value;
 
-            var viewModel = await InitializeEditAllowanceViewModel(payrollId, companyId, month, filter);
-            viewModel.RijndaelKey = keys.Item1;
-            viewModel.RijndaelIV = keys.Item2;
+            var viewModel = await InitializeEditAllowanceViewModel(payrollId, companyId, month, filter, tuple.Item1.Value, tuple.Item2.Value);
+            viewModel.RijndaelKey = tuple.Item1;
+            viewModel.RijndaelIV = tuple.Item2;
 
             return View(viewModel);
         }
@@ -571,16 +568,22 @@
             return Json(result);
         }
 
-        private async Task<EditMonthlyAllowancesViewModel> InitializeEditAllowanceViewModel(int payrollId, int companyId, DateTime month, CachingFilterViewModel filter)
+        private async Task<EditMonthlyAllowancesViewModel> InitializeEditAllowanceViewModel(
+            int payrollId,
+            int companyId,
+            DateTime month,
+            CachingFilterViewModel filter,
+            string rijndaelKey,
+            string rijndaelIV)
         {
             var serviceModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
 
             var viewModel = new EditMonthlyAllowancesViewModel
             {
-                BasicAllowance = InitializeBasicAllowanceModel(serviceModel.BasicAllowance),
-                Allowance = InitializeAllowanceModel(serviceModel.Allowance),
-                Additions = InitializeAdjustmentModel(serviceModel.Additions),
-                Deductions = InitializeAdjustmentModel(serviceModel.Deductions)
+                BasicAllowance = InitializeBasicAllowanceModel(serviceModel.BasicAllowance, rijndaelKey, rijndaelIV),
+                Allowance = InitializeAllowanceModel(serviceModel.Allowance, rijndaelKey, rijndaelIV),
+                Additions = InitializeAdjustmentModel(serviceModel.Additions, rijndaelKey, rijndaelIV),
+                Deductions = InitializeAdjustmentModel(serviceModel.Deductions, rijndaelKey, rijndaelIV)
             };
             viewModel.EmployeeInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId);
             viewModel.CompanyId = companyId;
@@ -609,11 +612,11 @@
             return viewModel;
         }
 
-        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceAdditionModel> additions)
+        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(
+            IList<MonthlyAllowanceAdditionModel> additions,
+            string rijndaelKey,
+            string rijndaelIV)
         {
-            var rijndaelKey = (string)TempData.Peek(RijndaelKeyForAllowances);
-            var rijndaelIV = (string)TempData.Peek(RijndaelIVForAllowances);
-
             return additions.Select(x => new MonthlyAllowanceDetailAdjustmentViewModel
             {
                 PayrollId = x.PayrollId,
@@ -642,11 +645,11 @@
             }).ToList();
         }
 
-        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(IList<MonthlyAllowanceDeductionModel> deductions)
+        private IList<MonthlyAllowanceDetailAdjustmentViewModel> InitializeAdjustmentModel(
+            IList<MonthlyAllowanceDeductionModel> deductions,
+            string rijndaelKey,
+            string rijndaelIV)
         {
-            var rijndaelIV = (string)TempData.Peek(RijndaelIVForAllowances);
-            var rijndaelKey = (string)TempData.Peek(RijndaelKeyForAllowances);
-
             return deductions.Select(x => new MonthlyAllowanceDetailAdjustmentViewModel
             {
                 PayrollId = x.PayrollId,
@@ -675,11 +678,11 @@
             }).ToList();
         }
 
-        private MonthlyAllowanceViewModel InitializeAllowanceModel(MonthlyAllowanceModel allowance)
+        private MonthlyAllowanceViewModel InitializeAllowanceModel(
+            MonthlyAllowanceModel allowance,
+            string rijndaelKey,
+            string rijndaelIV)
         {
-            var rijndaelIV = (string)TempData.Peek(RijndaelIVForAllowances);
-            var rijndaelKey = (string)TempData.Peek(RijndaelKeyForAllowances);
-
             return new MonthlyAllowanceViewModel
             {
                 PayrollId = allowance.PayrollId,
@@ -744,11 +747,11 @@
             };
         }
 
-        private MonthlyPayrollBasicAllowanceViewModel InitializeBasicAllowanceModel(MonthlyPayrollBasicAllowanceModel basicAllowance)
+        private MonthlyPayrollBasicAllowanceViewModel InitializeBasicAllowanceModel(
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            string rijndaelKey,
+            string rijndaelIV)
         {
-            var rijndaelIV = (string)TempData.Peek(RijndaelIVForAllowances);
-            var rijndaelKey = (string)TempData.Peek(RijndaelKeyForAllowances);
-
             return new MonthlyPayrollBasicAllowanceViewModel
             {
                 PayrollId = basicAllowance.PayrollId,
@@ -899,8 +902,8 @@
 
         private void DecryptData(EditMonthlyAllowancesViewModel viewModel)
         {
-            var rijndaelIV = (string)TempData.Peek(RijndaelIVForAllowances);
-            var rijndaelKey = (string)TempData.Peek(RijndaelKeyForAllowances);
+            var rijndaelKey = (string)TempData.Peek(viewModel.RijndaelKey.Key);
+            var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
 
             rijndaelService.DecryptObject(viewModel.Allowance, rijndaelKey, rijndaelIV);
 
@@ -1079,8 +1082,8 @@
 
         private void DecryptData(EditMonthlySalaryViewModel viewModel)
         {
-            var rijndaelIV = (string)TempData.Peek(RijndaelIVForBasicSalary);
-            var rijndaelKey = (string)TempData.Peek(RijndaelKeyForBasicSalary);
+            var rijndaelKey = (string)TempData.Peek(viewModel.RijndaelKey.Key);
+            var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
 
             rijndaelService.DecryptObject(viewModel.MonthlySalary, rijndaelKey, rijndaelIV);
 

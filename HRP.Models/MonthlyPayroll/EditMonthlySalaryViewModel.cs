@@ -6,7 +6,7 @@
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class EditMonthlySalaryViewModel
+    public class EditMonthlySalaryViewModel : RijndaelData
     {
         [DisplayFormat(DataFormatString = "{0:MM-yyyy}")]
         public DateTime Month { get; set; }
@@ -24,7 +24,5 @@
         public bool IsRedirectToEditAllowance { get; set; }
         public CachingFilterViewModel CachingFilter { get; set; } = new CachingFilterViewModel();
         public int VNDCurrencyId { get; set; }
-        public string RijndaelKey { get; set; }
-        public string RijndaelIV { get; set; }
     }
 }

@@ -45,18 +45,6 @@ namespace HRP.Core.Services
             set => _session.Set<bool>(SessionKey.InternalIsSystemAdmin, value);
         }
 
-        public string RijndaelKey
-        {
-            get => _session.GetString(SessionKey.InternalRijndaelKey) ?? string.Empty;
-            set => _session.SetString(SessionKey.InternalRijndaelKey, value);
-        }
-
-        public string RijndaelIV
-        {
-            get => _session.GetString(SessionKey.InternalRijndaelIV) ?? string.Empty;
-            set => _session.SetString(SessionKey.InternalRijndaelIV, value);
-        }
-
         public IEnumerable<MenuItem> MenuItems
         {
             get => _session.Get<List<MenuItem>>(SessionKey.InternalMenuItemList);
