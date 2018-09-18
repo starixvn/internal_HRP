@@ -43,6 +43,8 @@
         private ICommonService commonService;
         private IPaymentProcessService paymentProcessService;
         private IMonthlyPayrollService monthlyPayrollService;
+        private IMonthlySalaryService monthlySalaryService;
+        private IMonthlyAllowancesService monthlyAllowancesService;
         private IRijndaelService rijndaelService;
 
         [Fact]
@@ -738,7 +740,7 @@
                     new List<MonthlySalaryDeductionModel>());
             var controller = GetPaymentProcessController();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
+            monthlySalaryService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
 
             // Act
             var actual = await controller.EditBasicSalary(1, 1, DateTime.Today, new CachingFilterViewModel());
@@ -787,7 +789,7 @@
             var controller = GetPaymentProcessController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.HasPermissionOnCompany(companyId, Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
+            monthlySalaryService.GetMonthlySalaryAsync(Arg.Any<int>()).Returns(monthlyPayroll);
             monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId).Returns(filterInfo);
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(currencyExchangeRates);
             rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
@@ -954,7 +956,7 @@
             controller.ObjectValidator = objectValidator;
             controller.Url = Substitute.For<IUrlHelper>();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.EditMonthlySalaryAsync(
+            monthlySalaryService.EditMonthlySalaryAsync(
                 Arg.Any<int>(),
                 Arg.Any<int>(),
                 viewModel.Month,
@@ -1057,7 +1059,7 @@
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
             rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
-            monthlyPayrollService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
+            monthlyAllowancesService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
                 .Returns(new MonthlyAllowancesModel
                 {
                     Allowance = new MonthlyAllowanceModel()
@@ -1150,7 +1152,7 @@
                  Arg.Any<string>(), Arg.Any<Object>()));
             controller.Url = Substitute.For<IUrlHelper>();
             sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(true);
-            monthlyPayrollService.EditMonthlyAllowancesAsync(Arg.Any<MonthlyAllowancesModel>(), sessionService.UserId).Returns(commandResult);
+            monthlyAllowancesService.EditMonthlyAllowancesAsync(Arg.Any<MonthlyAllowancesModel>(), sessionService.UserId).Returns(commandResult);
 
             // Act
             var actual = await controller.EditAllowances(viewModel, EditMonthlyAllowanceAction.Save);
@@ -1296,6 +1298,8 @@
             monthlyPayrollService = FakeMonthlyPayrollService();
             commonService = FakeCommonService();
             rijndaelService = FakeRijndaelService();
+            monthlySalaryService = Substitute.For<IMonthlySalaryService>();
+            monthlyAllowancesService = Substitute.For<IMonthlyAllowancesService>();
 
             return new PaymentProcessController(
                 baseService,
@@ -1304,6 +1308,8 @@
                 commonService,
                 paymentProcessService,
                 monthlyPayrollService,
+                monthlySalaryService,
+                monthlyAllowancesService,
                 rijndaelService);
         }
 

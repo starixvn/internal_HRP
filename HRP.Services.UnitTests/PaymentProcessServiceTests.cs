@@ -30,7 +30,8 @@
         private IPaymentProcessRepository paymentProcessRepository;
         private IObjectStream fileStream;
         private ITemplateReader templateReader;
-        private IMonthlyPayrollService monthlyPayrollService;
+        private IMonthlySalaryService monthlySalaryService;
+        private IMonthlyAllowancesService monthlyAllowancesService;
 
         [Fact]
         public async Task GetCurrentDuration_WhenCalled_ReturnExpectedPaymenProcessInstance()
@@ -578,14 +579,14 @@
             paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
                 .Returns(generatePayrollViewModel);
             baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
-            monthlyPayrollService.InitializeMonthlyAllowance(Arg.Any<MonthlyPayrollBasicAllowanceModel>(),
+            monthlyAllowancesService.InitializeMonthlyAllowance(Arg.Any<MonthlyPayrollBasicAllowanceModel>(),
                 Arg.Any<IEnumerable<MonthlyAllowanceAdditionModel>>(),
                 Arg.Any<IEnumerable<MonthlyAllowanceDeductionModel>>(),
                 Arg.Any<IEnumerable<CurrencyExchangeRateModel>>(),
                 Arg.Any<MonthlyDSTNetSalary>()).Returns(mockAllowance);
-            monthlyPayrollService.InitializeAllowanceAdditions(Arg.Any<int>(), Arg.Any<decimal>(),
+            monthlyAllowancesService.InitializeAllowanceAdditions(Arg.Any<int>(), Arg.Any<decimal>(),
                 Arg.Any<MonthlyPayrollBasicAllowanceModel>(), Arg.Any<IEnumerable<CurrencyExchangeRateModel>>()).Returns(allowanceAdditions);
-            monthlyPayrollService.InitializeAllowanceDeductions(Arg.Any<int>(), Arg.Any<decimal>(),
+            monthlyAllowancesService.InitializeAllowanceDeductions(Arg.Any<int>(), Arg.Any<decimal>(),
                 Arg.Any<MonthlyPayrollBasicAllowanceModel>(), Arg.Any<IEnumerable<CurrencyExchangeRateModel>>()).Returns(allowanceDeductions);
 
             // Act
@@ -620,21 +621,25 @@
 
         private IPaymentProcessService GetPaymentProcessService()
         {
-            baseService = FakeBaseService();
+            baseService = Substitute.For<IBaseService>();
             sessionService = FakeSessionService();
-            cryptoService = FakeCryptoService();
-            fileStream = FakeFileStream();
-            templateReader = FakeTemplateReader();
-            paymentProcessRepository = FakePaymentProcessRepository();
-            monthlyPayrollService = FakeMonthlyPayrollService();
-            var service = new PaymentProcessService(baseService, sessionService, cryptoService, monthlyPayrollService, templateReader, paymentProcessRepository, fileStream);
+            cryptoService = Substitute.For<ICryptoService>();
+            fileStream = Substitute.For<IObjectStream>();
+            templateReader = Substitute.For<ITemplateReader>();
+            paymentProcessRepository = Substitute.For<IPaymentProcessRepository>();
+            monthlySalaryService = Substitute.For<IMonthlySalaryService>();
+            monthlyAllowancesService = Substitute.For<IMonthlyAllowancesService>();
+            var service = new PaymentProcessService(
+                baseService,
+                sessionService,
+                cryptoService,
+                monthlySalaryService,
+                monthlyAllowancesService,
+                templateReader,
+                paymentProcessRepository,
+                fileStream);
 
             return service;
-        }
-
-        private static IBaseService FakeBaseService()
-        {
-            return Substitute.For<IBaseService>();
         }
 
         private static ISessionService FakeSessionService()
@@ -643,31 +648,6 @@
             service.UserId = 99;
 
             return service;
-        }
-
-        private static IPaymentProcessRepository FakePaymentProcessRepository()
-        {
-            return Substitute.For<IPaymentProcessRepository>();
-        }
-
-        private static IObjectStream FakeFileStream()
-        {
-            return Substitute.For<IObjectStream>();
-        }
-
-        private static ITemplateReader FakeTemplateReader()
-        {
-            return Substitute.For<ITemplateReader>();
-        }
-
-        private static IMonthlyPayrollService FakeMonthlyPayrollService()
-        {
-            return Substitute.For<IMonthlyPayrollService>();
-        }
-
-        private static ICryptoService FakeCryptoService()
-        {
-            return Substitute.For<ICryptoService>();
         }
 
         private PaymentProcess MockPaymentProcess()

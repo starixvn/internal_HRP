@@ -280,6 +280,8 @@
     <Compile Include="BankAccountServiceTests.cs" />
     <Compile Include="DataConfigurationServiceTests.cs" />
     <Compile Include="ExportExcelServiceTests.cs" />
+    <Compile Include="MonthlyAllowancesServiceTests.cs" />
+    <Compile Include="MonthlySalaryServiceTests.cs" />
     <Compile Include="MonthlyPayrollServiceTests.cs" />
     <Compile Include="EmployeeServiceTests.cs" />
     <Compile Include="EmployeePayrollServiceTests.cs" />

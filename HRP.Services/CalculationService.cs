@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using HRP.Core.Constants;
     using HRP.Models.Currency;
 
@@ -73,6 +74,44 @@
             }
 
             return result;
+        }
+
+        public static string GetPartOfAfterAdjustmentReason(
+            DateTime workingMonth,
+            DateTime groupStartDate,
+            DateTime? groupEndDate)
+        {
+            int differenceEndDate = groupEndDate.HasValue ? GetDifferenceMonth(groupEndDate.Value, workingMonth) : -1;
+            var reason = new StringBuilder();
+            if (GetDifferenceMonth(groupStartDate, workingMonth) == 0)
+            {
+                if (differenceEndDate == 0)
+                {
+                    reason.AppendFormat(
+                        " Employee worked from {0} to {1}.",
+                        groupStartDate.ToString(Constants.DateFormat),
+                        groupEndDate.Value.ToString(Constants.DateFormat));
+                }
+                else
+                {
+                    reason.AppendFormat(" Employee started working from {0}.", groupStartDate.ToString(Constants.DateFormat));
+                }
+            }
+            else
+            {
+                if (differenceEndDate == 0)
+                {
+                    reason.AppendFormat(" Employee official leaves from {0}.", groupEndDate.Value.ToString(Constants.DateFormat));
+                }
+            }
+
+            return reason.ToString();
+        }
+
+        public static int GetDifferenceMonth(DateTime past, DateTime now)
+        {
+            int monthsApart = 12 * (past.Year - now.Year) + past.Month - now.Month;
+            return Math.Abs(monthsApart);
         }
 
         private static decimal GetExchangeRate(

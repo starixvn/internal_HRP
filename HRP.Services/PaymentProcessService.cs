@@ -25,23 +25,28 @@
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
-        private readonly IMonthlyPayrollService monthlyPayrollService;
+        private readonly IMonthlySalaryService monthlySalaryService;
+        private readonly IMonthlyAllowancesService monthlyAllowancesService;
         private readonly IPaymentProcessRepository paymentProcessRepository;
         private readonly IObjectStream fileStream;
         private readonly ITemplateReader templateReader;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         public PaymentProcessService(IBaseService baseService,
             ISessionService sessionService,
             ICryptoService cryptoService,
-            IMonthlyPayrollService monthlyPayrollService,
+            IMonthlySalaryService monthlySalaryService,
+            IMonthlyAllowancesService monthlyAllowancesService,
             ITemplateReader templateReader,
             IPaymentProcessRepository paymentProcessRepository,
             IObjectStream fileStream)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.baseService = baseService;
             this.sessionService = sessionService;
             this.cryptoService = cryptoService;
-            this.monthlyPayrollService = monthlyPayrollService;
+            this.monthlySalaryService = monthlySalaryService;
+            this.monthlyAllowancesService = monthlyAllowancesService;
             this.templateReader = templateReader;
             this.paymentProcessRepository = paymentProcessRepository;
             this.fileStream = fileStream;
@@ -360,8 +365,8 @@
             var monthlySalary = new MonthlySalaryModel { EmployeeId = payroll.EmployeeId };
             DecryptMonthlyBasicSalary(monthlyBasicSalary);
 
-            monthlyPayrollService.CalculateBackPayAndAfterAdjustment(dataModel.CurrencyExchangeRate, month, monthlyBasicSalary, backPay, payroll.GroupStartDate, payroll.GroupEndDate);
-            monthlyPayrollService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, backPay, monthlySalary);
+            monthlySalaryService.CalculateBackPayAndAfterAdjustment(dataModel.CurrencyExchangeRate, month, monthlyBasicSalary, backPay, payroll.GroupStartDate, payroll.GroupEndDate);
+            monthlySalaryService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, backPay, monthlySalary);
 
             EncryptMonthlyBasicSalary(monthlyBasicSalary);
             EncryptMonthlySalary(monthlySalary);
@@ -388,12 +393,12 @@
             DecryptMonthlyDSTNetSalary(monthlyDSTNetSalary);
             DecryptMonthlyBasicAllowance(monthlyBasicAllowance);
 
-            monthlyPayrollService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, month, payroll.GroupStartDate, payroll.GroupEndDate);
-            var allowanceAdditions = monthlyPayrollService.InitializeAllowanceAdditions(monthlyBasicSalary.WorkingDays,
+            monthlyAllowancesService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, month, payroll.GroupStartDate, payroll.GroupEndDate);
+            var allowanceAdditions = monthlyAllowancesService.InitializeAllowanceAdditions(monthlyBasicSalary.WorkingDays,
                 actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
-            var allowanceDeductions = monthlyPayrollService.InitializeAllowanceDeductions(monthlyBasicSalary.WorkingDays,
+            var allowanceDeductions = monthlyAllowancesService.InitializeAllowanceDeductions(monthlyBasicSalary.WorkingDays,
                 actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
-            var allowance = monthlyPayrollService.InitializeMonthlyAllowance(monthlyBasicAllowance, allowanceAdditions, allowanceDeductions,
+            var allowance = monthlyAllowancesService.InitializeMonthlyAllowance(monthlyBasicAllowance, allowanceAdditions, allowanceDeductions,
                 dataModel.CurrencyExchangeRate, monthlyDSTNetSalary);
 
             EncryptMonthlyBasicAllowance(monthlyBasicAllowance);

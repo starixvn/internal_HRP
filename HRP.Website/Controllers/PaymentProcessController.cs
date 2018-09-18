@@ -32,8 +32,11 @@
         private readonly ICommonService commonService;
         private readonly IPaymentProcessService paymentProcessService;
         private readonly IMonthlyPayrollService monthlyPayrollService;
+        private readonly IMonthlySalaryService monthlySalaryService;
+        private readonly IMonthlyAllowancesService monthlyAllowancesService;
         private readonly IRijndaelService rijndaelService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         public PaymentProcessController(
             IBaseService baseService,
             ISessionService sessionService,
@@ -41,12 +44,17 @@
             ICommonService commonService,
             IPaymentProcessService paymentProcessService,
             IMonthlyPayrollService monthlyPayrollService,
+            IMonthlySalaryService monthlySalaryService,
+            IMonthlyAllowancesService monthlyAllowancesService,
             IRijndaelService rijndaelService) : base(baseService, sessionService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.hostingEnvironment = hostingEnvironment;
             this.commonService = commonService;
             this.paymentProcessService = paymentProcessService;
             this.monthlyPayrollService = monthlyPayrollService;
+            this.monthlySalaryService = monthlySalaryService;
+            this.monthlyAllowancesService = monthlyAllowancesService;
             this.rijndaelService = rijndaelService;
         }
 
@@ -344,7 +352,7 @@
             Tuple<MonthlyBasicSalaryModel,
                 MonthlySalaryModel,
                 IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary = await monthlyPayrollService.GetMonthlySalaryAsync(payrollId);
+                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary = await monthlySalaryService.GetMonthlySalaryAsync(payrollId);
             if (monthlySalary.Item1 == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
@@ -405,7 +413,7 @@
 
             if (ModelState.IsValid)
             {
-                CommandResult commandResult = await monthlyPayrollService.EditMonthlySalaryAsync(
+                CommandResult commandResult = await monthlySalaryService.EditMonthlySalaryAsync(
                     viewModel.FilterInfo.PayrollId,
                     viewModel.FilterInfo.CompanyId,
                     viewModel.Month,
@@ -504,7 +512,7 @@
 
             if (TryValidateModel(viewModel))
             {
-                var result = await monthlyPayrollService.EditMonthlyAllowancesAsync(ConvertToServiceModel(viewModel), sessionService.UserId);
+                var result = await monthlyAllowancesService.EditMonthlyAllowancesAsync(ConvertToServiceModel(viewModel), sessionService.UserId);
                 var redirectTo = string.Empty;
 
                 redirectTo = submitAction == EditMonthlyAllowanceAction.SaveAndEditBasicSalary ? Url.Action("EditBasicSalary", new
@@ -576,7 +584,7 @@
             string rijndaelKey,
             string rijndaelIV)
         {
-            var serviceModel = await monthlyPayrollService.GetMonthlyAllowancesAsync(payrollId, month);
+            var serviceModel = await monthlyAllowancesService.GetMonthlyAllowancesAsync(payrollId, month);
 
             var viewModel = new EditMonthlyAllowancesViewModel
             {

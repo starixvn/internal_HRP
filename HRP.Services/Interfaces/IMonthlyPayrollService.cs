@@ -3,12 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using HRP.Core.Model;
     using HRP.Models;
-    using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
     using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll;
-    using HRP.Models.ServiceModels;
 
     public interface IMonthlyPayrollService
     {
@@ -21,62 +18,5 @@
         Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByNameAsync(int companyId, string name);
 
         Task<IEnumerable<EmployeeSuggestionViewModel>> GetEmployeeSuggestionByIDNoAsync(int companyId, string idNo);
-
-        Task<Tuple<MonthlyBasicSalaryModel,
-                MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(int payrollId);
-
-        Task<CommandResult> EditMonthlySalaryAsync(
-            int payrollId,
-            int companyId,
-            DateTime month,
-            MonthlySalaryModel monthlySalary,
-            IEnumerable<MonthlySalaryAdditionModel> additions,
-            IEnumerable<MonthlySalaryDeductionModel> deductions);
-
-        Task<MonthlyAllowancesModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month);
-
-        Task<CommandResult> EditMonthlyAllowancesAsync(MonthlyAllowancesModel model, int userId);
-
-        void CalculateBackPayAndAfterAdjustment(
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            DateTime workingMonth,
-            MonthlyBasicSalaryModel basicSetting,
-            MonthlySalaryAdditionModel backPay,
-            DateTime groupStartDate,
-            DateTime? groupEndDate);
-
-        void CalculateMonthlySalary(
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            MonthlyBasicSalaryModel basicSalary,
-            MonthlySalaryAdditionModel backPay,
-            MonthlySalaryModel monthlySalary);
-
-        void CalculateMonthlyBasicAllowance(
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            MonthlyPayrollBasicAllowanceModel monthlyPayrollBasicAllowance,
-            DateTime workingMonth,
-            DateTime groupStartDate,
-            DateTime? groupEndDate);
-
-        IEnumerable<MonthlyAllowanceAdditionModel> InitializeAllowanceAdditions(
-            int standardWorkingDays,
-            decimal actualWorkingDays,
-            MonthlyPayrollBasicAllowanceModel basicAllowance,
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
-
-        IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(
-            int standardWorkingDays,
-            decimal actualWorkingDays,
-            MonthlyPayrollBasicAllowanceModel basicAllowance,
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
-
-        MonthlyAllowanceModel InitializeMonthlyAllowance(
-            MonthlyPayrollBasicAllowanceModel basicAllowance,
-            IEnumerable<MonthlyAllowanceAdditionModel> allowanceAdditions,
-            IEnumerable<MonthlyAllowanceDeductionModel> allowanceDeductions,
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            MonthlyDSTNetSalary dstNetSalary);
     }
 }

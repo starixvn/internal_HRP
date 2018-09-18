@@ -62,7 +62,7 @@ var bankAccountForm = {
     },
 
     checkIfRequired: function (desiredvalue, relatedFieldName) {
-        desiredvalue = (desiredvalue == null ? "" : desiredvalue).toString();
+        desiredvalue = (desiredvalue === null ? "" : desiredvalue).toString();
         var controlType = $("input[id$='" + relatedFieldName + "']").attr("type");
         var actualvalue;
         if (controlType === "checkbox" || controlType === "radio") {
@@ -99,7 +99,7 @@ var bankAccountForm = {
         $.validator.addMethod("requiredifrelatedfieldistrue",
             function (value, element, parameters) {
                 var desiredvalue = parameters.desiredvalue;
-                desiredvalue = (desiredvalue == null ? "" : desiredvalue).toString();
+                desiredvalue = (desiredvalue === null ? "" : desiredvalue).toString();
                 var controlType = $("input[id$='" + parameters.relatedfieldname + "']").attr("type");
                 var actualvalue;
                 if (controlType === "checkbox" || controlType === "radio") {

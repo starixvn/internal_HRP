@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using Core.Constants;
     using Core.Enumerations;
     using Core.Extensions;
@@ -583,47 +584,18 @@
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Report");
                 var columnConfig = ColumnsConfiguration.Columns;
                 var selectedGroups = selectedIds.SelectMany(x => columnConfig[x]);
-                var columns = selectedGroups.SelectMany(x => x.Columns);
+                IEnumerable<MappingColumn> columns = selectedGroups.SelectMany(x => x.Columns);
+
                 // Write header
                 worksheet.Cells[1, 1].Value = "ID No";
                 var col = 2;
-                foreach (var column in columns)
+                foreach (MappingColumn column in columns)
                 {
                     worksheet.Cells[1, col].Value = column.HeaderName;
                     col++;
                 }
 
-                // Write Data
-                var row = 2;
-                foreach (DynamicReportModel record in records)
-                {
-                    worksheet.Cells[row, 1].Value = record.IDNo;
-                    col = 2;
-
-                    foreach (var column in columns)
-                    {
-                        var propertyInfo = record.GetType().GetProperty(column.PropertyName);
-                        var propertyValue = propertyInfo.GetValue(record);
-                        var cell = worksheet.Cells[row, col];
-
-                        if (column.IsAmount && propertyValue != null && !string.IsNullOrWhiteSpace(propertyValue.ToString()))
-                        {
-                            cell.Value = decimal.Parse(propertyValue.ToString());
-                        }
-                        else
-                        {
-                            cell.Value = column.IsEncrypted ? cryptoService.Decrypt(propertyValue?.ToString()) : propertyValue;
-                        }
-
-                        if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))
-                        {
-                            cell.Style.Numberformat.Format = "dd/MM/yyyy";
-                        }
-                        col++;
-                    }
-
-                    row++;
-                }
+                WriteDataDynamicReport(worksheet, records, columns);
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
@@ -633,6 +605,44 @@
                 }
 
                 return package.GetAsByteArray();
+            }
+        }
+
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+        private void WriteDataDynamicReport(ExcelWorksheet worksheet, IEnumerable<DynamicReportModel> records, IEnumerable<MappingColumn> columns)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
+        {
+            var row = 2;
+            int col;
+            foreach (DynamicReportModel record in records)
+            {
+                worksheet.Cells[row, 1].Value = record.IDNo;
+                col = 2;
+
+                foreach (MappingColumn column in columns)
+                {
+                    PropertyInfo propertyInfo = record.GetType().GetProperty(column.PropertyName);
+                    var propertyValue = propertyInfo.GetValue(record);
+                    ExcelRange cell = worksheet.Cells[row, col];
+
+                    if (column.IsAmount && propertyValue != null && !string.IsNullOrWhiteSpace(propertyValue.ToString()))
+                    {
+                        cell.Value = decimal.Parse(propertyValue.ToString());
+                    }
+                    else
+                    {
+                        cell.Value = column.IsEncrypted ? cryptoService.Decrypt(propertyValue?.ToString()) : propertyValue;
+                    }
+
+                    if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))
+                    {
+                        cell.Style.Numberformat.Format = "dd/MM/yyyy";
+                    }
+
+                    col++;
+                }
+
+                row++;
             }
         }
     }

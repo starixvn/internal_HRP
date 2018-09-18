@@ -2,7 +2,7 @@
     var vietNamCurrencyId;
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
-        if (currency == vietNamCurrencyId)
+        if (currency === vietNamCurrencyId)
             return this.round(0);
 
         return this.round(dp);
