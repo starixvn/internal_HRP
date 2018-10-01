@@ -301,8 +301,8 @@
                 "month": $selectedTime.val()
             },
             success: function (response) {
-                if (response.isPayrollGenerated === false) {
-                    if (response.isAttendanceFileSubmitted === false || response.isDSTNetSalaryFileSubmitted === false) {
+                if (!response.isPayrollGenerated) {
+                    if (!response.isAttendanceFileSubmitted || !response.isDSTNetSalaryFileSubmitted) {
                         var attendanceTotalError = $(domElement.AttendanceTotalError).val();
                         var dstNetSalaryTotalError = $(domElement.DSTNetSalaryTotalError).val();
                         if (attendanceTotalError > 0 || dstNetSalaryTotalError > 0) {
@@ -317,7 +317,7 @@
                     redirectToPageEmployeeMonthlyPayroll();
                 }
 
-               // hideLoadingAnimation();
+               hideLoadingAnimation();
             },
             error: commonFunctions.handleAjaxError
         });

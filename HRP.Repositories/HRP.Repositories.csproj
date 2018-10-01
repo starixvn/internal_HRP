@@ -16,7 +16,10 @@
     <PackageReference Include="Fanex.Data" Version="3.0.0-rc1" />
     <PackageReference Include="Fanex.Data.Repository" Version="3.0.0-rc1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.2.0.5463" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.2.0.5463">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

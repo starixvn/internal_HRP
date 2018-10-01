@@ -21,7 +21,10 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NPOI" Version="2.3.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.2.0.5463" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.2.0.5463">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
   </ItemGroup>

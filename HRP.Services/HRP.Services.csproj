@@ -19,7 +19,11 @@
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.2.0.5463" />
+    <PackageReference Include="NPOI" Version="2.3.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.2.0.5463">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <PropertyGroup>
