@@ -247,7 +247,7 @@
             {
                 SelectedTime = DateTime.Today,
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                EncryptedPassword = rijndaelService.Encrypt(filePassword, tuple.Item1.Value, tuple.Item1.Value),
+                EncryptedPassword = rijndaelService.Encrypt(filePassword, tuple.Item1.Value, tuple.Item2.Value),
                 RijndaelKey = tuple.Item1,
                 RijndaelIV = tuple.Item2
             };
