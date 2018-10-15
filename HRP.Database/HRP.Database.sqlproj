@@ -265,4 +265,7 @@
     <Build Include="dbo\Stored Procedures\MailSetting_GetByCompanyId.sql" />
     <Build Include="dbo\Stored Procedures\MailSetting_Get.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="HRP.Database.publish.xml" />
+  </ItemGroup>
 </Project>

@@ -19,6 +19,7 @@ BEGIN
 			SELECT 1
 			FROM dbo.MailSetting WITH (NOLOCK)
 			WHERE CompanyId = @CompanyId
+			AND CompanyId > 0
 			)
 	BEGIN
 		SELECT c.CompanyId

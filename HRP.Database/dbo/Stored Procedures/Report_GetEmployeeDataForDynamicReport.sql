@@ -217,7 +217,7 @@ BEGIN
 	LEFT JOIN dbo.RefResource AS dstCompanyRef WITH (NOLOCK) ON em.DST = dstCompanyRef.ResourceId AND dstCompanyRef.RefName = 'LocalCompany'
 	LEFT JOIN dbo.RefResource AS dbtCompanyRef WITH (NOLOCK) ON em.DBT = dbtCompanyRef.ResourceId AND dbtCompanyRef.RefName = 'LocalCompany'
 
-	INNER JOIN dbo.EmploymentHistory AS emh WITH (NOLOCK) ON em.EmployeeId = emh.EmployeeId
+	LEFT JOIN dbo.EmploymentHistory AS emh WITH (NOLOCK) ON em.EmployeeId = emh.EmployeeId
 	LEFT JOIN dbo.RefResource AS bviChangeRef WITH (NOLOCK) ON emh.CompanyReasonId = bviChangeRef.ResourceId AND bviChangeRef.RefName = 'CompanyBVIChangeReason'
 	LEFT JOIN dbo.RefResource AS localChangeRef WITH (NOLOCK) ON emh.LocalCompanyReasonId = localChangeRef.ResourceId AND localChangeRef.RefName = 'CompanyLocalChangeReason'
 	LEFT JOIN dbo.RefResource AS jobTitleReasonRef WITH (NOLOCK) ON emh.JobTitleReasonId = jobTitleReasonRef.ResourceId AND jobTitleReasonRef.RefName = 'JobTitleBVIChangeReason'
