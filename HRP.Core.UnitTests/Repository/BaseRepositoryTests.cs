@@ -12,7 +12,7 @@
     public class BaseRepositoryTests
     {
         private readonly IObjectDb objectDb;
-        private const string ExceptionMessage = "Object reference not set to an instance of an object.";
+        ////private const string ExceptionMessage = "Object reference not set to an instance of an object.";
 
         public BaseRepositoryTests()
         {
