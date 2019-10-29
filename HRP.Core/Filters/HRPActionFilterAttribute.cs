@@ -29,7 +29,7 @@
             {
                 OnUserId = sessionService.OnUserId
             };
-            var isKickedOut = baseService.GetDataEntityAsync<bool>(criteria).Result;
+            var isKickedOut = baseService.GetDataEntity<bool>(criteria);
 
             if (isKickedOut)
             {

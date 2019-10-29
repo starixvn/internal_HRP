@@ -17,5 +17,7 @@ namespace HRP.Core.Services
         Task<Tuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria);
 
         Task<CommandResult> ExecuteNonQueryAsync(ICriteria criteria);
+
+        T GetDataEntity<T>(ICriteria criteria);
     }
 }

@@ -37,6 +37,7 @@
         private readonly IRijndaelService rijndaelService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public PaymentProcessController(
             IBaseService baseService,
             ISessionService sessionService,
@@ -117,7 +118,7 @@
         public async Task<IActionResult> DownloadAttendance()
         {
             string sWebRootFolder = hostingEnvironment.WebRootPath;
-            string sFileName = @"ExcelTemplates\Template - Attendance (Expat).xlsx";
+            const string sFileName = @"ExcelTemplates\Template - Attendance (Expat).xlsx";
             var path = Path.Combine(sWebRootFolder, sFileName);
             MemoryStream stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 
@@ -128,7 +129,7 @@
         public async Task<IActionResult> DownloadDSTNetSalary()
         {
             string sWebRootFolder = hostingEnvironment.WebRootPath;
-            string sFileName = @"ExcelTemplates\Template - DST Salary (Expat).xlsx";
+            const string sFileName = @"ExcelTemplates\Template - DST Salary (Expat).xlsx";
             var path = Path.Combine(sWebRootFolder, sFileName);
             MemoryStream stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 

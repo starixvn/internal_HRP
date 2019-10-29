@@ -283,7 +283,7 @@
                     var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = viewModel.CompanyId }).ConfigureAwait(false);
                     report.Company = company;
                     string webRootFolder = hostingEnvironment.WebRootPath;
-                    string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
+                    const string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
                     var templatePath = Path.Combine(webRootFolder, fileName);
                     var data = exportExcelService.ExportMonthlyPayrollReport(templatePath, report, viewModel.FilePassword);
 

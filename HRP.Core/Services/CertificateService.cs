@@ -79,7 +79,7 @@
                 RefNames = ReferenceResource.IsGeneratedCertificate,
                 IsActive = true
             };
-            var refResource = baseService.GetDataEntityAsync<ReferenceResourceModel>(criteria).Result;
+            var refResource = baseService.GetDataEntity<ReferenceResourceModel>(criteria);
 
             return refResource.Value.Equals("1");
         }

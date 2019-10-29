@@ -38,7 +38,7 @@
 
                 WriteBankingReportHeader(selectedTime, typeOfPayment, data, worksheet);
 
-                var startRow = 10;
+                const int startRow = 10;
 
                 if (data.IsExportable)
                 {
@@ -102,7 +102,7 @@
 
                 WriteBankingReportHeader(selectedTime, typeOfPayment, data, worksheet);
 
-                var startRow = 10;
+                const int startRow = 10;
 
                 if (data.IsExportable)
                 {
@@ -602,6 +602,7 @@
         }
 
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+
         private void WriteDataDynamicReport(ExcelWorksheet worksheet, IEnumerable<DynamicReportModel> records, IEnumerable<MappingColumn> columns)
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {

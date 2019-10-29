@@ -71,5 +71,15 @@ namespace HRP.Core.Services
 
             return commandResult;
         }
+
+        public virtual T GetDataEntity<T>(ICriteria criteria)
+        {
+            if (criteria != null && criteria.IsValid())
+            {
+                return dynamicRepository.Get<T>(criteria);
+            }
+
+            return default(T);
+        }
     }
 }
