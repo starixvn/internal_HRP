@@ -1,16 +1,16 @@
 ﻿if ($('#change-password-form').length) {
-    var changePassword = (function($) {
-        $(function() {
+    var changePassword = (function ($, encrypt) {
+        $(function () {
             var settings = $.data($('#change-password-form')[0], 'validator').settings;
             settings.onkeyup = false;
         });
 
         return {
-            onFailure: function(){
+            onFailure: function () {
                 encrypt.decryptAndReplace();
             },
 
-            onChangeSuccess: function(response, status) {
+            onChangeSuccess: function (response, status) {
                 var code = response.code;
                 var msg = response.message;
                 if (!code) {
@@ -20,19 +20,19 @@
                     $('#old-password-incorrect').addClass('hidden');
                     $('#change-password-form input').val('');
                     $('#OldPassword').removeClass('input-validation-error');
-                    setInterval(function() { alert.addClass('hidden'); }, 3000);
+                    setInterval(function () { alert.addClass('hidden'); }, 3000);
                 }
 
-                if(code < 0){
+                if (code < 0) {
                     encrypt.decryptAndReplace();
                 }
 
                 if (code === -1) {
                     var failAlert = $('#update-password-fail-alert');
                     failAlert.removeClass('hidden');
-                    setInterval(function() {
-                            failAlert.addClass('hidden');
-                        },
+                    setInterval(function () {
+                        failAlert.addClass('hidden');
+                    },
                         3000);
                 }
 
@@ -44,10 +44,10 @@
                 }
             }
         };
-    }(jQuery));
+    }(jQuery, encrypt));
 
     $('#showPassword').on('click',
-        function() {
+        function () {
             var value = $(this).prop("checked");
             if (value) {
                 $('#change-password-form input[type=password]').attr("type", "text");
@@ -57,7 +57,7 @@
         });
 
     $('.icon-close').on("click",
-        function() {
+        function () {
             $('#OldPassword').val('');
         });
 }
