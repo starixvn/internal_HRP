@@ -193,7 +193,7 @@
 
         private ValidationResult CheckCurrency(string value, int rowNumber, IEnumerable<Currency> currencies)
         {
-            var columnName = DSTNetSalaryColumn.Currency;
+            const string columnName = DSTNetSalaryColumn.Currency;
             var result = new ValidationResult
             {
                 RowNumber = rowNumber
@@ -219,7 +219,7 @@
 
         private ValidationResult CheckNetSalaryReceived(string value, int rowNumber)
         {
-            var columnName = DSTNetSalaryColumn.NetSalaryReceived;
+            const string columnName = DSTNetSalaryColumn.NetSalaryReceived;
             var result = new ValidationResult
             {
                 RowNumber = rowNumber
@@ -247,7 +247,7 @@
                                                                 IEnumerable<string> employeeCodeList,
                                                                 IEnumerable<TemplateUploading> checkedRecords)
         {
-            var columnName = AttendanceColumn.IDNo;
+            const string columnName = AttendanceColumn.IDNo;
             var result = new ValidationResult
             {
                 RowNumber = rowNumber
@@ -278,7 +278,7 @@
 
         private ValidationResult CheckActualWorkingDay(string value, int rowNumber)
         {
-            var columnName = AttendanceColumn.ActualWorkingDay;
+            const string columnName = AttendanceColumn.ActualWorkingDay;
             var result = CheckValidNumber(value, columnName, rowNumber, 31);
 
             return result;

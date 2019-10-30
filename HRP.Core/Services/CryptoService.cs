@@ -82,7 +82,7 @@ namespace HRP.Core.Services
 
             string filePath = certificateService.GetCertificateFilePath();
             string password = certificateService.GetPasswordAccessTheCertificate();
-            var flags = X509KeyStorageFlags.MachineKeySet;
+            const X509KeyStorageFlags flags = X509KeyStorageFlags.MachineKeySet;
 
             return new X509Certificate2(filePath, password, flags);
         }

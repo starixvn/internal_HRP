@@ -97,7 +97,7 @@
             try
             {
                 string filePath = GetCertificateFilePath();
-                var flags = X509KeyStorageFlags.MachineKeySet;
+                const X509KeyStorageFlags flags = X509KeyStorageFlags.MachineKeySet;
                 cert = new X509Certificate2(filePath, password, flags);
             }
             catch
