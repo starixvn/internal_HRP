@@ -6,7 +6,7 @@
     [DateOfBirth]      DATE           NULL,
     [PlaceOfBirth]     NVARCHAR (100) NULL,
     [Nationality]      SMALLINT       NULL,
-    [NRICNo]           VARCHAR (17)   NULL,
+    [NRICNo]           VARCHAR (20)   NULL,
     [MaritalStatus]    TINYINT        NULL,
     [NoOfChildren]     TINYINT        NULL,
     [OverseasPhoneNo]  VARCHAR (15)   NULL,
