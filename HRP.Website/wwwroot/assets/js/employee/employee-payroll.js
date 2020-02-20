@@ -280,7 +280,7 @@
     function initSelect2() {
         $('.select2').select2({
             allowClear: true,
-            placeholder: '',
+            placeholder: ''
         }).on('select2:unselecting', function () {
             $(this).data('unselecting', true);
         }).on('select2:opening', function (e) {
@@ -290,7 +290,7 @@
             }
         }).on('change', function () {
             $(this).click();
-        });;
+        });
 
         $('.select2.control.without-label').data('select2').$container.addClass('control without-label');
 
@@ -407,7 +407,7 @@
                     required: function (element) {
                         settingValues = $('.basic-salary-calculate, #BasicSalary_Salary_CurrencyId').map(function (i, element) {
                             if (element.value !== '') {
-                                return element.value
+                                return element.value;
                             }
                         });
 
@@ -418,7 +418,7 @@
                     required: function (element) {
                         settingValues = $('.basic-salary-calculate, #BasicSalary_Salary_PlainValue').map(function (i, element) {
                             if (element.value !== '') {
-                                return element.value
+                                return element.value;
                             }
                         });
 
@@ -429,7 +429,7 @@
                     required: function (element) {
                         var allowanceDetailValues = $('.allowance-detail-calculate, .allowance-calculate').map(function (i, element) {
                             if (element.value !== '') {
-                                return element.value
+                                return element.value;
                             }
                         });
 
@@ -440,7 +440,7 @@
                     required: function (element) {
                         var allowanceDetailValues = $('.allowance-detail-calculate, .allowance-calculate').map(function (i, element) {
                             if (element.value !== '') {
-                                return element.value
+                                return element.value;
                             }
                         });
 
@@ -626,7 +626,7 @@
             } else {
                 $($this.data('encrypt-target')).val('');
             }
-        })
+        });
     }
 
     function submitForm() {

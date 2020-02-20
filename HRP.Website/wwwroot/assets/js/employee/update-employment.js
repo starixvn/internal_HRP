@@ -33,9 +33,9 @@ var updateEmployment = (function ($) {
 
                 $updateEmploymentForm = $('#updateEmploymentForm');
                 $btnSubmit = $updateEmploymentForm.find('.js-btnSubmit');
+                employmentCommonFuncs.initForm($updateEmploymentForm);
 
                 if ($updateEmploymentForm.find('#IsHost').prop('checked')) {
-                    employmentCommonFuncs.initForm($updateEmploymentForm);
                     registerEventSubmitForm();
                 } else {
                     $updateEmploymentForm.find('.js-select2').select2();

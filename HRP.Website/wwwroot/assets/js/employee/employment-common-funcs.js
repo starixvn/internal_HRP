@@ -324,64 +324,8 @@ var employmentCommonFuncs = (function ($) {
         });
     }
 
-    function customAnnotation() {
-        jQuery.validator.addMethod('employmentchange', function (value, element, params) {
-            var oldproperty = $(element).data('val-oldproperty');
-            var newproperty = $(element).data('val-newproperty');
-            if (oldproperty === undefined || newproperty === undefined) {
-                return true;
-            }
-
-            var oldValue = $("[id*='" + oldproperty + "']").last().val();
-            var newValue = $("[id*='" + newproperty + "']").last().val();
-
-            return oldValue === newValue;
-        });
-
-        jQuery.validator.unobtrusive.adapters.add('employmentchange', ['oldproperty', 'newproperty'], function (options) {
-            options.rules['employmentchange'] = [options.params['oldproperty'], options.params['newproperty']];
-            options.messages['employmentchange'] = options.message;
-        });
-
-        jQuery.validator.addMethod('genericcompare', function (value, element, params) {
-            var propelename = $(element).data('val-comparetopropertyname');
-            var operName = $(element).data('val-operatorname');
-            if (value === undefined || value === null || value.length === 0 ||
-                propelename === undefined || propelename === null || propelename.length === 0 || $("[id*='" + propelename + "']").last().val() === '' ||
-                operName === undefined || operName === null || operName.length === 0) {
-                return true;
-            }
-
-            var valueOther = $("[id*='" + propelename + "']").last().val();
-            var val1 = isNaN(value) ? Date.parse(value) : eval(value);
-            var val2 = isNaN(valueOther) ? Date.parse(valueOther) : eval(valueOther);
-
-            if (operName === 'GreaterThan') {
-                return val1 > val2;
-            }
-
-            if (operName === 'LessThan') {
-                return val1 < val2;
-            }
-
-            if (operName === 'GreaterThanOrEqual') {
-                return val1 >= val2;
-            }
-
-            if (operName === 'LessThanOrEqual') {
-                return val1 <= val2;
-            }
-        });
-
-        jQuery.validator.unobtrusive.adapters.add('genericcompare', ['comparetopropertyname', 'operatorname'], function (options) {
-            options.rules['genericcompare'] = [options.params['comparetopropertyname'], options.params['operatorname']];
-            options.messages['genericcompare'] = options.message;
-        });
-    }
-
     function reparseform($form) {
         $form.removeData('validator').removeData('unobtrusiveValidation');
-        //customAnnotation();
         $.validator.unobtrusive.parse($form);
 
         var $validator = $form.validate();
