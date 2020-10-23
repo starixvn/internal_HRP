@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="..\SonarQube\hrp\CSharp\SonarLint.xml" Link="SonarLint.xml" />
     <Content Include="App_Data\ColumnsConfiguration.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

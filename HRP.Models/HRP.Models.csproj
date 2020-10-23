@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="..\SonarQube\hrp\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NPOI" Version="2.3.0" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.14.0.8411">

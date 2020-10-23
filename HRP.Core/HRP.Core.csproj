@@ -10,6 +10,9 @@
     <CodeAnalysisRuleSet>HRP.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\SonarQube\hrp\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="BouncyCastle" Version="1.8.2" />
     <PackageReference Include="EPPlus" Version="4.5.2.1" />
     <PackageReference Include="Fanex.Data" Version="3.0.0-rc1" />

@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{
 	ProjectSection(SolutionItems) = preProject
 		SonarQube\HRPCSharp.ruleset = SonarQube\HRPCSharp.ruleset
 		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
+		SonarQube\hrp\CSharp\SonarLint.xml = SonarQube\hrp\CSharp\SonarLint.xml
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "HRP.Database", "HRP.Database\HRP.Database.sqlproj", "{6A36A463-95A0-47EE-AA75-D1DB3CFAF388}"

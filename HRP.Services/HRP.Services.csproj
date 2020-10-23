@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <AdditionalFiles Include="..\SonarQube\hrp\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
     <ProjectReference Include="..\HRP.Core\HRP.Core.csproj" />
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj" />
