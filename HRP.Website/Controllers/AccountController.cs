@@ -24,6 +24,10 @@ namespace HRP.Website.Controllers
 
     public class AccountController : Controller
     {
+        private const int OldPasswordIncorrectCode = -2;
+        private const string Logout = "Logout";
+        private const string Auth = "Auth";
+        private const string IndexText = "Index";
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
@@ -103,7 +107,7 @@ namespace HRP.Website.Controllers
                 bool result = await IsCorrectOldPassword(viewModel.OldPassword);
                 if (!result)
                 {
-                    return Json(new { code = -2, message = Message.OldPasswordIncorrect });
+                    return Json(new { code = OldPasswordIncorrectCode, message = Message.OldPasswordIncorrect });
                 }
 
                 result = await IsSuccessUpdatePassword(viewModel.Password);
@@ -160,13 +164,13 @@ namespace HRP.Website.Controllers
         {
             if (string.IsNullOrEmpty(token))
             {
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(Logout, Auth);
             }
 
             User user = await userService.GetUserByTokenOTPRegisterAsync(token);
             if (user == null)
             {
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(Logout, Auth);
             }
 
             Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
@@ -190,13 +194,13 @@ namespace HRP.Website.Controllers
         {
             if (string.IsNullOrEmpty(token))
             {
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(Logout, Auth);
             }
 
             User user = await userService.GetUserByTokenOTPRegisterAsync(token);
             if (user == null)
             {
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(Logout, Auth);
             }
 
             var userProfile = new UserProfileViewModel
@@ -230,7 +234,7 @@ namespace HRP.Website.Controllers
                 RijndaelIV = tuple.Item2
             };
 
-            return View("Index", accountViewModel);
+            return View(IndexText, accountViewModel);
         }
 
         [HRPAuthorize]
@@ -261,12 +265,12 @@ namespace HRP.Website.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", new { tab = AccountTab.Otp });
+                return RedirectToAction(IndexText, new { tab = AccountTab.Otp });
             }
 
             if (string.IsNullOrEmpty(sessionService.Username))
             {
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(Logout, Auth);
             }
 
             Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
@@ -288,14 +292,14 @@ namespace HRP.Website.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", new { tab = AccountTab.Otp });
+                return RedirectToAction(IndexText, new { tab = AccountTab.Otp });
             }
 
             User user = await userService.GetUserByUsernameAsync(sessionService.Username);
 
             if (user == null)
             {
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(Logout, Auth);
             }
 
             var rijndaelKey = (string)TempData[viewModel.RijndaelKey.Key];
@@ -307,7 +311,7 @@ namespace HRP.Website.Controllers
             if (ModelState.IsValid && isOTPValid)
             {
                 await SignUserIn(user);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(IndexText, "Home");
             }
 
             ViewData["ErrorMessage"] = Message.InvalidOTP;
@@ -332,7 +336,7 @@ namespace HRP.Website.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(Logout, Auth);
             }
 
             var rijndaelKey = (string)TempData.Peek(viewModel.RijndaelKey.Key);

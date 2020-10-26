@@ -28,6 +28,9 @@
 
     public class PaymentProcessController : BaseController
     {
+        private const string EmployeeMonthlyPayrollString = "EmployeeMonthlyPayroll";
+        private const string AccessDenied = "AccessDenied";
+        private const string Error = "Error";
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ICommonService commonService;
         private readonly IPaymentProcessService paymentProcessService;
@@ -92,7 +95,7 @@
                     {
                         return IsRedirectToPageUploadFiles(paymentProcess)
                             ? RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime })
-                            : RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
+                            : RedirectToAction(EmployeeMonthlyPayrollString, new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
                     }
 
                     ModelState.AddModelError(nameof(viewModel.CommonError), Message.NotHasCurrencySetting);
@@ -101,7 +104,7 @@
                 {
                     if (paymentProcess.IsPayrollGenerated)
                     {
-                        return RedirectToAction("EmployeeMonthlyPayroll", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
+                        return RedirectToAction(EmployeeMonthlyPayrollString, new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
                     }
 
                     ModelState.AddModelError(nameof(viewModel.CommonError), Message.PayrollNotGenerated);
@@ -300,7 +303,7 @@
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
             if (!isRead)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             var viewModel = new EmployeeMonthlyPayrollViewModel
@@ -347,7 +350,7 @@
             var isRead = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read);
             if (!isRead)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             Tuple<MonthlyBasicSalaryModel,
@@ -356,7 +359,7 @@
                 IEnumerable<MonthlySalaryDeductionModel>> monthlySalary = await monthlySalaryService.GetMonthlySalaryAsync(payrollId);
             if (monthlySalary.Item1 == null)
             {
-                return RedirectToAction("PageNotFound", "Error");
+                return RedirectToAction("PageNotFound", Error);
             }
 
             Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
@@ -405,7 +408,7 @@
 
             if (!isHost)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             ModelState.Clear();
@@ -433,7 +436,7 @@
                         idNo = viewModel.CachingFilter.IDNo,
                         workingDays = viewModel.CachingFilter.WorkingDays
                     })
-                    : Url.Action("EmployeeMonthlyPayroll", new
+                    : Url.Action(EmployeeMonthlyPayrollString, new
                     {
                         companyId = viewModel.FilterInfo.CompanyId,
                         month = viewModel.Month,
@@ -485,7 +488,7 @@
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read))
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
@@ -505,7 +508,7 @@
         {
             if (!sessionService.HasPermissionOnCompany(viewModel.EmployeeInfo.CompanyId, FunctionKey.PaymentProcess, Policy.Host))
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             ModelState.Clear();
@@ -526,7 +529,7 @@
                     costCenterIds = viewModel.Filter.CostCenterIds,
                     idNo = viewModel.Filter.IDNo,
                     workingDays = viewModel.Filter.WorkingDays
-                }) : Url.Action("EmployeeMonthlyPayroll", new
+                }) : Url.Action(EmployeeMonthlyPayrollString, new
                 {
                     companyId = viewModel.CompanyId,
                     month = viewModel.Month,
@@ -555,7 +558,7 @@
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
@@ -569,7 +572,7 @@
         {
             if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host))
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);

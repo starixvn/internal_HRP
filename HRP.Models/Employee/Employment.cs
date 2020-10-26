@@ -9,6 +9,13 @@
 
     public class Employment
     {
+        private const int EmployeeCodeLength = 15;
+        private const int TinyLength = 30;
+        private const int SmallLength = 50;
+        private const int FullNamePFileAdminLength = 70;
+        private const int JobTitleLength = 100;
+        private const int EmailLength = 254;
+
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.BVICompanyRequired))]
         public virtual int CompanyId { get; set; }
 
@@ -26,7 +33,7 @@
         public virtual int? LocalCompanyReasonId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.BVIJobTitleRequired))]
-        [StringLength(100, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.BVIJobTitleMaxLength))]
+        [StringLength(JobTitleLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.BVIJobTitleMaxLength))]
         public virtual string JobTitle { get; set; }
 
         [DataType(DataType.Date)]
@@ -72,7 +79,7 @@
         public virtual string CompanyCode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeeCodeRequired))]
-        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeeCodeMaxLength))]
+        [StringLength(EmployeeCodeLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeeCodeMaxLength))]
         [Remote("CheckEmployeeCodeExisted", "Employee", AdditionalFields = nameof(CompanyCode),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeeCodeUnique))]
         public virtual string EmployeeCode { get; set; }
@@ -144,7 +151,7 @@
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.EmailAddress))]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmailRequired))]
-        [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmailMaxLength))]
+        [StringLength(EmailLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmailMaxLength))]
         [DataType(DataType.EmailAddress, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.InvalidEmail))]
         [EmailAddress(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.InvalidEmail))]
         public virtual string Email { get; set; }
@@ -162,25 +169,25 @@
 
         public virtual int? DBT { get; set; }
 
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.TaxIDNoMaxLength))]
+        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.TaxIDNoMaxLength))]
         public virtual string TaxIDNo { get; set; }
 
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.TaxIDNoMaxLength))]
+        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.TaxIDNoMaxLength))]
         public virtual string SSSNo { get; set; }
 
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.HealthInsNoMaxLength))]
+        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.HealthInsNoMaxLength))]
         public virtual string HealthInsNo { get; set; }
 
-        [StringLength(50, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.HDMFNoMaxLength))]
+        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.HDMFNoMaxLength))]
         public virtual string HDMFNo { get; set; }
 
         public WorkPermit WorkPermit { get; set; } = new WorkPermit();
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNamePFileAdminRequired))]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNamePFileAdminMaxLength))]
+        [StringLength(FullNamePFileAdminLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNamePFileAdminMaxLength))]
         public virtual string FullNamePFileAdmin { get; set; }
 
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknamePFileAdminMaxLength))]
+        [StringLength(TinyLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknamePFileAdminMaxLength))]
         public virtual string NicknamePFileAdmin { get; set; }
 
         public Paymaster Paymaster { get; set; } = new Paymaster();
@@ -188,7 +195,7 @@
         public EPA EPA { get; set; } = new EPA();
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PDFPasswordRequired))]
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PDFPasswordMaxLength))]
+        [StringLength(TinyLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.PDFPasswordMaxLength))]
         public virtual string PDFPassword { get; set; }
     }
 }

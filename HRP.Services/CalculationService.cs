@@ -17,11 +17,13 @@
         /// <param name="digits">number of decimal place</param>
         /// <param name="roundingThousand">In case currency is VND, round the amount to thousand or zero</param>
         /// <returns></returns>
+        private const int Thousand = 1000;
+
         public static decimal RoundAmountWithCurrency(decimal amount, string currencyCode, int digits = 2, bool roundingThousand = true)
         {
             if (string.Equals(currencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))
             {
-                return roundingThousand ? Math.Round(amount / 1000, MidpointRounding.AwayFromZero) * 1000 : Math.Round(amount, 0, MidpointRounding.AwayFromZero);
+                return roundingThousand ? Math.Round(amount / Thousand, MidpointRounding.AwayFromZero) * Thousand : Math.Round(amount, 0, MidpointRounding.AwayFromZero);
             }
 
             return Math.Round(amount, digits, MidpointRounding.AwayFromZero);

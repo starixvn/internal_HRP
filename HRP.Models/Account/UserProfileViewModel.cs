@@ -5,16 +5,20 @@
 
     public class UserProfileViewModel
     {
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        private const int FullNameLength = 70;
+        private const int PhoneLength = 20;
+        private const int EmailLength = 254;
+
+        [StringLength(FullNameLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.FullName))]
         public string FullName { get; set; }
 
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [StringLength(PhoneLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.PhoneNo))]
         [DataType(DataType.PhoneNumber, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.InvalidPhoneNumber))]
         public string Phone { get; set; }
 
-        [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
+        [StringLength(EmailLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [DataType(DataType.EmailAddress)]
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.EmailAddress))]

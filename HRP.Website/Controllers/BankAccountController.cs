@@ -16,6 +16,8 @@
 
     public class BankAccountController : BaseController
     {
+        private const string AccessDenied = "AccessDenied";
+        private const string Error = "Error";
         private readonly IBankAccountService bankAccountService;
         private readonly IEmployeeService employeeService;
 
@@ -51,7 +53,7 @@
 
             if (!haveReadPermission)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             viewModel.BankTypeResources = await commonService.GetReferenceResourcesByNamesAsync(new[] { ReferenceResource.BankType });
@@ -68,7 +70,7 @@
 
             if (!isHost)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             var viewModel = new CreateBankAccountViewModel
@@ -108,7 +110,7 @@
 
             if (!isHost)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             var viewModel = new CreateBankAccountViewModel
@@ -150,7 +152,7 @@
 
             if (!isHost)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             var viewModel = new EditBankAccountViewModel
@@ -212,7 +214,7 @@
 
             if (!isHaveReadPermission)
             {
-                return RedirectToAction("AccessDenied", "Error");
+                return RedirectToAction(AccessDenied, Error);
             }
 
             var criteria = new SearchBankAccountCriteria

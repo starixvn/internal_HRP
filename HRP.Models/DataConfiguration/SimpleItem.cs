@@ -5,13 +5,16 @@
 
     public class SimpleItem
     {
+        private const int ItemNameLength = 50;
+        private const int DescriptionLength = 200;
+
         public int ItemId { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(ItemNameLength)]
         public string ItemName { get; set; }
 
-        [StringLength(200, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
+        [StringLength(DescriptionLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
         public string Description { get; set; }
 
         public bool IsActive { get; set; }

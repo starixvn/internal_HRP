@@ -20,6 +20,12 @@
 
     public class ExportExcelService : IExportExcelService
     {
+        private const int FirstRedRgb = 189;
+        private const int FirstGreenRgb = 215;
+        private const int FirstBlueRgb = 238;
+        private const int SecondRedRgb = 228;
+        private const int SecondGreenRgb = 223;
+        private const int SecondBlueRgb = 236;
         private const string NumberFormatNoDecimal = "#,##0";
         private const string NumberFormatTwoDecimals = "#,##0.##";
         private const string NumberFormatFiveDecimals = "#,##0.#####";
@@ -166,18 +172,23 @@
             int currentRow,
             int startRow)
         {
-            currentRow++;
-            worksheet.Cells[currentRow, 2, currentRow + 3, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells[currentRow, 2, currentRow + 3, 5].Style.Fill.BackgroundColor.SetColor(1, 189, 215, 238);
-            worksheet.Cells[currentRow++, 2].Value = ViewLang.Company;
-            worksheet.Cells[currentRow++, 2].Value = ViewLang.Bank;
-            worksheet.Cells[currentRow++, 2].Value = ViewLang.EuroAccountNumber;
-            worksheet.Cells[currentRow++, 2].Value = ViewLang.Cost;
+            const int currentCol = 2;
+            const int addRow = 3;
+            const int forthCol = 4;
+            const int endCol = 5;
 
             currentRow++;
-            worksheet.Cells[currentRow, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells[currentRow, 2].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
-            worksheet.Cells[currentRow++, 2].Value = ViewLang.PaymentPurpose;
+            worksheet.Cells[currentRow, currentCol, currentRow + addRow, endCol].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[currentRow, currentCol, currentRow + addRow, endCol].Style.Fill.BackgroundColor.SetColor(1, FirstRedRgb, FirstGreenRgb, FirstBlueRgb);
+            worksheet.Cells[currentRow++, currentCol].Value = ViewLang.Company;
+            worksheet.Cells[currentRow++, currentCol].Value = ViewLang.Bank;
+            worksheet.Cells[currentRow++, currentCol].Value = ViewLang.EuroAccountNumber;
+            worksheet.Cells[currentRow++, currentCol].Value = ViewLang.Cost;
+
+            currentRow++;
+            worksheet.Cells[currentRow, currentCol].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[currentRow, currentCol].Style.Fill.BackgroundColor.SetColor(1, SecondRedRgb, SecondGreenRgb, SecondBlueRgb);
+            worksheet.Cells[currentRow++, currentCol].Value = ViewLang.PaymentPurpose;
 
             currentRow++;
             var bankInIndex = -1;
@@ -219,12 +230,12 @@
 
                     //Value Date
                     currentRow++;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
-                    worksheet.Cells[currentRow, 2, currentRow, 3].Value = ViewLang.ValueDate;
-                    worksheet.Cells[currentRow, 4].Formula = $"=IF(ISBLANK($L${bankInIndex + startRow}),\"\",$L${bankInIndex + startRow})";
-                    worksheet.Cells[currentRow, 4].Style.Numberformat.Format = "yyyy-mm-dd";
+                    worksheet.Cells[currentRow, currentCol, currentRow, addRow].Merge = true;
+                    worksheet.Cells[currentRow, currentCol, currentRow, addRow].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, currentCol, currentRow, addRow].Style.Fill.BackgroundColor.SetColor(1, SecondRedRgb, SecondGreenRgb, SecondBlueRgb);
+                    worksheet.Cells[currentRow, currentCol, currentRow, addRow].Value = ViewLang.ValueDate;
+                    worksheet.Cells[currentRow, forthCol].Formula = $"=IF(ISBLANK($L${bankInIndex + startRow}),\"\",$L${bankInIndex + startRow})";
+                    worksheet.Cells[currentRow, forthCol].Style.Numberformat.Format = "yyyy-mm-dd";
 
                     currentRow++;
                 }
@@ -237,17 +248,21 @@
             string title,
             object data)
         {
+            const int currentCol = 2;
+            const int endCol = 3;
+            const int lastCol = 4;
+
             currentRow++;
-            worksheet.Cells[currentRow, 2, currentRow, 3].Merge = true;
-            worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells[currentRow, 2, currentRow, 3].Style.Fill.BackgroundColor.SetColor(1, 228, 223, 236);
-            worksheet.Cells[currentRow, 2, currentRow, 3].Value = title;
-            worksheet.Cells[currentRow, 4].Value = data;
+            worksheet.Cells[currentRow, currentCol, currentRow, endCol].Merge = true;
+            worksheet.Cells[currentRow, currentCol, currentRow, endCol].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[currentRow, currentCol, currentRow, endCol].Style.Fill.BackgroundColor.SetColor(1, SecondRedRgb, SecondGreenRgb, SecondBlueRgb);
+            worksheet.Cells[currentRow, currentCol, currentRow, endCol].Value = title;
+            worksheet.Cells[currentRow, lastCol].Value = data;
 
             if (data is float)
             {
                 // writing amount of money
-                worksheet.Cells[currentRow, 4].Style.Numberformat.Format = NumberFormatNoDecimal;
+                worksheet.Cells[currentRow, lastCol].Style.Numberformat.Format = NumberFormatNoDecimal;
             }
         }
 
@@ -265,18 +280,21 @@
                     var bankInRows = grouping.ToList();
                     foreach (BankIn bankIn in bankInRows)
                     {
-                        worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
-                        worksheet.Cells[rowIndex, 3].Value = bankIn.IDNo;
-                        worksheet.Cells[rowIndex, 4].Value = bankIn.BeneficiaryName;
-                        worksheet.Cells[rowIndex, 5].Value = bankIn.AccountNumber;
-                        worksheet.Cells[rowIndex, 6].Value = bankIn.BankName;
-                        worksheet.Cells[rowIndex, 7].Value = bankIn.BankBranch;
-                        worksheet.Cells[rowIndex, 8].Value = bankIn.BankAddress;
-                        worksheet.Cells[rowIndex, 9].Value = bankIn.BankSwiftCode;
-                        worksheet.Cells[rowIndex, 10].Value = bankIn.CurrencyCode;
+                        var colIndex = 2;
+                        const int subRowIndex = 9;
 
-                        worksheet.Cells[rowIndex, 11].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 11].Style.Numberformat.Format = NumberFormatNoDecimal;
+                        worksheet.Cells[rowIndex, colIndex++].Value = rowIndex - subRowIndex;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.IDNo;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.BeneficiaryName;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.AccountNumber;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.BankName;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.BankBranch;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.BankAddress;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.BankSwiftCode;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.CurrencyCode;
+
+                        worksheet.Cells[rowIndex, colIndex].Value = bankIn.AmountDecrypted;
+                        worksheet.Cells[rowIndex, colIndex].Style.Numberformat.Format = NumberFormatNoDecimal;
 
                         rowIndex++;
                     }
@@ -331,17 +349,20 @@
                     var bankInRows = grouping.ToList();
                     foreach (var bankIn in bankInRows)
                     {
-                        worksheet.Cells[rowIndex, 2].Value = rowIndex - 9;
-                        worksheet.Cells[rowIndex, 3].Value = bankIn.IDNo;
-                        worksheet.Cells[rowIndex, 4].Value = bankIn.BeneficiaryName;
-                        worksheet.Cells[rowIndex, 5].Value = bankIn.Nickname;
-                        worksheet.Cells[rowIndex, 6].Value = bankIn.PaymentTransaction;
-                        worksheet.Cells[rowIndex, 7].Value = bankIn.BankName;
-                        worksheet.Cells[rowIndex, 8].Value = bankIn.AccountNumber;
-                        worksheet.Cells[rowIndex, 9].Value = bankIn.CurrencyCode;
+                        var colIndex = 2;
+                        const int subRowIndex = 9;
 
-                        worksheet.Cells[rowIndex, 10].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, 10].Style.Numberformat.Format = NumberFormatNoDecimal;
+                        worksheet.Cells[rowIndex, colIndex++].Value = rowIndex - subRowIndex;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.IDNo;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.BeneficiaryName;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.Nickname;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.PaymentTransaction;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.BankName;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.AccountNumber;
+                        worksheet.Cells[rowIndex, colIndex++].Value = bankIn.CurrencyCode;
+
+                        worksheet.Cells[rowIndex, colIndex].Value = bankIn.AmountDecrypted;
+                        worksheet.Cells[rowIndex, colIndex].Style.Numberformat.Format = NumberFormatNoDecimal;
 
                         rowIndex++;
                     }
@@ -359,86 +380,94 @@
             {
                 using (var package = new ExcelPackage())
                 {
+                    const int thirdRow = 3;
+                    const int forthRow = 4;
+                    const int endRow = 8;
+                    const int tenthCol = 8;
+                    const int endCol = 48;
+
                     ExcelWorksheet templateWorksheet = templatePackage.Workbook.Worksheets[1];
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Monthly Payroll Report");
 
                     // Write header
-                    templateWorksheet.Cells[1, 1, 8, 48].Copy(worksheet.Cells[1, 1, 8, 48]);
+                    templateWorksheet.Cells[1, 1, endRow, endCol].Copy(worksheet.Cells[1, 1, endRow, endCol]);
 
                     // Write Data
-                    worksheet.Cells[3, 1].Value = string.Concat(ViewLang.Company, ": ", string.IsNullOrWhiteSpace(report.Company.Name) ? report.Company.Code : report.Company.Name);
-                    worksheet.Cells[4, 1].Value = string.Concat(ViewLang.PayrollMonth, ": ", report.Month.ToString("MM-yyyy"));
+                    worksheet.Cells[thirdRow, 1].Value = string.Concat(ViewLang.Company, ": ", string.IsNullOrWhiteSpace(report.Company.Name) ? report.Company.Code : report.Company.Name);
+                    worksheet.Cells[forthRow, 1].Value = string.Concat(ViewLang.PayrollMonth, ": ", report.Month.ToString("MM-yyyy"));
                     var row = 9;
                     var serialNo = 1;
                     foreach (EmployeeBasicInfo employee in report.Employees)
                     {
+                        var colIndex = 1;
                         MonthlyBasicSalaryModel monthlyBasicSalary = report.MonthlyBasicSalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                         MonthlySalaryModel monthlySalary = report.MonthlySalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                         MonthlyPayrollBasicAllowanceModel monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                         MonthlyAllowanceModel monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
 
-                        templateWorksheet.Cells[9, 1, 9, 48].Copy(worksheet.Cells[row, 1, row, 48]);
-                        worksheet.Cells[row, 1].Value = serialNo;
-                        worksheet.Cells[row, 2].Value = employee.DivisionCode;
-                        worksheet.Cells[row, 3].Value = employee.DepartmentCode;
-                        worksheet.Cells[row, 4].Value = employee.CostCenterCode;
-                        worksheet.Cells[row, 5].Value = employee.SectionCode;
-                        worksheet.Cells[row, 6].Value = employee.IDNo;
-                        worksheet.Cells[row, 7].Value = employee.FullName;
-                        worksheet.Cells[row, 8].Value = employee.Nickname;
+                        templateWorksheet.Cells[endRow + 1, 1, endRow + 1, endCol].Copy(worksheet.Cells[row, 1, row, endCol]);
+                        worksheet.Cells[row, colIndex++].Value = serialNo;
+                        worksheet.Cells[row, colIndex++].Value = employee.DivisionCode;
+                        worksheet.Cells[row, colIndex++].Value = employee.DepartmentCode;
+                        worksheet.Cells[row, colIndex++].Value = employee.CostCenterCode;
+                        worksheet.Cells[row, colIndex++].Value = employee.SectionCode;
+                        worksheet.Cells[row, colIndex++].Value = employee.IDNo;
+                        worksheet.Cells[row, colIndex++].Value = employee.FullName;
+                        worksheet.Cells[row, colIndex++].Value = employee.Nickname;
 
-                        worksheet.Cells[row, 9].Value = monthlyBasicSalary.CurrencyCode;
-                        worksheet.Cells[row, 10].Value = ParseToDecimal(monthlyBasicSalary.Salary);
-                        worksheet.Cells[row, 11].Value = monthlyBasicSalary.CurrencyCode;
-                        worksheet.Cells[row, 12].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = monthlyBasicSalary.CurrencyCode;
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.Salary);
+                        worksheet.Cells[row, colIndex++].Value = monthlyBasicSalary.CurrencyCode;
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
 
-                        worksheet.Cells[row, 13].Value = ParseToDecimal(monthlySalary.AdditionAmount);
-                        worksheet.Cells[row, 14].Value = ParseToDecimal(monthlySalary.DeductionAmount);
-                        worksheet.Cells[row, 15].Value = ParseToDecimal(monthlySalary.Salary);
-                        worksheet.Cells[row, 16].Value = monthlySalary.EbankingAmountInMYR;
-                        worksheet.Cells[row, 17].Value = monthlySalary.DirectBanking1AmountInMYR;
-                        worksheet.Cells[row, 18].Value = monthlySalary.DirectBanking2AmountInMYR;
-                        worksheet.Cells[row, 19].Value = monthlySalary.CashAmountInMYR;
-                        worksheet.Cells[row, 20].Value = monthlySalary.SalaryAmountInMYR;
-                        worksheet.Cells[row, 21].Value = monthlySalary.SalaryAmountInUSD;
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
+                        worksheet.Cells[row, colIndex++].Value = monthlySalary.EbankingAmountInMYR;
+                        worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking1AmountInMYR;
+                        worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking2AmountInMYR;
+                        worksheet.Cells[row, colIndex++].Value = monthlySalary.CashAmountInMYR;
+                        worksheet.Cells[row, colIndex++].Value = monthlySalary.SalaryAmountInMYR;
+                        worksheet.Cells[row, colIndex++].Value = monthlySalary.SalaryAmountInUSD;
 
-                        worksheet.Cells[row, 23].Value = monthlyBasicAllowance.CurrencyCode;
-                        worksheet.Cells[row, 24].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAmount);
-                        worksheet.Cells[row, 25].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAmount);
-                        worksheet.Cells[row, 26].Value = ParseToDecimal(monthlyBasicAllowance.HousingAmount);
-                        worksheet.Cells[row, 27].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAmount);
-                        worksheet.Cells[row, 28].Value = ParseToDecimal(monthlyBasicAllowance.HPIAmount);
-                        worksheet.Cells[row, 29].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAmount);
-                        worksheet.Cells[row, 30].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAmount);
-                        worksheet.Cells[row, 31].Value = ParseToDecimal(monthlyBasicAllowance.OthersAmount);
-                        worksheet.Cells[row, 32].Value = ParseToDecimal(monthlyBasicAllowance.TotalAmount);
+                        worksheet.Cells[row, colIndex++].Value = monthlyBasicAllowance.CurrencyCode;
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HousingAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HPIAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.OthersAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.TotalAmount);
 
-                        worksheet.Cells[row, 33].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAfterAdjustmentAmount);
-                        worksheet.Cells[row, 34].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAfterAdjustmentAmount);
-                        worksheet.Cells[row, 35].Value = ParseToDecimal(monthlyBasicAllowance.HousingAfterAdjustmentAmount);
-                        worksheet.Cells[row, 36].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAfterAdjustmentAmount);
-                        worksheet.Cells[row, 37].Value = ParseToDecimal(monthlyBasicAllowance.HPIAfterAdjustmentAmount);
-                        worksheet.Cells[row, 38].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAfterAdjustmentAmount);
-                        worksheet.Cells[row, 39].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAfterAdjustmentAmount);
-                        worksheet.Cells[row, 40].Value = ParseToDecimal(monthlyBasicAllowance.OthersAfterAdjustmentAmount);
-                        worksheet.Cells[row, 41].Value = ParseToDecimal(monthlyBasicAllowance.AfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HousingAfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HPIAfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.OthersAfterAdjustmentAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.AfterAdjustmentAmount);
 
-                        worksheet.Cells[row, 42].Value = ParseToDecimal(monthlyAllowance.AdditionAmount);
-                        worksheet.Cells[row, 43].Value = ParseToDecimal(monthlyAllowance.DeductionAmount);
-                        worksheet.Cells[row, 44].Value = ParseToDecimal(monthlyBasicAllowance.RoomingChargesAmount);
-                        worksheet.Cells[row, 45].Value = ParseToDecimal(monthlyBasicAllowance.FitnessFirstAmount);
-                        worksheet.Cells[row, 46].Value = ParseToDecimal(monthlyAllowance.TotalAmount);
-                        worksheet.Cells[row, 47].Value = ParseToDecimal(monthlyAllowance.DSTNetSalaryAmount);
-                        worksheet.Cells[row, 48].Value = ParseToDecimal(monthlyAllowance.TotalNetAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyAllowance.AdditionAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyAllowance.DeductionAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.RoomingChargesAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.FitnessFirstAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyAllowance.TotalAmount);
+                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyAllowance.DSTNetSalaryAmount);
+                        worksheet.Cells[row, colIndex].Value = ParseToDecimal(monthlyAllowance.TotalNetAmount);
 
-                        CreateConditionalFormating(worksheet, row, 10, row, 48, NumberFormatTwoDecimals);
+                        CreateConditionalFormating(worksheet, row, tenthCol, colIndex, NumberFormatTwoDecimals);
 
                         row++;
                         serialNo++;
                     }
 
+                    const int addTwoRow = 2;
                     WriteCurrencyExchangeTable(row + 1, templateWorksheet, worksheet, report);
-                    WriteTotalByCurrencyTable(row + 2, templateWorksheet, worksheet, report);
+                    WriteTotalByCurrencyTable(row + addTwoRow, templateWorksheet, worksheet, report);
 
                     worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
@@ -454,25 +483,32 @@
 
         private static void WriteCurrencyExchangeTable(int startRow, ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, MonthlyPayrollReport report)
         {
+            const int addTwoRow = 2;
+            const int thirdCol = 3;
+            const int endCol = 4;
+            const int seventeenthRow = 17;
+            const int eighteenthRow = 18;
+            const int nineteenthRow = 19;
+
             // Write header
-            templateWorksheet.Cells[17, 1, 18, 4].Copy(worksheet.Cells[startRow, 1, startRow + 1, 4]);
+            templateWorksheet.Cells[seventeenthRow, 1, eighteenthRow, endCol].Copy(worksheet.Cells[startRow, 1, startRow + 1, endCol]);
 
             // Write data
             var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
             var MYRCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.MYRCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
-            var rowWithStyle = templateWorksheet.Cells[19, 1, 19, 4];
-            var row = startRow + 2;
+            var rowWithStyle = templateWorksheet.Cells[nineteenthRow, 1, nineteenthRow, endCol];
+            var row = startRow + addTwoRow;
             foreach (Currency currency in report.CurrencyList)
             {
-                rowWithStyle.Copy(worksheet.Cells[row, 1, row, 4]);
+                rowWithStyle.Copy(worksheet.Cells[row, 1, row, endCol]);
                 CurrencyExchangeRateModel exchangeRateToUSD = report.CurrencyExchangeRate.FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == USDCurrencyId);
                 CurrencyExchangeRateModel exchangeRateToMYR = report.CurrencyExchangeRate.FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == MYRCurrencyId);
 
                 worksheet.Cells[row, 1].Value = currency.CurrencyCode;
-                worksheet.Cells[row, 3].Value = exchangeRateToUSD?.ExchangeRate;
-                worksheet.Cells[row, 4].Value = exchangeRateToMYR?.ExchangeRate;
+                worksheet.Cells[row, thirdCol].Value = exchangeRateToUSD?.ExchangeRate;
+                worksheet.Cells[row, endCol].Value = exchangeRateToMYR?.ExchangeRate;
 
-                CreateConditionalFormating(worksheet, row, 3, row, 4, NumberFormatFiveDecimals);
+                CreateConditionalFormating(worksheet, row, thirdCol, endCol, NumberFormatFiveDecimals);
 
                 row++;
             }
@@ -480,86 +516,99 @@
 
         private static void WriteTotalByCurrencyTable(int startRow, ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, MonthlyPayrollReport report)
         {
+            const int firstAddCol = 5;
+            const int secondAddCol = 3;
+            const int fromCol = 17;
+            const int eighteenthRow = 18;
+            const int nineteenthRow = 19;
+            const int lastCol = 48;
+            var colIndex = 9;
+
             // Write header
-            templateWorksheet.Cells[18, 9, 18, 48].Copy(worksheet.Cells[startRow, 9, startRow, 48]);
+            templateWorksheet.Cells[eighteenthRow, colIndex, eighteenthRow, lastCol].Copy(worksheet.Cells[startRow, colIndex, startRow, lastCol]);
 
             // Write data
             var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
             var MYRCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.MYRCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
-            var rowWithStyle = templateWorksheet.Cells[19, 9, 19, 48];
+            var rowWithStyle = templateWorksheet.Cells[nineteenthRow, colIndex, nineteenthRow, lastCol];
             var row = startRow + 1;
             foreach (Currency currency in report.CurrencyList)
             {
-                rowWithStyle.Copy(worksheet.Cells[row, 9, row, 48]);
+                rowWithStyle.Copy(worksheet.Cells[row, colIndex, row, lastCol]);
 
                 IEnumerable<MonthlyBasicSalaryModel> basicSalaryList = report.MonthlyBasicSalary.Where(x => x.CurrencyId == currency.CurrencyId);
                 IEnumerable<MonthlySalaryModel> salaryList = report.MonthlySalary.Where(x => x.CurrencyId == currency.CurrencyId);
-                worksheet.Cells[row, 9].Value = currency.CurrencyCode;
-                worksheet.Cells[row, 10].Value = basicSalaryList.Sum(x => ParseToDecimal(x.Salary));
-                worksheet.Cells[row, 12].Value = basicSalaryList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
-                worksheet.Cells[row, 13].Value = salaryList.Sum(x => ParseToDecimal(x.AdditionAmount));
-                worksheet.Cells[row, 14].Value = salaryList.Sum(x => ParseToDecimal(x.DeductionAmount));
-                worksheet.Cells[row, 15].Value = salaryList.Sum(x => ParseToDecimal(x.Salary));
+                worksheet.Cells[row, colIndex++].Value = currency.CurrencyCode;
+                worksheet.Cells[row, colIndex++].Value = basicSalaryList.Sum(x => ParseToDecimal(x.Salary));
+                worksheet.Cells[row, colIndex++].Value = basicSalaryList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.AdditionAmount));
+                worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.DeductionAmount));
+                worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.Salary));
 
                 if (currency.CurrencyId == MYRCurrencyId)
                 {
-                    worksheet.Cells[row, 16].Value = report.MonthlySalary.Sum(x => x.EbankingAmountInMYR);
-                    worksheet.Cells[row, 17].Value = report.MonthlySalary.Sum(x => x.DirectBanking1AmountInMYR);
-                    worksheet.Cells[row, 18].Value = report.MonthlySalary.Sum(x => x.DirectBanking2AmountInMYR);
-                    worksheet.Cells[row, 19].Value = report.MonthlySalary.Sum(x => x.CashAmountInMYR);
-                    worksheet.Cells[row, 20].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInMYR);
+                    worksheet.Cells[row, colIndex++].Value = report.MonthlySalary.Sum(x => x.EbankingAmountInMYR);
+                    worksheet.Cells[row, colIndex++].Value = report.MonthlySalary.Sum(x => x.DirectBanking1AmountInMYR);
+                    worksheet.Cells[row, colIndex++].Value = report.MonthlySalary.Sum(x => x.DirectBanking2AmountInMYR);
+                    worksheet.Cells[row, colIndex++].Value = report.MonthlySalary.Sum(x => x.CashAmountInMYR);
+                    worksheet.Cells[row, colIndex++].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInMYR);
+                }
+                else
+                {
+                    colIndex += firstAddCol;
                 }
 
                 if (currency.CurrencyId == USDCurrencyId)
                 {
-                    worksheet.Cells[row, 21].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInUSD);
+                    worksheet.Cells[row, colIndex].Value = report.MonthlySalary.Sum(x => x.SalaryAmountInUSD);
                 }
 
+                colIndex += secondAddCol;
                 IEnumerable<MonthlyPayrollBasicAllowanceModel> basicAllowanceList = report.MonthlyBasicAllowance.Where(x => x.CurrencyId == currency.CurrencyId);
                 IEnumerable<MonthlyAllowanceModel> allowanceList = report.MonthlyAllowance.Where(x => x.CurrencyId == currency.CurrencyId);
-                worksheet.Cells[row, 24].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SubsistenceAmount));
-                worksheet.Cells[row, 25].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HomePassageAmount));
-                worksheet.Cells[row, 26].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HousingAmount));
-                worksheet.Cells[row, 27].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.MobilePhoneAmount));
-                worksheet.Cells[row, 28].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HPIAmount));
-                worksheet.Cells[row, 29].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.DutyMealAmount));
-                worksheet.Cells[row, 30].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SecondmentAmount));
-                worksheet.Cells[row, 31].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.OthersAmount));
-                worksheet.Cells[row, 32].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.TotalAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SubsistenceAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HomePassageAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HousingAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.MobilePhoneAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HPIAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.DutyMealAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SecondmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.OthersAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.TotalAmount));
 
-                worksheet.Cells[row, 33].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SubsistenceAfterAdjustmentAmount));
-                worksheet.Cells[row, 34].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HomePassageAfterAdjustmentAmount));
-                worksheet.Cells[row, 35].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HousingAfterAdjustmentAmount));
-                worksheet.Cells[row, 36].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.MobilePhoneAfterAdjustmentAmount));
-                worksheet.Cells[row, 37].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HPIAfterAdjustmentAmount));
-                worksheet.Cells[row, 38].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.DutyMealAfterAdjustmentAmount));
-                worksheet.Cells[row, 39].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SecondmentAfterAdjustmentAmount));
-                worksheet.Cells[row, 40].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.OthersAfterAdjustmentAmount));
-                worksheet.Cells[row, 41].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SubsistenceAfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HomePassageAfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HousingAfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.MobilePhoneAfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.HPIAfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.DutyMealAfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.SecondmentAfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.OthersAfterAdjustmentAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
 
-                worksheet.Cells[row, 42].Value = allowanceList.Sum(x => ParseToDecimal(x.AdditionAmount));
-                worksheet.Cells[row, 43].Value = allowanceList.Sum(x => ParseToDecimal(x.DeductionAmount));
-                worksheet.Cells[row, 44].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.RoomingChargesAmount));
-                worksheet.Cells[row, 45].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.FitnessFirstAmount));
-                worksheet.Cells[row, 46].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalAmount));
-                worksheet.Cells[row, 47].Value = allowanceList.Sum(x => ParseToDecimal(x.DSTNetSalaryAmount));
-                worksheet.Cells[row, 48].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalNetAmount));
+                worksheet.Cells[row, colIndex++].Value = allowanceList.Sum(x => ParseToDecimal(x.AdditionAmount));
+                worksheet.Cells[row, colIndex++].Value = allowanceList.Sum(x => ParseToDecimal(x.DeductionAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.RoomingChargesAmount));
+                worksheet.Cells[row, colIndex++].Value = basicAllowanceList.Sum(x => ParseToDecimal(x.FitnessFirstAmount));
+                worksheet.Cells[row, colIndex++].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalAmount));
+                worksheet.Cells[row, colIndex++].Value = allowanceList.Sum(x => ParseToDecimal(x.DSTNetSalaryAmount));
+                worksheet.Cells[row, colIndex].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalNetAmount));
 
-                CreateConditionalFormating(worksheet, row, 10, row, 48, NumberFormatTwoDecimals);
+                CreateConditionalFormating(worksheet, row, fromCol, colIndex, NumberFormatTwoDecimals);
 
                 row++;
             }
         }
 
-        private static void CreateConditionalFormating(ExcelWorksheet worksheet, int fromRow, int fromCol, int toRow, int toCol, string decimalFormat)
+        private static void CreateConditionalFormating(ExcelWorksheet worksheet, int fromRow, int fromCol, int toCol, string decimalFormat)
         {
-            var cond1 = worksheet.ConditionalFormatting.AddExpression(worksheet.Cells[fromRow, fromCol, toRow, toCol]);
+            var cond1 = worksheet.ConditionalFormatting.AddExpression(worksheet.Cells[fromRow, fromCol, fromRow, toCol]);
             cond1.Style.NumberFormat.Format = NumberFormatNoDecimal;
-            cond1.Formula = string.Format("IF((MOD(ROUND({0}, 2), 1) = 0),1,0)", worksheet.Cells[fromRow, fromCol, toRow, toCol].Address);
+            cond1.Formula = string.Format("IF((MOD(ROUND({0}, 2), 1) = 0),1,0)", worksheet.Cells[fromRow, fromCol, fromRow, toCol].Address);
 
-            var cond2 = worksheet.ConditionalFormatting.AddExpression(worksheet.Cells[fromRow, fromCol, toRow, toCol]);
+            var cond2 = worksheet.ConditionalFormatting.AddExpression(worksheet.Cells[fromRow, fromCol, fromRow, toCol]);
             cond2.Style.NumberFormat.Format = decimalFormat;
-            cond2.Formula = string.Format("IF((MOD(ROUND({0}, 2), 1) <> 0),1,0)", worksheet.Cells[fromRow, fromCol, toRow, toCol].Address);
+            cond2.Formula = string.Format("IF((MOD(ROUND({0}, 2), 1) <> 0),1,0)", worksheet.Cells[fromRow, fromCol, fromRow, toCol].Address);
         }
 
         private static decimal ParseToDecimal(string amount)
@@ -607,11 +656,10 @@
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             var row = 2;
-            int col;
             foreach (DynamicReportModel record in records)
             {
                 worksheet.Cells[row, 1].Value = record.IDNo;
-                col = 2;
+                var col = 2;
 
                 foreach (MappingColumn column in columns)
                 {

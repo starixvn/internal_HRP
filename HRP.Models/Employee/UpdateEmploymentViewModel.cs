@@ -9,6 +9,8 @@
 
     public class UpdateEmploymentViewModel : EmploymentBaseViewModel
     {
+        private const int EmployeeCodeLength = 15;
+
         public int EmployeeId { get; set; }
 
         public int? OldCompanyId { get; set; }
@@ -77,7 +79,7 @@
         public override int? CompanyDateReasonId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeeCodeRequired))]
-        [StringLength(15, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeeCodeMaxLength))]
+        [StringLength(EmployeeCodeLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeeCodeMaxLength))]
         [Remote("CheckEmployeeCodeExisted", "Employee", AdditionalFields = nameof(EmployeeId) + "," + nameof(CompanyCode),
             ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.EmployeeCodeUnique))]
         public override string EmployeeCode { get; set; }

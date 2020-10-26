@@ -7,24 +7,27 @@
     [Serializable]
     public class Paymaster
     {
+        private const int SmallLength = 30;
+        private const int MediumLength = 70;
+
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameBVISalaryRequired))]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameBVISalaryMaxLength))]
+        [StringLength(MediumLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameBVISalaryMaxLength))]
         public string FullNameBVISalary { get; set; }
 
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknameBVISalaryMaxLength))]
+        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknameBVISalaryMaxLength))]
         public string NicknameBVISalary { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameBVIAllowanceRequired))]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameBVIAllowanceMaxLength))]
+        [StringLength(MediumLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameBVIAllowanceMaxLength))]
         public string FullNameBVIAllowance { get; set; }
 
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknameBVIAllowanceMaxLength))]
+        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknameBVIAllowanceMaxLength))]
         public string NicknameBVIAllowance { get; set; }
 
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameLocalSalaryMaxLength))]
+        [StringLength(MediumLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.FullNameLocalSalaryMaxLength))]
         public string FullNameLocalSalary { get; set; }
 
-        [StringLength(30, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknameLocalSalaryMaxLength))]
+        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NicknameLocalSalaryMaxLength))]
         public string NicknameLocalSalary { get; set; }
     }
 }

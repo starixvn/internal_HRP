@@ -9,6 +9,11 @@
 
     public class BaseFormBankAccountViewModel
     {
+        private const int AccountNumberLength = 30;
+        private const int BankAddressLength = 500;
+        private const int MediumLength = 70;
+        private const int BankSwiftCodeLength = 50;
+
         public int EmployeeId { get; set; }
 
         public string NickName { get; set; }
@@ -23,7 +28,7 @@
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
-            30,
+            AccountNumberLength,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string AccountNumber { get; set; }
@@ -37,7 +42,7 @@
             DesiredValue = (int)Core.Enumerations.BankTypes.Ebanking,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        [StringLength(500, ErrorMessageResourceType = typeof(Message),
+        [StringLength(BankAddressLength, ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankAddress { get; set; }
 
@@ -47,12 +52,12 @@
             DesiredValue = (int)Core.Enumerations.BankTypes.Ebanking,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message),
+        [StringLength(MediumLength, ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankBranch { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankName))]
-        [StringLength(70, ErrorMessageResourceType = typeof(Message),
+        [StringLength(MediumLength, ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         [Required(
             ErrorMessageResourceType = typeof(Message),
@@ -66,7 +71,7 @@
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
-            50,
+            BankSwiftCodeLength,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BankSwiftCode { get; set; }
@@ -82,7 +87,7 @@
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
-            70,
+            MediumLength,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string BeneficiaryName { get; set; }

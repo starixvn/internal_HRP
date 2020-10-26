@@ -9,6 +9,8 @@
     [XMLName("Row")]
     public class CurrencyExchangeRateModel
     {
+        private const int NotVndExchangeRate = 5;
+
         public int FromCurrencyId { get; set; }
 
         public int ToCurrencyId { get; set; }
@@ -26,7 +28,7 @@
         {
             if (ExchangeRate.HasValue)
             {
-                return Math.Round(ExchangeRate.Value, ToCurrencyId == vndCurrencyId ? 0 : 5, MidpointRounding.AwayFromZero);
+                return Math.Round(ExchangeRate.Value, ToCurrencyId == vndCurrencyId ? 0 : NotVndExchangeRate, MidpointRounding.AwayFromZero);
             }
 
             return null;

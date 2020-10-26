@@ -19,6 +19,8 @@
 
     public class EmployeeService : IEmployeeService
     {
+        private const int MultipleFileNumber = 2;
+        private const int Coefficient = 1024;
         private readonly IBaseService baseService;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ISessionService sessionService;
@@ -277,7 +279,7 @@
 
             if (file != null)
             {
-                if (file.Length / (1024 * 1024) > 2)
+                if (file.Length / (Coefficient * Coefficient) > MultipleFileNumber)
                 {
                     result.Code = 1;
                     result.Message = Message.FileTooLarge;

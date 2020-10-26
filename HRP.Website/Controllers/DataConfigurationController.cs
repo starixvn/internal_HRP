@@ -22,6 +22,10 @@
 
     public class DataConfigurationController : BaseController
     {
+        private const string SimpleItemTable = "_SimpleItemTable";
+        private const string CreateSimpleItem = "_CreateSimpleItem";
+        private const string UpdateSimpleItem = "_UpdateSimpleItem";
+        private const string SelectListItem = "_SelectListItem";
         private readonly ICommonService commonService;
         private readonly IDataConfigurationService dataConfigurationService;
 
@@ -64,7 +68,7 @@
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
-            return PartialView("_SimpleItemTable", viewModel);
+            return PartialView(SimpleItemTable, viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -79,7 +83,7 @@
                 }
             };
 
-            return PartialView("_CreateSimpleItem", viewModel);
+            return PartialView(CreateSimpleItem, viewModel);
         }
 
         [HttpPost]
@@ -120,7 +124,7 @@
                     }
                 };
 
-                return PartialView("_UpdateSimpleItem", viewModel);
+                return PartialView(UpdateSimpleItem, viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -583,7 +587,7 @@
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
-            return PartialView("_SimpleItemTable", viewModel);
+            return PartialView(SimpleItemTable, viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -598,7 +602,7 @@
                 }
             };
 
-            return PartialView("_CreateSimpleItem", viewModel);
+            return PartialView(CreateSimpleItem, viewModel);
         }
 
         [HttpPost]
@@ -639,7 +643,7 @@
                     }
                 };
 
-                return PartialView("_UpdateSimpleItem", viewModel);
+                return PartialView(UpdateSimpleItem, viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -892,7 +896,7 @@
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
-            return PartialView("_SimpleItemTable", viewModel);
+            return PartialView(SimpleItemTable, viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -904,7 +908,7 @@
                 Field = field
             };
 
-            return PartialView("_CreateSimpleItem", viewModel);
+            return PartialView(CreateSimpleItem, viewModel);
         }
 
         [HttpPost]
@@ -944,7 +948,7 @@
                     Field = field
                 };
 
-                return PartialView("_UpdateSimpleItem", viewModel);
+                return PartialView(UpdateSimpleItem, viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -993,7 +997,7 @@
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.DataConfiguration, Policy.Host)
             };
 
-            return PartialView("_SimpleItemTable", viewModel);
+            return PartialView(SimpleItemTable, viewModel);
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
@@ -1008,7 +1012,7 @@
                 }
             };
 
-            return PartialView("_CreateSimpleItem", viewModel);
+            return PartialView(CreateSimpleItem, viewModel);
         }
 
         [HttpPost]
@@ -1049,7 +1053,7 @@
                     }
                 };
 
-                return PartialView("_UpdateSimpleItem", viewModel);
+                return PartialView(UpdateSimpleItem, viewModel);
             }
 
             return Content(Message.NotFoundError);
@@ -1084,35 +1088,35 @@
         public async Task<IActionResult> GetDivisionSelectListByCompanyId(int companyId)
         {
             IEnumerable<Division> divisions = await commonService.GetDivisionByCompanyIdAsync(companyId, null);
-            return PartialView("_SelectListItem", commonService.GetSelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code)));
+            return PartialView(SelectListItem, commonService.GetSelectList(divisions, nameof(Division.DivisionId), nameof(Division.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetDepartmentSelectListByDivisionId(int divisionId)
         {
             IEnumerable<Department> departments = await commonService.GetDepartmentByDivisionIdAsync(divisionId, null);
-            return PartialView("_SelectListItem", commonService.GetSelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code)));
+            return PartialView(SelectListItem, commonService.GetSelectList(departments, nameof(Department.DepartmentId), nameof(Department.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetCostCenterSelectListByDepartmentId(int departmentId)
         {
             IEnumerable<CostCenter> costCenters = await commonService.GetCostCenterByDepartmentIdAsync(departmentId, null);
-            return PartialView("_SelectListItem", commonService.GetSelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code)));
+            return PartialView(SelectListItem, commonService.GetSelectList(costCenters, nameof(CostCenter.CostCenterId), nameof(CostCenter.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetSectionSelectListByCostCenterId(int costCenterId)
         {
             IEnumerable<Section> sections = await commonService.GetSectionByCostCenterIdAsync(costCenterId, null);
-            return PartialView("_SelectListItem", commonService.GetSelectList(sections, nameof(Section.SectionId), nameof(Section.Code)));
+            return PartialView(SelectListItem, commonService.GetSelectList(sections, nameof(Section.SectionId), nameof(Section.Code)));
         }
 
         [HRPPermission(FunctionKey = FunctionKey.DataConfiguration, Policy = Policy.Host)]
         public async Task<IActionResult> GetGradeLevelSelectListByJobCategoryId(int jobCategoryId)
         {
             IEnumerable<GradeLevel> gradeLevels = await commonService.GetGradeLevelByJobCategoryIdAsync(jobCategoryId, null);
-            return PartialView("_SelectListItem", commonService.GetSelectList(gradeLevels, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name)));
+            return PartialView(SelectListItem, commonService.GetSelectList(gradeLevels, nameof(GradeLevel.GradeLevelId), nameof(GradeLevel.Name)));
         }
 
         private static string UppercaseFirstLetter(string s)
