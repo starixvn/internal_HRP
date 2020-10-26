@@ -383,7 +383,7 @@
                     const int thirdRow = 3;
                     const int forthRow = 4;
                     const int endRow = 8;
-                    const int tenthCol = 8;
+                    const int tenthCol = 10;
                     const int endCol = 48;
 
                     ExcelWorksheet templateWorksheet = templatePackage.Workbook.Worksheets[1];
@@ -518,7 +518,7 @@
         {
             const int firstAddCol = 5;
             const int secondAddCol = 3;
-            const int fromCol = 17;
+            const int tenthCol = 10;
             const int eighteenthRow = 18;
             const int nineteenthRow = 19;
             const int lastCol = 48;
@@ -594,7 +594,7 @@
                 worksheet.Cells[row, colIndex++].Value = allowanceList.Sum(x => ParseToDecimal(x.DSTNetSalaryAmount));
                 worksheet.Cells[row, colIndex].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalNetAmount));
 
-                CreateConditionalFormating(worksheet, row, fromCol, colIndex, NumberFormatTwoDecimals);
+                CreateConditionalFormating(worksheet, row, tenthCol, colIndex, NumberFormatTwoDecimals);
 
                 row++;
             }
