@@ -6,6 +6,8 @@
 
     public class MonthlySalaryAdditionViewModel : SecurityData
     {
+        private const int DescriptionLength = 200;
+
         public int Type { get; set; }
 
         [RequiredIfRelatedFieldHasValue(RelatedName = nameof(NoOfDays), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.UnitAmountRequired))]
@@ -15,7 +17,7 @@
         public SecurityData NetSalary { get; set; } = new SecurityData();
         public SecurityData NetSalaryDisplay { get; set; } = new SecurityData();
 
-        [StringLength(200, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
+        [StringLength(DescriptionLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
         public string Description { get; set; }
     }
 }

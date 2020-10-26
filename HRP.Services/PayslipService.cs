@@ -136,7 +136,8 @@
             var subject = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
             var fileName = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}.pdf", payslip.Month.ToString("MMMM_yyyy"));
             var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Pdf", payslip).ConfigureAwait(false);
-            byte[] content = pdfRenderService.RenderContentWithPasswordProtected(cssFilePath, htmlString, payslip.PDFPassword, payslip.PDFPassword);
+            var payslipPassword = payslip.PDFPassword;
+            byte[] content = pdfRenderService.RenderContentWithPasswordProtected(cssFilePath, htmlString, payslipPassword, payslip.PDFPassword);
 
             using (var input = new MemoryStream(content))
             {

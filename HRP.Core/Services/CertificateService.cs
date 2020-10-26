@@ -29,7 +29,7 @@
         private const string SubjectName = "CN=HRP";
         private const string IssuerName = "CN=HRP";
         private const int KeyStrength = 2048;
-
+        private const int ValidSequenceCount = 9;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IMemoryCache memoryCache;
         private readonly IBaseService baseService;
@@ -203,7 +203,7 @@
             var x509 = new X509Certificate2(certificate.GetEncoded());
 
             var seq = (Asn1Sequence)Asn1Object.FromByteArray(info.ParsePrivateKey().GetDerEncoded());
-            if (seq.Count != 9)
+            if (seq.Count != ValidSequenceCount)
             {
                 throw new PemException("malformed sequence in RSA private key");
             }

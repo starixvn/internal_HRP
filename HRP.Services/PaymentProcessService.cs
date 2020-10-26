@@ -22,6 +22,8 @@
 
     public class PaymentProcessService : IPaymentProcessService
     {
+        private const int MultipleFileNumber = 2;
+        private const int Coefficient = 1024;
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
@@ -90,7 +92,7 @@
         private CommandResult CheckValidExcelFile(IFormFile file)
         {
             var fileExt = Path.GetExtension(file.FileName);
-            if (file.Length / (1024 * 1024) > 5)
+            if (file.Length / (Coefficient * Coefficient) > MultipleFileNumber)
             {
                 return new CommandResult
                 {

@@ -6,6 +6,10 @@
 
     public class CreateUserViewModel
     {
+        private const int FullNameLength = 70;
+        private const int PhoneNumberLength = 20;
+        private const int EmailLength = 70;
+
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "UsernameRequired")]
         [RegularExpression(@"^\S{2,30}$", ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "UsernameLengthNoSpaceAllowed")]
         [Remote("CheckUsernameExisted", "UserManagement", ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "UsernameUnique")]
@@ -16,16 +20,16 @@
         [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}$", ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PasswordContainRequired")]
         public string Password { get; set; }
 
-        [StringLength(70, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
+        [StringLength(FullNameLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "FullNameMaxLength")]
         [Display(ResourceType = typeof(ViewLang), Name = "FullName")]
         public string FullName { get; set; }
 
-        [StringLength(20, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PhoneNumberMaxLength")]
+        [StringLength(PhoneNumberLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "PhoneNumberMaxLength")]
         [Display(ResourceType = typeof(ViewLang), Name = "PhoneNo")]
         [DataType(DataType.PhoneNumber, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidPhoneNumber")]
         public string PhoneNumber { get; set; }
 
-        [StringLength(254, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailMaxLength")]
+        [StringLength(EmailLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailMaxLength")]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "EmailRequired")]
         [DataType(DataType.EmailAddress, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "InvalidEmail")]
         [Display(ResourceType = typeof(ViewLang), Name = "EmailAddress")]

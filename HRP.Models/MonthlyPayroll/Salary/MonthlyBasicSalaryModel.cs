@@ -8,6 +8,7 @@
     [XMLName("Row")]
     public class MonthlyBasicSalaryModel
     {
+        private const int WorkDay = 6;
         public int PayrollId { get; set; }
         public int EmployeeId { get; set; }
         public int? CurrencyId { get; set; }
@@ -62,7 +63,7 @@
                 if (WorkingDays > 0)
                 {
                     salaryPerDay = salary / WorkingDays;
-                    salaryPerDay = Math.Round(salaryPerDay, 6);
+                    salaryPerDay = Math.Round(salaryPerDay, WorkDay);
                 }
 
                 return salaryPerDay;

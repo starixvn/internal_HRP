@@ -13,6 +13,7 @@
     public class RequiredLabelTagHelper : TagHelper
     {
         private const string ForAttributeName = "asp-for";
+        private const int Thousand = 1000;
 
         /// <summary>
         /// Creates a new <see cref="LabelTagHelper"/>.
@@ -24,7 +25,7 @@
         }
 
         /// <inheritdoc />
-        public override int Order => -1000;
+        public override int Order => -Thousand;
 
         [HtmlAttributeNotBound]
         [ViewContext]

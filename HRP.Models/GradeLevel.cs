@@ -7,14 +7,17 @@
     [Serializable]
     public class GradeLevel
     {
+        private const int NameLength = 50;
+        private const int DescriptionLength = 200;
+
         [Required]
         public int GradeLevelId { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(NameLength)]
         public string Name { get; set; }
 
-        [StringLength(200, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
+        [StringLength(DescriptionLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
         public string Description { get; set; }
 
         public bool IsActive { get; set; }

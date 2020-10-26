@@ -12,6 +12,8 @@
     [XMLName("Row")]
     public class MonthlySalaryAdditionModel
     {
+        private const int DescriptionLength = 200;
+
         public int PayrollId { get; set; }
 
         public int EmployeeId { get; set; }
@@ -32,7 +34,7 @@
         [XmlIgnore]
         public string NetSalaryDisplay { get; set; }
 
-        [StringLength(200, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
+        [StringLength(DescriptionLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.DescriptionMaxLength))]
         public string Description { get; set; }
     }
 }

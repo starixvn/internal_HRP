@@ -9,6 +9,8 @@
 
     public class RijndaelService : IRijndaelService
     {
+        private const int FeedbackSize = 128;
+
         public Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> GenerateRijndaelKeyValuePair()
         {
             var rijndaelKey = new RijndaelKeyValuePair
@@ -36,7 +38,7 @@
                 {
                     rijAlg.Mode = CipherMode.CBC;
                     rijAlg.Padding = PaddingMode.PKCS7;
-                    rijAlg.FeedbackSize = 128;
+                    rijAlg.FeedbackSize = FeedbackSize;
                     rijAlg.Key = Encoding.UTF8.GetBytes(rijndaelKey);
                     rijAlg.IV = Encoding.UTF8.GetBytes(rijndaelIV);
 
@@ -67,7 +69,7 @@
                 {
                     rijAlg.Mode = CipherMode.CBC;
                     rijAlg.Padding = PaddingMode.PKCS7;
-                    rijAlg.FeedbackSize = 128;
+                    rijAlg.FeedbackSize = FeedbackSize;
                     rijAlg.Key = Encoding.UTF8.GetBytes(rijndaelKey);
                     rijAlg.IV = Encoding.UTF8.GetBytes(rijndaelIV);
 
@@ -96,7 +98,7 @@
                 .Where(x => x.GetValue(obj) != null && (x.GetValue(obj).GetType().IsSubclassOf(typeof(SecurityData)) || x.GetValue(obj).GetType() == typeof(SecurityData)))
                 .Select(x => x.GetValue(obj));
 
-            foreach(var securityObject in securityObjects)
+            foreach (var securityObject in securityObjects)
             {
                 var type = securityObject.GetType();
                 var encryptedValue = type.GetProperty(nameof(SecurityData.EncryptedValue));

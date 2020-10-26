@@ -5,10 +5,13 @@
 
     public class MailSettingModel : Company
     {
+        private const int ServerLength = 150;
+        private const int NormalLength = 100;
+
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.SMTP))]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
-            150,
+            ServerLength,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string Server { get; set; }
@@ -19,13 +22,13 @@
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.SenderEmail))]
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
-            100,
+            NormalLength,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string Username { get; set; }
 
         [StringLength(
-            100,
+            NormalLength,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.StringLengthMaxErrorMessage))]
         public string Password { get; set; }
