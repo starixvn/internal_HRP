@@ -380,21 +380,13 @@
             {
                 using (var package = new ExcelPackage())
                 {
-                    const int thirdRow = 3;
-                    const int forthRow = 4;
-                    const int endRow = 8;
-                    const int tenthCol = 10;
-                    const int endCol = 48;
-
                     ExcelWorksheet templateWorksheet = templatePackage.Workbook.Worksheets[1];
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Monthly Payroll Report");
+                    GenerateHeader(templateWorksheet, worksheet, report);
+                    const int tenthCol = 10;
+                    const int endRow = 8;
+                    const int endCol = 48;
 
-                    // Write header
-                    templateWorksheet.Cells[1, 1, endRow, endCol].Copy(worksheet.Cells[1, 1, endRow, endCol]);
-
-                    // Write Data
-                    worksheet.Cells[thirdRow, 1].Value = string.Concat(ViewLang.Company, ": ", string.IsNullOrWhiteSpace(report.Company.Name) ? report.Company.Code : report.Company.Name);
-                    worksheet.Cells[forthRow, 1].Value = string.Concat(ViewLang.PayrollMonth, ": ", report.Month.ToString("MM-yyyy"));
                     var row = 9;
                     var serialNo = 1;
                     foreach (EmployeeBasicInfo employee in report.Employees)
@@ -414,12 +406,10 @@
                         worksheet.Cells[row, colIndex++].Value = employee.IDNo;
                         worksheet.Cells[row, colIndex++].Value = employee.FullName;
                         worksheet.Cells[row, colIndex++].Value = employee.Nickname;
-
                         worksheet.Cells[row, colIndex++].Value = monthlyBasicSalary.CurrencyCode;
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.Salary);
                         worksheet.Cells[row, colIndex++].Value = monthlyBasicSalary.CurrencyCode;
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
-
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
@@ -429,28 +419,8 @@
                         worksheet.Cells[row, colIndex++].Value = monthlySalary.CashAmountInMYR;
                         worksheet.Cells[row, colIndex++].Value = monthlySalary.SalaryAmountInMYR;
                         worksheet.Cells[row, colIndex++].Value = monthlySalary.SalaryAmountInUSD;
-
                         worksheet.Cells[row, colIndex++].Value = monthlyBasicAllowance.CurrencyCode;
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HousingAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HPIAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.OthersAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.TotalAmount);
-
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAfterAdjustmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAfterAdjustmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HousingAfterAdjustmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAfterAdjustmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HPIAfterAdjustmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAfterAdjustmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAfterAdjustmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.OthersAfterAdjustmentAmount);
-                        worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.AfterAdjustmentAmount);
-
+                        colIndex = FillAllowanceData(worksheet, row, colIndex, monthlyBasicAllowance);
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyAllowance.AdditionAmount);
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyAllowance.DeductionAmount);
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.RoomingChargesAmount);
@@ -479,6 +449,43 @@
                     return package.GetAsByteArray();
                 }
             }
+        }
+
+        private void GenerateHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, MonthlyPayrollReport report)
+        {
+            const int thirdRow = 3;
+            const int forthRow = 4;
+            const int endRow = 8;
+            const int endCol = 48;
+
+            // Write header
+            templateWorksheet.Cells[1, 1, endRow, endCol].Copy(worksheet.Cells[1, 1, endRow, endCol]);
+            // Write Data
+            worksheet.Cells[thirdRow, 1].Value = string.Concat(ViewLang.Company, ": ", string.IsNullOrWhiteSpace(report.Company.Name) ? report.Company.Code : report.Company.Name);
+            worksheet.Cells[forthRow, 1].Value = string.Concat(ViewLang.PayrollMonth, ": ", report.Month.ToString("MM-yyyy"));
+        }
+
+        private static int FillAllowanceData(ExcelWorksheet worksheet, int row, int colIndex, MonthlyPayrollBasicAllowanceModel monthlyBasicAllowance)
+        {
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HousingAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HPIAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.OthersAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.TotalAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SubsistenceAfterAdjustmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HomePassageAfterAdjustmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HousingAfterAdjustmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.MobilePhoneAfterAdjustmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.HPIAfterAdjustmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.DutyMealAfterAdjustmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.SecondmentAfterAdjustmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.OthersAfterAdjustmentAmount);
+            worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicAllowance.AfterAdjustmentAmount);
+            return colIndex;
         }
 
         private static void WriteCurrencyExchangeTable(int startRow, ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, MonthlyPayrollReport report)
