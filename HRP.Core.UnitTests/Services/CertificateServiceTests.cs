@@ -46,7 +46,7 @@
             // Arrange
             var refResource = new ReferenceResourceModel { Value = "1" };
             var service = GetCertificateService();
-            baseService.GetDataEntityAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(refResource);
+            baseService.GetDataEntity<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(refResource);
 
             // Act
             var actual = service.IsGeneratedCertificate();

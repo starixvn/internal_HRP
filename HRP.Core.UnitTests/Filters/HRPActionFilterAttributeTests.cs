@@ -42,7 +42,7 @@
             );
 
             var actionFilter = GetActionFilter();
-            baseService.GetDataEntityAsync<bool>(Arg.Any<ReCheckInUserCriteria>()).Returns(true);
+            baseService.GetDataEntity<bool>(Arg.Any<ReCheckInUserCriteria>()).Returns(true);
 
             // Act
             actionFilter.OnActionExecuting(actionExecutingContext);
