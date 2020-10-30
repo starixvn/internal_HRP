@@ -451,7 +451,7 @@
             }
         }
 
-        private void GenerateHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, MonthlyPayrollReport report)
+        private static void GenerateHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, MonthlyPayrollReport report)
         {
             const int thirdRow = 3;
             const int forthRow = 4;

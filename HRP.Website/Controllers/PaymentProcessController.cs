@@ -771,92 +771,49 @@
                 CurrencyId = basicAllowance.CurrencyId,
                 CurrencyCode = basicAllowance.CurrencyCode,
                 AutoCalculateOn = basicAllowance.AutoCalculateOn,
-                Reason = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.Reason, rijndaelKey, rijndaelIV)
-                },
-                TotalAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.TotalAmount, rijndaelKey, rijndaelIV)
-                },
-                AfterAdjustmentAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.AfterAdjustmentAmount, rijndaelKey, rijndaelIV)
-                },
-                AfterAdjustmentAmountDisplay = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.AfterAdjustmentAmountDisplay, rijndaelKey, rijndaelIV)
-                },
+                Reason = GetSecurityData(basicAllowance.Reason, rijndaelKey, rijndaelIV),
+                TotalAmount = GetSecurityData(basicAllowance.TotalAmount, rijndaelKey, rijndaelIV),
+                AfterAdjustmentAmount = GetSecurityData(basicAllowance.AfterAdjustmentAmount, rijndaelKey, rijndaelIV),
+                AfterAdjustmentAmountDisplay = GetSecurityData(basicAllowance.AfterAdjustmentAmountDisplay, rijndaelKey, rijndaelIV),
                 DirectBanking1CurrencyId = basicAllowance.DirectBanking1CurrencyId,
-                DirectBanking1Amount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.DirectBanking1Amount, rijndaelKey, rijndaelIV)
-                },
+                DirectBanking1Amount = GetSecurityData(basicAllowance.DirectBanking1Amount, rijndaelKey, rijndaelIV),
                 DirectBanking1AccountId = basicAllowance.DirectBanking1AccountId,
                 DirectBanking1AccountName = basicAllowance.DirectBanking1AccountName,
                 DirectBanking2CurrencyId = basicAllowance.DirectBanking2CurrencyId,
-                DirectBanking2Amount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.DirectBanking2Amount, rijndaelKey, rijndaelIV)
-                },
+                DirectBanking2Amount = GetSecurityData(basicAllowance.DirectBanking2Amount, rijndaelKey, rijndaelIV),
                 DirectBanking2AccountId = basicAllowance.DirectBanking2AccountId,
                 DirectBanking2AccountName = basicAllowance.DirectBanking2AccountName,
                 CashCurrencyId = basicAllowance.CashCurrencyId,
-                CashAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.CashAmount, rijndaelKey, rijndaelIV)
-                },
+                CashAmount = GetSecurityData(basicAllowance.CashAmount, rijndaelKey, rijndaelIV),
                 CashAccountId = basicAllowance.CashAccountId,
                 SubsistenceCurrencyId = basicAllowance.SubsistenceCurrencyId,
-                SubsistenceAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.SubsistenceAmount, rijndaelKey, rijndaelIV)
-                },
+                SubsistenceAmount = GetSecurityData(basicAllowance.SubsistenceAmount, rijndaelKey, rijndaelIV),
                 HousingCurrencyId = basicAllowance.HousingCurrencyId,
-                HousingAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.HousingAmount, rijndaelKey, rijndaelIV)
-                },
+                HousingAmount = GetSecurityData(basicAllowance.HousingAmount, rijndaelKey, rijndaelIV),
                 HomePassageCurrencyId = basicAllowance.HomePassageCurrencyId,
-                HomePassageAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.HomePassageAmount, rijndaelKey, rijndaelIV)
-                },
+                HomePassageAmount = GetSecurityData(basicAllowance.HomePassageAmount, rijndaelKey, rijndaelIV),
                 MobilePhoneCurrencyId = basicAllowance.MobilePhoneCurrencyId,
-                MobilePhoneAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.MobilePhoneAmount, rijndaelKey, rijndaelIV)
-                },
+                MobilePhoneAmount = GetSecurityData(basicAllowance.MobilePhoneAmount, rijndaelKey, rijndaelIV),
                 DutyMealCurrencyId = basicAllowance.DutyMealCurrencyId,
-                DutyMealAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.DutyMealAmount, rijndaelKey, rijndaelIV)
-                },
+                DutyMealAmount = GetSecurityData(basicAllowance.DutyMealAmount, rijndaelKey, rijndaelIV),
                 HPICurrencyId = basicAllowance.HPICurrencyId,
-                HPIAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.HPIAmount, rijndaelKey, rijndaelIV)
-                },
+                HPIAmount = GetSecurityData(basicAllowance.HPIAmount, rijndaelKey, rijndaelIV),
                 OthersCurrencyId = basicAllowance.OthersCurrencyId,
-                OthersAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.OthersAmount, rijndaelKey, rijndaelIV)
-                },
+                OthersAmount = GetSecurityData(basicAllowance.OthersAmount, rijndaelKey, rijndaelIV),
                 SecondmentCurrencyId = basicAllowance.SecondmentCurrencyId,
-                SecondmentAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.SecondmentAmount, rijndaelKey, rijndaelIV)
-                },
+                SecondmentAmount = GetSecurityData(basicAllowance.SecondmentAmount, rijndaelKey, rijndaelIV),
                 RoomingChargesCurrencyId = basicAllowance.RoomingChargesCurrencyId,
-                RoomingChargesAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.RoomingChargesAmount, rijndaelKey, rijndaelIV)
-                },
+                RoomingChargesAmount = GetSecurityData(basicAllowance.RoomingChargesAmount, rijndaelKey, rijndaelIV),
                 FitnessFirstCurrencyId = basicAllowance.FitnessFirstCurrencyId,
-                FitnessFirstAmount = new SecurityData
-                {
-                    EncryptedValue = rijndaelService.Encrypt(basicAllowance.FitnessFirstAmount, rijndaelKey, rijndaelIV)
-                }
+                FitnessFirstAmount = GetSecurityData(basicAllowance.FitnessFirstAmount, rijndaelKey, rijndaelIV)
+            };
+        }
+
+        private SecurityData GetSecurityData(string value, string rijndaelKey, string rijndaelIV)
+        {
+            return new SecurityData
+            {
+                EncryptedValue = rijndaelService.Encrypt(value, rijndaelKey, rijndaelIV)
             };
         }
 

@@ -68,7 +68,9 @@
             return await baseService.GetDataAsync<EmployeeBasicInfo>(criteria).ConfigureAwait(false);
         }
 
+#pragma warning disable S138 // Functions should not have too many lines of code
         public async Task<CommandResult> CreateEmployeeAsync(CreateEmploymentViewModel employee)
+#pragma warning restore S138
         {
             var pictureExtension = employee.ProfilePicture != null ? Path.GetExtension(employee.ProfilePicture.FileName) : null;
             var criteria = new CreateEmployeeCriteria
@@ -320,7 +322,9 @@
             return employment;
         }
 
+#pragma warning disable S138 // Functions should not have too many lines of code
         public async Task<UpdateEmploymentViewModel> GetDataToUpdateEmploymentAsync(int employeeId)
+#pragma warning restore S138
         {
             Employment employment = await GetEmploymentByEmployeeIdAsync(employeeId).ConfigureAwait(false);
             if (employment == null)
@@ -501,8 +505,9 @@
 
             return viewModel;
         }
-
+#pragma warning disable S138 // Functions should not have too many lines of code
         public async Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel)
+#pragma warning restore S138
         {
             var criteria = new UpdateEmploymentCriteria
             {
