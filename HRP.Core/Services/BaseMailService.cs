@@ -28,8 +28,8 @@ namespace HRP.Core.Services
             }
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(email.Username));
-            message.To.Add(new MailboxAddress(email.ReceiverEmail));
+            message.From.Add(new MailboxAddress(string.Empty, email.Username));
+            message.To.Add(new MailboxAddress(string.Empty, email.ReceiverEmail));
             message.Subject = email.Subject;
             message.Priority = (MessagePriority)email.Priority;
 
@@ -46,37 +46,38 @@ namespace HRP.Core.Services
 
             using (var mailclient = new SmtpClient())
             {
-                await mailclient.ConnectAsync(email.Server, email.Port, email.IsAuth).ConfigureAwait(false);
-
-                if (email.IsAuth)
-                {
-                    await mailclient.AuthenticateAsync(email.Username, email.Password).ConfigureAwait(false);
-                }
-
                 try
                 {
-                    await mailclient.SendAsync(message).ConfigureAwait(false);
+                    mailclient.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
+                    mailclient.CheckCertificateRevocation = false;
+                    await mailclient.ConnectAsync(email.Server, email.Port, email.IsAuth);
+                    if (email.IsAuth)
+                    {
+                        await mailclient.AuthenticateAsync(email.Username, email.Password);
+                    }
+
+                    await mailclient.SendAsync(message);
                     mailSent = true;
-                    await WriteLogSendEmail(email, mailSent).ConfigureAwait(false);
+                    await WriteLogSendEmail(email, mailSent);
                 }
                 catch (AuthenticationException ex)
                 {
-                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
+                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace);
                 }
                 catch (SmtpCommandException ex)
                 {
-                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
+                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace);
                 }
                 catch (SmtpProtocolException ex)
                 {
-                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
+                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace);
                 }
                 catch (Exception ex)
                 {
-                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace).ConfigureAwait(false);
+                    await WriteLogSendEmail(email, mailSent, ex.Message, ex.StackTrace);
                 }
 
-                await mailclient.DisconnectAsync(true).ConfigureAwait(false);
+                await mailclient.DisconnectAsync(true);
 
                 return mailSent;
             }
@@ -117,7 +118,7 @@ namespace HRP.Core.Services
                 StackTrace = stackTrace
             };
 
-            await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            await baseService.ExecuteNonQueryAsync(criteria);
         }
     }
 }
