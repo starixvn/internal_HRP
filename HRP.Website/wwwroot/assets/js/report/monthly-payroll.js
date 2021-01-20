@@ -42,9 +42,11 @@
             useCurrent: false
         });
 
-        $('.select2').select2({
+        $('.js-select2-hide-searchbox').select2({
             minimumResultsForSearch: Infinity
         });
+
+        $('.js-select2-with-searchbox').select2();
 
         $('.icon-calendar').on('click', function () {
             $(this).siblings('.datetimepicker').data('DateTimePicker').toggle();

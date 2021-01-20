@@ -15,7 +15,7 @@
         {
             using (var database = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader results = await database.QueryMultipleAsync(criteria).ConfigureAwait(false))
+                using (IMultiResultReader results = await database.QueryMultipleAsync(criteria))
                 {
                     BankInReport bankInReport = null;
 
@@ -23,10 +23,10 @@
                     {
                         bankInReport = new BankInReport
                         {
-                            EBankingBankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
-                            CashBankIns = await results.ReadAsync<BankIn>().ConfigureAwait(false),
-                            CompanyName = await results.ReadSingleAsync<string>().ConfigureAwait(false),
-                            SelectedPaymentTransactions = await results.ReadAsync<string>().ConfigureAwait(false)
+                            EBankingBankIns = await results.ReadAsync<BankIn>(),
+                            CashBankIns = await results.ReadAsync<BankIn>(),
+                            CompanyName = await results.ReadSingleAsync<string>(),
+                            SelectedPaymentTransactions = await results.ReadAsync<string>()
                         };
                     }
 
@@ -39,17 +39,17 @@
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader results = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
+                using (IMultiResultReader results = await db.QueryMultipleAsync(criteria))
                 {
                     return new MonthlyPayrollReport
                     {
-                        Employees = await results.ReadAsync<EmployeeBasicInfo>().ConfigureAwait(false),
-                        MonthlyBasicSalary = await results.ReadAsync<MonthlyBasicSalaryModel>().ConfigureAwait(false),
-                        MonthlySalary = await results.ReadAsync<MonthlySalaryModel>().ConfigureAwait(false),
-                        MonthlyBasicAllowance = await results.ReadAsync<MonthlyPayrollBasicAllowanceModel>().ConfigureAwait(false),
-                        MonthlyAllowance = await results.ReadAsync<MonthlyAllowanceModel>().ConfigureAwait(false),
-                        CurrencyExchangeRate = await results.ReadAsync<CurrencyExchangeRateModel>().ConfigureAwait(false),
-                        CurrencyList = await results.ReadAsync<Currency>().ConfigureAwait(false)
+                        Employees = await results.ReadAsync<EmployeeBasicInfo>(),
+                        MonthlyBasicSalary = await results.ReadAsync<MonthlyBasicSalaryModel>(),
+                        MonthlySalary = await results.ReadAsync<MonthlySalaryModel>(),
+                        MonthlyBasicAllowance = await results.ReadAsync<MonthlyPayrollBasicAllowanceModel>(),
+                        MonthlyAllowance = await results.ReadAsync<MonthlyAllowanceModel>(),
+                        CurrencyExchangeRate = await results.ReadAsync<CurrencyExchangeRateModel>(),
+                        CurrencyList = await results.ReadAsync<Currency>()
                     };
                 }
             }

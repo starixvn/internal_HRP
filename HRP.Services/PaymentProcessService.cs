@@ -9,7 +9,6 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
     using HRP.Models.Currency;
@@ -27,6 +26,7 @@
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
+        private readonly ICommonService commonService;
         private readonly IMonthlySalaryService monthlySalaryService;
         private readonly IMonthlyAllowancesService monthlyAllowancesService;
         private readonly IPaymentProcessRepository paymentProcessRepository;
@@ -37,6 +37,7 @@
         public PaymentProcessService(IBaseService baseService,
             ISessionService sessionService,
             ICryptoService cryptoService,
+            ICommonService commonService,
             IMonthlySalaryService monthlySalaryService,
             IMonthlyAllowancesService monthlyAllowancesService,
             ITemplateReader templateReader,
@@ -47,6 +48,7 @@
             this.baseService = baseService;
             this.sessionService = sessionService;
             this.cryptoService = cryptoService;
+            this.commonService = commonService;
             this.monthlySalaryService = monthlySalaryService;
             this.monthlyAllowancesService = monthlyAllowancesService;
             this.templateReader = templateReader;
@@ -57,10 +59,7 @@
         public async Task<PaymentProcess> GetCurrentDuration()
         {
             var criteria = new GetCurrentPaymentProcessDurationCriteria();
-
-            var result = await baseService.GetDataEntityAsync<PaymentProcess>(criteria).ConfigureAwait(false);
-
-            return result;
+            return await baseService.GetDataEntityAsync<PaymentProcess>(criteria);
         }
 
         public async Task<MemoryStream> CopyFileToMemoryStreamAsync(string filePath)
@@ -68,11 +67,10 @@
             var memory = new MemoryStream();
             using (var stream = fileStream.CreateInstance(filePath))
             {
-                await stream.CopyToAsync(memory).ConfigureAwait(false);
+                await stream.CopyToAsync(memory);
             }
 
             memory.Position = 0;
-
             return memory;
         }
 
@@ -83,10 +81,7 @@
                 CompanyId = companyId,
                 Month = month
             };
-
-            var process = await baseService.GetDataEntityAsync<PaymentProcess>(criteria).ConfigureAwait(false);
-
-            return process;
+            return await baseService.GetDataEntityAsync<PaymentProcess>(criteria);
         }
 
         private CommandResult CheckValidExcelFile(IFormFile file)
@@ -128,7 +123,7 @@
             var checkValidFile = CheckValidExcelFile(viewModel.AttendanceFile);
             if (checkValidFile.IsSuccessful)
             {
-                var employeeCodeList = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId).ConfigureAwait(false);
+                var employeeCodeList = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId);
                 var sheet = templateReader.CreateSheet(viewModel.AttendanceFile.OpenReadStream());
                 var template = new AttendanceTemplate
                 {
@@ -137,10 +132,7 @@
                     Sheet = sheet,
                     EmployeeCodeList = employeeCodeList
                 };
-
-                var readResult = templateReader.ReadAttendance(template);
-
-                return readResult;
+                return templateReader.ReadAttendance(template);
             }
 
             return new Failure<AttendanceTemplate>(checkValidFile.Message);
@@ -156,8 +148,8 @@
             var checkValidFile = CheckValidExcelFile(viewModel.DSTNetSalaryFile);
             if (checkValidFile.IsSuccessful)
             {
-                var employeeCodeList = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId).ConfigureAwait(false);
-                var currencies = await GetAllActiveCurrencyAsync().ConfigureAwait(false);
+                var employeeCodeList = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId);
+                IEnumerable<Currency> currencies = await commonService.GetCurrencyAsync();
                 var sheet = templateReader.CreateSheet(viewModel.DSTNetSalaryFile.OpenReadStream());
                 var template = new DSTNetSalaryTemplate
                 {
@@ -167,10 +159,7 @@
                     EmployeeCodeList = employeeCodeList,
                     Currencies = currencies
                 };
-
-                var readResult = templateReader.ReadDSTNetSalary(template);
-
-                return readResult;
+                return templateReader.ReadDSTNetSalary(template);
             }
 
             return new Failure<DSTNetSalaryTemplate>(checkValidFile.Message);
@@ -201,9 +190,7 @@
                 criteria.DSTNetSalaryResultXMLDoc = dstNetSalaryTemplate.ValidationResults.ToXML().ToString();
             }
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-
-            return commandResult;
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         public async Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(int companyId, DateTime month)
@@ -219,7 +206,7 @@
             {
                 Tuple<PaymentProcess,
                     IEnumerable<ValidationResult>,
-                    IEnumerable<ValidationResult>> uploadingResults = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria).ConfigureAwait(false);
+                    IEnumerable<ValidationResult>> uploadingResults = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria);
 
                 var paymentProcess = uploadingResults.Item1;
                 var attendanceErrors = uploadingResults.Item2;
@@ -265,10 +252,7 @@
                 CompanyId = companyId,
                 Month = month
             };
-
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-
-            return commandResult;
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         public async Task<CommandResult> DeleteUploadedDSTNetSalary(int companyId, DateTime month)
@@ -278,31 +262,20 @@
                 CompanyId = companyId,
                 Month = month
             };
-
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-
-            return commandResult;
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         private async Task<IEnumerable<string>> GetAllEmployeeCodeByCompanyIdAsync(int companyId)
         {
-            var employeeCodeList = await baseService.GetDataAsync<string>(new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = companyId }).ConfigureAwait(false);
-
-            return employeeCodeList;
-        }
-
-        private async Task<IEnumerable<Currency>> GetAllActiveCurrencyAsync()
-        {
-            var currencies = await baseService.GetDataAsync<Currency>(new GetAllCurrencyCriteria { IsActive = true }).ConfigureAwait(false);
-
-            return currencies;
+            var criteria = new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = companyId };
+            return await baseService.GetDataAsync<string>(criteria);
         }
 
         #region GenerateMonthlyPayroll
 
         public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId)
         {
-            GeneratePayrollModel dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId).ConfigureAwait(false);
+            GeneratePayrollModel dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId);
             var monthlySalaries = new List<MonthlySalaryModel>();
             var monthlySalaryAdditions = new List<MonthlySalaryAdditionModel>();
             var monthlySalaryDeductions = new List<MonthlySalaryDeductionModel>();
@@ -324,22 +297,18 @@
             {
                 CompanyId = companyId,
                 Month = month,
-                UpdatedBy = sessionService.UserId
+                UpdatedBy = sessionService.UserId,
+                PayrollXMLDoc = dataModel.MonthlyPayroll.ToXML().ToString(),
+                BasicSalaryXMLDoc = dataModel.MonthlyBasicSalary.ToXML().ToString(),
+                SalaryXMLDoc = monthlySalaries.ToXML().ToString(),
+                SalaryAdditionXMLDoc = monthlySalaryAdditions.ToXML().ToString(),
+                SalaryDeductionXMLDoc = monthlySalaryDeductions.ToXML().ToString(),
+                BasicAllowanceXMLDoc = dataModel.MonthlyBasicAllowance.ToXML().ToString(),
+                AllowanceXMLDoc = monthlyAllowances.ToXML().ToString(),
+                AllowanceAdditionXMLDoc = monthlyAllowanceAdditions.ToXML().ToString(),
+                AllowanceDeductionXMLDoc = monthlyAllowanceDeductions.ToXML().ToString()
             };
-
-            criteria.PayrollXMLDoc = dataModel.MonthlyPayroll.ToXML().ToString();
-            criteria.BasicSalaryXMLDoc = dataModel.MonthlyBasicSalary.ToXML().ToString();
-            criteria.SalaryXMLDoc = monthlySalaries.ToXML().ToString();
-            criteria.SalaryAdditionXMLDoc = monthlySalaryAdditions.ToXML().ToString();
-            criteria.SalaryDeductionXMLDoc = monthlySalaryDeductions.ToXML().ToString();
-            criteria.BasicAllowanceXMLDoc = dataModel.MonthlyBasicAllowance.ToXML().ToString();
-            criteria.AllowanceXMLDoc = monthlyAllowances.ToXML().ToString();
-            criteria.AllowanceAdditionXMLDoc = monthlyAllowanceAdditions.ToXML().ToString();
-            criteria.AllowanceDeductionXMLDoc = monthlyAllowanceDeductions.ToXML().ToString();
-
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-
-            return commandResult;
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         private void GenerateEmployeeBasicSalary(
@@ -419,10 +388,7 @@
                 CompanyId = companyId,
                 Month = month
             };
-
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
-
-            return commandResult;
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         private async Task<GeneratePayrollModel> GetDataForGenerateMonthlyPayroll(int companyId, DateTime month, int? employeeId = null)
@@ -433,9 +399,7 @@
                 Month = month,
                 EmployeeId = employeeId
             };
-
-            GeneratePayrollModel result = await paymentProcessRepository.GetDataForGeneratePayroll(criteria).ConfigureAwait(false);
-            return result;
+            return await paymentProcessRepository.GetDataForGeneratePayroll(criteria);
         }
 
         private void DecryptMonthlyBasicSalary(MonthlyBasicSalaryModel basicSalary)

@@ -8,8 +8,10 @@
     using HRP.Core.Services;
     using HRP.Criteria;
     using HRP.Criteria.BankAccount;
+    using HRP.Criteria.Currency;
     using HRP.Models;
     using HRP.Models.BankAccount;
+    using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CommonService : ICommonService
@@ -37,7 +39,7 @@
                     IsActive = isActive
                 };
 
-                refResources = await baseService.GetDataAsync<ReferenceResourceModel>(criteria).ConfigureAwait(false);
+                refResources = await baseService.GetDataAsync<ReferenceResourceModel>(criteria);
             }
 
             return refResources;
@@ -63,49 +65,49 @@
                 FunctionKey = functionKey
             };
 
-            return await baseService.GetDataAsync<Company>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<Company>(criteria);
         }
 
         public async Task<IEnumerable<Division>> GetDivisionByCompanyIdAsync(int companyId, bool? isActive = true)
         {
             var criteria = new GetDivisionByCompanyIdCriteria { CompanyId = companyId, IsActive = isActive };
-            return await baseService.GetDataAsync<Division>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<Division>(criteria);
         }
 
         public async Task<IEnumerable<Department>> GetDepartmentByDivisionIdAsync(int divisionId, bool? isActive = true)
         {
             var criteria = new GetDepartmentByDivisionIdCriteria { DivisionId = divisionId, IsActive = isActive };
-            return await baseService.GetDataAsync<Department>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<Department>(criteria);
         }
 
         public async Task<IEnumerable<CostCenter>> GetCostCenterByDepartmentIdAsync(int departmentId, bool? isActive = true)
         {
             var criteria = new GetCostCenterByDepartmentIdCriteria { DepartmentId = departmentId, IsActive = isActive };
-            return await baseService.GetDataAsync<CostCenter>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<CostCenter>(criteria);
         }
 
         public async Task<IEnumerable<Section>> GetSectionByCostCenterIdAsync(int costCenterId, bool? isActive = true)
         {
             var criteria = new GetSectionByCostCenterIdCriteria { CostCenterId = costCenterId, IsActive = isActive };
-            return await baseService.GetDataAsync<Section>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<Section>(criteria);
         }
 
         public async Task<IEnumerable<GradeLevel>> GetGradeLevelByJobCategoryIdAsync(int jobCategoryId, bool? isActive = true)
         {
             var criteria = new GetGradeLevelByJobCategoryIdCriteria { JobCategoryId = jobCategoryId, IsActive = isActive };
-            return await baseService.GetDataAsync<GradeLevel>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<GradeLevel>(criteria);
         }
 
         public async Task<IEnumerable<JobGrade>> GetJobGradeByGradeLevelIdAsync(int gradeLevelId, bool? isActive = true)
         {
             var criteria = new GetJobGradeByGradeLevelIdCriteria { GradeLevelId = gradeLevelId, IsActive = true };
-            return await baseService.GetDataAsync<JobGrade>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<JobGrade>(criteria);
         }
 
         public async Task<IEnumerable<JobCategory>> GetAllJobCategoryAsync(bool? isActive = true)
         {
             var criteria = new GetAllJobCategoryCriteria { IsActive = isActive };
-            return await baseService.GetDataAsync<JobCategory>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<JobCategory>(criteria);
         }
 
         public async Task<IEnumerable<BankAccount>> GetEmployeeBankAccountAsync(int employeeId, int bankTypeId, bool? isActive = true)
@@ -117,12 +119,21 @@
                 IsActive = isActive
             };
 
-            return await baseService.GetDataAsync<BankAccount>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<BankAccount>(criteria);
         }
 
         public SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField)
         {
             return new SelectList(items, dataValueField, dataTextField);
+        }
+
+        public async Task<IEnumerable<Currency>> GetCurrencyAsync(bool? isActive = true)
+        {
+            var criteria = new GetAllCurrencyCriteria
+            {
+                IsActive = isActive
+            };
+            return await baseService.GetDataAsync<Currency>(criteria);
         }
     }
 }

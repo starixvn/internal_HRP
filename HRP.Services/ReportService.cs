@@ -38,7 +38,7 @@
 
         public async Task<string> GetUserFilePasswordAsync(int userId)
         {
-            var password = await baseService.GetDataEntityAsync<string>(new GetUserFilePasswordCriteria { UserId = userId }).ConfigureAwait(false);
+            var password = await baseService.GetDataEntityAsync<string>(new GetUserFilePasswordCriteria { UserId = userId });
 
             return cryptoService.Decrypt(password);
         }
@@ -47,7 +47,7 @@
         {
             var encryptedPassword = cryptoService.Encrypt(password);
 
-            await baseService.ExecuteNonQueryAsync(new EditUserFilePasswordCriteria { UserId = userId, Password = encryptedPassword }).ConfigureAwait(false);
+            await baseService.ExecuteNonQueryAsync(new EditUserFilePasswordCriteria { UserId = userId, Password = encryptedPassword });
         }
 
         public async Task<BankInReport> GetDirectBankingBankInAsync(
@@ -65,7 +65,7 @@
                 PaymentType = (int)typeOfPayment
             };
 
-            var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria).ConfigureAwait(false);
+            var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria);
 
             if (bankInData != null)
             {
@@ -86,7 +86,7 @@
                 PaymentTransactions = selectedPaymentTransactions
             };
 
-            var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria).ConfigureAwait(false);
+            var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria);
 
             DecryptBankInAmount(bankInData.EBankingBankIns);
             DecryptBankInAmount(bankInData.CashBankIns);
@@ -108,7 +108,7 @@
 
         #region MonthlyPayrollReport
 
-        public async Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId)
+        public async Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId, int currencyId)
         {
             var criteria = new GetDataForMonthlyPayrollReportCriteria
             {
@@ -116,13 +116,12 @@
                 Month = month
             };
 
-            var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria).ConfigureAwait(false);
+            var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria);
             report.Month = month;
 
             var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
-            var MYRCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.MYRCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
             DecryptMonthlyBasicSalaryList(report.MonthlyBasicSalary);
-            DecryptMonthlySalaryListAndConvertAmount(report.MonthlySalary, report.CurrencyExchangeRate, MYRCurrencyId, USDCurrencyId);
+            DecryptMonthlySalaryListAndConvertAmount(report.MonthlySalary, report.CurrencyExchangeRate, currencyId, USDCurrencyId);
             DecryptMonthlyBasicAllowanceListAndConvertAmount(report.MonthlyBasicAllowance, report.CurrencyExchangeRate);
             DecryptMonthlyAllowanceListAndConvertAmount(report.MonthlyAllowance, report.CurrencyExchangeRate);
 
@@ -144,7 +143,7 @@
         private void DecryptMonthlySalaryListAndConvertAmount(
             IEnumerable<MonthlySalaryModel> salaryList,
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            int? MYRCurrencyId,
+            int currencyId,
             int? USDCurrencyId)
         {
             if (salaryList != null && salaryList.Any())
@@ -162,12 +161,12 @@
                     salary.AdditionAmount = CalculationService.RoundAmountWithCurrency(additionAmount, salary.CurrencyCode).ToString(CultureInfo.InvariantCulture);
                     salary.DeductionAmount = CalculationService.RoundAmountWithCurrency(deductionAmount, salary.CurrencyCode).ToString(CultureInfo.InvariantCulture);
 
-                    salary.SalaryAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, MYRCurrencyId);
+                    salary.SalaryAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, currencyId);
                     salary.SalaryAmountInUSD = CalculationService.ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, USDCurrencyId);
-                    salary.EbankingAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.EbankingAmount, salary.EbankingCurrencyId, MYRCurrencyId);
-                    salary.DirectBanking1AmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.DirectBanking1Amount, salary.DirectBanking1CurrencyId, MYRCurrencyId);
-                    salary.DirectBanking2AmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.DirectBanking2Amount, salary.DirectBanking2CurrencyId, MYRCurrencyId);
-                    salary.CashAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.CashAmount, salary.CashCurrencyId, MYRCurrencyId);
+                    salary.EbankingAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.EbankingAmount, salary.EbankingCurrencyId, currencyId);
+                    salary.DirectBanking1AmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.DirectBanking1Amount, salary.DirectBanking1CurrencyId, currencyId);
+                    salary.DirectBanking2AmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.DirectBanking2Amount, salary.DirectBanking2CurrencyId, currencyId);
+                    salary.CashAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.CashAmount, salary.CashCurrencyId, currencyId);
                 }
             }
         }
@@ -286,9 +285,9 @@
             {
                 CompanyId = companyId,
                 EmployeeStatusIds = employeeStatusIds
-            }).ConfigureAwait(false);
+            });
 
-            var currencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria()).ConfigureAwait(false);
+            var currencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(new GetLatestExchangeRatesCriteria());
 
             foreach (var data in employeeDatas)
             {

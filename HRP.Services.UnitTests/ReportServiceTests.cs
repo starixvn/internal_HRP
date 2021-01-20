@@ -210,7 +210,7 @@
                             .Returns(report);
 
             // Act
-            var actual = await reportService.GetDataForMonthlyPayrollReportAsync(month, companyId);
+            var actual = await reportService.GetDataForMonthlyPayrollReportAsync(month, companyId, 1);
 
             // Assert
             Assert.IsType<MonthlyPayrollReport>(actual);

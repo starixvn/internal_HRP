@@ -12,6 +12,7 @@
     using Core.Services;
     using Criteria;
     using Criteria.Employee;
+    using HRP.Models.Currency;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -242,11 +243,16 @@
 
             var filePassword = await reportService.GetUserFilePasswordAsync(sessionService.UserId);
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport);
+            IEnumerable<Currency> currencies = await commonService.GetCurrencyAsync();
+            var currency = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.MYRCurrencyCode, StringComparison.OrdinalIgnoreCase));
+            currency = currency ?? currencies.FirstOrDefault();
 
             var viewModel = new MonthlyPayrollReportViewModel
             {
                 SelectedTime = DateTime.Today,
+                CurrencyId = currency?.CurrencyId,
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
+                Currencies = commonService.GetSelectList(currencies, nameof(Currency.CurrencyId), nameof(Currency.CurrencyCode)),
                 EncryptedPassword = rijndaelService.Encrypt(filePassword, tuple.Item1.Value, tuple.Item2.Value),
                 RijndaelKey = tuple.Item1,
                 RijndaelIV = tuple.Item2
@@ -259,29 +265,32 @@
         [HRPPermission(FunctionKey = FunctionKey.MonthlyPayrollReport, Policy = Policy.Read)]
         public async Task<IActionResult> MonthlyPayroll(MonthlyPayrollReportViewModel viewModel)
         {
-            if (!sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read))
-            {
-                return RedirectToAction("AccessDenied", "Error");
-            }
-
             var rijndaelKey = (string)TempData.Peek(viewModel.RijndaelKey.Key);
             var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
-
             viewModel.FilePassword = rijndaelService.Decrypt(viewModel.EncryptedPassword, rijndaelKey, rijndaelIV);
-            ModelState.Clear();
+            IEnumerable<Currency> currencies = await commonService.GetCurrencyAsync();
 
+            ModelState.Clear();
             if (TryValidateModel(viewModel))
             {
+                int companyId = viewModel.CompanyId ?? 0;
+                int currencyId = viewModel.CurrencyId ?? 0;
+                if (!sessionService.HasPermissionOnCompany(companyId, FunctionKey.MonthlyPayrollReport, Policy.Read))
+                {
+                    return RedirectToAction("AccessDenied", "Error");
+                }
+
                 if (viewModel.ReusePassword)
                 {
                     await reportService.EditUserFilePasswordAsync(sessionService.UserId, viewModel.FilePassword);
                 }
 
-                var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId);
+                var report = await reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, companyId, currencyId);
                 if (report.Employees.Any())
                 {
-                    var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = viewModel.CompanyId }).ConfigureAwait(false);
+                    var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = companyId });
                     report.Company = company;
+                    report.SelectedCurrency = currencies.FirstOrDefault(x => x.CurrencyId == currencyId);
                     string webRootFolder = hostingEnvironment.WebRootPath;
                     const string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
                     var templatePath = Path.Combine(webRootFolder, fileName);
@@ -295,8 +304,12 @@
                 }
             }
 
+            var currency = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.MYRCurrencyCode, StringComparison.OrdinalIgnoreCase));
+            currency = currency ?? currencies.FirstOrDefault();
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport);
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
+            viewModel.Currencies = commonService.GetSelectList(currencies, nameof(Currency.CurrencyId), nameof(Currency.CurrencyCode));
+            viewModel.CurrencyId = currency?.CurrencyId;
 
             Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
             TempData[tuple.Item1.Key] = tuple.Item1.Value;

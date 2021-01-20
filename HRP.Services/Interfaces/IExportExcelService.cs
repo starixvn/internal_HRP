@@ -6,10 +6,8 @@
     using Core.Enumerations;
     using Models.Report;
 
-    public interface IExportExcelService
+    public partial interface IExportExcelService
     {
-        byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report, string password = null);
-
         byte[] ExportDirectBankingReports(
             DateTime selectedTime,
             FileInfo fileInfo,

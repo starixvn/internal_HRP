@@ -361,27 +361,6 @@
         }
 
         [Fact]
-        public async Task MonthlyPayrollPost_UserNotHasPermissionOnThisCompany_RedirectToAccessDenied()
-        {
-            // Arrange
-            var viewModel = new MonthlyPayrollReportViewModel
-            {
-                SelectedTime = DateTime.Today,
-                CompanyId = 22
-            };
-            var reportController = GetReportController();
-            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(false);
-
-            // Act
-            var actual = await reportController.MonthlyPayroll(viewModel);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("AccessDenied", redirectResult.ActionName);
-            Assert.Equal("Error", redirectResult.ControllerName);
-        }
-
-        [Fact]
         public async Task MonthlyPayrollPost_ModelStateIsInvalid_ReturnMonthlyPayrollViewResult()
         {
             // Arrange
@@ -405,7 +384,7 @@
             reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
                         .Returns(companySelectList);
-            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(),
                 Arg.Any<string>(), Arg.Any<Object>())).Do(x => reportController.ModelState.AddModelError(nameof(viewModel.FilePassword), "Password is required"));
@@ -422,6 +401,32 @@
             Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
             Assert.Equal(companySelectList, viewResultModel.Companies);
             Assert.Equal("Password is required", viewResult.ViewData.ModelState[nameof(viewModel.FilePassword)].Errors.FirstOrDefault().ErrorMessage);
+        }
+
+        [Fact]
+        public async Task MonthlyPayrollPost_UserNotHasPermissionOnThisCompany_RedirectToAccessDenied()
+        {
+            // Arrange
+            var viewModel = new MonthlyPayrollReportViewModel
+            {
+                SelectedTime = DateTime.Today,
+                CompanyId = 22,
+                RijndaelKey = new RijndaelKeyValuePair { Key = "key" },
+                RijndaelIV = new RijndaelKeyValuePair { Key = "key" }
+            };
+            var reportController = GetReportController();
+            reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
+            reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
+            reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(false);
+
+            // Act
+            var actual = await reportController.MonthlyPayroll(viewModel);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("AccessDenied", redirectResult.ActionName);
+            Assert.Equal("Error", redirectResult.ControllerName);
         }
 
         [Fact]
@@ -451,11 +456,11 @@
 
             var reportController = GetReportController();
             reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
-            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
-            reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId).Returns(report);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
+            reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, Arg.Any<int>(), Arg.Any<int>()).Returns(report);
             commonService.GetSelectList(Arg.Any<IEnumerable<Company>>(), nameof(Company.CompanyId), nameof(Company.Code))
                         .Returns(companySelectList);
-            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));
             rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
@@ -504,8 +509,8 @@
             reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             hostingEnvironment.WebRootPath.Returns(webRootPath);
             baseService.GetDataEntityAsync<Company>(Arg.Is<GetCompanyByIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(company);
-            sessionService.HasPermissionOnCompany(viewModel.CompanyId, FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
-            reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, viewModel.CompanyId).Returns(report);
+            sessionService.HasPermissionOnCompany(Arg.Any<int>(), FunctionKey.MonthlyPayrollReport, Policy.Read).Returns(true);
+            reportService.GetDataForMonthlyPayrollReportAsync(viewModel.SelectedTime, Arg.Any<int>(), Arg.Any<int>()).Returns(report);
             exportExcelService.ExportMonthlyPayrollReport(templatePath, report, expectedPassword).Returns(bytes);
             reportController.ObjectValidator = Substitute.For<IObjectModelValidator>();
             reportController.ObjectValidator.When(x => x.Validate(Arg.Any<ActionContext>(), Arg.Any<ValidationStateDictionary>(), Arg.Any<string>(), Arg.Any<Object>()));

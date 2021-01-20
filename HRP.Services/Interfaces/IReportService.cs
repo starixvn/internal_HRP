@@ -19,7 +19,7 @@
             DateTime selectedTime,
             string selectedPaymentTransactions);
 
-        Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId);
+        Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId, int currencyId);
 
         Task<IEnumerable<DynamicReportModel>> GetEmployeeDataForDynamicReport(int companyId, string employeeStatusIds);
 

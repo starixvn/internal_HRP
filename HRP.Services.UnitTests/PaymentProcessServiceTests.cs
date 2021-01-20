@@ -8,7 +8,6 @@
     using HRP.Core.Extensions;
     using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Criteria.Currency;
     using HRP.Criteria.Employee;
     using HRP.Criteria.PaymentProcess;
     using HRP.Models.Currency;
@@ -27,6 +26,7 @@
         private IBaseService baseService;
         private ISessionService sessionService;
         private ICryptoService cryptoService;
+        private ICommonService commonService;
         private IPaymentProcessRepository paymentProcessRepository;
         private IObjectStream fileStream;
         private ITemplateReader templateReader;
@@ -204,7 +204,7 @@
             var readResult = MockFailureResultDSTNetSalaryTemplate();
             var paymentProcessService = GetPaymentProcessService();
             baseService.GetDataAsync<string>(Arg.Is<GetAllEmployeeCodeByCompanyIdCriteria>(x => x.CompanyId == viewModel.CompanyId)).Returns(employeeCodeList);
-            baseService.GetDataAsync<Currency>(Arg.Is<GetAllCurrencyCriteria>(x => x.IsActive == true)).Returns(currencies);
+            commonService.GetCurrencyAsync().Returns(currencies);
             var sheet = Substitute.For<ISheet>();
             templateReader.CreateSheet(Arg.Any<Stream>()).Returns(sheet);
             templateReader.ReadDSTNetSalary(Arg.Is<DSTNetSalaryTemplate>(x => x.Sheet == sheet
@@ -624,6 +624,7 @@
             baseService = Substitute.For<IBaseService>();
             sessionService = FakeSessionService();
             cryptoService = Substitute.For<ICryptoService>();
+            commonService = Substitute.For<ICommonService>();
             fileStream = Substitute.For<IObjectStream>();
             templateReader = Substitute.For<ITemplateReader>();
             paymentProcessRepository = Substitute.For<IPaymentProcessRepository>();
@@ -633,6 +634,7 @@
                 baseService,
                 sessionService,
                 cryptoService,
+                commonService,
                 monthlySalaryService,
                 monthlyAllowancesService,
                 templateReader,

@@ -24,7 +24,7 @@
         public IEnumerable<Currency> CurrencyList { get; set; }
 
         public Company Company { get; set; }
-
+        public Currency SelectedCurrency { get; set; }
         public DateTime Month { get; set; }
     }
 }

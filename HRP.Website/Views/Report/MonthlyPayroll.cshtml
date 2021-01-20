@@ -48,7 +48,12 @@
 
     <div class="group">
         <label class="text">@ViewLang.Company</label>
-        <select asp-for="CompanyId" asp-items="Model.Companies" class="control select2"></select>
+        <select asp-for="CompanyId" asp-items="Model.Companies" class="control js-select2-hide-searchbox"></select>
+    </div>
+
+    <div class="group">
+        <label class="text">@ViewLang.Currency</label>
+        <select asp-for="CurrencyId" asp-items="Model.Currencies" class="control js-select2-with-searchbox"></select>
     </div>
 
     <div class="group">

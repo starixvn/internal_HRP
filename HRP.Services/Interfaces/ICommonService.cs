@@ -5,6 +5,7 @@
     using HRP.Core.Model;
     using HRP.Models;
     using HRP.Models.BankAccount;
+    using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface ICommonService
@@ -32,5 +33,7 @@
         Task<IEnumerable<BankAccount>> GetEmployeeBankAccountAsync(int employeeId, int bankTypeId, bool? isActive = true);
 
         SelectList GetSelectList<T>(IEnumerable<T> items, string dataValueField, string dataTextField);
+
+        Task<IEnumerable<Currency>> GetCurrencyAsync(bool? isActive = true);
     }
 }
