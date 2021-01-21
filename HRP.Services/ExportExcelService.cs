@@ -7,13 +7,14 @@
     using System.Reflection;
     using Core.Enumerations;
     using Core.Extensions;
+    using HRP.Core.Constants;
     using HRP.Core.Services;
     using Models.Report;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
     using Resources;
 
-    public partial class ExportExcelService : IExportExcelService
+    public class ExportExcelService : IExportExcelService
     {
         private const int FirstRedRgb = 189;
         private const int FirstGreenRgb = 215;
@@ -21,7 +22,6 @@
         private const int SecondRedRgb = 228;
         private const int SecondGreenRgb = 223;
         private const int SecondBlueRgb = 236;
-        private const string NumberFormatNoDecimal = "#,##0";
         private readonly ICryptoService cryptoService;
 
         public ExportExcelService(ICryptoService cryptoService)
@@ -255,7 +255,7 @@
             if (data is float)
             {
                 // writing amount of money
-                worksheet.Cells[currentRow, lastCol].Style.Numberformat.Format = NumberFormatNoDecimal;
+                worksheet.Cells[currentRow, lastCol].Style.Numberformat.Format = Constants.NumberFormatNoDecimal;
             }
         }
 
@@ -287,7 +287,7 @@
                         worksheet.Cells[rowIndex, colIndex++].Value = bankIn.CurrencyCode;
 
                         worksheet.Cells[rowIndex, colIndex].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, colIndex].Style.Numberformat.Format = NumberFormatNoDecimal;
+                        worksheet.Cells[rowIndex, colIndex].Style.Numberformat.Format = Constants.NumberFormatNoDecimal;
 
                         rowIndex++;
                     }
@@ -308,7 +308,7 @@
             {
                 worksheet.Cells[$"I{currentRow}"].Value = currency.Key;
                 worksheet.Cells[$"J{currentRow}"].Value = currency.Sum(x => x.AmountDecrypted);
-                worksheet.Cells[$"J{currentRow}"].Style.Numberformat.Format = NumberFormatNoDecimal;
+                worksheet.Cells[$"J{currentRow}"].Style.Numberformat.Format = Constants.NumberFormatNoDecimal;
 
                 currentRow++;
             }
@@ -355,7 +355,7 @@
                         worksheet.Cells[rowIndex, colIndex++].Value = bankIn.CurrencyCode;
 
                         worksheet.Cells[rowIndex, colIndex].Value = bankIn.AmountDecrypted;
-                        worksheet.Cells[rowIndex, colIndex].Style.Numberformat.Format = NumberFormatNoDecimal;
+                        worksheet.Cells[rowIndex, colIndex].Style.Numberformat.Format = Constants.NumberFormatNoDecimal;
 
                         rowIndex++;
                     }

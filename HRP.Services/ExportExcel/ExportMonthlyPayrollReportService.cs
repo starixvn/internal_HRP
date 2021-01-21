@@ -13,17 +13,16 @@
     using HRP.Resources;
     using OfficeOpenXml;
 
-    public partial interface IExportExcelService
+    public interface IExportMonthlyPayrollReportService
     {
-        byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report, string password = null);
+        byte[] Export(string templatePath, MonthlyPayrollReport report, string password = null);
     }
 
-    public partial class ExportExcelService : IExportExcelService
+    public class ExportMonthlyPayrollReportService : IExportMonthlyPayrollReportService
     {
-        private const string NumberFormatTwoDecimals = "#,##0.##";
-        private const string NumberFormatFiveDecimals = "#,##0.#####";
+        private const short TotalCols = 48;
 
-        public byte[] ExportMonthlyPayrollReport(string templatePath, MonthlyPayrollReport report, string password = null)
+        public byte[] Export(string templatePath, MonthlyPayrollReport report, string password = null)
         {
             using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
             {
@@ -36,7 +35,6 @@
                     const short ActualBasicSalaryAmountColIndex = 10;
                     const short MonthlyPayrollDeductionColIndex = 14;
                     const short LastTotalNetBasicSalaryColIndex = 20;
-                    const short TotalCol = 48;
 
                     int row = BodyRowIndex;
                     var serialNo = 1;
@@ -48,7 +46,7 @@
                         MonthlyPayrollBasicAllowanceModel monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                         MonthlyAllowanceModel monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
 
-                        templateWorksheet.Cells[BodyRowIndex, 1, BodyRowIndex, TotalCol].Copy(worksheet.Cells[row, 1, row, TotalCol]);
+                        templateWorksheet.Cells[BodyRowIndex, 1, BodyRowIndex, TotalCols].Copy(worksheet.Cells[row, 1, row, TotalCols]);
                         worksheet.Cells[row, colIndex++].Value = serialNo;
                         worksheet.Cells[row, colIndex++].Value = employee.DivisionCode;
                         worksheet.Cells[row, colIndex++].Value = employee.DepartmentCode;
@@ -81,9 +79,9 @@
                         worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyAllowance.DSTNetSalaryAmount);
                         worksheet.Cells[row, colIndex].Value = ParseToDecimal(monthlyAllowance.TotalNetAmount);
 
-                        CreateConditionalFormating(worksheet, row, ActualBasicSalaryAmountColIndex, MonthlyPayrollDeductionColIndex - 1, NumberFormatTwoDecimals);
-                        CreateConditionalFormating(worksheet, row, MonthlyPayrollDeductionColIndex + 1, toCol: MonthlyPayrollDeductionColIndex + 1, decimalFormat: NumberFormatTwoDecimals);
-                        CreateConditionalFormating(worksheet, row, LastTotalNetBasicSalaryColIndex + 1, TotalCol, NumberFormatTwoDecimals);
+                        CreateConditionalFormating(worksheet, row, ActualBasicSalaryAmountColIndex, MonthlyPayrollDeductionColIndex - 1, Constants.NumberFormatTwoDecimals);
+                        CreateConditionalFormating(worksheet, row, MonthlyPayrollDeductionColIndex + 1, toCol: MonthlyPayrollDeductionColIndex + 1, decimalFormat: Constants.NumberFormatTwoDecimals);
+                        CreateConditionalFormating(worksheet, row, LastTotalNetBasicSalaryColIndex + 1, TotalCols, Constants.NumberFormatTwoDecimals);
 
                         row++;
                         serialNo++;
@@ -113,10 +111,9 @@
             const short EndHeaderRowIndex = 8;
             const short CurrencyRowIndex = 7;
             const short CurrencyColIndex = 16;
-            const short TotalCol = 48;
 
             // Write header
-            templateWorksheet.Cells[1, 1, EndHeaderRowIndex, TotalCol].Copy(worksheet.Cells[1, 1, EndHeaderRowIndex, TotalCol]);
+            templateWorksheet.Cells[1, 1, EndHeaderRowIndex, TotalCols].Copy(worksheet.Cells[1, 1, EndHeaderRowIndex, TotalCols]);
             // Write Data
             worksheet.Cells[CompanyRowIndex, 1].Value = string.Concat(ViewLang.Company, ": ", string.IsNullOrWhiteSpace(report.Company.Name) ? report.Company.Code : report.Company.Name);
             worksheet.Cells[MonthRowIndex, 1].Value = string.Concat(ViewLang.PayrollMonth, ": ", report.Month.ToString("MM-yyyy"));
@@ -159,29 +156,32 @@
             const short TotalCol = 4;
             const short HeaderRowIndex = 17;
             const short BodyRowIndex = 19;
+            var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
+            var selectedCurrencyId = selectedCurrency?.CurrencyId;
 
             // Write header
             templateWorksheet.Cells[HeaderRowIndex, 1, HeaderRowIndex + 1, TotalCol].Copy(worksheet.Cells[startRow, 1, startRow + 1, TotalCol]);
-            worksheet.Cells[startRow + 1, TotalCol].Value = selectedCurrency?.CurrencyCode;
+            if (USDCurrencyId != selectedCurrencyId)
+            {
+                worksheet.Cells[startRow + 1, TotalCol].Value = selectedCurrency?.CurrencyCode;
+            }
 
             // Write data
-            var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
             var rowWithStyle = templateWorksheet.Cells[BodyRowIndex, 1, BodyRowIndex, TotalCol];
             var row = startRow + addTwoRow;
             foreach (Currency currency in report.CurrencyList)
             {
                 rowWithStyle.Copy(worksheet.Cells[row, 1, row, TotalCol]);
-                CurrencyExchangeRateModel exchangeRateToUSD = report.CurrencyExchangeRate
-                    .FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == USDCurrencyId);
-                CurrencyExchangeRateModel exchangeRateToMYR = report.CurrencyExchangeRate
-                    .FirstOrDefault(x => x.FromCurrencyId == currency.CurrencyId && x.ToCurrencyId == selectedCurrency?.CurrencyId);
-
+                CurrencyExchangeRateModel exchangeRateToUSD = GetCurrencyExchangeRate(report.CurrencyExchangeRate, currency.CurrencyId, USDCurrencyId);
                 worksheet.Cells[row, 1].Value = currency.CurrencyCode;
                 worksheet.Cells[row, USDColIndex].Value = exchangeRateToUSD?.ExchangeRate;
-                worksheet.Cells[row, TotalCol].Value = exchangeRateToMYR?.ExchangeRate;
+                if (USDCurrencyId != selectedCurrencyId)
+                {
+                    CurrencyExchangeRateModel exchangeRateToMYR = GetCurrencyExchangeRate(report.CurrencyExchangeRate, currency.CurrencyId, selectedCurrencyId);
+                    worksheet.Cells[row, TotalCol].Value = exchangeRateToMYR?.ExchangeRate;
+                }
 
-                CreateConditionalFormating(worksheet, row, USDColIndex, TotalCol, NumberFormatFiveDecimals);
-
+                CreateConditionalFormating(worksheet, row, USDColIndex, TotalCol, Constants.NumberFormatFiveDecimals);
                 row++;
             }
         }
@@ -198,22 +198,21 @@
             const short HeaderRowIndex = 18;
             const short BodyRowIndex = 19;
             const short StartColIndex = 9;
-            const short LastColIndex = 48;
             const short ActualBasicSalaryAmountColIndex = 10;
             const short MonthlyPayrollDeductionColIndex = 14;
             const short LastTotalNetBasicSalaryColIndex = 20;
 
             // Write header
-            templateWorksheet.Cells[HeaderRowIndex, StartColIndex, HeaderRowIndex, LastColIndex].Copy(worksheet.Cells[startRow, StartColIndex, startRow, LastColIndex]);
+            templateWorksheet.Cells[HeaderRowIndex, StartColIndex, HeaderRowIndex, TotalCols].Copy(worksheet.Cells[startRow, StartColIndex, startRow, TotalCols]);
 
             // Write data
             var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
-            var rowWithStyle = templateWorksheet.Cells[BodyRowIndex, StartColIndex, BodyRowIndex, LastColIndex];
+            var rowWithStyle = templateWorksheet.Cells[BodyRowIndex, StartColIndex, BodyRowIndex, TotalCols];
             var row = startRow + 1;
             foreach (Currency currency in report.CurrencyList)
             {
                 var colIndex = StartColIndex;
-                rowWithStyle.Copy(worksheet.Cells[row, colIndex, row, LastColIndex]);
+                rowWithStyle.Copy(worksheet.Cells[row, colIndex, row, TotalCols]);
 
                 IEnumerable<MonthlyBasicSalaryModel> basicSalaryList = report.MonthlyBasicSalary.Where(x => x.CurrencyId == currency.CurrencyId);
                 IEnumerable<MonthlySalaryModel> salaryList = report.MonthlySalary.Where(x => x.CurrencyId == currency.CurrencyId);
@@ -270,18 +269,26 @@
                 worksheet.Cells[row, colIndex++].Value = allowanceList.Sum(x => ParseToDecimal(x.DSTNetSalaryAmount));
                 worksheet.Cells[row, colIndex].Value = allowanceList.Sum(x => ParseToDecimal(x.TotalNetAmount));
 
-                CreateConditionalFormating(worksheet, row, ActualBasicSalaryAmountColIndex, MonthlyPayrollDeductionColIndex - 1, NumberFormatTwoDecimals);
-                CreateConditionalFormating(worksheet, row, MonthlyPayrollDeductionColIndex + 1, toCol: MonthlyPayrollDeductionColIndex + 1, decimalFormat: NumberFormatTwoDecimals);
-                CreateConditionalFormating(worksheet, row, LastTotalNetBasicSalaryColIndex + 1, LastColIndex, NumberFormatTwoDecimals);
+                CreateConditionalFormating(worksheet, row, ActualBasicSalaryAmountColIndex, MonthlyPayrollDeductionColIndex - 1, Constants.NumberFormatTwoDecimals);
+                CreateConditionalFormating(worksheet, row, MonthlyPayrollDeductionColIndex + 1, toCol: MonthlyPayrollDeductionColIndex + 1, decimalFormat: Constants.NumberFormatTwoDecimals);
+                CreateConditionalFormating(worksheet, row, LastTotalNetBasicSalaryColIndex + 1, TotalCols, Constants.NumberFormatTwoDecimals);
 
                 row++;
             }
         }
 
+        private static CurrencyExchangeRateModel GetCurrencyExchangeRate(
+            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
+            int? fromCurrencyId,
+            int? toCurrencyId)
+        {
+            return currencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrencyId && x.ToCurrencyId == toCurrencyId);
+        }
+
         private static void CreateConditionalFormating(ExcelWorksheet worksheet, int fromRow, int fromCol, int toCol, string decimalFormat)
         {
             var cond1 = worksheet.ConditionalFormatting.AddExpression(worksheet.Cells[fromRow, fromCol, fromRow, toCol]);
-            cond1.Style.NumberFormat.Format = NumberFormatNoDecimal;
+            cond1.Style.NumberFormat.Format = Constants.NumberFormatNoDecimal;
             cond1.Formula = string.Format("IF((MOD(ROUND({0}, 2), 1) = 0),1,0)", worksheet.Cells[fromRow, fromCol, fromRow, toCol].Address);
 
             var cond2 = worksheet.ConditionalFormatting.AddExpression(worksheet.Cells[fromRow, fromCol, fromRow, toCol]);

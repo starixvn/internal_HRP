@@ -115,38 +115,38 @@
             Assert.NotEmpty(actual);
         }
 
-        [Fact]
-        public void ExportMonthlyPayrollReport_WhenCalled_ReturnAsExpected()
-        {
-            // Arrange
-            var data = new MonthlyPayrollReport
-            {
-                Month = DateTime.Now,
-                Company = new Company { CompanyId = 1, Code = "DAR", Name = "DAR" },
-                Employees = new List<EmployeeBasicInfo> { new EmployeeBasicInfo { EmployeeId = 1, Nickname = "tim.trinh" } },
-                CurrencyList = new List<Currency>
-                {
-                    new Currency { CurrencyId = 1, CurrencyCode = "USD" },
-                    new Currency { CurrencyId = 2, CurrencyCode = "MYR" }
-                },
-                MonthlyBasicSalary = new List<MonthlyBasicSalaryModel> { new MonthlyBasicSalaryModel { EmployeeId = 1 } },
-                MonthlySalary = new List<MonthlySalaryModel> { new MonthlySalaryModel { EmployeeId = 1 } },
-                MonthlyAllowance = new List<MonthlyAllowanceModel> { new MonthlyAllowanceModel { EmployeeId = 1 } },
-                MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel> { new MonthlyPayrollBasicAllowanceModel { EmployeeId = 1 } },
-                CurrencyExchangeRate = new List<CurrencyExchangeRateModel>
-                {
-                    new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 },
-                    new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 2, ExchangeRate = 2 }
-                }
-            };
-            var service = GetExportExcelService();
+        ////[Fact]
+        ////public void ExportMonthlyPayrollReport_WhenCalled_ReturnAsExpected()
+        ////{
+        ////    // Arrange
+        ////    var data = new MonthlyPayrollReport
+        ////    {
+        ////        Month = DateTime.Now,
+        ////        Company = new Company { CompanyId = 1, Code = "DAR", Name = "DAR" },
+        ////        Employees = new List<EmployeeBasicInfo> { new EmployeeBasicInfo { EmployeeId = 1, Nickname = "tim.trinh" } },
+        ////        CurrencyList = new List<Currency>
+        ////        {
+        ////            new Currency { CurrencyId = 1, CurrencyCode = "USD" },
+        ////            new Currency { CurrencyId = 2, CurrencyCode = "MYR" }
+        ////        },
+        ////        MonthlyBasicSalary = new List<MonthlyBasicSalaryModel> { new MonthlyBasicSalaryModel { EmployeeId = 1 } },
+        ////        MonthlySalary = new List<MonthlySalaryModel> { new MonthlySalaryModel { EmployeeId = 1 } },
+        ////        MonthlyAllowance = new List<MonthlyAllowanceModel> { new MonthlyAllowanceModel { EmployeeId = 1 } },
+        ////        MonthlyBasicAllowance = new List<MonthlyPayrollBasicAllowanceModel> { new MonthlyPayrollBasicAllowanceModel { EmployeeId = 1 } },
+        ////        CurrencyExchangeRate = new List<CurrencyExchangeRateModel>
+        ////        {
+        ////            new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 },
+        ////            new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 2, ExchangeRate = 2 }
+        ////        }
+        ////    };
+        ////    var service = GetExportExcelService();
 
-            // Act
-            var actual = service.ExportMonthlyPayrollReport(@"FileTest\\TemplateTest.xlsx", data);
+        ////    // Act
+        ////    var actual = service.ExportMonthlyPayrollReport(@"FileTest\\TemplateTest.xlsx", data);
 
-            // Assert
-            Assert.NotEmpty(actual);
-        }
+        ////    // Assert
+        ////    Assert.NotEmpty(actual);
+        ////}
 
         [Fact]
         public void ExportDynamicReport_WhenCalled_ReturnAsExpected()

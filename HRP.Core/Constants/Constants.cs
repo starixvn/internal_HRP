@@ -21,5 +21,9 @@ namespace HRP.Core.Constants
         public const string CertificateFileName = "SecretKey.pfx";
 
         public const int DefaultCompanyId = -1001;
+
+        public const string NumberFormatNoDecimal = "#,##0";
+        public const string NumberFormatTwoDecimals = "#,##0.##";
+        public const string NumberFormatFiveDecimals = "#,##0.#####";
     }
 }

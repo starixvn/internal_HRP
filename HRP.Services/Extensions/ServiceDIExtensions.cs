@@ -28,6 +28,8 @@
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IExportExcelService, ExportExcelService>();
             services.AddScoped<IMailSettingService, MailSettingService>();
+
+            services.AddScoped<IExportMonthlyPayrollReportService, ExportMonthlyPayrollReportService>();
         }
     }
 }

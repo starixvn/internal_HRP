@@ -6,7 +6,7 @@
     using Core.Enumerations;
     using Models.Report;
 
-    public partial interface IExportExcelService
+    public interface IExportExcelService
     {
         byte[] ExportDirectBankingReports(
             DateTime selectedTime,

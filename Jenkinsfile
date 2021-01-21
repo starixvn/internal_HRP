@@ -48,16 +48,18 @@ pipeline{
               pipelineLib.generateSonarQubeReport("HRP")
             }
           }
-		  
-		  archiveArtifacts "*.xml,*.email"
-		  step([$class: 'ACIPluginPublisher', name: '*.xml', shownOnProjectPage: false])
-		  mstest failOnError: false
         }
       }
     }
   }
 
   post{
+	always{
+      archiveArtifacts "*.xml,*.email"
+      step([$class: 'ACIPluginPublisher', name: '*.xml', shownOnProjectPage: false])
+      cobertura coberturaReportFile: "cobertura.xml", onlyStable: false
+      xunit thresholds: [failed(failureNewThreshold: '1', failureThreshold: '1')], tools: [xUnitDotNet(deleteOutputFiles: true, failIfNotNew: true, pattern: 'UnitTest.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
+    }
     unsuccessful{
       emailext body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT', to: 'quinn.vo@starixvn.com,tim.trinh@starixvn.com'
     }
