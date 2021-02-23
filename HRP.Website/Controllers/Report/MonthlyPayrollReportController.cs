@@ -128,7 +128,7 @@
             viewModel.RijndaelKey = tuple.Item1;
             viewModel.RijndaelIV = tuple.Item2;
 
-            return View("MonthlyPayroll", viewModel);
+            return View("~/Views/Report/MonthlyPayroll.cshtml", viewModel);
         }
     }
 }

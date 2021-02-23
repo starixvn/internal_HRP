@@ -98,7 +98,7 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
-            Assert.Equal("MonthlyPayroll", viewResult.ViewName);
+            Assert.Equal("~/Views/Report/MonthlyPayroll.cshtml", viewResult.ViewName);
             Assert.Equal(viewModel.SelectedTime, viewResultModel.SelectedTime);
             Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
             Assert.Equal(companySelectList, viewResultModel.Companies);
@@ -171,7 +171,7 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             var viewResultModel = Assert.IsType<MonthlyPayrollReportViewModel>(viewResult.Model);
-            Assert.Equal("MonthlyPayroll", viewResult.ViewName);
+            Assert.Equal("~/Views/Report/MonthlyPayroll.cshtml", viewResult.ViewName);
             Assert.Equal(viewModel.SelectedTime, viewResultModel.SelectedTime);
             Assert.Equal(viewModel.CompanyId, viewResultModel.CompanyId);
             Assert.Equal(companySelectList, viewResultModel.Companies);
