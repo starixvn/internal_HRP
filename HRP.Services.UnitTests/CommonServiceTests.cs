@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoFixture;
     using Core.Services;
     using HRP.Core.Criteria;
     using HRP.Core.Model;
@@ -15,6 +16,7 @@
 
     public class CommonServiceTests
     {
+        private readonly IFixture fixture = new Fixture();
         private IBaseService baseService;
 
         #region GetReferenceResourcesByNames
@@ -77,10 +79,11 @@
         public void FilterReferenceResources_RefNameIsInvalid_ReturnEmptyListReferenceResources(string refName)
         {
             // Arrange
+            var refResources = fixture.Create<IEnumerable<ReferenceResourceModel>>();
             var service = GetCommonService();
 
             // Act
-            var actual = service.FilterReferenceResources(Arg.Any<IEnumerable<ReferenceResourceModel>>(), refName);
+            var actual = service.FilterReferenceResources(refResources, refName);
 
             // Assert
             Assert.Empty(actual);

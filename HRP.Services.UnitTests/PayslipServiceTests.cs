@@ -31,18 +31,24 @@
         public async Task GetPayslipAsync_WhenCalled_ReturnsAsExpectedPayslips()
         {
             // Arrange
+            var month = new DateTime(2021, 3, 1);
             var payslips = new List<PayslipModel>
             {
                 new PayslipModel { PayrollId = 1, IDNo = "DAR111", FullName = "thang", Nickname = "tim.trinh",
                     Section = "HR", Email = "tim.trinh@starixsoft.com", Phone = "123", IsSent = true, PayrollStatus = MonthlyPayrollStatus.Default }
             };
+            var criteria = new GetPayslipCriteria();
             var payslipService = GetPayslipService();
-            baseService.GetDataAsync<PayslipModel>(Arg.Any<GetPayslipCriteria>()).Returns(payslips);
+            baseService.GetDataAsync<PayslipModel>(Arg.Do<GetPayslipCriteria>(x => criteria = x)).Returns(payslips);
 
             // Act
-            var actual = await payslipService.GetPayslipAsync(Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<bool?>());
+            var actual = await payslipService.GetPayslipAsync(month, 1, false);
 
             // Assert
+            Assert.Equal(month, criteria.Month);
+            Assert.Equal(1, criteria.CompanyId);
+            Assert.False(criteria.IsSent);
+
             Assert.Equal(actual, payslips);
         }
 

@@ -1,6 +1,5 @@
 ﻿namespace HRP.Website.UnitTests.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -59,7 +58,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var controller = GetSystemSecurityController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host).Returns(true);
@@ -90,7 +89,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var controller = GetSystemSecurityController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             controller.ModelState.AddModelError("password", "required");
@@ -128,7 +127,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var controller = GetSystemSecurityController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             certificateService.GenerateSelfSignedCertificate(password).Returns(commandResult);
@@ -159,7 +158,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var commandResult = new CommandResult { Code = 0 };
             var viewModel = new GenerateCertificateViewModel
             {
@@ -200,7 +199,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var controller = GetSystemSecurityController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host).Returns(true);
@@ -229,7 +228,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var controller = GetSystemSecurityController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             controller.ModelState.AddModelError("password", "required");
@@ -260,7 +259,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var viewModel = new InputPasswordViewModel
             {
                 RijndaelKey = new RijndaelKeyValuePair { Key = "key" },

@@ -319,9 +319,9 @@
             viewModel.FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month);
             viewModel.Employees = await monthlyPayrollService.GetMonthlyPayrollAsync(viewModel);
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            var rijndaelKey = tuple.Item1.Value;
-            var rijndaelIV = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            var rijndaelKey = rijndaelKeyPair.Value;
+            var rijndaelIV = rijndaelIVPair.Value;
             ViewData["RijndaelKey"] = rijndaelKey;
             ViewData["RijndaelIV"] = rijndaelIV;
 
@@ -353,28 +353,25 @@
                 return RedirectToAction(AccessDenied, Error);
             }
 
-            Tuple<MonthlyBasicSalaryModel,
-                MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary = await monthlySalaryService.GetMonthlySalaryAsync(payrollId);
-            if (monthlySalary.Item1 == null)
+            (var monthlyBasicSalary, var monthlySalary, var additions, var deductions) = await monthlySalaryService.GetMonthlySalaryAsync(payrollId);
+            if (monthlyBasicSalary == null)
             {
                 return RedirectToAction("PageNotFound", Error);
             }
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKey, var rijndaelIV) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKey.Key] = rijndaelKey.Value;
+            TempData[rijndaelIV.Key] = rijndaelIV.Value;
             var viewModel = new EditMonthlySalaryViewModel
             {
                 Month = month,
-                MonthlyBasicSalary = ConvertMonthlyBasicSalaryToViewModel(monthlySalary.Item1, tuple.Item1.Value, tuple.Item2.Value),
-                MonthlySalary = ConvertMonthlySalaryToViewModel(monthlySalary.Item2, tuple.Item1.Value, tuple.Item2.Value),
-                Additions = ConvertMonthlySalaryAdditionToViewModel(monthlySalary.Item3, tuple.Item1.Value, tuple.Item2.Value),
-                Deductions = ConvertMonthlySalaryDeductionToViewModel(monthlySalary.Item4, tuple.Item1.Value, tuple.Item2.Value),
+                MonthlyBasicSalary = ConvertMonthlyBasicSalaryToViewModel(monthlyBasicSalary, rijndaelKey.Value, rijndaelIV.Value),
+                MonthlySalary = ConvertMonthlySalaryToViewModel(monthlySalary, rijndaelKey.Value, rijndaelIV.Value),
+                Additions = ConvertMonthlySalaryAdditionToViewModel(additions, rijndaelKey.Value, rijndaelIV.Value),
+                Deductions = ConvertMonthlySalaryDeductionToViewModel(deductions, rijndaelKey.Value, rijndaelIV.Value),
                 FilterInfo = await monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId),
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2,
+                RijndaelKey = rijndaelKey,
+                RijndaelIV = rijndaelIV,
                 CachingFilter = filter
             };
 
@@ -491,13 +488,13 @@
                 return RedirectToAction(AccessDenied, Error);
             }
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKey, var rijndaelIV) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKey.Key] = rijndaelKey.Value;
+            TempData[rijndaelIV.Key] = rijndaelIV.Value;
 
-            var viewModel = await InitializeEditAllowanceViewModel(payrollId, companyId, month, filter, tuple.Item1.Value, tuple.Item2.Value);
-            viewModel.RijndaelKey = tuple.Item1;
-            viewModel.RijndaelIV = tuple.Item2;
+            var viewModel = await InitializeEditAllowanceViewModel(payrollId, companyId, month, filter, rijndaelKey.Value, rijndaelIV.Value);
+            viewModel.RijndaelKey = rijndaelKey;
+            viewModel.RijndaelIV = rijndaelIV;
 
             return View(viewModel);
         }

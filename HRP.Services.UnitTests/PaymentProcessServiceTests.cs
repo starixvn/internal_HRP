@@ -249,15 +249,15 @@
         public async Task GetUploadingFilesResultAsync_PaymentProcessIsNull_ReturnEmptyUploadAttendanceAndSalaryViewModel()
         {
             // Arrange
+            PaymentProcess paymentProcess = null;
+            IEnumerable<ValidationResult> attendanceErrors = null;
+            IEnumerable<ValidationResult> dstNetSalaryErrors = null;
             var expected = new UploadAttendanceAndSalaryViewModel();
-            var tuple = new Tuple<PaymentProcess,
-                    IEnumerable<ValidationResult>,
-                    IEnumerable<ValidationResult>>(null, null, null);
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns(tuple);
+                .Returns((paymentProcess, attendanceErrors, dstNetSalaryErrors));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
@@ -283,14 +283,13 @@
                 DueDate = DateTime.Today.AddDays(1)
             };
 
-            var tuple = new Tuple<PaymentProcess,
-                    IEnumerable<ValidationResult>,
-                    IEnumerable<ValidationResult>>(paymentProcess, null, null);
+            IEnumerable<ValidationResult> attendanceErrors = null;
+            IEnumerable<ValidationResult> dstNetSalaryErrors = null;
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns(tuple);
+                .Returns((paymentProcess, attendanceErrors, dstNetSalaryErrors));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
@@ -325,14 +324,11 @@
                 DSTNetSalaryTotalRow = 12
             };
             var validationResults = MockListValidationResult();
-            var tuple = new Tuple<PaymentProcess,
-                    IEnumerable<ValidationResult>,
-                    IEnumerable<ValidationResult>>(paymentProcess, validationResults, validationResults);
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns(tuple);
+                .Returns((paymentProcess, validationResults, validationResults));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
@@ -367,14 +363,12 @@
                 DSTNetSalaryTotalRow = 12
             };
             var validationResults = MockListValidationResult();
-            var tuple = new Tuple<PaymentProcess,
-                    IEnumerable<ValidationResult>,
-                    IEnumerable<ValidationResult>>(paymentProcess, null, validationResults);
+            IEnumerable<ValidationResult> attendanceErrors = null;
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns(tuple);
+                .Returns((paymentProcess, attendanceErrors, validationResults));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
@@ -408,14 +402,12 @@
                 AttendanceTotalRow = 10,
             };
             var validationResults = MockListValidationResult();
-            var tuple = new Tuple<PaymentProcess,
-                    IEnumerable<ValidationResult>,
-                    IEnumerable<ValidationResult>>(paymentProcess, validationResults, null);
+            IEnumerable<ValidationResult> dstNetSalaryErrors = null;
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns(tuple);
+                .Returns((paymentProcess, validationResults, dstNetSalaryErrors));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);

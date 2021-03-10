@@ -99,7 +99,7 @@
         public async Task Details_PayrollIsExisted_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
+            var tuple = (new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
             var cipherText = "1234abc";
             var payslip = new PayslipDetailModel
             {

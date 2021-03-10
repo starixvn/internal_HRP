@@ -18,7 +18,7 @@
 
         public async Task<IEnumerable<FunctionModel>> GetTreeFunctions(bool? isActive)
         {
-            IEnumerable<FunctionModel> functions = await GetFunctions(isActive).ConfigureAwait(false);
+            IEnumerable<FunctionModel> functions = await GetFunctions(isActive);
             IEnumerable<FunctionModel> parentFunctions = new List<FunctionModel>();
 
             if (functions != null && functions.Any())
@@ -42,7 +42,7 @@
                 IsActive = isActive
             };
 
-            return await baseService.GetDataAsync<FunctionModel>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<FunctionModel>(criteria);
         }
 
         private void GetChildFunctions(FunctionModel function, IEnumerable<FunctionModel> functions)

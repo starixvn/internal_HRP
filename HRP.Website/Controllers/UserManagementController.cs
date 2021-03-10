@@ -81,7 +81,7 @@
                 ModifiedBy = sessionService.UserId
             };
 
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return Json(commandResult);
         }

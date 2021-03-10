@@ -46,9 +46,9 @@
         [HRPPermission(FunctionKey = FunctionKey.MonthlyPayrollReport, Policy = Policy.Read)]
         public async Task<IActionResult> Index()
         {
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
             var filePassword = await reportService.GetUserFilePasswordAsync(sessionService.UserId);
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.MonthlyPayrollReport);
@@ -62,9 +62,9 @@
                 CurrencyId = currency?.CurrencyId,
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 Currencies = commonService.GetSelectList(currencies, nameof(Currency.CurrencyId), nameof(Currency.CurrencyCode)),
-                EncryptedPassword = rijndaelService.Encrypt(filePassword, tuple.Item1.Value, tuple.Item2.Value),
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                EncryptedPassword = rijndaelService.Encrypt(filePassword, rijndaelKeyPair.Value, rijndaelIVPair.Value),
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             return View("~/Views/Report/MonthlyPayroll.cshtml", viewModel);
@@ -121,12 +121,12 @@
             viewModel.Currencies = commonService.GetSelectList(currencies, nameof(Currency.CurrencyId), nameof(Currency.CurrencyCode));
             viewModel.CurrencyId = currency?.CurrencyId;
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
-            viewModel.RijndaelKey = tuple.Item1;
-            viewModel.RijndaelIV = tuple.Item2;
+            viewModel.RijndaelKey = rijndaelKeyPair;
+            viewModel.RijndaelIV = rijndaelIVPair;
 
             return View("~/Views/Report/MonthlyPayroll.cshtml", viewModel);
         }

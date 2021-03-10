@@ -11,7 +11,7 @@
     {
         private const int FeedbackSize = 128;
 
-        public Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> GenerateRijndaelKeyValuePair()
+        public (RijndaelKeyValuePair, RijndaelKeyValuePair) GenerateRijndaelKeyValuePair()
         {
             var rijndaelKey = new RijndaelKeyValuePair
             {
@@ -25,7 +25,7 @@
                 Value = Guid.NewGuid().ToString("N").Substring(0, 16)
             };
 
-            return new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKey, rijndaelIV);
+            return (rijndaelKey, rijndaelIV);
         }
 
         public string Decrypt(string cipherText, string rijndaelKey, string rijndaelIV)

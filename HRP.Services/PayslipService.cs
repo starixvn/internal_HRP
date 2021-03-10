@@ -65,7 +65,7 @@
                 IsSent = isSent
             };
 
-            return await baseService.GetDataAsync<PayslipModel>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<PayslipModel>(criteria);
         }
 
         public async Task<PayslipDetailModel> GetPayslipDetailAsync(int payrollId, int companyId)
@@ -77,7 +77,7 @@
                 CompanyId = companyId
             };
 
-            PayslipDetailModel payslip = (await payslipRepository.GetPayslipDetailsAsync(criteria).ConfigureAwait(false)).FirstOrDefault();
+            PayslipDetailModel payslip = (await payslipRepository.GetPayslipDetailsAsync(criteria)).FirstOrDefault();
 
             if (payslip != null)
             {
@@ -95,7 +95,7 @@
                 PayrollIds = string.Join(",", viewModel.PayrollIds),
                 CompanyId = viewModel.CompanyId
             };
-            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(viewModel.CompanyId).ConfigureAwait(false);
+            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(viewModel.CompanyId);
 
             if (mailSetting == null)
             {
@@ -105,15 +105,15 @@
                 };
             }
 
-            IEnumerable<PayslipDetailModel> payslips = await payslipRepository.GetPayslipDetailsAsync(criteria).ConfigureAwait(false);
+            IEnumerable<PayslipDetailModel> payslips = await payslipRepository.GetPayslipDetailsAsync(criteria);
 
             foreach (PayslipDetailModel payslip in payslips)
             {
                 DescryptAndCalculateAmount(payslip);
-                await RenderPdfAndSendMailAsync(mailSetting, payslip).ConfigureAwait(false);
+                await RenderPdfAndSendMailAsync(mailSetting, payslip);
             }
 
-            CommandResult commandResult = await UpdatePayslipAsync(viewModel).ConfigureAwait(false);
+            CommandResult commandResult = await UpdatePayslipAsync(viewModel);
 
             return commandResult;
         }
@@ -127,7 +127,7 @@
                 CompanyId = viewModel.CompanyId
             };
 
-            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         private async Task RenderPdfAndSendMailAsync(MailSettingModel mailSetting, PayslipDetailModel payslip)
@@ -135,7 +135,7 @@
             var body = string.Format(CultureInfo.InvariantCulture, emailService.ReadTextFile(EmailTemplate), payslip.Nickname);
             var subject = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
             var fileName = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}.pdf", payslip.Month.ToString("MMMM_yyyy"));
-            var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Pdf", payslip).ConfigureAwait(false);
+            var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Pdf", payslip);
             var payslipPassword = payslip.PDFPassword;
             byte[] content = pdfRenderService.RenderContentWithPasswordProtected(cssFilePath, htmlString, payslipPassword, payslip.PDFPassword);
 
@@ -160,7 +160,7 @@
                     Attachments = attachments
                 };
 
-                await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
+                await emailService.SendEmailAsync(mailModel);
             }
         }
 

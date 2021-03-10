@@ -38,10 +38,10 @@
 
         #region GetMonthlySalaryAsync
 
-        public async Task<Tuple<MonthlyBasicSalaryModel,
+        public async Task<(MonthlyBasicSalaryModel,
                 MonthlySalaryModel,
                 IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(int payrollId)
+                IEnumerable<MonthlySalaryDeductionModel>)> GetMonthlySalaryAsync(int payrollId)
         {
             var criteria = new GetMonthlySalaryToEditCriteria
             {
@@ -49,10 +49,10 @@
                 UserId = sessionService.UserId
             };
 
-            Tuple<MonthlyBasicSalaryModel,
+            (MonthlyBasicSalaryModel,
                 MonthlySalaryModel,
                 IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary = await monthlyPayrollRepository.GetMonthlySalaryAsync(criteria).ConfigureAwait(false);
+                IEnumerable<MonthlySalaryDeductionModel>) monthlySalary = await monthlyPayrollRepository.GetMonthlySalaryAsync(criteria);
 
             if (monthlySalary.Item1 != null)
             {
@@ -62,10 +62,10 @@
             return monthlySalary;
         }
 
-        private void DecryptAndRoundingAmountMonthlySalary(Tuple<MonthlyBasicSalaryModel,
+        private void DecryptAndRoundingAmountMonthlySalary((MonthlyBasicSalaryModel,
                 MonthlySalaryModel,
                 IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>> monthlySalary)
+                IEnumerable<MonthlySalaryDeductionModel>) monthlySalary)
         {
             monthlySalary.Item1.Salary = cryptoService.Decrypt(monthlySalary.Item1.Salary);
             monthlySalary.Item1.EbankingAmount = cryptoService.Decrypt(monthlySalary.Item1.EbankingAmount);
@@ -148,7 +148,7 @@
                 AdditionXml = additions.ToXML().ToString(),
                 DeductionXml = deductions.ToXML().ToString()
             };
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }

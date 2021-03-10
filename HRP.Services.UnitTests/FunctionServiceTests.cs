@@ -24,13 +24,16 @@
                 new FunctionModel { FunctionId = 1, FunctionKey = "test", Name = "test", IsReadOnly = false, IsActive = true, IsAdmin = false },
                 new FunctionModel { FunctionId = 2, ParentId = 1, FunctionKey = "test", Name = "test", IsReadOnly = false, IsActive = true, IsAdmin = false }
             };
+            var criteria = new GetAllFunctionCriteria();
             var functionService = GetFunctionService();
-            baseService.GetDataAsync<FunctionModel>(Arg.Any<GetAllFunctionCriteria>()).Returns(expected);
+            baseService.GetDataAsync<FunctionModel>(Arg.Do<GetAllFunctionCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await functionService.GetTreeFunctions(Arg.Any<bool?>());
+            var actual = await functionService.GetTreeFunctions(true);
 
             // Assert
+            Assert.True(criteria.IsActive);
+
             Assert.Single(actual);
             Assert.Single(actual.First().Childs);
             Assert.Equal(expected.First(), actual.First());

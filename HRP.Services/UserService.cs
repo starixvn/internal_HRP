@@ -44,7 +44,7 @@ namespace HRP.Services
                 TokenOTPRegister = tokenOTPRegister
             };
 
-            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria);
 
             return result.IsSuccessful ? tokenOTPRegister : null;
         }
@@ -56,7 +56,7 @@ namespace HRP.Services
                 Username = username
             };
 
-            return await baseService.GetDataEntityAsync<User>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataEntityAsync<User>(criteria);
         }
 
         public async Task<User> GetUserByTokenOTPRegisterAsync(string token)
@@ -66,7 +66,7 @@ namespace HRP.Services
                 TokenOTPRegister = token
             };
 
-            return await baseService.GetDataEntityAsync<User>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataEntityAsync<User>(criteria);
         }
 
         public bool IsCorrectPassword(string password, string hashedPassword) => BCrypt.Verify(password, hashedPassword);
@@ -79,7 +79,7 @@ namespace HRP.Services
                 TokenOTPRegister = null
             };
 
-            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria);
 
             return result.IsSuccessful;
         }
@@ -93,24 +93,24 @@ namespace HRP.Services
                 TokenResetPassword = tokenResetPassword
             };
 
-            CommandResult updateToken = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult updateToken = await baseService.ExecuteNonQueryAsync(criteria);
 
             if (updateToken.IsSuccessful)
             {
-                await SendMailToResetPasswordAsync(username, tokenResetPassword).ConfigureAwait(false);
+                await SendMailToResetPasswordAsync(username, tokenResetPassword);
             }
         }
 
         public async Task SendMailToRegisterOTPAsync(string tokenOTPRegister)
         {
-            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(Constants.DefaultCompanyId).ConfigureAwait(false);
+            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(Constants.DefaultCompanyId);
 
             if (mailSetting != null)
             {
                 var user = await baseService.GetDataEntityAsync<User>(new GetUserByTokenOTPRegisterCriteria
                 {
                     TokenOTPRegister = tokenOTPRegister
-                }).ConfigureAwait(false);
+                });
 
                 var body = emailService.ReadTextFile(EmailTemplateOTPRegistration);
 
@@ -135,7 +135,7 @@ namespace HRP.Services
                     Body = body
                 };
 
-                await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
+                await emailService.SendEmailAsync(mailModel);
             }
         }
 
@@ -147,7 +147,7 @@ namespace HRP.Services
                 IsOTPRegistered = isOTPRegistered
             };
 
-            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria);
 
             return result.IsSuccessful;
         }
@@ -160,18 +160,18 @@ namespace HRP.Services
                 SecretKey = secretKey
             };
 
-            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult result = await baseService.ExecuteNonQueryAsync(criteria);
 
             return result.IsSuccessful;
         }
 
         private async Task SendMailToResetPasswordAsync(string username, string tokenResetPassword)
         {
-            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(Constants.DefaultCompanyId).ConfigureAwait(false);
+            MailSettingModel mailSetting = await mailSettingService.GetMailSettingForSendMailAsync(Constants.DefaultCompanyId);
 
             if (mailSetting != null)
             {
-                User user = await GetUserByUsernameAsync(username).ConfigureAwait(false);
+                User user = await GetUserByUsernameAsync(username);
                 var body = emailService.ReadTextFile(EmailTemplateResetPassword);
 
                 var linkToReset = string.Format(
@@ -195,7 +195,7 @@ namespace HRP.Services
                     Body = body
                 };
 
-                await emailService.SendEmailAsync(mailModel).ConfigureAwait(false);
+                await emailService.SendEmailAsync(mailModel);
             }
         }
 

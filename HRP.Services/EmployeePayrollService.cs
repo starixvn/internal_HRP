@@ -24,7 +24,7 @@
             var criteria = new GetEmployeePayrollCriteria { EmployeeId = employeeId, UserId = userId };
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria))
                 {
                     var viewModel = multi.ReadFirstOrDefault<EmployeePayrollModel>();
 
@@ -112,7 +112,7 @@
                 UpdatedBy = userId
             };
 
-            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         private void DecryptData(EmployeePayrollModel payroll)

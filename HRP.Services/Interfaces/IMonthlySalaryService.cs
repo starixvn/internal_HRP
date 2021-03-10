@@ -9,10 +9,10 @@
 
     public interface IMonthlySalaryService
     {
-        Task<Tuple<MonthlyBasicSalaryModel,
+        Task<(MonthlyBasicSalaryModel,
                 MonthlySalaryModel,
                 IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(int payrollId);
+                IEnumerable<MonthlySalaryDeductionModel>)> GetMonthlySalaryAsync(int payrollId);
 
         Task<CommandResult> EditMonthlySalaryAsync(
             int payrollId,

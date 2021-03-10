@@ -72,7 +72,7 @@
                 UserId = sessionService.UserId,
             };
 
-            var companyTrees = await baseService.GetDataAsync<CompanyTree>(criteria).ConfigureAwait(false);
+            var companyTrees = await baseService.GetDataAsync<CompanyTree>(criteria);
             var hierarchyCompanies = GetHierarchyCompanies(companyTrees, departmentIds);
 
             return Json(hierarchyCompanies);
@@ -86,7 +86,7 @@
             {
                 UserId = sessionService.UserId
             };
-            var employeeStatus = await baseService.GetDataAsync<MultiSelectViewModel>(criteria).ConfigureAwait(false);
+            var employeeStatus = await baseService.GetDataAsync<MultiSelectViewModel>(criteria);
 
             return Json(CombineEmployeeStatus(employeeStatus.ToList(), employmentStatusIds));
         }
@@ -163,9 +163,9 @@
                 ReferenceResource.WorkPermitType2
             };
 
-            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EmployeeProfile).ConfigureAwait(false);
-            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync().ConfigureAwait(false);
-            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EmployeeProfile);
+            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync();
+            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames);
             IEnumerable<ReferenceResourceModel> localCompanies = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalCompany);
             IEnumerable<ReferenceResourceModel> localJobTitles = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalJobTitle);
             IEnumerable<ReferenceResourceModel> employmentTypes = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentType);
@@ -491,9 +491,9 @@
 
             if (payroll != null)
             {
-                Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-                TempData[tuple.Item1.Key] = tuple.Item1.Value;
-                TempData[tuple.Item2.Key] = tuple.Item2.Value;
+                (var rijndaelKey, var rijndaelIV) = rijndaelService.GenerateRijndaelKeyValuePair();
+                TempData[rijndaelKey.Key] = rijndaelKey.Value;
+                TempData[rijndaelIV.Key] = rijndaelIV.Value;
 
                 var viewModel = new EmployeePayrollViewModel
                 {
@@ -504,11 +504,11 @@
                     Nickname = payroll.Nickname,
                     CanRead = payroll.CanRead,
                     CanUpdate = payroll.CanUpdate,
-                    RijndaelKey = tuple.Item1,
-                    RijndaelIV = tuple.Item2,
-                    BasicSalary = InitializeBasicSalaryViewModel(payroll, tuple.Item1.Value, tuple.Item2.Value),
-                    Allowance = InitializeAllowanceViewModel(payroll, tuple.Item1.Value, tuple.Item2.Value),
-                    Deduction = InitializeDeductionViewModel(payroll, tuple.Item1.Value, tuple.Item2.Value)
+                    RijndaelKey = rijndaelKey,
+                    RijndaelIV = rijndaelIV,
+                    BasicSalary = InitializeBasicSalaryViewModel(payroll, rijndaelKey.Value, rijndaelIV.Value),
+                    Allowance = InitializeAllowanceViewModel(payroll, rijndaelKey.Value, rijndaelIV.Value),
+                    Deduction = InitializeDeductionViewModel(payroll, rijndaelKey.Value, rijndaelIV.Value)
                 };
 
                 var currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetActiveCurrencyCodesCriteria());

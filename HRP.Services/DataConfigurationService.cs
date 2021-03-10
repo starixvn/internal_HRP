@@ -42,7 +42,7 @@
 
         public async Task<IEnumerable<SimpleItem>> GetAllCompanyBVIAsync()
         {
-            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria()).ConfigureAwait(false);
+            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria());
 
             if (companies.Any())
             {
@@ -70,7 +70,7 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -82,7 +82,7 @@
                 CompanyId = id
             };
 
-            var company = await baseService.GetDataEntityAsync<Company>(criteria).ConfigureAwait(false);
+            var company = await baseService.GetDataEntityAsync<Company>(criteria);
 
             if (company != null)
             {
@@ -109,7 +109,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -120,7 +120,7 @@
 
         public async Task<IEnumerable<Division>> GetAllDivisionAsync()
         {
-            var divisions = await baseService.GetDataAsync<Division>(new GetAllDivisionCriteria()).ConfigureAwait(false);
+            var divisions = await baseService.GetDataAsync<Division>(new GetAllDivisionCriteria());
 
             return divisions;
         }
@@ -136,14 +136,14 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
 
         public async Task<Division> GetDivisionByIdAsync(int id)
         {
-            var division = await baseService.GetDataEntityAsync<Division>(new GetDivisionByIdCriteria { DivisionId = id }).ConfigureAwait(false);
+            var division = await baseService.GetDataEntityAsync<Division>(new GetDivisionByIdCriteria { DivisionId = id });
 
             return division;
         }
@@ -159,7 +159,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -170,7 +170,7 @@
 
         public async Task<IEnumerable<Department>> GetAllDepartmentAsync()
         {
-            var departments = await baseService.GetDataAsync<Department>(new GetAllDepartmentCriteria()).ConfigureAwait(false);
+            var departments = await baseService.GetDataAsync<Department>(new GetAllDepartmentCriteria());
 
             return departments;
         }
@@ -186,14 +186,14 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
 
         public async Task<Department> GetDepartmentByIdAsync(int id)
         {
-            var department = await baseService.GetDataEntityAsync<Department>(new GetDepartmentByIdCriteria { DepartmentId = id }).ConfigureAwait(false);
+            var department = await baseService.GetDataEntityAsync<Department>(new GetDepartmentByIdCriteria { DepartmentId = id });
 
             return department;
         }
@@ -209,7 +209,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -220,7 +220,7 @@
 
         public async Task<IEnumerable<CostCenter>> GetAllCostCenterAsync()
         {
-            var costCenters = await baseService.GetDataAsync<CostCenter>(new GetAllCostCenterCriteria()).ConfigureAwait(false);
+            var costCenters = await baseService.GetDataAsync<CostCenter>(new GetAllCostCenterCriteria());
 
             return costCenters;
         }
@@ -236,14 +236,14 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
 
         public async Task<CostCenter> GetCostCenterByIdAsync(int id)
         {
-            var costCenter = await baseService.GetDataEntityAsync<CostCenter>(new GetCostCenterByIdCriteria { CostCenterId = id }).ConfigureAwait(false);
+            var costCenter = await baseService.GetDataEntityAsync<CostCenter>(new GetCostCenterByIdCriteria { CostCenterId = id });
 
             return costCenter;
         }
@@ -259,7 +259,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -270,7 +270,7 @@
 
         public async Task<IEnumerable<Section>> GetAllSectionAsync()
         {
-            var sections = await baseService.GetDataAsync<Section>(new GetAllSectionCriteria()).ConfigureAwait(false);
+            var sections = await baseService.GetDataAsync<Section>(new GetAllSectionCriteria());
 
             return sections;
         }
@@ -286,14 +286,14 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
 
         public async Task<Section> GetSectionByIdAsync(int id)
         {
-            var section = await baseService.GetDataEntityAsync<Section>(new GetSectionByIdCriteria { SectionId = id }).ConfigureAwait(false);
+            var section = await baseService.GetDataEntityAsync<Section>(new GetSectionByIdCriteria { SectionId = id });
 
             return section;
         }
@@ -309,7 +309,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -320,7 +320,7 @@
 
         public async Task<IEnumerable<SimpleItem>> GetAllJobCategoryAsync()
         {
-            var jobCategories = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria()).ConfigureAwait(false);
+            var jobCategories = await baseService.GetDataAsync<JobCategory>(new GetAllJobCategoryCriteria());
 
             if (jobCategories.Any())
             {
@@ -348,7 +348,7 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -360,7 +360,7 @@
                 JobCategoryId = id
             };
 
-            var jobCategory = await baseService.GetDataEntityAsync<JobCategory>(criteria).ConfigureAwait(false);
+            var jobCategory = await baseService.GetDataEntityAsync<JobCategory>(criteria);
 
             if (jobCategory != null)
             {
@@ -387,7 +387,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -398,7 +398,7 @@
 
         public async Task<IEnumerable<GradeLevel>> GetAllGradeLevelAsync()
         {
-            var gradeLevelList = await baseService.GetDataAsync<GradeLevel>(new GetAllGradeLevelCriteria()).ConfigureAwait(false);
+            var gradeLevelList = await baseService.GetDataAsync<GradeLevel>(new GetAllGradeLevelCriteria());
 
             return gradeLevelList;
         }
@@ -414,14 +414,14 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
 
         public async Task<GradeLevel> GetGradeLevelByIdAsync(int id)
         {
-            var gradeLevel = await baseService.GetDataEntityAsync<GradeLevel>(new GetGradeLevelByIdCriteria { GradeLevelId = id }).ConfigureAwait(false);
+            var gradeLevel = await baseService.GetDataEntityAsync<GradeLevel>(new GetGradeLevelByIdCriteria { GradeLevelId = id });
 
             return gradeLevel;
         }
@@ -437,7 +437,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -448,7 +448,7 @@
 
         public async Task<IEnumerable<JobGrade>> GetAllJobGradeAsync()
         {
-            var jobGradeList = await baseService.GetDataAsync<JobGrade>(new GetAllJobGradeCriteria()).ConfigureAwait(false);
+            var jobGradeList = await baseService.GetDataAsync<JobGrade>(new GetAllJobGradeCriteria());
 
             return jobGradeList;
         }
@@ -464,14 +464,14 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
 
         public async Task<JobGrade> GetJobGradeByIdAsync(int id)
         {
-            var jobGrade = await baseService.GetDataEntityAsync<JobGrade>(new GetJobGradeByIdCriteria { JobGradeId = id }).ConfigureAwait(false);
+            var jobGrade = await baseService.GetDataEntityAsync<JobGrade>(new GetJobGradeByIdCriteria { JobGradeId = id });
 
             return jobGrade;
         }
@@ -487,7 +487,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -498,7 +498,7 @@
 
         public async Task<IEnumerable<SimpleItem>> GetAllRefResourceItemAsync(string refName)
         {
-            var items = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refName }).ConfigureAwait(false);
+            var items = await baseService.GetDataAsync<ReferenceResourceModel>(new GetRefResourceByNamesCriteria { RefNames = refName });
 
             if (items.Any())
             {
@@ -527,7 +527,7 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -540,7 +540,7 @@
                 RefName = refName
             };
 
-            var item = await baseService.GetDataEntityAsync<ReferenceResourceModel>(criteria).ConfigureAwait(false);
+            var item = await baseService.GetDataEntityAsync<ReferenceResourceModel>(criteria);
 
             if (item != null)
             {
@@ -568,7 +568,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -579,7 +579,7 @@
 
         public async Task<IEnumerable<SimpleItem>> GetAllCurrencyAsync()
         {
-            var currencies = await baseService.GetDataAsync<Currency>(new GetAllCurrencyCriteria()).ConfigureAwait(false);
+            var currencies = await baseService.GetDataAsync<Currency>(new GetAllCurrencyCriteria());
 
             if (currencies.Any())
             {
@@ -607,7 +607,7 @@
                 CreatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -619,7 +619,7 @@
                 CurrencyId = id
             };
 
-            var currency = await baseService.GetDataEntityAsync<Currency>(criteria).ConfigureAwait(false);
+            var currency = await baseService.GetDataEntityAsync<Currency>(criteria);
 
             if (currency != null)
             {
@@ -646,7 +646,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            var commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -657,7 +657,7 @@
 
         public async Task<SelectList> GetCompanyBVISelectListAsync()
         {
-            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria()).ConfigureAwait(false);
+            var companies = await baseService.GetDataAsync<Company>(new GetAllCompanyCriteria());
 
             return new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
         }

@@ -58,8 +58,7 @@
             var monthlyPayrollService = GetMonthlyAllowancesService();
             cryptoService.Decrypt(Arg.Any<string>()).Returns("1");
             monthlyPayrollRepository.GetMonthlyAllowancesAsync(Arg.Any<GetMonthlyAllowanceCriteria>())
-                .Returns(new Tuple<MonthlyAllowanceModel, IEnumerable<MonthlyAllowanceAdditionModel>, IEnumerable<MonthlyAllowanceDeductionModel>, MonthlyPayrollBasicAllowanceModel>
-                (allowance, additions, deductions, basicAllowance));
+                .Returns((allowance, additions, deductions, basicAllowance));
 
             // Act
             var actual = await monthlyPayrollService.GetMonthlyAllowancesAsync(1, DateTime.Today);

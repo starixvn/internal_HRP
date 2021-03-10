@@ -241,7 +241,7 @@
             var actual = await employeeService.GetDataToCreateEmployeeAsync();
 
             // Assert
-            Assert.IsType<Tuple<SelectList, SelectList, SelectList, SelectList>>(actual);
+            Assert.IsType<(SelectList, SelectList, SelectList, SelectList)>(actual);
             Assert.Equal(expected, actual.Item1);
             Assert.Equal(expected, actual.Item2);
             Assert.Equal(expected, actual.Item3);

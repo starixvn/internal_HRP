@@ -36,7 +36,7 @@
                 PayrollId = payrollId
             };
 
-            return await baseService.GetDataEntityAsync<MonthlyPayrollFilterInfoModel>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataEntityAsync<MonthlyPayrollFilterInfoModel>(criteria);
         }
 
         public async Task<IEnumerable<MultiSelectViewModel>> GetHierarchyCompanyAsync(int companyId, string costCenterIds)
@@ -48,20 +48,20 @@
                 CostCenterIds = costCenterIds
             };
 
-            Tuple<IEnumerable<MultiSelectViewModel>, IEnumerable<MultiSelectViewModel>, IEnumerable<MultiSelectViewModel>> tuple =
-                await baseService.FetchMultipleAsync<MultiSelectViewModel, MultiSelectViewModel, MultiSelectViewModel>(criteria).ConfigureAwait(false);
+            (var divisions, var departments, var costcenters) =
+                await baseService.FetchMultipleAsync<MultiSelectViewModel, MultiSelectViewModel, MultiSelectViewModel>(criteria);
 
-            IEnumerable<MultiSelectViewModel> hierarchy = tuple.Item1.Select(division => new MultiSelectViewModel
+            IEnumerable<MultiSelectViewModel> hierarchy = divisions.Select(division => new MultiSelectViewModel
             {
                 Value = division.Value,
                 Text = division.Text,
                 Checked = division.Checked,
-                Items = tuple.Item2.Where(dept => dept.ParentId == division.Value).Select(dept => new MultiSelectViewModel
+                Items = departments.Where(dept => dept.ParentId == division.Value).Select(dept => new MultiSelectViewModel
                 {
                     Value = dept.Value,
                     Text = dept.Text,
                     Checked = dept.Checked,
-                    Items = tuple.Item3.Where(costcenter => costcenter.ParentId == dept.Value).Select(costcenter => new MultiSelectViewModel
+                    Items = costcenters.Where(costcenter => costcenter.ParentId == dept.Value).Select(costcenter => new MultiSelectViewModel
                     {
                         Value = costcenter.Value,
                         Text = costcenter.Text,
@@ -87,18 +87,14 @@
                 WorkingDays = viewModel.WorkingDays
             };
 
-            Tuple<IEnumerable<EmployeeMonthlyPayrollModel>,
-                IEnumerable<EmployeeMonthlyPayrollBasicSalaryModel>,
-                IEnumerable<EmployeeMonthlyPayrollBasicSalaryModel>> tuple = await baseService.FetchMultipleAsync<
+            (var monthlyPayrolls, var basicSalaries, var allowances) = await baseService.FetchMultipleAsync<
                     EmployeeMonthlyPayrollModel,
                     EmployeeMonthlyPayrollBasicSalaryModel,
-                    EmployeeMonthlyPayrollBasicSalaryModel>(criteria).ConfigureAwait(false);
-
-            IEnumerable<EmployeeMonthlyPayrollModel> monthlyPayrolls = tuple.Item1;
+                    EmployeeMonthlyPayrollBasicSalaryModel>(criteria);
             foreach (EmployeeMonthlyPayrollModel monthlyPayroll in monthlyPayrolls)
             {
-                monthlyPayroll.BasicSalary = tuple.Item2.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new EmployeeMonthlyPayrollBasicSalaryModel();
-                monthlyPayroll.Allowance = tuple.Item3.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new EmployeeMonthlyPayrollBasicSalaryModel();
+                monthlyPayroll.BasicSalary = basicSalaries.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new EmployeeMonthlyPayrollBasicSalaryModel();
+                monthlyPayroll.Allowance = allowances.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new EmployeeMonthlyPayrollBasicSalaryModel();
             }
 
             DecryptAmount(monthlyPayrolls);

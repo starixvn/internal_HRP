@@ -1,6 +1,5 @@
 ﻿namespace HRP.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
@@ -51,7 +50,7 @@
                 EmployeeId = employeeId
             };
 
-            return await baseService.GetDataEntityAsync<EmployeeBasicInfo>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataEntityAsync<EmployeeBasicInfo>(criteria);
         }
 
         public async Task<IEnumerable<EmployeeBasicInfo>> GetEmployeesAsync(EmployeeManagementViewModel viewModel)
@@ -65,10 +64,11 @@
                 UserId = sessionService.UserId
             };
 
-            return await baseService.GetDataAsync<EmployeeBasicInfo>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<EmployeeBasicInfo>(criteria);
         }
 
 #pragma warning disable S138 // Functions should not have too many lines of code
+
         public async Task<CommandResult> CreateEmployeeAsync(CreateEmploymentViewModel employee)
 #pragma warning restore S138
         {
@@ -165,11 +165,11 @@
             };
             criteria.PDFPassword = cryptoService.Encrypt(employee.PDFPassword);
 
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
             commandResult.ObjectId = criteria.EmployeeId;
             if (commandResult.IsSuccessful && employee.ProfilePicture != null)
             {
-                await SaveProfilePictureAsync(employee.ProfilePicture, criteria.EmployeeId.ToString()).ConfigureAwait(false);
+                await SaveProfilePictureAsync(employee.ProfilePicture, criteria.EmployeeId.ToString());
             }
 
             return commandResult;
@@ -211,10 +211,10 @@
                 FunctionKey = FunctionKey.EmployeeProfile
             };
 
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
             if (commandResult.IsSuccessful && employee.ProfilePicture != null)
             {
-                await SaveProfilePictureAsync(employee.ProfilePicture, employee.EmployeeId.ToString()).ConfigureAwait(false);
+                await SaveProfilePictureAsync(employee.ProfilePicture, employee.EmployeeId.ToString());
             }
 
             return commandResult;
@@ -229,7 +229,7 @@
                 FunctionKey = FunctionKey.EmployeeProfile
             };
 
-            var employee = await baseService.GetDataEntityAsync<Employee>(criteria).ConfigureAwait(false);
+            var employee = await baseService.GetDataEntityAsync<Employee>(criteria);
 
             return employee;
         }
@@ -241,12 +241,12 @@
                 EmployeeId = employeeId
             };
 
-            var contact = await baseService.GetDataEntityAsync<EmergencyContact>(criteria).ConfigureAwait(false);
+            var contact = await baseService.GetDataEntityAsync<EmergencyContact>(criteria);
 
             return contact;
         }
 
-        public async Task<Tuple<SelectList, SelectList, SelectList, SelectList>> GetDataToCreateEmployeeAsync()
+        public async Task<(SelectList, SelectList, SelectList, SelectList)> GetDataToCreateEmployeeAsync()
         {
             string[] refNames = {
                 ReferenceResource.Gender,
@@ -254,7 +254,7 @@
                 ReferenceResource.MaritalStatus,
                 ReferenceResource.NoOfChildren
             };
-            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
+            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames);
             SelectList genderSelectList = commonService.GetSelectList(
                 commonService.FilterReferenceResources(refResources, ReferenceResource.Gender),
                 nameof(ReferenceResourceModel.ResourceId),
@@ -272,7 +272,7 @@
                 nameof(ReferenceResourceModel.ResourceId),
                 nameof(ReferenceResourceModel.Value));
 
-            return new Tuple<SelectList, SelectList, SelectList, SelectList>(genderSelectList, nationalSelectList, maritalStatusSelectList, noOfChildrenSelectList);
+            return (genderSelectList, nationalSelectList, maritalStatusSelectList, noOfChildrenSelectList);
         }
 
         public CommandResult CheckValidPicture(IFormFile file)
@@ -312,7 +312,7 @@
             {
                 EmployeeId = employeeId
             };
-            Employment employment = await employeeRepository.GetEmploymentByEmployeeIdAsync(criteria).ConfigureAwait(false);
+            Employment employment = await employeeRepository.GetEmploymentByEmployeeIdAsync(criteria);
 
             if (employment != null)
             {
@@ -323,23 +323,24 @@
         }
 
 #pragma warning disable S138 // Functions should not have too many lines of code
+
         public async Task<UpdateEmploymentViewModel> GetDataToUpdateEmploymentAsync(int employeeId)
 #pragma warning restore S138
         {
-            Employment employment = await GetEmploymentByEmployeeIdAsync(employeeId).ConfigureAwait(false);
+            Employment employment = await GetEmploymentByEmployeeIdAsync(employeeId);
             if (employment == null)
             {
                 return null;
             }
 
-            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EmployeeProfile).ConfigureAwait(false);
-            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync().ConfigureAwait(false);
-            IEnumerable<Division> divisions = await commonService.GetDivisionByCompanyIdAsync(employment.CompanyId).ConfigureAwait(false);
-            IEnumerable<Department> departments = await commonService.GetDepartmentByDivisionIdAsync(employment.DivisionId).ConfigureAwait(false);
-            IEnumerable<CostCenter> costCenters = await commonService.GetCostCenterByDepartmentIdAsync(employment.DepartmentId).ConfigureAwait(false);
-            IEnumerable<Section> sections = await commonService.GetSectionByCostCenterIdAsync(employment.CostCenterId).ConfigureAwait(false);
+            IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EmployeeProfile);
+            IEnumerable<JobCategory> jobCategories = await commonService.GetAllJobCategoryAsync();
+            IEnumerable<Division> divisions = await commonService.GetDivisionByCompanyIdAsync(employment.CompanyId);
+            IEnumerable<Department> departments = await commonService.GetDepartmentByDivisionIdAsync(employment.DivisionId);
+            IEnumerable<CostCenter> costCenters = await commonService.GetCostCenterByDepartmentIdAsync(employment.DepartmentId);
+            IEnumerable<Section> sections = await commonService.GetSectionByCostCenterIdAsync(employment.CostCenterId);
             IEnumerable<GradeLevel> gradeLevels = await commonService.GetGradeLevelByJobCategoryIdAsync(employment.JobCategoryId).ConfigureAwait(true);
-            IEnumerable<JobGrade> jobGrades = await commonService.GetJobGradeByGradeLevelIdAsync(employment.GradeLevelId).ConfigureAwait(false);
+            IEnumerable<JobGrade> jobGrades = await commonService.GetJobGradeByGradeLevelIdAsync(employment.GradeLevelId);
 
             string[] refNames = {
                 ReferenceResource.LocalCompany,
@@ -365,7 +366,7 @@
                 ReferenceResource.City,
                 ReferenceResource.Office
             };
-            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames).ConfigureAwait(false);
+            IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames);
             IEnumerable<ReferenceResourceModel> localCompanies = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalCompany);
             IEnumerable<ReferenceResourceModel> localJobTitles = commonService.FilterReferenceResources(refResources, ReferenceResource.LocalJobTitle);
             IEnumerable<ReferenceResourceModel> employmentTypes = commonService.FilterReferenceResources(refResources, ReferenceResource.EmploymentType);
@@ -505,7 +506,9 @@
 
             return viewModel;
         }
+
 #pragma warning disable S138 // Functions should not have too many lines of code
+
         public async Task<CommandResult> UpdateEmploymentAsync(UpdateEmploymentViewModel viewModel)
 #pragma warning restore S138
         {
@@ -602,7 +605,7 @@
 
             criteria.PDFPassword = cryptoService.Encrypt(viewModel.PDFPassword);
 
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return commandResult;
         }
@@ -619,7 +622,7 @@
 
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
-                    await image.CopyToAsync(stream).ConfigureAwait(false);
+                    await image.CopyToAsync(stream);
                 }
             }
         }

@@ -1,6 +1,5 @@
 ﻿namespace HRP.Website.Controllers
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
@@ -9,7 +8,6 @@
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.RefResource;
-    using HRP.Models;
     using HRP.Models.SystemSecurity;
     using HRP.Resources;
     using HRP.Services;
@@ -48,14 +46,14 @@
 
         public IActionResult Generate()
         {
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
             var viewModel = new GenerateCertificateViewModel
             {
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host),
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             return View(viewModel);
@@ -85,26 +83,26 @@
                 }
             }
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
-            viewModel.RijndaelKey = tuple.Item1;
-            viewModel.RijndaelIV = tuple.Item2;
+            viewModel.RijndaelKey = rijndaelKeyPair;
+            viewModel.RijndaelIV = rijndaelIVPair;
 
             return View(viewModel);
         }
 
         public IActionResult Password()
         {
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
             var viewModel = new InputPasswordViewModel
             {
                 IsHost = sessionService.HasPermissionOnFunction(FunctionKey.SecuritySetting, Policy.Host),
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             return View(viewModel);
@@ -131,12 +129,12 @@
                 }
             }
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
-            viewModel.RijndaelKey = tuple.Item1;
-            viewModel.RijndaelIV = tuple.Item2;
+            viewModel.RijndaelKey = rijndaelKeyPair;
+            viewModel.RijndaelIV = rijndaelIVPair;
 
             return View(viewModel);
         }

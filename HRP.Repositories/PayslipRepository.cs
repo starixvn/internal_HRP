@@ -15,13 +15,13 @@
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria).ConfigureAwait(false))
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria))
                 {
-                    var payslips = await multi.ReadAsync<PayslipDetailModel>().ConfigureAwait(false);
-                    var salaryAdditions = await multi.ReadAsync<MonthlySalaryAdditionModel>().ConfigureAwait(false);
-                    var salaryDeductions = await multi.ReadAsync<MonthlySalaryDeductionModel>().ConfigureAwait(false);
-                    var allowanceAdditions = await multi.ReadAsync<MonthlyAllowanceAdditionModel>().ConfigureAwait(false);
-                    var allowanceDeductions = await multi.ReadAsync<MonthlyAllowanceDeductionModel>().ConfigureAwait(false);
+                    var payslips = await multi.ReadAsync<PayslipDetailModel>();
+                    var salaryAdditions = await multi.ReadAsync<MonthlySalaryAdditionModel>();
+                    var salaryDeductions = await multi.ReadAsync<MonthlySalaryDeductionModel>();
+                    var allowanceAdditions = await multi.ReadAsync<MonthlyAllowanceAdditionModel>();
+                    var allowanceDeductions = await multi.ReadAsync<MonthlyAllowanceDeductionModel>();
 
                     foreach (PayslipDetailModel payslip in payslips)
                     {

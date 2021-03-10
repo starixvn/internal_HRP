@@ -55,9 +55,9 @@ namespace HRP.Website.Controllers
         [ServiceFilter(typeof(HRPActionFilterAttribute))]
         public async Task<IActionResult> Index(AccountTab tab = AccountTab.Profile)
         {
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
             var user = await userService.GetUserByUsernameAsync(sessionService.Username);
 
@@ -75,16 +75,16 @@ namespace HRP.Website.Controllers
                 UserProfileViewModel = userProfile,
                 SetupOtpViewModel = new SetupOtpViewModel
                 {
-                    RijndaelKey = tuple.Item1,
-                    RijndaelIV = tuple.Item2
+                    RijndaelKey = rijndaelKeyPair,
+                    RijndaelIV = rijndaelIVPair
                 },
                 ChangePasswordViewModel = new ChangePasswordViewModel
                 {
-                    RijndaelKey = tuple.Item1,
-                    RijndaelIV = tuple.Item2
+                    RijndaelKey = rijndaelKeyPair,
+                    RijndaelIV = rijndaelIVPair
                 },
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             ViewData["Username"] = sessionService.Username;
@@ -173,17 +173,17 @@ namespace HRP.Website.Controllers
                 return RedirectToAction(Logout, Auth);
             }
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
                 AppName = otpConfig.Value.AppName,
                 Username = user.Username,
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             return View("SetupOtp", setupOtpViewModel);
@@ -210,17 +210,17 @@ namespace HRP.Website.Controllers
                 Phone = user.Phone
             };
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
                 AppName = otpConfig.Value.AppName,
                 Username = user.Username,
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             var accountViewModel = new AccountViewModel
@@ -230,8 +230,8 @@ namespace HRP.Website.Controllers
                 SetupOtpViewModel = setupOtpViewModel,
                 ChangePasswordViewModel = new ChangePasswordViewModel(),
                 UserProfileViewModel = userProfile,
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             return View(IndexText, accountViewModel);
@@ -273,14 +273,14 @@ namespace HRP.Website.Controllers
                 return RedirectToAction(Logout, Auth);
             }
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
             var viewModel = new TwoFactorAuthenticatorViewModel
             {
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             return View("VerifyOTP", viewModel);
@@ -316,12 +316,12 @@ namespace HRP.Website.Controllers
 
             ViewData["ErrorMessage"] = Message.InvalidOTP;
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
-            viewModel.RijndaelKey = tuple.Item1;
-            viewModel.RijndaelIV = tuple.Item2;
+            viewModel.RijndaelKey = rijndaelKeyPair;
+            viewModel.RijndaelIV = rijndaelIVPair;
 
             return View("VerifyOTP", viewModel);
         }
@@ -383,13 +383,13 @@ namespace HRP.Website.Controllers
                 new GetMenuByUserIdCriteria
                 {
                     UserId = user.UserId
-                }).ConfigureAwait(false);
+                });
 
             sessionService.Functions = await baseService.GetDataAsync<FunctionModel>(
                 new GetFunctionByUserIdCriteria
                 {
                     UserId = user.UserId
-                }).ConfigureAwait(false);
+                });
         }
 
         private async Task SignUserIn(User user)

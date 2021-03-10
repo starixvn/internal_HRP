@@ -36,7 +36,7 @@
         public async Task<MonthlyAllowancesModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month)
         {
             var criteria = new GetMonthlyAllowanceCriteria { PayrollId = payrollId };
-            var result = await monthlyPayrollRepository.GetMonthlyAllowancesAsync(criteria).ConfigureAwait(false);
+            var result = await monthlyPayrollRepository.GetMonthlyAllowancesAsync(criteria);
             var model = new MonthlyAllowancesModel
             {
                 Month = month,
@@ -89,7 +89,7 @@
                 Status = status
             };
 
-            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         public MonthlyAllowanceModel InitializeMonthlyAllowance(

@@ -117,18 +117,18 @@
             var filePassword = await reportService.GetUserFilePasswordAsync(sessionService.UserId);
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.DirectBankingReport);
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
             var viewModel = new BankInReportViewModel
             {
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 SelectedTime = DateTime.Now,
                 BankType = BankTypes.DirectBanking,
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2,
-                EncryptedPassword = rijndaelService.Encrypt(filePassword, tuple.Item1.Value, tuple.Item2.Value)
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair,
+                EncryptedPassword = rijndaelService.Encrypt(filePassword, rijndaelKeyPair.Value, rijndaelIVPair.Value)
             };
 
             return View(viewModel);
@@ -177,17 +177,17 @@
             var filePassword = await reportService.GetUserFilePasswordAsync(sessionService.UserId);
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.EbankingReport);
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
             var viewModel = new BankInReportViewModel
             {
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 SelectedTime = DateTime.Now,
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2,
-                EncryptedPassword = rijndaelService.Encrypt(filePassword, tuple.Item1.Value, tuple.Item2.Value)
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair,
+                EncryptedPassword = rijndaelService.Encrypt(filePassword, rijndaelKeyPair.Value, rijndaelIVPair.Value)
             };
 
             return View(viewModel);
@@ -234,9 +234,9 @@
         [HRPPermission(FunctionKey = FunctionKey.DynamicReport, Policy = Policy.Read)]
         public async Task<IActionResult> DynamicReport()
         {
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
             var filePassword = await reportService.GetUserFilePasswordAsync(sessionService.UserId);
 
@@ -264,10 +264,10 @@
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 }),
                 EmployeeStatusIds = string.Join(",", employeeStatusIds),
-                EncryptedPassword = rijndaelService.Encrypt(filePassword, tuple.Item1.Value, tuple.Item2.Value),
+                EncryptedPassword = rijndaelService.Encrypt(filePassword, rijndaelKeyPair.Value, rijndaelIVPair.Value),
                 Groups = ColumnsConfiguration.DynamicReportGroups,
-                RijndaelKey = tuple.Item1,
-                RijndaelIV = tuple.Item2
+                RijndaelKey = rijndaelKeyPair,
+                RijndaelIV = rijndaelIVPair
             };
 
             return View("DynamicReport", viewModel);
@@ -305,12 +305,12 @@
             viewModel.Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             viewModel.Groups = ColumnsConfiguration.DynamicReportGroups;
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            TempData[tuple.Item1.Key] = tuple.Item1.Value;
-            TempData[tuple.Item2.Key] = tuple.Item2.Value;
+            (var rijndaelKeyPair, var rijndaelIVPair) = rijndaelService.GenerateRijndaelKeyValuePair();
+            TempData[rijndaelKeyPair.Key] = rijndaelKeyPair.Value;
+            TempData[rijndaelIVPair.Key] = rijndaelIVPair.Value;
 
-            viewModel.RijndaelKey = tuple.Item1;
-            viewModel.RijndaelIV = tuple.Item2;
+            viewModel.RijndaelKey = rijndaelKeyPair;
+            viewModel.RijndaelIV = rijndaelIVPair;
 
             return View("DynamicReport", viewModel);
         }

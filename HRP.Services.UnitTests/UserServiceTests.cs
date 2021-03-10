@@ -1,6 +1,7 @@
 namespace HRP.Services.UnitTests
 {
     using System.Threading.Tasks;
+    using AutoFixture;
     using BCrypt.Net;
     using Core.Model;
     using Core.Services;
@@ -15,6 +16,7 @@ namespace HRP.Services.UnitTests
 
     public class UserServiceTests
     {
+        private readonly IFixture fixture = new Fixture();
         private IHttpContextAccessor httpContextAccessor;
         private IBaseMailService emailService;
         private IBaseService baseService;
@@ -30,13 +32,15 @@ namespace HRP.Services.UnitTests
             {
                 Code = 0
             };
+            var criteria = new UpdateTokenOTPRegisterCriteria();
             var userService = GetUserService();
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateTokenOTPRegisterCriteria>(x => criteria = x)).Returns(commandResult);
 
             // Act
             var token = await userService.GenerateTokenOTPRegisterAsync("test");
 
             // Assert
+            Assert.Equal("test", criteria.Username);
             Assert.NotNull(token);
         }
 
@@ -48,13 +52,15 @@ namespace HRP.Services.UnitTests
             {
                 Code = 1
             };
+            var criteria = new UpdateTokenOTPRegisterCriteria();
             var userService = GetUserService();
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateTokenOTPRegisterCriteria>(x => criteria = x)).Returns(commandResult);
 
             // Act
-            var token = await userService.GenerateTokenOTPRegisterAsync(Arg.Any<string>());
+            var token = await userService.GenerateTokenOTPRegisterAsync("test");
 
             // Assert
+            Assert.Equal("test", criteria.Username);
             Assert.Null(token);
         }
 
@@ -64,14 +70,16 @@ namespace HRP.Services.UnitTests
         public async Task GetUserByUsername_WhenCalled_ReturnExpectedUser()
         {
             // Arrange
-            var expected = new User();
+            var expected = fixture.Create<User>();
+            var criteria = new GetUserByUsernameCriteria();
             var userService = GetUserService();
-            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByUsernameCriteria>()).Returns(expected);
+            baseService.GetDataEntityAsync<User>(Arg.Do<GetUserByUsernameCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await userService.GetUserByUsernameAsync(Arg.Any<string>());
+            var actual = await userService.GetUserByUsernameAsync("test");
 
             // Assert
+            Assert.Equal("test", criteria.Username);
             Assert.Equal(expected, actual);
         }
 
@@ -79,14 +87,16 @@ namespace HRP.Services.UnitTests
         public async Task GetUserByTokenOTPRegister_WhenCalled_ReturnExpectedUser()
         {
             // Arrange
-            var expected = new User();
+            var expected = fixture.Create<User>();
+            var criteria = new GetUserByTokenOTPRegisterCriteria();
             var userService = GetUserService();
-            baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenOTPRegisterCriteria>()).Returns(expected);
+            baseService.GetDataEntityAsync<User>(Arg.Do<GetUserByTokenOTPRegisterCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await userService.GetUserByTokenOTPRegisterAsync(Arg.Any<string>());
+            var actual = await userService.GetUserByTokenOTPRegisterAsync("token");
 
             // Assert
+            Assert.Equal("token", criteria.TokenOTPRegister);
             Assert.Equal(expected, actual);
         }
 
@@ -122,14 +132,17 @@ namespace HRP.Services.UnitTests
         public async Task ResetTokenOTPRegister_WhenCalled_ReturnAsExpected()
         {
             // Arrange
-            var commandResult = new CommandResult();
+            var commandResult = fixture.Create<CommandResult>();
+            var criteria = new UpdateTokenOTPRegisterCriteria();
             var userService = GetUserService();
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateTokenOTPRegisterCriteria>()).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateTokenOTPRegisterCriteria>(x => criteria = x)).Returns(commandResult);
 
             // Act
-            var result = await userService.ResetTokenOTPRegisterAsync(Arg.Any<string>());
+            var result = await userService.ResetTokenOTPRegisterAsync("test");
 
             // Assert
+            Assert.Equal("test", criteria.Username);
+            Assert.Null(criteria.TokenOTPRegister);
             Assert.Equal(commandResult.IsSuccessful, result);
         }
 

@@ -145,7 +145,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var reportController = GetReportController();
             reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
@@ -168,7 +168,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var reportController = GetReportController();
             reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
@@ -347,7 +347,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
 
             var reportController = GetReportController();
             reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
@@ -431,7 +431,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
 
             var reportController = GetReportController();
             reportController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
@@ -517,7 +517,7 @@
         private static IRijndaelService FakeRijndaelService()
         {
             var service = Substitute.For<IRijndaelService>();
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
+            var tuple = (new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
             service.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             return service;

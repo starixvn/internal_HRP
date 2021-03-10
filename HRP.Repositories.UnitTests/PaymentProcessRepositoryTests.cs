@@ -45,7 +45,7 @@
             var actual = await repository.GetUploadingFilesResultAsync(criteria);
 
             // Assert
-            Assert.IsType<Tuple<PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>>>(actual);
+            Assert.IsType<(PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>)>(actual);
             Assert.Equal(paymentProcess, actual.Item1);
             Assert.Equal(validationResults, actual.Item2);
             Assert.Equal(validationResults, actual.Item3);

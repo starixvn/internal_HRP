@@ -24,7 +24,7 @@
         {
             var criteria = new GetMailSettingCriteria();
 
-            return await baseService.GetDataAsync<MailSettingModel>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataAsync<MailSettingModel>(criteria);
         }
 
         public async Task<MailSettingModel> GetMailSettingByCompanyIdAsync(int companyId)
@@ -34,7 +34,7 @@
                 CompanyId = companyId
             };
 
-            return await baseService.GetDataEntityAsync<MailSettingModel>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataEntityAsync<MailSettingModel>(criteria);
         }
 
         public async Task<MailSettingModel> GetMailSettingForSendMailAsync(int companyId)
@@ -44,7 +44,7 @@
                 CompanyId = companyId
             };
 
-            return await baseService.GetDataEntityAsync<MailSettingModel>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataEntityAsync<MailSettingModel>(criteria);
         }
 
         public async Task<CommandResult> EditMailSettingAsync(MailSettingModel mailSetting)
@@ -60,7 +60,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
     }
 }

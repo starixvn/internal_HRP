@@ -27,11 +27,9 @@
         public async Task GetMonthlySalaryAsync_MonthlyPayrollIsNotExisted_ReturnAsExpected()
         {
             // Arrange
-            var monthlyPayroll = new Tuple<MonthlyBasicSalaryModel,
-                MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>(
-                    null,
+            MonthlyBasicSalaryModel monthlyBasicSalary = null;
+            var monthlyPayroll = (
+                    monthlyBasicSalary,
                     new MonthlySalaryModel(),
                     new List<MonthlySalaryAdditionModel>(),
                     new List<MonthlySalaryDeductionModel>());
@@ -50,10 +48,7 @@
         {
             // Arrange
             var plainText = "1234";
-            var tuple = new Tuple<MonthlyBasicSalaryModel,
-                MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>(new MonthlyBasicSalaryModel { WorkingDays = 10 },
+            var tuple = (new MonthlyBasicSalaryModel { WorkingDays = 10 },
                     new MonthlySalaryModel { CurrencyCode = "USD" },
                     new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                     new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() });
@@ -237,6 +232,7 @@
         {
             // Arrange
             var workingMonth = new DateTime(2018, 3, 1);
+            var groupStartDate = new DateTime(2018, 1, 1);
             var currencyExchangeRates = new List<CurrencyExchangeRateModel>
             {
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = currencyId, ExchangeRate = 1 }
@@ -256,7 +252,7 @@
 
             // Act
             monthlyPayrollService.CalculateBackPayAndAfterAdjustment(
-                currencyExchangeRates, workingMonth, basicSetting, backPay, Arg.Any<DateTime>(), Arg.Any<DateTime>());
+                currencyExchangeRates, workingMonth, basicSetting, backPay, groupStartDate, null);
 
             // Assert
             Assert.Equal(backPayAmount, backPay.UnitAmount);

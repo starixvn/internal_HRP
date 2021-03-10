@@ -204,14 +204,7 @@
             var result = new UploadAttendanceAndSalaryViewModel();
             if (criteria.IsValid())
             {
-                Tuple<PaymentProcess,
-                    IEnumerable<ValidationResult>,
-                    IEnumerable<ValidationResult>> uploadingResults = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria);
-
-                var paymentProcess = uploadingResults.Item1;
-                var attendanceErrors = uploadingResults.Item2;
-                var dstNetSalaryErrors = uploadingResults.Item3;
-
+                (var paymentProcess, var attendanceErrors, var dstNetSalaryErrors) = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria);
                 if (paymentProcess != null)
                 {
                     result.CompanyId = paymentProcess.CompanyId;

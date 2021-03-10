@@ -9,14 +9,6 @@
 
     public static class CalculationService
     {
-        /// <summary>
-        /// Round amount based on currency
-        /// </summary>
-        /// <param name="amount">amount</param>
-        /// <param name="currencyCode">currency code</param>
-        /// <param name="digits">number of decimal place</param>
-        /// <param name="roundingThousand">In case currency is VND, round the amount to thousand or zero</param>
-        /// <returns></returns>
         private const int Thousand = 1000;
 
         public static decimal RoundAmountWithCurrency(decimal amount, string currencyCode, int digits = 2, bool roundingThousand = true)

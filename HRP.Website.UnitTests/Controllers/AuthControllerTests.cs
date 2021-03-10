@@ -52,7 +52,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var authController = GetAuthController();
             authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
@@ -131,7 +131,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var authController = GetAuthController();
             authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             var model = new LoginViewModel
@@ -254,7 +254,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var model = new ResetPasswordViewModel
             {
                 Password = "1234aa",
@@ -300,7 +300,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var authController = GetAuthController();
             authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             baseService.GetDataEntityAsync<User>(Arg.Any<GetUserByTokenResetPasswordCriteria>()).Returns(user);
@@ -328,7 +328,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var authController = GetAuthController();
             authController.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             authController.ModelState.AddModelError("", "Error");
@@ -395,7 +395,7 @@
         private static IRijndaelService FakeRijndaelService()
         {
             var service = Substitute.For<IRijndaelService>();
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
+            var tuple = (new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
             service.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             return service;

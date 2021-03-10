@@ -73,11 +73,11 @@
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> tuple = rijndaelService.GenerateRijndaelKeyValuePair();
-            ViewData["RijndaelKey"] = tuple.Item1.Value;
-            ViewData["RijndaelIV"] = tuple.Item2.Value;
+            (var rijndaelKey, var rijndaelIV) = rijndaelService.GenerateRijndaelKeyValuePair();
+            ViewData["RijndaelKey"] = rijndaelKey.Value;
+            ViewData["RijndaelIV"] = rijndaelIV.Value;
 
-            EncryptPayslipDetails(payslipDetails, tuple.Item1.Value, tuple.Item2.Value);
+            EncryptPayslipDetails(payslipDetails, rijndaelKey.Value, rijndaelIV.Value);
 
             return View(payslipDetails);
         }

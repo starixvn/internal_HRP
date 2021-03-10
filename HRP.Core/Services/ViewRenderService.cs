@@ -57,7 +57,7 @@
                     new HtmlHelperOptions()
                 );
 
-                await viewResult.View.RenderAsync(viewContext).ConfigureAwait(false);
+                await viewResult.View.RenderAsync(viewContext);
 
                 return sw.ToString();
             }

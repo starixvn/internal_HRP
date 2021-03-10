@@ -73,6 +73,11 @@
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="www\sources\js\" />
+    <Folder Include="www\sources\css\" />
+  </ItemGroup>
+
   <Target Name="CreateLogsFolder" AfterTargets="AfterPublish">
     <MakeDir Directories="$(PublishDir)logs" Condition="!Exists('$(PublishDir)logs')" />
     <MakeDir Directories="$(PublishUrl)logs" Condition="!Exists('$(PublishUrl)logs')" />

@@ -8,7 +8,7 @@
 
     public interface IPaymentProcessRepository
     {
-        Task<Tuple<PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>>> GetUploadingFilesResultAsync(ICriteria criteria);
+        Task<(PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>)> GetUploadingFilesResultAsync(ICriteria criteria);
 
         Task<GeneratePayrollModel> GetDataForGeneratePayroll(ICriteria criteria);
     }

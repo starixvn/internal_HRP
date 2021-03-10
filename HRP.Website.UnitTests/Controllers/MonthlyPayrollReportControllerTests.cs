@@ -43,7 +43,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var controller = GetController();
@@ -80,7 +80,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var companies = new List<Company> { new Company { CompanyId = 1, Name = "DAR" } };
             var companySelectList = new SelectList(companies, nameof(Company.CompanyId), nameof(Company.Code));
             var controller = GetController();
@@ -139,7 +139,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var report = new MonthlyPayrollReport
             {
                 Employees = new List<EmployeeBasicInfo>(),
@@ -230,7 +230,7 @@
         private static IRijndaelService FakeRijndaelService()
         {
             var service = Substitute.For<IRijndaelService>();
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
+            var tuple = (new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
             service.GenerateRijndaelKeyValuePair().Returns(tuple);
 
             return service;

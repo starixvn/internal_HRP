@@ -24,7 +24,7 @@ namespace HRP.Core.Services
         {
             if (criteria != null && criteria.IsValid())
             {
-                return await dynamicRepository.FetchAsync<T>(criteria).ConfigureAwait(false);
+                return await dynamicRepository.FetchAsync<T>(criteria);
             }
 
             return new List<T>();
@@ -34,7 +34,7 @@ namespace HRP.Core.Services
         {
             if (criteria != null && criteria.IsValid())
             {
-                return await dynamicRepository.GetAsync<T>(criteria).ConfigureAwait(false);
+                return await dynamicRepository.GetAsync<T>(criteria);
             }
 
             return default(T);
@@ -44,7 +44,7 @@ namespace HRP.Core.Services
         {
             if (criteria != null && criteria.IsValid())
             {
-                return await dynamicRepository.FetchMultipleAsync<TFirst, TSecond>(criteria).ConfigureAwait(false);
+                return await dynamicRepository.FetchMultipleAsync<TFirst, TSecond>(criteria);
             }
 
             return new Tuple<IEnumerable<TFirst>, IEnumerable<TSecond>>(new List<TFirst>(), new List<TSecond>());
@@ -54,7 +54,7 @@ namespace HRP.Core.Services
         {
             if (criteria != null && criteria.IsValid())
             {
-                return await dynamicRepository.FetchMultipleAsync<TFirst, TSecond, TThird>(criteria).ConfigureAwait(false);
+                return await dynamicRepository.FetchMultipleAsync<TFirst, TSecond, TThird>(criteria);
             }
 
             return new Tuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>(new List<TFirst>(), new List<TSecond>(), new List<TThird>());
@@ -66,7 +66,7 @@ namespace HRP.Core.Services
 
             if (criteria != null && criteria.IsValid())
             {
-                commandResult = await baseRepository.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+                commandResult = await baseRepository.ExecuteNonQueryAsync(criteria);
             }
 
             return commandResult;

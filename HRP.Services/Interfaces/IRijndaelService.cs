@@ -1,11 +1,10 @@
 ﻿namespace HRP.Services
 {
-    using System;
     using HRP.Models;
 
     public interface IRijndaelService
     {
-        Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair> GenerateRijndaelKeyValuePair();
+        (RijndaelKeyValuePair, RijndaelKeyValuePair) GenerateRijndaelKeyValuePair();
 
         string Decrypt(string cipherText, string rijndaelKey, string rijndaelIV);
 

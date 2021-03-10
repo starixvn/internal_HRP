@@ -14,7 +14,7 @@
 
         Task<IEnumerable<EmployeeBasicInfo>> GetEmployeesAsync(EmployeeManagementViewModel viewModel);
 
-        Task<Tuple<SelectList, SelectList, SelectList, SelectList>> GetDataToCreateEmployeeAsync();
+        Task<(SelectList, SelectList, SelectList, SelectList)> GetDataToCreateEmployeeAsync();
 
         Task<CommandResult> CreateEmployeeAsync(CreateEmploymentViewModel employee);
 

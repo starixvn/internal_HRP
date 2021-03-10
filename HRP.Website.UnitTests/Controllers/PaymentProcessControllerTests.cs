@@ -659,11 +659,12 @@
         public async Task EmployeeMonthlyPayroll_HasNotPermission_ReturnRedirectToAccessDenied()
         {
             // Arrange
+            var month = new DateTime(2021, 3, 1);
             var controller = GetPaymentProcessController();
-            sessionService.HasPermissionOnCompany(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<Policy>()).Returns(false);
+            sessionService.HasPermissionOnCompany(1, "PaymentProcess", Policy.Read).Returns(false);
 
             // Act
-            var actual = await controller.EmployeeMonthlyPayroll(Arg.Any<int>(), Arg.Any<DateTime>());
+            var actual = await controller.EmployeeMonthlyPayroll(1, month);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -678,7 +679,7 @@
             var companyId = 1;
             var employeeId = 31;
             var month = DateTime.Now;
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
+            var tuple = (new RijndaelKeyValuePair(), new RijndaelKeyValuePair());
             var cipherText = "1234abc";
             var filterInfo = new MonthlyPayrollFilterInfoModel();
             var employeePayrolls = new List<EmployeeMonthlyPayrollModel>
@@ -730,11 +731,9 @@
         public async Task EditBasicSalary_MonthlyPayrollIsNotExisted_ReturnRedirectToPageNotFound()
         {
             // Arrange
-            var monthlyPayroll = new Tuple<MonthlyBasicSalaryModel,
-                MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>(
-                    null,
+            MonthlyBasicSalaryModel monthlyBasicSalary = null;
+            var monthlyPayroll = (
+                    monthlyBasicSalary,
                     new MonthlySalaryModel(),
                     new List<MonthlySalaryAdditionModel>(),
                     new List<MonthlySalaryDeductionModel>());
@@ -758,10 +757,7 @@
             var companyId = 1;
             var payrollId = 1;
             var month = DateTime.Now;
-            var monthlyPayroll = new Tuple<MonthlyBasicSalaryModel,
-                MonthlySalaryModel,
-                IEnumerable<MonthlySalaryAdditionModel>,
-                IEnumerable<MonthlySalaryDeductionModel>>(new MonthlyBasicSalaryModel { WorkingDays = 10 },
+            var monthlyPayroll = (new MonthlyBasicSalaryModel { WorkingDays = 10 },
                     new MonthlySalaryModel { CurrencyCode = "USD" },
                     new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() },
                     new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() });
@@ -773,7 +769,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var cipherText = "1234abc";
             var bankAccounts = new List<BankAccount>
             {
@@ -1052,7 +1048,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var companyId = 1;
             var controller = GetPaymentProcessController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());

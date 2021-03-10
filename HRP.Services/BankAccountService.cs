@@ -30,13 +30,13 @@
                 IsActive = isActive
             };
 
-            return (await baseService.GetDataAsync<BankAccount>(criteria).ConfigureAwait(false)).ToList();
+            return (await baseService.GetDataAsync<BankAccount>(criteria)).ToList();
         }
 
         public async Task<BankAccount> GetBankAccountByIdAsync(int bankAccountId)
         {
             var criteria = new GetBankAccountByIdCriteria { Id = bankAccountId };
-            return await baseService.GetDataEntityAsync<BankAccount>(criteria).ConfigureAwait(false);
+            return await baseService.GetDataEntityAsync<BankAccount>(criteria);
         }
 
         public async Task<CommandResult> CreateBankAccountAsync(CreateBankAccountViewModel bankAccount)
@@ -57,7 +57,7 @@
                 CreatedBy = sessionService.UserId
             };
 
-            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         public async Task<CommandResult> EditBankAccountAsync(EditBankAccountViewModel bankAccount)
@@ -79,7 +79,7 @@
                 UpdatedBy = sessionService.UserId
             };
 
-            return await baseService.ExecuteNonQueryAsync(criteria).ConfigureAwait(false);
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
     }
 }

@@ -5,7 +5,6 @@
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
-    using Core.Constants;
     using Core.Enumerations;
     using Core.Services;
     using Criteria;
@@ -119,9 +118,8 @@
             var report = await reportRepository.GetDataForMonthlyPayrollReportAsync(criteria);
             report.Month = month;
 
-            var USDCurrencyId = report.CurrencyList?.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.USDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId;
             DecryptMonthlyBasicSalaryList(report.MonthlyBasicSalary);
-            DecryptMonthlySalaryListAndConvertAmount(report.MonthlySalary, report.CurrencyExchangeRate, currencyId, USDCurrencyId);
+            DecryptMonthlySalaryListAndConvertAmount(report.MonthlySalary);
             DecryptMonthlyBasicAllowanceListAndConvertAmount(report.MonthlyBasicAllowance, report.CurrencyExchangeRate);
             DecryptMonthlyAllowanceListAndConvertAmount(report.MonthlyAllowance, report.CurrencyExchangeRate);
 
@@ -140,11 +138,7 @@
             }
         }
 
-        private void DecryptMonthlySalaryListAndConvertAmount(
-            IEnumerable<MonthlySalaryModel> salaryList,
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            int currencyId,
-            int? USDCurrencyId)
+        private void DecryptMonthlySalaryListAndConvertAmount(IEnumerable<MonthlySalaryModel> salaryList)
         {
             if (salaryList != null && salaryList.Any())
             {
@@ -160,13 +154,6 @@
                     salary.CashAmount = cryptoService.Decrypt(salary.CashAmount);
                     salary.AdditionAmount = CalculationService.RoundAmountWithCurrency(additionAmount, salary.CurrencyCode).ToString(CultureInfo.InvariantCulture);
                     salary.DeductionAmount = CalculationService.RoundAmountWithCurrency(deductionAmount, salary.CurrencyCode).ToString(CultureInfo.InvariantCulture);
-
-                    salary.SalaryAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, currencyId);
-                    salary.SalaryAmountInUSD = CalculationService.ConvertAmount(currencyExchangeRates, salary.Salary, salary.CurrencyId, USDCurrencyId);
-                    salary.EbankingAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.EbankingAmount, salary.EbankingCurrencyId, currencyId);
-                    salary.DirectBanking1AmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.DirectBanking1Amount, salary.DirectBanking1CurrencyId, currencyId);
-                    salary.DirectBanking2AmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.DirectBanking2Amount, salary.DirectBanking2CurrencyId, currencyId);
-                    salary.CashAmountInMYR = CalculationService.ConvertAmount(currencyExchangeRates, salary.CashAmount, salary.CashCurrencyId, currencyId);
                 }
             }
         }

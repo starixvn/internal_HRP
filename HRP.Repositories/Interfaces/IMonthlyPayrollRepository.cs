@@ -1,6 +1,5 @@
 ﻿namespace HRP.Repositories
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Fanex.Data.Repository;
@@ -9,14 +8,14 @@
 
     public interface IMonthlyPayrollRepository
     {
-        Task<Tuple<MonthlyBasicSalaryModel,
+        Task<(MonthlyBasicSalaryModel,
             MonthlySalaryModel,
             IEnumerable<MonthlySalaryAdditionModel>,
-            IEnumerable<MonthlySalaryDeductionModel>>> GetMonthlySalaryAsync(ICriteria criteria);
+            IEnumerable<MonthlySalaryDeductionModel>)> GetMonthlySalaryAsync(ICriteria criteria);
 
-        Task<Tuple<MonthlyAllowanceModel,
+        Task<(MonthlyAllowanceModel,
             IEnumerable<MonthlyAllowanceAdditionModel>,
             IEnumerable<MonthlyAllowanceDeductionModel>,
-            MonthlyPayrollBasicAllowanceModel>> GetMonthlyAllowancesAsync(ICriteria criteria);
+            MonthlyPayrollBasicAllowanceModel)> GetMonthlyAllowancesAsync(ICriteria criteria);
     }
 }

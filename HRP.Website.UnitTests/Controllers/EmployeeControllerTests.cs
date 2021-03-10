@@ -159,7 +159,7 @@
         public async Task CreateEmployee_CheckViewResult_ReturnExpectedCreateEmployeeViewModel()
         {
             // Arrange
-            var tuple = new Tuple<SelectList, SelectList, SelectList, SelectList>(
+            var tuple = (
                     new SelectList(new List<string> { "item1" }, "val1", "text1"),
                     new SelectList(new List<string> { "item2" }, "val2", "text2"),
                     new SelectList(new List<string> { "item3" }, "val3", "text3"),
@@ -824,7 +824,7 @@
                 Key = "key",
                 Value = "value"
             };
-            var tuple = new Tuple<RijndaelKeyValuePair, RijndaelKeyValuePair>(rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
             var employeeId = 1;
             var serviceModel = new EmployeePayrollModel
             {
@@ -1041,7 +1041,7 @@
             return controller;
         }
 
-        private Tuple<List<CompanyTree>, List<MultiSelectViewModel>, string> PrepareDataForGetDepartmentTest()
+        private (List<CompanyTree>, List<MultiSelectViewModel>, string) PrepareDataForGetDepartmentTest()
         {
             string departmentIds = "4";
             var expectedCompanyList = new List<CompanyTree>
@@ -1146,7 +1146,7 @@
                 }
             };
 
-            return new Tuple<List<CompanyTree>, List<MultiSelectViewModel>, string>(expectedCompanyList, expected, departmentIds);
+            return (expectedCompanyList, expected, departmentIds);
         }
 
         private Employee MockEmployee()
@@ -1185,7 +1185,7 @@
             return new SelectList(refResource, "ResourceId", "Value");
         }
 
-        private Tuple<SelectList, SelectList, SelectList, SelectList> MockTupleSelectList()
+        private (SelectList, SelectList, SelectList, SelectList) MockTupleSelectList()
         {
             var refResources = new List<ReferenceResourceModel>
             {
@@ -1199,7 +1199,7 @@
             var maritalStatusSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.MaritalStatus)));
             var noOfChildrenSelectList = GetSelectList(refResources.Where(x => x.RefName.Equals(ReferenceResource.NoOfChildren)));
 
-            return new Tuple<SelectList, SelectList, SelectList, SelectList>(genderSelectList, nationalSelectList, maritalStatusSelectList, noOfChildrenSelectList);
+            return (genderSelectList, nationalSelectList, maritalStatusSelectList, noOfChildrenSelectList);
         }
 
         #endregion Helpers
