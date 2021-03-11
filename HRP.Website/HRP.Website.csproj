@@ -22,6 +22,61 @@
     <None Remove="App_Data\ColumnsConfiguration.xml" />
     <None Remove="App_Data\SPNames.xml" />
     <None Remove="logs\log.txt" />
+    <None Remove="www\sources\css\abstracts\_mixins.scss" />
+    <None Remove="www\sources\css\abstracts\_variables.scss" />
+    <None Remove="www\sources\css\base\reset.css" />
+    <None Remove="www\sources\css\base\_font-roboto.scss" />
+    <None Remove="www\sources\css\base\_scaffolding.scss" />
+    <None Remove="www\sources\css\components\_buttons.scss" />
+    <None Remove="www\sources\css\components\_checkbox.scss" />
+    <None Remove="www\sources\css\components\_customize-autocomplete.scss" />
+    <None Remove="www\sources\css\components\_customize-fanex-multiSelect.scss" />
+    <None Remove="www\sources\css\components\_customize-jquery-contextMenu.scss" />
+    <None Remove="www\sources\css\components\_customize-select2.scss" />
+    <None Remove="www\sources\css\components\_dropdown.scss" />
+    <None Remove="www\sources\css\components\_forms.scss" />
+    <None Remove="www\sources\css\components\_loading.scss" />
+    <None Remove="www\sources\css\components\_messages.scss" />
+    <None Remove="www\sources\css\components\_panels.scss" />
+    <None Remove="www\sources\css\components\_popups.scss" />
+    <None Remove="www\sources\css\components\_progress-bar.scss" />
+    <None Remove="www\sources\css\components\_radio.scss" />
+    <None Remove="www\sources\css\components\_status.scss" />
+    <None Remove="www\sources\css\components\_steps.scss" />
+    <None Remove="www\sources\css\components\_tables.scss" />
+    <None Remove="www\sources\css\components\_tabs.scss" />
+    <None Remove="www\sources\css\components\_textbox.scss" />
+    <None Remove="www\sources\css\components\_tooltip.scss" />
+    <None Remove="www\sources\css\layout\_before-login.scss" />
+    <None Remove="www\sources\css\pages\auth\otp.scss" />
+    <None Remove="www\sources\css\pages\before-login\common.scss" />
+    <None Remove="www\sources\css\pages\before-login\login.scss" />
+    <None Remove="www\sources\css\pages\currency-setting\index.scss" />
+    <None Remove="www\sources\css\pages\data-configuration\index.scss" />
+    <None Remove="www\sources\css\pages\employee\bank-details.scss" />
+    <None Remove="www\sources\css\pages\employee\create.scss" />
+    <None Remove="www\sources\css\pages\employee\index.scss" />
+    <None Remove="www\sources\css\pages\employee\payroll.scss" />
+    <None Remove="www\sources\css\pages\employee\_common.scss" />
+    <None Remove="www\sources\css\pages\errors\error.scss" />
+    <None Remove="www\sources\css\pages\mail-setting\edit.scss" />
+    <None Remove="www\sources\css\pages\mail-setting\index.scss" />
+    <None Remove="www\sources\css\pages\main.scss" />
+    <None Remove="www\sources\css\pages\payment-process\edit-basic-salary.scss" />
+    <None Remove="www\sources\css\pages\payment-process\monthly-payroll.scss" />
+    <None Remove="www\sources\css\pages\payment-process\upload-files.scss" />
+    <None Remove="www\sources\css\pages\payment-process\_payment-process.scss" />
+    <None Remove="www\sources\css\pages\payslip\details.scss" />
+    <None Remove="www\sources\css\pages\payslip\index.scss" />
+    <None Remove="www\sources\css\pages\payslip\pdf.scss" />
+    <None Remove="www\sources\css\pages\report\direct-banking-report.scss" />
+    <None Remove="www\sources\css\pages\report\dynamic-report.scss" />
+    <None Remove="www\sources\css\pages\report\ebanking-report.scss" />
+    <None Remove="www\sources\css\pages\report\monthly-payroll-report.scss" />
+    <None Remove="www\sources\css\pages\system-security\certificate.scss" />
+    <None Remove="www\sources\css\pages\system-security\changepassword.scss" />
+    <None Remove="www\sources\css\pages\user\index.scss" />
+    <None Remove="www\sources\js\common\rijndael-service.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +91,226 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="logs\log.txt" />
+    <Content Include="www\sources\css\abstracts\_mixins.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\abstracts\_variables.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\base\_font-roboto.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\base\reset.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\base\_scaffolding.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_buttons.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_checkbox.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_customize-autocomplete.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_customize-fanex-multiSelect.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_customize-jquery-contextMenu.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_customize-select2.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_dropdown.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_forms.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_loading.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_messages.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_panels.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_popups.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_progress-bar.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_radio.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_status.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_steps.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_tables.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_tabs.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_textbox.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\components\_tooltip.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\layout\_before-login.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\auth\otp.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\before-login\common.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\before-login\login.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\currency-setting\index.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\data-configuration\index.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\employee\bank-details.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\employee\_common.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\employee\index.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\employee\create.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\employee\payroll.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\errors\error.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\mail-setting\edit.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\mail-setting\index.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\main.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\payment-process\edit-basic-salary.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\payment-process\monthly-payroll.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\payment-process\_payment-process.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\payment-process\upload-files.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\payslip\details.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\payslip\pdf.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\payslip\index.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\report\direct-banking-report.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\report\dynamic-report.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\report\ebanking-report.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\report\monthly-payroll-report.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\system-security\certificate.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\system-security\changepassword.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\user\index.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\common\rijndael-service.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -71,11 +346,6 @@
     <ProjectReference Include="..\HRP.Models\HRP.Models.csproj" />
     <ProjectReference Include="..\HRP.Core\HRP.Core.csproj" />
     <ProjectReference Include="..\HRP.Criteria\HRP.Criteria.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="www\sources\js\" />
-    <Folder Include="www\sources\css\" />
   </ItemGroup>
 
   <Target Name="CreateLogsFolder" AfterTargets="AfterPublish">

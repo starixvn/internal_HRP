@@ -9,14 +9,11 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/configuration/currency-setting.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/currency-setting/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 
     <environment exclude="Development">
-        <link href="~/assets/bundles/currency/css/currency-setting.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/currency-setting/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

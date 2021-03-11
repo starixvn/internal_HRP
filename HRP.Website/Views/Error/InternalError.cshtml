@@ -12,20 +12,18 @@
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/assets/styles/base/font-roboto.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/assets/styles/base/reset.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/assets/styles/pages/errors/error.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/dev/error.chunk.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/assets/bundles/errors/error.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/pro/error.chunk.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
     <div class="block">
-        <img src="~/assets/styles/images/500.png" title="Internal Error" />
+        <img src="~/css/images/500.png" title="Internal Error" />
         <h1 class="title">Internal server error</h1>
         <p class="info">An error occurred and your request couldn't be completed. Please try again.</p>
         <a asp-controller="home" asp-action="index" class="button -primary">Back to Home</a>
-    </div> 
+    </div>
 </body>
 </html>

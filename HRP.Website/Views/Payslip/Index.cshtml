@@ -12,13 +12,10 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/datatables.net/css/dataTables.bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/payslip/view-pay-slip.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/payslip/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link href="~/assets/bundles/payslip/css/payslips.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/payslip/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

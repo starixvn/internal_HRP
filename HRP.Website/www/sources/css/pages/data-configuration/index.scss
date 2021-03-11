@@ -1,0 +1,25 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+@import "~jquery-ui-dist/jquery-ui";
+@import "~datatables.net-bs/css/dataTables.bootstrap";
+@import "~select2/src/scss/core";
+
+@import "../../components/forms";
+@import "../../components/tables";
+@import "../../components/popups";
+@import "../../components/customize-select2";
+
+// Tables
+.col-active, .col-edit {
+    width: 94px;
+}
+
+.icon-edit {
+    cursor: pointer;
+}
+
+// Popup
+.modal .modal-dialog {
+    width: 370px;
+}

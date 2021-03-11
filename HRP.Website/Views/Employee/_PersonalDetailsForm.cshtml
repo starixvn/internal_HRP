@@ -52,12 +52,12 @@
             </div>
             <div class="component calendar">
                 <label class="text -has-required">@ViewLang.DateOfBirth</label>
-                <input type="text" class="control datetimepicker" asp-for="DateOfBirth" data-mindate="@minDate" />
+                <input type="text" class="control datetimepicker" asp-for="DateOfBirth" data-mindate="@minDate" autocomplete="off" />
                 <span class="icon-calendar"></span>
             </div>
             <div class="component">
                 <label class="text">@ViewLang.PlaceOfBirth</label>
-                <input type="text" class="control" asp-for="PlaceOfBirth">
+                <input type="text" class="control" asp-for="PlaceOfBirth"  autocomplete="off" />
             </div>
         </div>
         <div class="group-complex -per-layout2">
@@ -91,81 +91,81 @@
         <div class="group-complex -per-layout4">
             <div class="component">
                 <label class="text -has-required">@ViewLang.OverseasNo</label>
-                <input type="text" class="control" asp-for="OverseasPhoneNo">
+                <input type="text" class="control" asp-for="OverseasPhoneNo"  autocomplete="off" />
             </div>
             <div class="component">
                 <label class="text">@ViewLang.LocalNo</label>
-                <input type="text" class="control" asp-for="LocalPhoneNo">
+                <input type="text" class="control" asp-for="LocalPhoneNo"  autocomplete="off" />
             </div>
         </div>
         <label class="text">@ViewLang.Other</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="OtherPhoneNo">
+            <input type="text" class="control" asp-for="OtherPhoneNo"  autocomplete="off" />
         </div>
 
         <div class="group-title"><span class="icon-group"></span>@ViewLang.Passport</div>
         <div class="group-complex -per-layout5">
             <div class="component">
                 <label class="text -has-required">@ViewLang.PassportNo</label>
-                <input type="text" class="control" asp-for="PassportNo">
+                <input type="text" class="control" asp-for="PassportNo"  autocomplete="off" />
             </div>
             <div class="component calendar">
                 <label class="text -has-required">@ViewLang.DateIssue</label>
-                <input type="text" class="control datetimepicker" asp-for="DateIssue" data-mindate="@minDate" />
+                <input type="text" class="control datetimepicker" asp-for="DateIssue" data-mindate="@minDate" autocomplete="off" />
                 <span class="icon-calendar"></span>
             </div>
             <div class="component calendar">
                 <label class="text -has-required">@ViewLang.ExpiredDate</label>
-                <input type="text" class="control datetimepicker" asp-for="ExpiredDate" data-mindate="@minDate" />
+                <input type="text" class="control datetimepicker" asp-for="ExpiredDate" data-mindate="@minDate" autocomplete="off" />
                 <span class="icon-calendar"></span>
             </div>
         </div>
         <label class="text">@ViewLang.PlaceOfIssue</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="PlaceOfIssue" />
+            <input type="text" class="control" asp-for="PlaceOfIssue" autocomplete="off" />
         </div>
     </div>
     <div class="col">
         <label class="text">@ViewLang.SkypeAccount</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="Skype">
+            <input type="text" class="control" asp-for="Skype" autocomplete="off" />
         </div>
         <label class="text">@ViewLang.PersonalEmailAddress</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="PersonalEmail">
+            <input type="text" class="control" asp-for="PersonalEmail" autocomplete="off" />
         </div>
         <label class="text -has-required">@ViewLang.PermanentAddress</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="PermanentAddress">
+            <input type="text" class="control" asp-for="PermanentAddress" autocomplete="off" />
         </div>
         <label class="text -has-required">@ViewLang.ResidenceAddress</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="ResidenceAddress">
+            <input type="text" class="control" asp-for="ResidenceAddress" autocomplete="off" />
         </div>
         <label class="text">@ViewLang.MailingAddress</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="MailingAddress">
+            <input type="text" class="control" asp-for="MailingAddress" autocomplete="off" />
         </div>
         <div class="group-title"><span class="icon-group"></span>@ViewLang.EmergencyContact</div>
         <label class="text -has-required">@ViewLang.Name</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="EmergencyContact.Name">
+            <input type="text" class="control" asp-for="EmergencyContact.Name" autocomplete="off" />
         </div>
         <label class="text -has-required">@ViewLang.Relationship</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="EmergencyContact.Relationship">
+            <input type="text" class="control" asp-for="EmergencyContact.Relationship" autocomplete="off" />
         </div>
         <label class="text -has-required">@ViewLang.Address</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="EmergencyContact.Address">
+            <input type="text" class="control" asp-for="EmergencyContact.Address" autocomplete="off" />
         </div>
         <label class="text -has-required">@ViewLang.TelephoneNo</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="EmergencyContact.PhoneNo1">
+            <input type="text" class="control" asp-for="EmergencyContact.PhoneNo1" autocomplete="off" />
         </div>
         <label class="text">@ViewLang.TelephoneNo</label>
         <div class="group-control">
-            <input type="text" class="control" asp-for="EmergencyContact.PhoneNo2">
+            <input type="text" class="control" asp-for="EmergencyContact.PhoneNo2" autocomplete="off" />
         </div>
     </div>
 </div>

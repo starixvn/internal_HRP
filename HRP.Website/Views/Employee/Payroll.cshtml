@@ -3,23 +3,18 @@
 @using HRP.Models.Employee.Payroll
 @model EmployeePayrollViewModel
 
-@section Styles {
-    <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/tooltipster/dist/css/tooltipster.bundle.css" rel="stylesheet" />
-        <link href="~/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/payroll.css" rel="stylesheet" />
-    </environment>
-    <environment exclude="Development">
-        <link href="~/assets/bundles/employee/css/payroll.min.css" rel="stylesheet" />
-    </environment>
-}
-
 @{
     ViewData["Title"] = ViewLang.EditEmployeePayroll;
     var currencySelectList = new SelectList(Model.Currencies.OrderBy(x => x.CurrencyId), "CurrencyId", "CurrencyCode");
+}
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/css/dev/pages/employee/payroll.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/employee/payroll.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
 }
 
 <!--Modals section-->

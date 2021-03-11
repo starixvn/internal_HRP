@@ -1,0 +1,37 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+@import "~datatables.net-bs/css/dataTables.bootstrap";
+@import "~select2/src/scss/core";
+
+@import "../../components/forms";
+@import "../../components/tables";
+@import "../../components/popups";
+@import "../../components/customize-select2";
+
+.table {
+    .dropdown-menu .icon-permission {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+
+    .icon-details {
+        font-size: 16px;
+    }
+
+    &.super-admin-func {
+        width: 577px;
+    }
+
+    .width-42 {
+        width: 42px;
+    }
+
+    .width-58 {
+        width: 58px;
+    }
+
+    .width-62 {
+        width: 62px;
+    }
+}

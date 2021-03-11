@@ -1,0 +1,18 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+@import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker";
+@import "~select2/src/scss/core";
+
+@import "../../components/forms";
+@import "../../components/textbox";
+@import "../../components/buttons";
+@import "../../components/customize-select2";
+@import "../../components/customize-fanex-multiSelect";
+
+.icon-excel:before {
+    font-size: 18px;
+    position: relative;
+    top: 2px;
+    left: -2px;
+}

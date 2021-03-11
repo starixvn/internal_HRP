@@ -7,13 +7,10 @@
 }
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/report/monthly-report.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/report/monthly-payroll.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
-
     <environment exclude="Development">
-        <link href="~/assets/bundles/report/css/monthly-payroll.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/report/monthly-payroll.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

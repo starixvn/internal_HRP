@@ -2,13 +2,18 @@
 @using HRP.Resources
 @model EditUserViewModel
 
-@section Styles {
-    <link href="~/assets/bundles/user/css/user-management.min.css" rel="stylesheet" />
-}
-
 @{
     var title = Model.CanEdit ? ViewLang.EditUserDetails : ViewLang.ViewUserDetails;
     ViewData["Title"] = title;
+}
+
+@section Styles {
+    <environment include="Development">
+        <link href="~/css/dev/pages/user/create.chunk.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/user/create.chunk.css" rel="stylesheet" />
+    </environment>
 }
 
 <ol class="breadcrumb">

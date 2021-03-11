@@ -1,0 +1,27 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../base/reset";
+@import "../../base/font-roboto";
+@import "../../base/scaffolding";
+@import "../../components/buttons";
+
+.block {
+    margin: 220px auto 0;
+    width: 300px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.title {
+    padding-top: 32px;
+    padding-bottom: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.info {
+    padding-bottom: 20px;
+    text-transform: capitalize;
+}

@@ -1,0 +1,313 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+@import "~bootstrap/dist/css/bootstrap.min";
+
+@import "../base/reset";
+@import "../base/font-roboto";
+@import "../base/scaffolding";
+@import "../components/buttons";
+@import "../components/dropdown";
+@import "../components/textbox";
+@import "../components/checkbox";
+@import "../components/popups";
+@import "../components/messages";
+@import "../components/tabs";
+@import "../components/loading";
+
+body {
+    background-color: $page-bg;
+    overflow: hidden;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid #dcdcdc;
+    z-index: 1000;
+
+    @media screen and (min-width: 1024px) {
+        display: grid;
+        grid-template-columns: 159px 1fr 178px;
+        grid-template-rows: 1fr;
+    }
+
+    .logo {
+        padding-left: 16px;
+
+        @media screen and (max-width: 768px) {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        img {
+            height: 26px;
+        }
+    }
+
+    .main-menu {
+        margin-left: 8px;
+        margin-bottom: 0;
+
+        @media screen and (min-width: 1024px) {
+            margin-left: 48px;
+        }
+    }
+
+    .user-info {
+        margin-right: 16px;
+
+        @media screen and (max-width: 768px) {
+            position: absolute;
+            right: 0;
+            top: 10px;
+        }
+    }
+}
+
+.main-menu {
+    .menu {
+        float: left;
+        position: relative;
+
+        &:hover .submenu {
+            opacity: 1;
+            visibility: visible;
+            top: 100%;
+        }
+    }
+
+    .menu > .link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: 55px;
+        padding-left: 10px;
+        padding-right: 10px;
+        text-decoration: none;
+        position: relative;
+        color: #687c89;
+        font-weight: bold;
+
+        @media screen and (min-width: 1366px) {
+            padding-left: 16px;
+            padding-right: 16px;
+            margin-right: 16px;
+        }
+
+        [class^="icon"] {
+            margin-right: 4px;
+            color: #687c89;
+        }
+
+        .icon-configuration,
+        .icon-employee_management {
+            font-size: 18px;
+        }
+
+        .icon-employee_management {
+            margin-right: 6px;
+        }
+
+        .icon-payment,
+        .icon-exit {
+            font-size: 22px;
+        }
+
+        .icon-payslip {
+            font-size: 20px;
+        }
+
+        .icon-report {
+            font-size: 24px;
+        }
+
+        &:hover, &:hover [class^="icon"] {
+            color: #0175c7;
+        }
+
+        &.active, &.active [class^="icon"] {
+            color: #0175c7;
+        }
+    }
+}
+
+.submenu {
+    @include border-radius( 0 0 2px 2px);
+    @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
+    @include transition("all .3s ease-in-out");
+    position: absolute;
+    top: 80%;
+    left: 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-transform: capitalize;
+    background-color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+
+    .link {
+        display: block;
+        padding: 8px 24px;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    .link:active {
+        text-decoration: none;
+    }
+
+    .link:hover {
+        text-decoration: none;
+        background-color: #f57d14;
+        color: #fff;
+    }
+}
+
+.user-info {
+    .dropdown .btn {
+        float: right;
+        color: $primary-color;
+        font-weight: bold;
+        font-size: $font-size;
+    }
+
+    .username {
+        font-weight: bold;
+        color: $link-color;
+    }
+
+    .circle-gray {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 32px;
+        width: 32px;
+        background-color: #f57d14;
+        border: 2px solid #cbcbcb;
+        @include border-radius(50%);
+
+        .icon-user {
+            color: #fff;
+            font-size: 12px;
+        }
+    }
+
+    .dropdown-menu {
+        margin-top: 44px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+}
+
+// Content
+.content-container {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    padding: 12px;
+    overflow: auto;
+
+    @media screen and (max-width: 768px) {
+        top: 94px;
+    }
+}
+
+.content {
+    @include border-radius(5px);
+    @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
+    background-color: #fff;
+    padding: 16px 10px;
+
+    .username {
+        color: $primary-color;
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .block {
+        width: 550px;
+    }
+}
+
+.title {
+    margin: 0;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.breadcrumb {
+    padding: 0;
+    margin-bottom: 12px;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 14px;
+
+    @media screen and (min-width: 1366px) {
+        font-size: 16px;
+    }
+
+    a {
+        color: $link-color;
+    }
+
+    > .active {
+        color: $text-color;
+    }
+
+    > li + li:before {
+        position: relative;
+        top: 2px;
+        padding: 0;
+        font-family: "hrp" !important;
+        font-weight: normal;
+        content: "\e90c";
+        color: #333;
+    }
+}
+
+// Icons
+.icon-arrow-down {
+    height: 0;
+    width: 0;
+    border: 4px solid;
+    border-color: #888 #888 transparent transparent;
+    transform: rotate(135deg);
+}
+
+.icon-successful {
+    color: #18aa3a;
+}
+
+.icon-close {
+    color: #ff0000;
+}
+
+// Create/Edit Form
+.form-information {
+    position: relative;
+
+    .note {
+        margin-left: 30px;
+        top: 28px;
+
+        &:before {
+            top: 85px;
+            bottom: auto;
+        }
+    }
+}

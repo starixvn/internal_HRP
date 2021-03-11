@@ -1,0 +1,29 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+@import "~datatables.net-bs/css/dataTables.bootstrap";
+@import "~select2/src/scss/core";
+
+@import "../../components/forms";
+@import "../../components/checkbox";
+@import "../../components/tables";
+@import "../../components/customize-select2";
+
+// Bank details
+.fanex-multiselect-div  {
+    margin-left: 0 !important;
+}
+
+// Create New Bank Account
+.layout-two-col {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    justify-content: space-between;
+    align-items: flex-start;
+    grid-gap: 10px;
+}
+
+.modal-content .modal-footer.only-button .button {
+    margin-right: 0;
+}

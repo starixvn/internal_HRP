@@ -1,0 +1,126 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+@import "~datatables.net-bs/css/dataTables.bootstrap";
+@import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker";
+@import "~select2/src/scss/core";
+
+@import "../../components/tables";
+@import "payment-process";
+
+// Upload files
+.upload-files {
+    margin-top: 8px;
+
+    .text {
+        width: 490px;
+    }
+
+    .group-control {
+        display: flex;
+    }
+
+    .download-template {
+        float: right;
+        font-weight: normal;
+    }
+    
+    .icon-excel {
+        position: relative;
+        top: 3px;
+        margin-right: -2px;
+        line-height: 0;
+        font-size: 18px;
+        color: #00a659;
+    }
+
+    .percent-validation-text {
+        color: $text-color;
+    }
+}
+
+.inputfile-box {
+    margin-right: 10px;
+
+    .inputfile {
+        display: none !important;
+    }
+    
+    .file {
+        display: grid;
+        grid-template-columns: 490px 80px;
+        grid-template-rows: 32px;
+        grid-gap: 10px;
+    }    
+}
+
+.file-box {
+    position: relative;
+    
+    .file-name {
+        display: block;
+        width: 100%;
+        height: 32px;
+        line-height: 32px;
+        padding-left: 5px;
+        padding-right: 32px;
+        border: 1px solid $border-color;
+        background-color: #fff;
+        color: #333;
+
+        &.no-file {
+            color: $input-color-placeholder;
+        }
+    }
+
+    %icon {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        font-size: 17px;
+
+        &:hover {
+            cursor: pointer;
+        } 
+    }
+
+    .icon-close {
+        @extend %icon;
+        color: #bebebe;
+
+        &:hover {
+            color: #eb0e0e;
+            cursor: pointer;
+        }        
+    }
+
+    .icon-successful {
+        @extend %icon;
+        color: #18aa3a;
+    }
+}
+
+.info-list {
+    padding-top: 12px;
+}
+
+.width-660 {
+    width: 660px;
+}
+
+.row-no {
+    width: 64px;
+}
+
+.error-desc {
+    text-align: left !important;
+}
+
+// Validation Files
+table.dataTable {
+    margin-top: 0 !important;
+}
+
+.dataTables_wrapper {
+    margin-bottom: 20px;
+}

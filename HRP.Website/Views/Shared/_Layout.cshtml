@@ -6,15 +6,12 @@
     <title>@ViewData["Title"]</title>
     <link rel="shortcut icon" type="image/ico" href="~/favicon.ico" />
 
+    <link rel="stylesheet" href="~/css/fonts/hrp/style.css" asp-append-version="true" />
     <environment include="Development">
-        <link rel="stylesheet" href="~/assets/styles/base/font-roboto.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/assets/styles/fonts/hrp/style.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/assets/styles/base/reset.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/assets/styles/pages/main.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/dev/main.chunk.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/assets/bundles/main.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/pro/main.chunk.css" asp-append-version="true" />
     </environment>
 
     @RenderSection("Styles", false)

@@ -3,14 +3,12 @@
 @model GenerateReportViewModel
 
 @section Styles {
+    <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
     <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
-        <link href="~/assets/styles/fonts/hrp/style.css" rel="stylesheet">
-        <link href="~/assets/styles/pages/report/dynamic-report.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/report/dynamic.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link href="~/assets/bundles/report/css/dynamic-report.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/report/dynamic.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

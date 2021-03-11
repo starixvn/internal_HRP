@@ -1,0 +1,55 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+@import "~jquery-ui-dist/jquery-ui";
+@import "~datatables.net-bs/css/dataTables.bootstrap";
+@import "~datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap";
+@import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker";
+@import "~select2/src/scss/core";
+
+@import "../../components/tables";
+@import "../../components/customize-jquery-contextMenu";
+@import "../../components/customize-fanex-multiSelect";
+@import "../../components/customize-autocomplete";
+@import "../../components/status";
+@import "payment-process";
+
+.DTFC_ScrollWrapper {
+    margin-bottom: 8px;
+}
+
+.col-width-50 {
+    width: 50px;
+}
+
+.col-width-58 {
+    width: 58px;
+}
+
+.col-width-60 {
+    width: 60px;
+}
+
+.col-width-76 {
+    width: 76px;
+}
+
+select.width-92 {
+    width: 92px;
+}
+
+select.width-200 {
+    width: 200px;
+}
+
+.negative-amount {
+    color: #ff0000;
+}
+
+table {
+    tr.row-highlight {
+        td {
+            background-color: #ffe28a;
+        }
+    }
+}

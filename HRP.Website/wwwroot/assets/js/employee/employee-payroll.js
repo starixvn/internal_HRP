@@ -265,6 +265,7 @@
                 mouseleave: true,
                 scroll: true
             },
+            arrow: false,
             functionReady: function (instance, helper) {
                 $('input[type="checkbox"]', helper.tooltip).on('change', function (e) {
                     if (e.target.checked) {

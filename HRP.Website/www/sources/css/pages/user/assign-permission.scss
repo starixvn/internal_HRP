@@ -1,0 +1,57 @@
+﻿@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+@import "../../components/tables";
+@import "../../components/popups";
+
+.table {
+    &.super-admin-func {
+        width: 577px;
+    }
+
+    .width-42 {
+        width: 42px;
+    }
+
+    .width-58 {
+        width: 58px;
+    }
+
+    .width-62 {
+        width: 62px;
+    }
+}
+
+.assign-permission {
+    .level-first {
+        color: $primary-color;
+    }
+
+    .icon-level-first {
+        font-size: 8px;
+        margin-right: 3px;
+    }
+
+    .icon-level-second {
+        font-size: 24px;
+        line-height: 0;
+        position: relative;
+        top: 2px;
+    }
+
+    .func-name {
+        margin-left: 6px;
+    }
+
+    .vertical-bottom {
+        vertical-align: bottom;
+    }
+
+    .sub-header input[type='checkbox'] {
+        margin-top: 5px;
+    }
+}
+
+.list-button .button:first-child {
+    margin-right: 10px;
+}

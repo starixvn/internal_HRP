@@ -8,7 +8,12 @@
 }
 
 @section Styles {
-    <link href="~/assets/styles/pages/systemsecurity/changepassword.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/css/dev/pages/system-security/changepassword.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/system-security/changepassword.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
 }
 
 <ol class="breadcrumb">

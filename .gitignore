@@ -43,6 +43,9 @@ SUMMARY.DISPLAY.xml
 /.vs
 node_modules
 
-/HRP.Website/wwwroot/ProfilePicture
 /HRP.Database/HRP.Database.jfm
 /HRP.Database/HRP.Database.dbmdl
+
+/HRP.Website/wwwroot/ProfilePicture
+/HRP.Website/wwwroot/css/dev
+/HRP.Website/wwwroot/js/dev

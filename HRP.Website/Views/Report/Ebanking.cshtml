@@ -7,15 +7,12 @@
 }
 
 @section Styles {
+    <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
     <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
-        <link href="~/assets/styles/fonts/hrp/style.css" rel="stylesheet">
-        <link href="~/assets/styles/pages/report/ebanking-report.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/report/ebanking.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link href="~/assets/bundles/report/css/ebanking-report.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/report/ebanking.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

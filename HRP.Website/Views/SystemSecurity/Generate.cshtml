@@ -9,7 +9,12 @@
 }
 
 @section Styles {
-    <link href="~/assets/styles/pages/systemsecurity/certificate.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/css/dev/pages/system-security/certificate.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/system-security/certificate.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
 }
 
 <section class="block certificate">

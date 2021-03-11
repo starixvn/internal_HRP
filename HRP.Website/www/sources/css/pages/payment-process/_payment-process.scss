@@ -1,0 +1,45 @@
+@import "../../components/forms";
+@import "../../components/customize-select2";
+@import "../../components/steps";
+
+.steps {
+    margin-bottom: 16px;
+}
+
+// Filter form
+.width-200 {
+    width: 200px;
+}
+
+.width-140 {
+    width: 140px;
+}
+
+.width-92 {
+    width: 92px;
+}
+
+.id-no {
+    width: 90px;
+}
+
+.payment-duration {
+    display: flex;
+    align-self: flex-start;
+    padding-bottom: 18px;
+
+    .date {
+        margin-right: 14px;
+    }
+
+    .required {
+        color: #ff0000;
+    }
+}
+
+.list-button {
+    padding-top: 18px;
+}
+.select2-container--default.select2-container--disabled .select2-selection--single {
+    background-color: #ededed;
+}

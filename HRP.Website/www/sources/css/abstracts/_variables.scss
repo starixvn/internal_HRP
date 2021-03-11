@@ -1,0 +1,86 @@
+$font-family: Roboto, Arial, Tahoma, sans-serif;
+$font-size: 13px;
+$page-bg: #f2f4f6;
+$text-color: #333;
+
+$primary-color: #1973b2;
+
+$link-color: #1973b2;
+$link-hover-color: darken($link-color, 10%);
+
+$border-color: #d9d9d9;
+
+$input-color: #333;
+$input-color-placeholder: #888;
+$input-border: #e7e7e7;
+$input-border-focus: #1a87d3;
+$input-border-error: #ff4545;
+
+$btn-primary-bg: #1973b2; 
+$btn-primary-color: #fff;
+$btn-primary-bg-hover: darken($btn-primary-bg, 5%); 
+
+$btn-second-bg: #777777; 
+$btn-second-color: #fff;
+$btn-second-bg-hover: darken($btn-second-bg, 5%); 
+
+$btn-add-bg: #1ca041; 
+$btn-add-color: #fff;
+$btn-add-bg-hover: darken($btn-add-bg, 5%);
+
+$btn-back-bg: #dfdfdf; 
+$btn-back-color: #333;
+$btn-back-border: #9d9d9d;
+$btn-back-bg-hover: darken($btn-back-bg, 5%);
+
+$btn-browser-bg: #7e95a9;
+$btn-browser-color: #fff;
+$btn-browser-bg-hover: darken($btn-browser-bg, 5%);
+
+$btn-delete-bg: #eb0e0e;
+$btn-delete-color: #fff;
+$btn-delete-bg-hover: darken($btn-delete-bg, 5%);
+
+$btn-preset-bg: #f57d14; 
+$btn-preset-color: #fff;
+$btn-preset-bg-hover: darken($btn-preset-bg, 5%);
+
+$btn-excel-bg: #00A659;
+$btn-excel-color: #fff;
+$btn-excel-bg-hover: darken($btn-excel-bg, 5%);
+
+$msg-error: #ff0101; 
+$msg-error-border: #ff0000; 
+$msg-error-bg: #ffebea;
+
+$msg-success: #18aa3a;
+$msg-success-border: #329a37; 
+$msg-success-bg: #e5ffeb;
+$msg-success-color: #11892d;
+
+$msg-warning: #ff7a04; 
+$msg-warning-border: #ffac63;
+$msg-warning-bg: #ffedd3;
+
+$transition-common: all ease-in-out .3s;
+
+$tab-color: #333;
+$tab-active-color: #333;
+$tab-line: #f57d14;
+
+$table-bg: #fff;
+$table-border: #d9d9d9;
+$table-header-bg: #1973b2;
+$table-header-color: #fff;
+$table-sub-header-bg: #095b94;
+$table-sub-header-color: #fff;
+$table-color: #666;
+$table-td-bg-hover: #ffe3cb;
+$table-col-odd-bg: #fffdcb;
+$table-row-level-parent: #eee;
+
+$loader-color: #1973b2;
+$loader-size: 32px;
+$loader-animation-duration: 1.15s;
+
+$payslip-primary-color: #07a10e;

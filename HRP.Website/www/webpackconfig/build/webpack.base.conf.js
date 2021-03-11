@@ -16,6 +16,35 @@ function generateConfig(environment) {
             /*js*/
 
             /*css*/
+            [`${cssPath}/main`]: pathConfig.cssPaths.main,
+            [`${cssPath}/error`]: pathConfig.cssPaths.error,
+            [`${cssPath}/pages/user/index`]: pathConfig.cssPaths.user_index,
+            [`${cssPath}/pages/user/create`]: pathConfig.cssPaths.user_create,
+            [`${cssPath}/pages/user/assign-permission`]: pathConfig.cssPaths.user_assign_permission,
+            [`${cssPath}/pages/data-configuration/index`]: pathConfig.cssPaths.data_configuration_index,
+            [`${cssPath}/pages/currency-setting/index`]: pathConfig.cssPaths.currency_setting_index,
+            [`${cssPath}/pages/system-security/certificate`]: pathConfig.cssPaths.system_security_certificate,
+            [`${cssPath}/pages/system-security/changepassword`]: pathConfig.cssPaths.system_security_changepassword,
+            [`${cssPath}/pages/mail-setting/index`]: pathConfig.cssPaths.mail_setting_index,
+            [`${cssPath}/pages/mail-setting/edit`]: pathConfig.cssPaths.mail_setting_edit,
+            // employee
+            [`${cssPath}/pages/employee/index`]: pathConfig.cssPaths.employee_index,
+            [`${cssPath}/pages/employee/create`]: pathConfig.cssPaths.employee_create,
+            [`${cssPath}/pages/employee/payroll`]: pathConfig.cssPaths.employee_payroll,
+            [`${cssPath}/pages/employee/bank-details`]: pathConfig.cssPaths.employee_bank_details,
+            // payment process
+            [`${cssPath}/pages/payment-process/index`]: pathConfig.cssPaths.payment_process_index,
+            [`${cssPath}/pages/payment-process/upload-attendance`]: pathConfig.cssPaths.payment_process_upload_attendance,
+            [`${cssPath}/pages/payment-process/monthly-payroll`]: pathConfig.cssPaths.payment_process_monthly_payroll,
+            // payslip
+            [`${cssPath}/pages/payslip/index`]: pathConfig.cssPaths.payslip_index,
+            [`${cssPath}/pages/payslip/details`]: pathConfig.cssPaths.payslip_details,
+            [`${cssPath}/pages/payslip/pdf`]: pathConfig.cssPaths.payslip_pdf,
+            // report
+            [`${cssPath}/pages/report/dynamic`]: pathConfig.cssPaths.report_dynamic,
+            [`${cssPath}/pages/report/monthly-payroll`]: pathConfig.cssPaths.report_monthly_payroll,
+            [`${cssPath}/pages/report/direct-banking`]: pathConfig.cssPaths.report_direct_banking,
+            [`${cssPath}/pages/report/ebanking`]: pathConfig.cssPaths.report_ebanking
         },
         output: {
             path: pathConfig.projectRoot,

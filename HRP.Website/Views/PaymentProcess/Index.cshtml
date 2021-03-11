@@ -9,13 +9,11 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/payment-process/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 
     <environment exclude="Development">
-        <link href="~/assets/bundles/paymentprocess/css/select-month-company.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/payment-process/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

@@ -8,8 +8,12 @@
 }
 
 @section Styles {
-    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/css/dev/pages/employee/bank-details.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/employee/bank-details.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
 }
 
 @section Scripts {
@@ -86,26 +90,26 @@
 
     <requiredlabel asp-for="AccountNumber"></requiredlabel>
     <div class="group-control">
-        <input class="control" asp-for="AccountNumber" />
+        <input class="control" asp-for="AccountNumber" autocomplete="off" />
     </div>
 
     <requiredlabel asp-for="BeneficiaryName"></requiredlabel>
     <div class="group-control">
-        <input class="control" asp-for="BeneficiaryName" />
+        <input class="control" asp-for="BeneficiaryName" autocomplete="off" />
     </div>
 
     <requiredlabel asp-for="BankName"></requiredlabel>
     <div class="group-control">
-        <input class="control" asp-for="BankName" />
+        <input class="control" asp-for="BankName" autocomplete="off" />
     </div>
     <requiredlabel asp-for="BankBranch" class="text"></requiredlabel>
     <div class="group-control">
-        <input class="control" asp-for="BankBranch" />
+        <input class="control" asp-for="BankBranch" autocomplete="off" />
     </div>
 
     <requiredlabel asp-for="BankAddress" class="text"></requiredlabel>
     <div class="group-control">
-        <input class="control" asp-for="BankAddress" />
+        <input class="control" asp-for="BankAddress" autocomplete="off" />
     </div>
 
     <div class="layout-two-col">
@@ -118,7 +122,7 @@
         <div>
             <requiredlabel class="text" asp-for="BankSwiftCode"></requiredlabel>
             <div class="group-control">
-                <input class="control" asp-for="BankSwiftCode" />
+                <input class="control" asp-for="BankSwiftCode" autocomplete="off" />
             </div>
         </div>
     </div>

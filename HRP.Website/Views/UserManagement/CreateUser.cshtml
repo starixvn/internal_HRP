@@ -2,12 +2,17 @@
 @using HRP.Resources
 @model CreateUserViewModel
 
-@{ 
+@{
     ViewData["Title"] = ViewLang.CreateNewUser;
 }
 
 @section Styles {
-    <link href="~/assets/bundles/user/css/user-management.min.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/css/dev/pages/user/create.chunk.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/user/create.chunk.css" rel="stylesheet" />
+    </environment>
 }
 
 <ol class="breadcrumb">

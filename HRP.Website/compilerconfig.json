@@ -10,9 +10,5 @@
   {
     "outputFile": "wwwroot/assets/styles/pages/employee/employee-management.css",
     "inputFile": "wwwroot/assets/styles/pages/employee/employee-management.scss"
-  },
-  {
-    "outputFile": "wwwroot/assets/styles/pages/main.css",
-    "inputFile": "wwwroot/assets/styles/pages/main.scss"
   }
 ]

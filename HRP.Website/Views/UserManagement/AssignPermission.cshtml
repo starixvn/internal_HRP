@@ -10,7 +10,12 @@
 }
 
 @section Styles {
-    <link href="~/assets/styles/pages/configuration/user-management.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/css/dev/pages/user/assign-permission.chunk.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/user/assign-permission.chunk.css" rel="stylesheet" />
+    </environment>
 }
 
 <ol class="breadcrumb">
@@ -140,7 +145,7 @@
         <a class="button -second" id="btnCancel" href="javascript:;">@ViewLang.Cancel</a>
         @if (Model.IsHost)
         {
-            <a class="button -primary" id="btnSave"  href="javascript:;">@ViewLang.Save</a>
+            <a class="button -primary" id="btnSave" href="javascript:;">@ViewLang.Save</a>
         }
     </div>
 </form>

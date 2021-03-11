@@ -10,12 +10,10 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/bank-details.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/css/dev/pages/employee/bank-details.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" asp-append-version="true" href="~/assets/bundles/bank/css/bank.min.css" />
+        <link href="~/css/pro/pages/employee/bank-details.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

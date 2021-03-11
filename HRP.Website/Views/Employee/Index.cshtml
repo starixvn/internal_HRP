@@ -7,20 +7,15 @@
     ViewData["Title"] = ViewLang.EmployeeList;
 }
 
-<environment include="Development">
-    @section Styles {
-        <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
-        <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/employee-management.css" rel="stylesheet" />
-    }
-</environment>
-<environment exclude="Development">
-    @section Styles {
-        <link href="~/assets/bundles/employee/css/employee-management.min.css" rel="stylesheet" />
-    }
-</environment>
+@section Styles {
+    <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
+    <environment include="Development">
+        <link href="~/css/dev/pages/employee/index.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/employee/index.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+}
 
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>

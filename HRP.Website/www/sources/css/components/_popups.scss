@@ -1,0 +1,94 @@
+.modal-content {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .modal-header {
+        padding: 11px 0;
+    }
+
+    .modal-header .close {
+        margin-top: 2px;
+        color: #858585;
+        font-size: 18px;
+        opacity: 1;
+
+        &:hover {
+            color: $text-color;
+        }
+    }
+
+    .modal-body {
+        padding: 15px 0;
+        font-size: 13px;
+        line-height: 20px;
+    }
+
+    .modal-footer {
+        border-top: none;
+        padding: 20px 0 30px;
+        
+        .button:first-child {
+            margin-right: 10px;
+        }
+    }
+
+    &.-has-title {
+        .modal-header {
+            border-bottom-color: #dbdbdb;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .modal-footer {
+            text-align: right;
+        }
+    }
+
+    &.-has-icon {
+        .modal-header {
+            border-bottom: none;
+        }
+
+        .circle {
+            @include border-radius(50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: 50%;            
+            top: -24px;
+            margin-left: -33px;
+            height: 70px;
+            width: 70px;
+            background-color: #f57d14;
+            font-size: 27px;
+            color: #fff;
+        }
+
+        .modal-body {
+            padding-top: 70px;
+            text-align: center;
+        }
+
+        .modal-footer {
+            padding-top: 0;
+            text-align: center;
+        }
+    }
+}
+
+.modal-dialog.-small {
+    width: 370px;
+}
+
+.modal .modal-dialog .list-button .button {
+    float: right;
+    margin-right: 0;
+
+    &:last-child {
+        margin-right: 10px;
+    }
+}
