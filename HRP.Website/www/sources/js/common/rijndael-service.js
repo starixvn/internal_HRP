@@ -1,32 +1,29 @@
-﻿var rijndaelService = (function ($) {
-    function encryptData(value, rijndaelKey, rijndaelIV) {
-        var cipherText = CryptoJS.AES.encrypt(
-            value,
+﻿import CryptoJS from 'crypto-js';
+
+export default class RijndaelService {
+    static encryptData(plainText, rijndaelKey, rijndaelIV) {
+        const cipherText = CryptoJS.AES.encrypt(
+            plainText,
             CryptoJS.enc.Utf8.parse(rijndaelKey),
             {
+                keySize: 128 / 8,
                 iv: CryptoJS.enc.Utf8.parse(rijndaelIV),
                 mode: CryptoJS.mode.CBC,
                 padding: CryptoJS.pad.Pkcs7
             });
-
         return cipherText.toString();
     }
 
-    function decryptData(value, rijndaelKey, rijndaelIV) {
-        var plainText = CryptoJS.AES.decrypt(
-            value,
+    static decryptData(cipherText, rijndaelKey, rijndaelIV) {
+        const plainText = CryptoJS.AES.decrypt(
+            cipherText,
             CryptoJS.enc.Utf8.parse(rijndaelKey),
             {
+                keySize: 128 / 8,
                 iv: CryptoJS.enc.Utf8.parse(rijndaelIV),
                 mode: CryptoJS.mode.CBC,
                 padding: CryptoJS.pad.Pkcs7
             });
-
         return plainText.toString(CryptoJS.enc.Utf8);
     }
-
-    return {
-        encryptData: encryptData,
-        decryptData: decryptData
-    };
-}(jQuery));
+}

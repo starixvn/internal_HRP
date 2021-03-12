@@ -1,16 +1,23 @@
-﻿var currencySetting = (function ($, commonFunctions) {
-    var vietNamCurrencyId;
+﻿import 'moment/moment';
+import BigNumber from 'bignumber.js';
+import 'bootstrap/dist/js/bootstrap';
+import 'datatables.net-bs/js/dataTables.bootstrap';
+import 'datatables.net-fixedcolumns-bs/js/fixedColumns.bootstrap';
+import 'eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker';
+import 'inputmask/dist/inputmask';
+import 'inputmask/dist/jquery.inputmask';
+import 'inputmask/dist/bindings/inputmask.binding';
+
+const currencySetting = (function ($, commonFunctions) {
+    let vietNamCurrencyId;
 
     BigNumber.prototype.roundWithCurrency = function (dp, currency) {
-        if (currency === vietNamCurrencyId)
+        if (currency === vietNamCurrencyId) {
             return this.round(0);
+        }
 
         return this.round(dp);
     };
-
-    function round(value) {
-        return Number(Math.round(value + 'e5') + 'e-5').toFixed(5);
-    }
 
     function resizeTableWrapper() {
         var $wrapper = $('.dataTables_wrapper');

@@ -1,4 +1,9 @@
-﻿var createUser = (function ($) {
+﻿import 'jquery-validation/dist/jquery.validate';
+import 'jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive';
+import 'jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax';
+import 'bootstrap/dist/js/bootstrap';
+
+global.createUser = (function ($) {
     function displayValidationErrorMessages(errors) {
         errors.forEach(function (error) {
             $('[data-valmsg-for="' + error.key + '"]').text(error.errorMessage);

@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-var assignPermissionToUser = (function ($) {
-    var $adminPermissionTable,
+const assignPermissionToUser = (function ($) {
+    let $adminPermissionTable,
         $userPermissionTable,
         $checkAllFunc,
         $checkAllColFuncRead,

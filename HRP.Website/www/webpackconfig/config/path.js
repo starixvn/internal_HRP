@@ -1,4 +1,5 @@
-﻿const path = require('path');
+﻿const { userInfo } = require('os');
+const path = require('path');
 const { report } = require('process');
 
 const projectRoot = path.resolve(__dirname, '../../../');
@@ -19,7 +20,6 @@ const cssPaths = {
     // data configuration
     data_configuration_index: ['./www/sources/css/pages/data-configuration/index.scss'],
     // currency setting
-    currency_setting_index: ['./www/sources/css/pages/currency-setting/index.scss'],
     currency_setting_index: ['./www/sources/css/pages/currency-setting/index.scss'],
     // system security
     system_security_certificate: ['./www/sources/css/pages/system-security/certificate.scss'],
@@ -50,7 +50,19 @@ const cssPaths = {
 };
 
 const scriptPaths = {
-    build: 'wwwroot/js'
+    build: 'wwwroot/js',
+
+    auth_login: ['./www/sources/js/pages/auth/login.js'],
+    auth_reset_password: ['./www/sources/js/pages/auth/reset-password.js'],
+    // user
+    user_index: ['./www/sources/js/pages/user/index.js'],
+    user_create: ['./www/sources/js/pages/user/create.js'],
+    user_edit: ['./www/sources/js/pages/user/edit.js'],
+    user_assign_permission: ['./www/sources/js/pages/user/assign-permission.js'],
+    // mail setting
+    mail_setting_edit: ['./www/sources/js/pages/mail-setting/edit.js'],
+    // currency setting
+    currency_setting_index: ['./www/sources/js/pages/currency-setting/index.js'],
 };
 
 module.exports = {

@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿import 'jquery-validation/dist/jquery.validate';
+import 'jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive';
+
+$(document).ready(function () {
     var targetNode = document.getElementById('validation-summary');
 
     if ($('.field-validation-error', targetNode).length > 0) {

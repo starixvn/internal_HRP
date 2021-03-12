@@ -1,11 +1,9 @@
 ﻿@using HRP.Models.MailSetting
 @using HRP.Resources
 @model EditMailSettingViewModel
-
 @{
     ViewData["Title"] = ViewLang.EditMailSetting;
 }
-
 @section Styles {
     <environment include="Development">
         <link href="~/css/dev/pages/mail-setting/edit.chunk.css" rel="stylesheet" asp-append-version="true" />
@@ -14,7 +12,14 @@
         <link href="~/css/pro/pages/mail-setting/edit.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/mail-setting/edit.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/mail-setting/edit.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.Configuration</li>
     <li><a asp-action="index">@ViewLang.MailSetting</a></li>
@@ -73,14 +78,3 @@
         <button type="submit" class="button -primary">@ViewLang.Save</button>
     </div>
 </form>
-
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/assets/js/mail/edit-mail-setting.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/assets/bundles/mail/js/edit-mail-setting.min.js"></script>
-    </environment>
-}

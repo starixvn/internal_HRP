@@ -1,4 +1,7 @@
-﻿var userManagement = (function ($) {
+﻿import 'datatables.net-bs/js/dataTables.bootstrap';
+import 'select2/dist/js/select2';
+
+const userManagement = (function ($) {
     function initDataTable() {
         $('#user-table').dataTable({
             ordering: false,

@@ -14,6 +14,15 @@ function generateConfig(environment) {
         },
         entry: {
             /*js*/
+            [`${jsPath}/pages/auth/login`]: pathConfig.scriptPaths.auth_login,
+            [`${jsPath}/pages/auth/reset-password`]: pathConfig.scriptPaths.auth_reset_password,
+            // user
+            [`${jsPath}/pages/user/index`]: pathConfig.scriptPaths.user_index,
+            [`${jsPath}/pages/user/create`]: pathConfig.scriptPaths.user_create,
+            [`${jsPath}/pages/user/edit`]: pathConfig.scriptPaths.user_edit,
+            [`${jsPath}/pages/user/assign-permission`]: pathConfig.scriptPaths.user_assign_permission,
+            [`${jsPath}/pages/mail-setting/edit`]: pathConfig.scriptPaths.mail_setting_edit,
+            [`${jsPath}/pages/currency-setting/index`]: pathConfig.scriptPaths.currency_setting_index,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,

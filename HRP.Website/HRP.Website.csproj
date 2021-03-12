@@ -76,7 +76,16 @@
     <None Remove="www\sources\css\pages\system-security\certificate.scss" />
     <None Remove="www\sources\css\pages\system-security\changepassword.scss" />
     <None Remove="www\sources\css\pages\user\index.scss" />
+    <None Remove="www\sources\js\common\client-encryption.js" />
+    <None Remove="www\sources\js\common\reset-password.js" />
     <None Remove="www\sources\js\common\rijndael-service.js" />
+    <None Remove="www\sources\js\pages\auth\login.js" />
+    <None Remove="www\sources\js\pages\currency-setting\index.js" />
+    <None Remove="www\sources\js\pages\mail-setting\edit.js" />
+    <None Remove="www\sources\js\pages\user\assign-permission.js" />
+    <None Remove="www\sources\js\pages\user\create.js" />
+    <None Remove="www\sources\js\pages\user\edit.js" />
+    <None Remove="www\sources\js\pages\user\index.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -307,7 +316,43 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="www\sources\js\common\client-encryption.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\auth\reset-password.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="www\sources\js\common\rijndael-service.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\auth\login.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\currency-setting\index.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\mail-setting\edit.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\user\assign-permission.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\user\create.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\user\edit.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\user\index.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

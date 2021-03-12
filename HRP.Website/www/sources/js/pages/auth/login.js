@@ -1,7 +1,10 @@
-var login = (function ($) {
+import 'jquery-ui-dist/jquery-ui';
+import rijndaelService from '../../common/rijndael-service';
+
+const login = (function ($) {
     function validateInput() {
-        var allInputs = $('input').length;
-        var filledInputs = 0;
+        let allInputs = $('input').length;
+        let filledInputs = 0;
 
         $('input').each(function (index, element) {
             var inputValue = $(element).val();
@@ -22,10 +25,10 @@ var login = (function ($) {
             return false;
         }
 
-        var password = $('#Password').val();
-        var rijndaelKey = $('#RijndaelKey').val();
-        var rijndaelIV = $('#RijndaelIV').val();
-        var encrypted = rijndaelService.encryptData(password, rijndaelKey, rijndaelIV);
+        const password = $('#Password').val(),
+            rijndaelKey = $('#RijndaelKey').val(),
+            rijndaelIV = $('#RijndaelIV').val(),
+            encrypted = rijndaelService.encryptData(password, rijndaelKey, rijndaelIV);
 
         $('#Password').val(encrypted);
         $('#login').submit();

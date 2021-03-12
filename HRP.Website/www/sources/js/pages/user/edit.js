@@ -1,4 +1,9 @@
-﻿var editUser = (function ($) {
+﻿import 'jquery-validation/dist/jquery.validate';
+import 'jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive';
+import 'jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax';
+import 'bootstrap/dist/js/bootstrap';
+
+global.editUser = (function ($) {
     function displaySuccessMessage() {
         var alert = $('#edit-user-alert');
 
