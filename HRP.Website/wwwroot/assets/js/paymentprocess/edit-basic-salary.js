@@ -451,7 +451,8 @@ var editBasicSalary = (function ($) {
                 $this.tooltipster({
                     content: $this.val(),
                     theme: 'tooltipster-light',
-                    maxWidth: 250
+                    maxWidth: 250,
+                    arrow: false
                 });
             }
         });
@@ -461,7 +462,8 @@ var editBasicSalary = (function ($) {
             $afterAdjustmentReason.tooltipster({
                 content: $afterAdjustmentReason.val(),
                 theme: 'tooltipster-light',
-                maxWidth: 250
+                maxWidth: 250,
+                arrow: false
             });
         }
     }

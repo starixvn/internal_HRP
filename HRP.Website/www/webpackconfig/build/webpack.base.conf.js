@@ -18,6 +18,11 @@ function generateConfig(environment) {
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
             [`${cssPath}/error`]: pathConfig.cssPaths.error,
+            // auth
+            [`${cssPath}/pages/auth/before-login`]: pathConfig.cssPaths.auth_before_login,
+            [`${cssPath}/pages/auth/login`]: pathConfig.cssPaths.auth_login,
+            [`${cssPath}/pages/auth/otp`]: pathConfig.cssPaths.auth_otp,
+            // user
             [`${cssPath}/pages/user/index`]: pathConfig.cssPaths.user_index,
             [`${cssPath}/pages/user/create`]: pathConfig.cssPaths.user_create,
             [`${cssPath}/pages/user/assign-permission`]: pathConfig.cssPaths.user_assign_permission,
@@ -36,6 +41,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/payment-process/index`]: pathConfig.cssPaths.payment_process_index,
             [`${cssPath}/pages/payment-process/upload-attendance`]: pathConfig.cssPaths.payment_process_upload_attendance,
             [`${cssPath}/pages/payment-process/monthly-payroll`]: pathConfig.cssPaths.payment_process_monthly_payroll,
+            [`${cssPath}/pages/payment-process/edit-basic-salary`]: pathConfig.cssPaths.payment_process_edit_basic_salary,
+            [`${cssPath}/pages/payment-process/edit-allowances`]: pathConfig.cssPaths.payment_process_edit_allowances,
             // payslip
             [`${cssPath}/pages/payslip/index`]: pathConfig.cssPaths.payslip_index,
             [`${cssPath}/pages/payslip/details`]: pathConfig.cssPaths.payslip_details,

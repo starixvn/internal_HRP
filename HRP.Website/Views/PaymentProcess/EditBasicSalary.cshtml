@@ -9,15 +9,10 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/lib/tooltipster/dist/css/tooltipster.bundle.css" rel="stylesheet" />
-        <link href="~/lib/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/edit-basic-salary.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/payment-process/edit-basic-salary.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link href="~/assets/bundles/paymentprocess/css/edit-basic-salary.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/payment-process/edit-basic-salary.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

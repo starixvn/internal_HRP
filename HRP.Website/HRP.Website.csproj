@@ -48,9 +48,9 @@
     <None Remove="www\sources\css\components\_textbox.scss" />
     <None Remove="www\sources\css\components\_tooltip.scss" />
     <None Remove="www\sources\css\layout\_before-login.scss" />
+    <None Remove="www\sources\css\pages\auth\before-login.scss" />
+    <None Remove="www\sources\css\pages\auth\login.scss" />
     <None Remove="www\sources\css\pages\auth\otp.scss" />
-    <None Remove="www\sources\css\pages\before-login\common.scss" />
-    <None Remove="www\sources\css\pages\before-login\login.scss" />
     <None Remove="www\sources\css\pages\currency-setting\index.scss" />
     <None Remove="www\sources\css\pages\data-configuration\index.scss" />
     <None Remove="www\sources\css\pages\employee\bank-details.scss" />
@@ -195,15 +195,15 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="www\sources\css\pages\auth\before-login.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\css\pages\auth\login.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="www\sources\css\pages\auth\otp.scss">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\sources\css\pages\before-login\common.scss">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\sources\css\pages\before-login\login.scss">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

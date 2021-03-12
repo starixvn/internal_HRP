@@ -1,4 +1,3 @@
-
 @import "../../abstracts/variables";
 @import "../../abstracts/mixins";
 @import "../../components/forms";
@@ -40,7 +39,7 @@ body {
 }
 
 // Register OTP
-.register-otp  {
+.register-otp {
     padding-top: 10px;
     color: $text-color;
 
@@ -53,15 +52,15 @@ body {
         font-size: 14px;
 
         &:before {
-            @include border-radius(50%);   
+            @include border-radius(50%);
             position: absolute;
             left: 0;
             top: -5px;
             display: flex;
             justify-content: center;
-            align-items: center;         
+            align-items: center;
             height: 24px;
-            width: 24px;            
+            width: 24px;
             background-color: #f57d14;
             counter-increment: section;
             content: counter(section);
@@ -80,7 +79,6 @@ body {
     .logo-sophos img {
         width: 80px;
     }
-
     // Download Sophos
     .download-content {
         display: grid;
@@ -96,7 +94,7 @@ body {
         h3 {
             margin: 0;
             font-size: 20px;
-            font-weight: normal;                
+            font-weight: normal;
             color: #000;
         }
 
@@ -107,7 +105,7 @@ body {
         }
     }
 
-    .more-info {        
+    .more-info {
         line-height: 20px;
         margin-bottom: 0;
 
@@ -116,15 +114,14 @@ body {
             font-weight: bold;
         }
     }
-
     // QR code
     .qr-code {
         padding-top: 10px;
 
         .img {
             @include border-radius(5px);
-            border: 1px solid $border-color;    
-            margin-bottom: 5px;   
+            border: 1px solid $border-color;
+            margin-bottom: 5px;
         }
 
         .text-username {
@@ -136,7 +133,7 @@ body {
             margin-bottom: 0;
         }
     }
-    
+
     .manualQRCode {
         .text-key {
             display: inline-block;
@@ -159,7 +156,7 @@ body {
     .form-register {
         width: 297px;
         padding-top: 20px;
-        
+
         [class^="msg"] {
             margin-bottom: 15px;
         }
@@ -182,7 +179,7 @@ body {
 // Notification OTP
 .notification-otp {
     @include border-radius(4px);
-    @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");  
+    @include box-shadow-multiple("0 2px 3px 1px rgba(0,0,0,.2)");
     width: 690px;
     margin: 106px auto 0;
     padding: 34px 24px;
@@ -193,7 +190,7 @@ body {
         margin-bottom: 12px;
         color: $text-color;
         font-size: 16px;
-        font-style: italic;        
+        font-style: italic;
         font-weight: bold;
     }
 

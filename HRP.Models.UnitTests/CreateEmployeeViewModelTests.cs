@@ -13,7 +13,7 @@
                 ProfilePic = string.Empty
             };
 
-            Assert.Equal("/assets/styles/images/profile.png", model.ProfilePicLink);
+            Assert.Equal("/css/images/profile.png", model.ProfilePicLink);
         }
 
         [Fact]

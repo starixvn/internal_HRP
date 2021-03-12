@@ -36,7 +36,7 @@
             showPreviewPicture(image);
             showErrorsValidationPicture($form, '');
         } else {
-            $('.js-displayProfilePicture').attr('src', '/assets/styles/images/profile.png');
+            $('.js-displayProfilePicture').attr('src', '/css/images/profile.png');
             showErrorsValidationPicture($form, errorMessage);
         }
 

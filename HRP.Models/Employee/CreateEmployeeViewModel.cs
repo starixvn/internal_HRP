@@ -105,7 +105,7 @@
         {
             get
             {
-                return string.IsNullOrEmpty(ProfilePic) ? "/assets/styles/images/profile.png" : "/ProfilePicture/" + ProfilePic;
+                return string.IsNullOrEmpty(ProfilePic) ? "/css/images/profile.png" : "/ProfilePicture/" + ProfilePic;
             }
         }
 

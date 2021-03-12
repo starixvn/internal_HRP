@@ -1,0 +1,214 @@
+﻿.d-flex {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+
+    .add {
+        margin-right: 128px;
+    }
+
+    .add-allowances {
+        margin-right: 126px;
+    }
+
+    .setting,
+    .monthly-payroll {
+        margin-right: 30px;
+    }
+}
+
+.text-red {
+    color: #ff0000 !important;
+}
+
+.text-green {
+    color: #117a00 !important;
+}
+
+.text-specific {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.number {
+    text-align: right;
+}
+
+.highlighted {
+    background-color: #ffeeab !important;
+}
+
+.group-title {
+    &.-no-space {
+        margin: 0;
+    }
+
+    &.m-t-0 {
+        margin-top: 0;
+    }
+}
+
+.group-payment {
+    position: relative;
+    top: -11px;
+}
+
+.monthly-deduction {
+    margin-bottom: 20px;
+}
+
+.group-deduction {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ff0000 !important;
+
+    &.m-b-0 {
+        margin-bottom: 0;
+    }
+}
+
+.group-complex {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-rows: 1fr;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 6px;
+
+    &.-group-type {
+        font-weight: bold;
+        color: #666;
+    }
+
+    &.-layout-add {
+        grid-template-columns: 108px 210px 80px 52px 110px;
+    }
+
+    &.-layout-deduction {
+        grid-template-columns: 115px 210px 52px 50px 110px;
+    }
+
+    &.-layout-deduction-2 {
+        grid-template-columns: 115px 210px 112px 110px;
+    }
+
+    &.-layout-setting {
+        grid-template-columns: 108px 90px 110px;
+    }
+
+    &.-layout-setting-2 {
+        grid-template-columns: 108px 208px;
+    }
+
+    &.-layout-payroll {
+        grid-template-columns: 122px 90px 110px;
+    }
+
+    &.-layout-payment {
+        grid-template-columns: 144px 136px;
+    }
+
+    &.-total-salary {
+        grid-template-columns: 108px 208px;
+    }
+
+    .-start-col-2 {
+        grid-column-start: 2;
+    }
+
+    .-start-col-4 {
+        grid-column-start: 4;
+    }
+
+    .-start-col-5 {
+        grid-column-start: 5;
+    }
+
+    .-start-col-6 {
+        grid-column-start: 6;
+    }
+
+    .-start-col-7 {
+        grid-column-start: 7;
+    }
+
+    .total-salary {
+        background-color: #ffcda0 !important;
+        text-align: right;
+        font-weight: bold;
+        color: #000 !important;
+    }
+
+    .total-monthly-payroll {
+        font-weight: bold;
+        color: #000 !important;
+    }
+
+    .text-reason {
+        height: auto;
+        line-height: 18px;
+        min-height: 62px;
+        resize: none;
+        overflow: hidden;
+    }
+
+    .text-reason[readonly] {
+        background-color: #ededed;
+        border-color: #d9d9d9;
+        color: #777;
+    }
+    // Allowances
+    &.-align-items-end {
+        align-items: flex-end;
+    }
+
+    &.-alw-layout-add {
+        grid-template-columns: 104px 80px 90px 52px 110px 110px;
+    }
+
+    &.-alw-layout-deduction {
+        grid-template-columns: 80px 88px 52px 110px 110px;
+
+        @media screen and (max-width: 1280px) {
+            margin-left: 116px;
+        }
+    }
+
+    &.-alw-layout-deduction-2 {
+        grid-template-columns: 178px 52px 110px 110px;
+
+        @media screen and (max-width: 1280px) {
+            margin-left: 116px;
+        }
+    }
+
+    .text-dst-net {
+        text-align: right;
+        font-weight: bold;
+        color: #ff0000 !important;
+    }
+
+    .text-net-amount {
+        background-color: #daffd9 !important;
+        text-align: right;
+        font-weight: bold;
+        color: #117a00 !important;
+    }
+}
+
+.search-form .select2-container--default .select2-selection--single {
+    height: 32px;
+    line-height: 32px;
+}
+
+.form-information .-total-salary {
+    .control {
+        display: unset;
+        width: auto;
+    }
+
+    .currency {
+        width: 90px;
+    }
+}

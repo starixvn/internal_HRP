@@ -5,9 +5,13 @@
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
-@section Styles
-    {
-    <link rel="stylesheet" href="~/assets/styles/pages/auth/otp.css" />
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/dev/pages/auth/otp.chunk.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/pro/pages/auth/otp.chunk.css" asp-append-version="true" />
+    </environment>
 }
 
 <div class="notification-otp">

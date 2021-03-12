@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,UAAU;EACN,WAAW,EAAE,QAAQ;EACrB,GAAG,EAAK,yCAAyC,CAAC,kBAAkB;EACpE,WAAW,EAAE,MAAM;EACnB,UAAU,EAAE,MAAM;;;AAGtB,UAAU;EACN,WAAW,EAAE,QAAQ;EACrB,GAAG,EAAK,wCAAwC,CAAC,kBAAkB;EACnE,WAAW,EAAE,IAAI;EACjB,UAAU,EAAE,MAAM;;;AAGtB,UAAU;EACN,WAAW,EAAE,QAAQ;EACrB,GAAG,EAAK,wCAAwC,CAAC,kBAAkB;EACnE,WAAW,EAAE,MAAM;EACnB,UAAU,EAAE,MAAM",
-    "sources": [
-        "font-roboto.scss"
-    ],
-    "names": [],
-    "file": "font-roboto.css"
-}

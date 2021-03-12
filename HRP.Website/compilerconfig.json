@@ -1,14 +1,2 @@
 ﻿[
-  {
-    "outputFile": "wwwroot/assets/js/account/otp.min.js",
-    "inputFile": "wwwroot/assets/js/account/otp.js"
-  },
-  {
-    "outputFile": "wwwroot/assets/styles/pages/before-login/login.css",
-    "inputFile": "wwwroot/assets/styles/pages/before-login/login.scss"
-  },
-  {
-    "outputFile": "wwwroot/assets/styles/pages/employee/employee-management.css",
-    "inputFile": "wwwroot/assets/styles/pages/employee/employee-management.scss"
-  }
 ]

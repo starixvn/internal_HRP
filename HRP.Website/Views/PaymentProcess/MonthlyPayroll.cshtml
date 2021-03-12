@@ -9,17 +9,10 @@
 
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
-        <link href="~/lib/jQuery-contextMenu/jquery.contextMenu.css" rel="stylesheet" />
-        <link href="~/lib/datatables.net/css/dataTables.bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" />
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/monthly-payroll.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/payment-process/monthly-payroll.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link href="~/assets/bundles/paymentprocess/css/employee-monthly-payroll.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/payment-process/monthly-payroll.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 

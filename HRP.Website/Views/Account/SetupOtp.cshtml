@@ -8,13 +8,12 @@
 
 @section Styles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/assets/styles/pages/main.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/assets/styles/pages/auth/otp.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/dev/main.chunk.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/dev/pages/auth/otp.chunk.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/assets/bundles/account/css/setupotp-standalone.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/assets/bundles/account/css/otp.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/pro/main.chunk.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/pro/pages/auth/otp.chunk.css" asp-append-version="true" />
     </environment>
 }
 

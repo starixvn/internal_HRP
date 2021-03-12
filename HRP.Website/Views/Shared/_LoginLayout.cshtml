@@ -6,14 +6,20 @@
     <title>@ViewData["Title"]</title>
     <link rel="shortcut icon" type="image/ico" href="~/favicon.ico" />
 
-    <link href="~/assets/bundles/auth/css/before-login.min.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fonts/hrp/style.css" asp-append-version="true" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/dev/pages/auth/before-login.chunk.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/pro/pages/auth/before-login.chunk.css" asp-append-version="true" />
+    </environment>
 
     @RenderSection("Styles", false)
 </head>
 <body>
     <header class="header">
         <a href="/" class="logo">
-                <img src="~/assets/styles/images/logo_page.svg" alt="logo" />
+            <img src="~/css/images/logo_page.svg" alt="logo" />
         </a>
     </header>
     @RenderBody()
