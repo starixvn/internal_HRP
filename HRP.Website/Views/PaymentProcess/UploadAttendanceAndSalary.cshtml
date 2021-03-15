@@ -2,7 +2,6 @@
 @using HRP.Resources
 @using HRP.Models.PaymentProcess
 @model UploadAttendanceAndSalaryViewModel
-
 @{
     ViewData["Title"] = ViewLang.UploadFiles;
     var isEmptyAttendanceFilename = string.IsNullOrWhiteSpace(Model.AttendanceFileName);
@@ -18,7 +17,14 @@
         <link href="~/css/pro/pages/payment-process/upload-attendance.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/payment-process/upload-attendance.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/payment-process/upload-attendance.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
     <li class="active">@ViewLang.UploadFiles</li>
@@ -183,20 +189,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/moment/moment.js"></script>
-        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/assets/js/paymentprocess/upload-attendance-salary.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/assets/bundles/paymentprocess/js/upload-attendance-salary.min.js"></script>
-    </environment>
-}

@@ -2,8 +2,7 @@
 @using HRP.Resources
 @using HRP.Models.PaymentProcess
 @model SelectWorkingMonthCompanyViewModel
-
-@{ 
+@{
     ViewData["Title"] = ViewLang.SelectWorkingMonthCompany;
 }
 
@@ -16,7 +15,14 @@
         <link href="~/css/pro/pages/payment-process/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/payment-process/index.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/payment-process/index.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
     <li class="active">@ViewLang.SelectWorkingMonthCompany</li>
@@ -58,18 +64,3 @@
         <button type="submit" class="button -primary">@ViewLang.Next</button>
     </div>
 </form>
-
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/moment/moment.js"></script>
-        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/assets/js/paymentprocess/select-month-company.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/assets/bundles/paymentprocess/js/select-month-company.min.js"></script>
-    </environment>
-}

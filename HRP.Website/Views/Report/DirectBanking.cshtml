@@ -2,7 +2,6 @@
 @using HRP.Models.Report
 @using HRP.Resources
 @model BankInReportViewModel
-
 @{
     ViewData["Title"] = $"{ViewLang.Report} - {ViewLang.DirectBanking}";
 }
@@ -16,21 +15,12 @@
         <link href="~/css/pro/pages/report/direct-banking.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
 @section Scripts {
     <environment include="Development">
-        <script type="text/javascript" asp-append-version="true" src="~/js/jquery-validate.min.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/lib/moment/moment.js"></script>
-        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-        <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
-        <script type="text/javascript" asp-append-version="true" src="~/lib/CryptoJS/aes.js"></script>
-        <script type="text/javascript" asp-append-version="true" src="~/assets/js/rijndael-service.js"></script>
-        <script type="text/javascript" asp-append-version="true" src="~/assets/js/report/payment-transaction.js"></script>
+        <script type="text/javascript" src="~/js/dev/pages/report/payment-transaction.chunk.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/assets/bundles/report/js/direct-banking-report.min.js"></script>
+        <script type="text/javascript" src="~/js/pro/pages/report/payment-transaction.chunk.js" asp-append-version="true"></script>
     </environment>
 }
 

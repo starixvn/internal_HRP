@@ -9,7 +9,7 @@
 
 <form id="updateEmploymentForm" class="form-information" name="updateEmploymentForm"
       asp-action="UpdateEmployment" asp-controller="Employee" data-ajax-method="post" data-ajax="true"
-      data-ajax-success="updateEmployment.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
+      data-ajax-success="editEmployment.onUpdateSuccess" data-ajax-failure="commonFunctions.handleAjaxError">
     @Html.Partial("_ValidationUpdateEmployment", Model)
     <div class="-has-icon msg-success hidden">
         @Message.UpdateEmploymentSuccessfully

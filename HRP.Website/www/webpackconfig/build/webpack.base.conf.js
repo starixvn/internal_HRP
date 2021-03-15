@@ -14,6 +14,7 @@ function generateConfig(environment) {
         },
         entry: {
             /*js*/
+            [`${jsPath}/main`]: pathConfig.scriptPaths.main,
             [`${jsPath}/pages/auth/login`]: pathConfig.scriptPaths.auth_login,
             [`${jsPath}/pages/auth/reset-password`]: pathConfig.scriptPaths.auth_reset_password,
             // user
@@ -21,8 +22,23 @@ function generateConfig(environment) {
             [`${jsPath}/pages/user/create`]: pathConfig.scriptPaths.user_create,
             [`${jsPath}/pages/user/edit`]: pathConfig.scriptPaths.user_edit,
             [`${jsPath}/pages/user/assign-permission`]: pathConfig.scriptPaths.user_assign_permission,
+            [`${jsPath}/pages/data-configuration/index`]: pathConfig.scriptPaths.data_configuration_index,
             [`${jsPath}/pages/mail-setting/edit`]: pathConfig.scriptPaths.mail_setting_edit,
             [`${jsPath}/pages/currency-setting/index`]: pathConfig.scriptPaths.currency_setting_index,
+            // employee
+            [`${jsPath}/pages/employee/index`]: pathConfig.scriptPaths.employee_index,
+            [`${jsPath}/pages/employee/create`]: pathConfig.scriptPaths.employee_create,
+            [`${jsPath}/pages/employee/edit`]: pathConfig.scriptPaths.employee_edit,
+            // payment process
+            [`${jsPath}/pages/payment-process/index`]: pathConfig.scriptPaths.payment_process_index,
+            [`${jsPath}/pages/payment-process/upload-attendance`]: pathConfig.scriptPaths.payment_process_upload_attendance,
+            // payslip
+            [`${jsPath}/pages/payslip/index`]: pathConfig.scriptPaths.payslip_index,
+            [`${jsPath}/pages/payslip/details`]: pathConfig.scriptPaths.payslip_details,
+            // report
+            [`${jsPath}/pages/report/dynamic`]: pathConfig.scriptPaths.report_dynamic,
+            [`${jsPath}/pages/report/monthly-payroll`]: pathConfig.scriptPaths.report_monthly_payroll,
+            [`${jsPath}/pages/report/payment-transaction`]: pathConfig.scriptPaths.report_payment_transaction,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,

@@ -2,11 +2,9 @@
 @using HRP.Core.Enumerations
 @using HRP.Models.Employee
 @model EmployeeManagementViewModel
-
 @{
     ViewData["Title"] = ViewLang.EmployeeList;
 }
-
 @section Styles {
     <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
     <environment include="Development">
@@ -16,7 +14,14 @@
         <link href="~/css/pro/pages/employee/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/employee/index.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/employee/index.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.EmployeeManagement</li>
     <li class="active">@ViewLang.EmployeeList</li>
@@ -175,19 +180,3 @@
         }
     </tbody>
 </table>
-
-<environment include="Development">
-    @section Scripts {
-        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-        <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-        <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
-        <script src="~/assets/js/employee/list-employee.js"></script>
-    }
-</environment>
-<environment exclude="Development">
-    @section Scripts {
-        <script src="~/assets/bundles/employee/js/list-employee.min.js"></script>
-    }
-</environment>

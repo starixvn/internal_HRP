@@ -61,112 +61,6 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/employee/js/create-employee.min.js",
-    "inputFiles": [
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/jquery-ui/jquery-ui.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/assets/js/employee/employee-common-funcs.js",
-      "wwwroot/assets/js/employee/create-employee.js",
-      "wwwroot/assets/js/employee/employment-common-funcs.js",
-      "wwwroot/assets/js/employee/create-employment.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/employee/js/update-employee.min.js",
-    "inputFiles": [
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/jquery-ui/jquery-ui.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/assets/js/employee/employee-common-funcs.js",
-      "wwwroot/assets/js/employee/update-employee.js",
-      "wwwroot/assets/js/employee/employment-common-funcs.js",
-      "wwwroot/assets/js/employee/update-employment.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/employee/js/list-employee.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-ui/jquery-ui.js",
-      "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
-      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
-      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/assets/js/employee/list-employee.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/configuration/js/data-configuration.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-ui/jquery-ui.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
-      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
-      "wwwroot/assets/js/configuration/data-configuration.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/paymentprocess/js/select-month-company.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/assets/js/paymentprocess/select-month-company.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/paymentprocess/js/upload-attendance-salary.min.js",
-    "inputFiles": [
-      "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
-      "wwwroot/lib/datatables.net-bs/js/dataTables.bootstrap.js",
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/assets/js/paymentprocess/upload-attendance-salary.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
     "outputFileName": "wwwroot/assets/bundles/employee/js/employee-payroll.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
@@ -252,22 +146,6 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/payslip/js/payslips.min.js",
-    "inputFiles": [
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
-      "wwwroot/lib/datatables.net/js/dataTables.bootstrap.js",
-      "wwwroot/lib/select2/dist/js/select2.min.js",
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/assets/js/payslip/payslip.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
     "outputFileName": "wwwroot/assets/bundles/bank/js/bank.min.js",
     "inputFiles": [
       "wwwroot/lib/datatables.net/js/jquery.dataTables.js",
@@ -298,82 +176,12 @@
     }
   },
   {
-    "outputFileName": "wwwroot/assets/bundles/report/js/monthly-payroll.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/lib/CryptoJS/aes.js",
-      "wwwroot/assets/js/rijndael-service.js",
-      "wwwroot/assets/js/report/monthly-payroll.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
     "outputFileName": "wwwroot/assets/bundles/systemsecurity/js/change-password.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js",
       "wwwroot/assets/js/systemsecurity/change-password.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/report/js/dynamic-report.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
-      "wwwroot/lib/CryptoJS/aes.js",
-      "wwwroot/assets/js/rijndael-service.js",
-      "wwwroot/assets/js/report/dynamic-report.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/report/js/direct-banking-report.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
-      "wwwroot/lib/CryptoJS/aes.js",
-      "wwwroot/assets/js/rijndael-service.js",
-      "wwwroot/assets/js/report/payment-transaction.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/report/js/ebanking-report.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "wwwroot/lib/select2/dist/js/select2.js",
-      "wwwroot/lib/moment/moment.js",
-      "wwwroot/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js",
-      "wwwroot/lib/fanex-multiselect/fanex.multiSelect.js",
-      "wwwroot/lib/CryptoJS/aes.js",
-      "wwwroot/assets/js/rijndael-service.js",
-      "wwwroot/assets/js/report/payment-transaction.js"
     ],
     "minify": {
       "enabled": true,
@@ -402,19 +210,6 @@
       "wwwroot/lib/CryptoJS/aes.js",
       "wwwroot/assets/js/rijndael-service.js",
       "wwwroot/assets/js/systemsecurity/input-password.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/assets/bundles/payslip/js/payslip-details.min.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery/dist/jquery.js",
-      "wwwroot/lib/CryptoJS/aes.js",
-      "wwwroot/assets/js/rijndael-service.js",
-      "wwwroot/assets/js/payslip/payslip-details.js"
     ],
     "minify": {
       "enabled": true,

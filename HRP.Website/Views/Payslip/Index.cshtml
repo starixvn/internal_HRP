@@ -2,14 +2,11 @@
 @using HRP.Core.Enumerations
 @using HRP.Models
 @using HRP.Models.Payslip
-
 @model PayslipViewModel
-
 @{
     ViewData["Title"] = ViewLang.Payslip;
     var disabled = Model.IsHost ? string.Empty : "disabled";
 }
-
 @section Styles {
     <environment include="Development">
         <link href="~/css/dev/pages/payslip/index.chunk.css" rel="stylesheet" asp-append-version="true" />
@@ -18,7 +15,14 @@
         <link href="~/css/pro/pages/payslip/index.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/payslip/index.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/payslip/index.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <ol class="breadcrumb">
     <li class="active">@ViewLang.Payslip</li>
 </ol>
@@ -85,10 +89,10 @@
         <tr>
             <th class="col-50">@ViewLang.Sent</th>
             <th class="col-50">
-                    <label>
-                        <input type="checkbox" class="@(Model.IsHost ? "js-checkAll" : string.Empty)" @disabled />
-                        <span></span>
-                    </label>
+                <label>
+                    <input type="checkbox" class="@(Model.IsHost ? "js-checkAll" : string.Empty)" @disabled />
+                    <span></span>
+                </label>
             </th>
         </tr>
     </thead>
@@ -159,18 +163,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-        <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/lib/moment/moment.js"></script>
-        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
-        <script src="~/assets/js/payslip/payslip.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/assets/bundles/payslip/js/payslips.min.js"></script>
-    </environment>
-}

@@ -80,8 +80,24 @@
     <None Remove="www\sources\js\common\reset-password.js" />
     <None Remove="www\sources\js\common\rijndael-service.js" />
     <None Remove="www\sources\js\pages\auth\login.js" />
+    <None Remove="www\sources\js\pages\common-functions.js" />
     <None Remove="www\sources\js\pages\currency-setting\index.js" />
+    <None Remove="www\sources\js\pages\data-configuration\index.js" />
+    <None Remove="www\sources\js\pages\employee\create-employee.js" />
+    <None Remove="www\sources\js\pages\employee\create-employment.js" />
+    <None Remove="www\sources\js\pages\employee\edit-employee.js" />
+    <None Remove="www\sources\js\pages\employee\edit-employment.js" />
+    <None Remove="www\sources\js\pages\employee\employee-common-funcs.js" />
+    <None Remove="www\sources\js\pages\employee\employment-common-funcs.js" />
+    <None Remove="www\sources\js\pages\employee\index.js" />
     <None Remove="www\sources\js\pages\mail-setting\edit.js" />
+    <None Remove="www\sources\js\pages\payment-process\index.js" />
+    <None Remove="www\sources\js\pages\payment-process\upload-attendance.js" />
+    <None Remove="www\sources\js\pages\payslip\details.js" />
+    <None Remove="www\sources\js\pages\payslip\index.js" />
+    <None Remove="www\sources\js\pages\report\dynamic.js" />
+    <None Remove="www\sources\js\pages\report\monthly-payroll.js" />
+    <None Remove="www\sources\js\pages\report\payment-transaction.js" />
     <None Remove="www\sources\js\pages\user\assign-permission.js" />
     <None Remove="www\sources\js\pages\user\create.js" />
     <None Remove="www\sources\js\pages\user\edit.js" />
@@ -332,11 +348,75 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="www\sources\js\common\common-functions.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\data-configuration\index.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="www\sources\js\pages\currency-setting\index.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="www\sources\js\pages\employee\create-employee.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\employee\create-employment.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\employee\employee-common-funcs.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\employee\employment-common-funcs.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\employee\index.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\employee\edit-employee.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\employee\edit-employment.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="www\sources\js\pages\mail-setting\edit.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\payment-process\index.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\payment-process\upload-attendance.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\payslip\details.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\payslip\index.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\report\dynamic.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\report\monthly-payroll.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\report\payment-transaction.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

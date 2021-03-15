@@ -52,6 +52,8 @@ const cssPaths = {
 const scriptPaths = {
     build: 'wwwroot/js',
 
+    main: ['./www/sources/js/pages/main.js'],
+    // auth
     auth_login: ['./www/sources/js/pages/auth/login.js'],
     auth_reset_password: ['./www/sources/js/pages/auth/reset-password.js'],
     // user
@@ -59,10 +61,26 @@ const scriptPaths = {
     user_create: ['./www/sources/js/pages/user/create.js'],
     user_edit: ['./www/sources/js/pages/user/edit.js'],
     user_assign_permission: ['./www/sources/js/pages/user/assign-permission.js'],
+    // data configuration
+    data_configuration_index: ['./www/sources/js/pages/data-configuration/index.js'],
     // mail setting
     mail_setting_edit: ['./www/sources/js/pages/mail-setting/edit.js'],
     // currency setting
     currency_setting_index: ['./www/sources/js/pages/currency-setting/index.js'],
+    // employee
+    employee_index: ['./www/sources/js/pages/employee/index.js'],
+    employee_create: ['./www/sources/js/pages/employee/create-employee.js'],
+    employee_edit: ['./www/sources/js/pages/employee/edit-employee.js'],
+    // payment process
+    payment_process_index: ['./www/sources/js/pages/payment-process/index.js'],
+    payment_process_upload_attendance: ['./www/sources/js/pages/payment-process/upload-attendance.js'],
+    // payslip
+    payslip_index: ['./www/sources/js/pages/payslip/index.js'],
+    payslip_details: ['./www/sources/js/pages/payslip/details.js'],
+    // report
+    report_dynamic: ['./www/sources/js/pages/report/dynamic.js'],
+    report_monthly_payroll: ['./www/sources/js/pages/report/monthly-payroll.js'],
+    report_payment_transaction: ['./www/sources/js/pages/report/payment-transaction.js']
 };
 
 module.exports = {
