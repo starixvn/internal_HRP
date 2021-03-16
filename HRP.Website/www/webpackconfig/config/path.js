@@ -53,9 +53,14 @@ const scriptPaths = {
     build: 'wwwroot/js',
 
     main: ['./www/sources/js/pages/main.js'],
+    home: ['./www/sources/js/pages/home.js'],
     // auth
     auth_login: ['./www/sources/js/pages/auth/login.js'],
     auth_reset_password: ['./www/sources/js/pages/auth/reset-password.js'],
+    // account
+    account_index: ['./www/sources/js/pages/account/index.js'],
+    account_setup_otp: ['./www/sources/js/pages/account/setup-otp.js'],
+    account_verify_otp: ['./www/sources/js/pages/account/verify-otp.js'],
     // user
     user_index: ['./www/sources/js/pages/user/index.js'],
     user_create: ['./www/sources/js/pages/user/create.js'],
@@ -63,6 +68,10 @@ const scriptPaths = {
     user_assign_permission: ['./www/sources/js/pages/user/assign-permission.js'],
     // data configuration
     data_configuration_index: ['./www/sources/js/pages/data-configuration/index.js'],
+    // system security
+    system_security_change_password: ['./www/sources/js/pages/system-security/change-password.js'],
+    system_security_generate_cert_file: ['./www/sources/js/pages/system-security/generate-cert-file.js'],
+    system_security_input_password: ['./www/sources/js/pages/system-security/input-password.js'],
     // mail setting
     mail_setting_edit: ['./www/sources/js/pages/mail-setting/edit.js'],
     // currency setting
@@ -71,9 +80,16 @@ const scriptPaths = {
     employee_index: ['./www/sources/js/pages/employee/index.js'],
     employee_create: ['./www/sources/js/pages/employee/create-employee.js'],
     employee_edit: ['./www/sources/js/pages/employee/edit-employee.js'],
+    employee_payroll: ['./www/sources/js/pages/employee/employee-payroll.js'],
+    // bank account
+    bank_account_index: ['./www/sources/js/pages/bank-account/index.js'],
+    bank_account_create: ['./www/sources/js/pages/bank-account/create.js'],
     // payment process
     payment_process_index: ['./www/sources/js/pages/payment-process/index.js'],
     payment_process_upload_attendance: ['./www/sources/js/pages/payment-process/upload-attendance.js'],
+    payment_process_monthly_payroll: ['./www/sources/js/pages/payment-process/monthly-payroll.js'],
+    payment_process_edit_basic_salary: ['./www/sources/js/pages/payment-process/edit-basic-salary.js'],
+    payment_process_edit_allowances: ['./www/sources/js/pages/payment-process/edit-allowances.js'],
     // payslip
     payslip_index: ['./www/sources/js/pages/payslip/index.js'],
     payslip_details: ['./www/sources/js/pages/payslip/details.js'],

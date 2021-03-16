@@ -2,7 +2,6 @@
 @using HRP.Resources
 @using HRP.Models.SystemSecurity
 @model GenerateCertificateViewModel
-
 @{
     Layout = "_LoginLayout";
     ViewData["Title"] = "Generate";
@@ -16,7 +15,14 @@
         <link href="~/css/pro/pages/system-security/certificate.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/system-security/generate-cert-file.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/system-security/generate-cert-file.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <section class="block certificate">
     <div class="circle-large">
         <span class="icon-otp"></span>
@@ -96,16 +102,3 @@
         </div>
     }
 </section>
-
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/lib/CryptoJS/aes.js"></script>
-        <script src="~/assets/js/rijndael-service.js"></script>
-        <script src="~/assets/js/systemsecurity/generate-cert-file.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/assets/bundles/systemsecurity/js/generate-cert-file.min.js"></script>
-    </environment>
-}

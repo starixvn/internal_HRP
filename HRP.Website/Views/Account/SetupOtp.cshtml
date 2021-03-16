@@ -16,7 +16,14 @@
         <link rel="stylesheet" href="~/css/pro/pages/auth/otp.chunk.css" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/account/setup-otp.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/account/setup-otp.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <div class="content-container">
     <section class="wrapper">
         <div class="content">
@@ -24,22 +31,3 @@
         </div>
     </section>
 </div>
-
-@section Scripts {
-<environment include="Development">
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js" type="text/javascript" asp-append-version="true"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" type="text/javascript" asp-append-version="true"></script>
-    <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js" type="text/javascript" asp-append-version="true"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js" type="text/javascript" asp-append-version="true"></script>
-    <script src="~/lib/qrious/qrious.min.js" type="text/javascript" asp-append-version="true"></script>
-    <script type="text/javascript" asp-append-version="true" src="~/lib/CryptoJS/aes.js"></script>
-    <script type="text/javascript" asp-append-version="true" src="~/assets/js/rijndael-service.js"></script>
-    <script type="text/javascript" asp-append-version="true" src="~/assets/js/client-encryption.js"></script>
-    <script type="text/javascript" asp-append-version="true" src="~/assets/js/account/otp.js"></script>
-</environment>
-    <environment exclude="Development">
-        <script src="~/js/jquery-validate.min.js" type="text/javascript" asp-append-version="true"></script>
-        <script src="~/assets/bundles/account/js/setupotp-standalone.min.js" type="text/javascript" asp-append-version="true"></script>
-        <script src="~/assets/bundles/account/js/setupotp.min.js" type="text/javascript" asp-append-version="true"></script>
-    </environment>
-}

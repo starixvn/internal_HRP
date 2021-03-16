@@ -1,6 +1,6 @@
 ﻿import rijndaelService from './rijndael-service';
 
-const encrypt = {
+window.encrypt = {
     encryptionKey: '',
     encryptionIV: '',
 

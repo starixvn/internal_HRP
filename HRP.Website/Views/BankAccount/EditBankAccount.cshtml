@@ -1,6 +1,5 @@
 ﻿@using HRP.Resources
 @model HRP.Models.BankAccount.EditBankAccountViewModel
-
 @{
     ViewBag.Title = Message.EditBankAccount;
     Layout = "_Layout";
@@ -14,19 +13,12 @@
         <link href="~/css/pro/pages/employee/bank-details.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
 @section Scripts {
     <environment include="Development">
-        <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script type="text/javascript" src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script type="text/javascript" src="~/lib/select2/dist/js/select2.min.js"></script>
-        <script type="text/javascript" src="~/assets/js/bank/transform-select.js"></script>
-        <script type="text/javascript" src="~/assets/js/bank/bank-account-form.js"></script>
-        <script type="text/javascript" src="~/assets/js/bank/state-handler.js"></script>
+        <script type="text/javascript" src="~/js/dev/pages/bank-account/create.chunk.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/assets/bundles/bank/js/create.min.js"></script>
+        <script type="text/javascript" src="~/js/pro/pages/bank-account/create.chunk.js" asp-append-version="true"></script>
     </environment>
 }
 

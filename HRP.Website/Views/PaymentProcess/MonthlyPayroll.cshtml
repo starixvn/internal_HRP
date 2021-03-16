@@ -2,11 +2,9 @@
 @using HRP.Resources
 @using HRP.Models.MonthlyPayroll.EmployeeMonthlyPayroll
 @model EmployeeMonthlyPayrollViewModel
-
 @{
     ViewData["Title"] = ViewLang.ViewEmployeeMonthlyPayroll;
 }
-
 @section Styles {
     <environment include="Development">
         <link href="~/css/dev/pages/payment-process/monthly-payroll.chunk.css" rel="stylesheet" asp-append-version="true" />
@@ -15,7 +13,14 @@
         <link href="~/css/pro/pages/payment-process/monthly-payroll.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/payment-process/monthly-payroll.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/payment-process/monthly-payroll.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
     <li class="active">@ViewLang.ViewEmployeeMonthlyPayroll</li>
@@ -347,22 +352,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/datatables.net/js/jquery.dataTables.js"></script>
-        <script src="~/lib/datatables.net/js/dataTables.bootstrap.js"></script>
-        <script src="~/lib/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js"></script>
-        <script src="~/lib/jQuery-contextMenu/jquery.contextMenu.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/lib/fanex-multiselect/fanex.multiSelect.js"></script>
-        <script src="~/lib/CryptoJS/aes.js"></script>
-        <script src="~/assets/js/rijndael-service.js"></script>
-        <script src="~/assets/js/paymentprocess/employee-monthly-payroll.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/assets/bundles/paymentprocess/js/employee-monthly-payroll.min.js"></script>
-    </environment>
-}

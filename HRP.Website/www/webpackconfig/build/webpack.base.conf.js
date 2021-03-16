@@ -15,8 +15,12 @@ function generateConfig(environment) {
         entry: {
             /*js*/
             [`${jsPath}/main`]: pathConfig.scriptPaths.main,
+            [`${jsPath}/home`]: pathConfig.scriptPaths.home,
             [`${jsPath}/pages/auth/login`]: pathConfig.scriptPaths.auth_login,
             [`${jsPath}/pages/auth/reset-password`]: pathConfig.scriptPaths.auth_reset_password,
+            [`${jsPath}/pages/account/index`]: pathConfig.scriptPaths.account_index,
+            [`${jsPath}/pages/account/setup-otp`]: pathConfig.scriptPaths.account_setup_otp,
+            [`${jsPath}/pages/account/verify-otp`]: pathConfig.scriptPaths.account_verify_otp,
             // user
             [`${jsPath}/pages/user/index`]: pathConfig.scriptPaths.user_index,
             [`${jsPath}/pages/user/create`]: pathConfig.scriptPaths.user_create,
@@ -25,13 +29,23 @@ function generateConfig(environment) {
             [`${jsPath}/pages/data-configuration/index`]: pathConfig.scriptPaths.data_configuration_index,
             [`${jsPath}/pages/mail-setting/edit`]: pathConfig.scriptPaths.mail_setting_edit,
             [`${jsPath}/pages/currency-setting/index`]: pathConfig.scriptPaths.currency_setting_index,
+            [`${jsPath}/pages/system-security/change-password`]: pathConfig.scriptPaths.system_security_change_password,
+            [`${jsPath}/pages/system-security/generate-cert-file`]: pathConfig.scriptPaths.system_security_generate_cert_file,
+            [`${jsPath}/pages/system-security/input-password`]: pathConfig.scriptPaths.system_security_input_password,
             // employee
             [`${jsPath}/pages/employee/index`]: pathConfig.scriptPaths.employee_index,
             [`${jsPath}/pages/employee/create`]: pathConfig.scriptPaths.employee_create,
             [`${jsPath}/pages/employee/edit`]: pathConfig.scriptPaths.employee_edit,
+            [`${jsPath}/pages/employee/payroll`]: pathConfig.scriptPaths.employee_payroll,
+            // bank account
+            [`${jsPath}/pages/bank-account/index`]: pathConfig.scriptPaths.bank_account_index,
+            [`${jsPath}/pages/bank-account/create`]: pathConfig.scriptPaths.bank_account_create,
             // payment process
             [`${jsPath}/pages/payment-process/index`]: pathConfig.scriptPaths.payment_process_index,
             [`${jsPath}/pages/payment-process/upload-attendance`]: pathConfig.scriptPaths.payment_process_upload_attendance,
+            [`${jsPath}/pages/payment-process/monthly-payroll`]: pathConfig.scriptPaths.payment_process_monthly_payroll,
+            [`${jsPath}/pages/payment-process/edit-basic-salary`]: pathConfig.scriptPaths.payment_process_edit_basic_salary,
+            [`${jsPath}/pages/payment-process/edit-allowances`]: pathConfig.scriptPaths.payment_process_edit_allowances,
             // payslip
             [`${jsPath}/pages/payslip/index`]: pathConfig.scriptPaths.payslip_index,
             [`${jsPath}/pages/payslip/details`]: pathConfig.scriptPaths.payslip_details,
@@ -55,6 +69,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/currency-setting/index`]: pathConfig.cssPaths.currency_setting_index,
             [`${cssPath}/pages/system-security/certificate`]: pathConfig.cssPaths.system_security_certificate,
             [`${cssPath}/pages/system-security/changepassword`]: pathConfig.cssPaths.system_security_changepassword,
+            // mail setting
             [`${cssPath}/pages/mail-setting/index`]: pathConfig.cssPaths.mail_setting_index,
             [`${cssPath}/pages/mail-setting/edit`]: pathConfig.cssPaths.mail_setting_edit,
             // employee

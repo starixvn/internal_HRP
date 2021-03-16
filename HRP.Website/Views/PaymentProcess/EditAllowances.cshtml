@@ -1,23 +1,26 @@
 ﻿@using HRP.Core.Enumerations
 @using HRP.Resources
 @model HRP.Models.MonthlyPayroll.EditMonthlyAllowancesViewModel
-
 @{
     ViewData["Title"] = Model.CanEdit ? ViewLang.EditMonthlyAllowances : ViewLang.ViewMonthlyAllowances;
 }
 
 @section Styles {
     <environment include="Development">
-        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/payment-process.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/employee/common.css" rel="stylesheet" />
-        <link href="~/assets/styles/pages/paymentprocess/edit-basic-salary.css" rel="stylesheet" />
+        <link href="~/css/dev/pages/payment-process/edit-allowances.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link href="~/assets/bundles/paymentprocess/css/edit-allowances.min.css" rel="stylesheet" />
+        <link href="~/css/pro/pages/payment-process/edit-allowances.chunk.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
-
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/payment-process/edit-allowances.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/payment-process/edit-allowances.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
 <ol class="breadcrumb">
     <li class="like-link">@ViewLang.PaymentProcess</li>
     <li class="like-link">
@@ -469,24 +472,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <environment include="Development">
-        <script src="~/lib/bignumber.js/bignumber.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/select2/dist/js/select2.js"></script>
-        <script src="~/lib/inputmask/dist/inputmask/inputmask.js"></script>
-        <script src="~/lib/inputmask/dist/inputmask/inputmask.extensions.js"></script>
-        <script src="~/lib/inputmask/dist/inputmask/inputmask.numeric.extensions.js"></script>
-        <script src="~/lib/inputmask/dist/inputmask/jquery.inputmask.js"></script>
-        <script src="~/lib/CryptoJS/aes.js"></script>
-        <script src="~/assets/js/rijndael-service.js"></script>
-        <script src="~/assets/js/paymentprocess/edit-allowances.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/lib/bignumber.js/bignumber.min.js"></script>
-        <script src="~/assets/bundles/paymentprocess/js/edit-allowances.min.js"></script>
-    </environment>
-}
