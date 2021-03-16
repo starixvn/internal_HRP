@@ -417,7 +417,7 @@ window.employeePayroll = (function ($) {
                 },
                 'BasicSalary.Salary.PlainValue': {
                     required: function (element) {
-                        settingValues = $('.basic-salary-calculate, #BasicSalary_Salary_CurrencyId').map(function (i, element) {
+                        let settingValues = $('.basic-salary-calculate, #BasicSalary_Salary_CurrencyId').map(function (i, element) {
                             if (element.value !== '') {
                                 return element.value;
                             }
@@ -428,7 +428,7 @@ window.employeePayroll = (function ($) {
                 },
                 'BasicSalary.Salary.CurrencyId': {
                     required: function (element) {
-                        settingValues = $('.basic-salary-calculate, #BasicSalary_Salary_PlainValue').map(function (i, element) {
+                        let settingValues = $('.basic-salary-calculate, #BasicSalary_Salary_PlainValue').map(function (i, element) {
                             if (element.value !== '') {
                                 return element.value;
                             }
@@ -439,7 +439,7 @@ window.employeePayroll = (function ($) {
                 },
                 'Allowance.CurrencyId': {
                     required: function (element) {
-                        var allowanceDetailValues = $('.allowance-detail-calculate, .allowance-calculate').map(function (i, element) {
+                        let allowanceDetailValues = $('.allowance-detail-calculate, .allowance-calculate').map(function (i, element) {
                             if (element.value !== '') {
                                 return element.value;
                             }
@@ -450,7 +450,7 @@ window.employeePayroll = (function ($) {
                 },
                 'AllowanceTotal': {
                     required: function (element) {
-                        var allowanceDetailValues = $('.allowance-detail-calculate, .allowance-calculate').map(function (i, element) {
+                        let allowanceDetailValues = $('.allowance-detail-calculate, .allowance-calculate').map(function (i, element) {
                             if (element.value !== '') {
                                 return element.value;
                             }
