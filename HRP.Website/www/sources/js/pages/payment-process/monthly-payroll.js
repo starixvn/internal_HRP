@@ -8,7 +8,7 @@ import 'jquery-contextmenu/dist/jquery.contextMenu';
 import '../../../../../wwwroot/lib/fanex-multiselect/fanex.multiSelect';
 import rijndaelService from '../../common/rijndael-service';
 
-const monthlyPayroll = (function ($) {
+window.monthlyPayroll = (function ($) {
     let $table, companyId;
 
     function initSelect2() {
