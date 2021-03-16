@@ -202,7 +202,7 @@
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
-                worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DirectBanking1AccountName);
+                worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking1AccountName;
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.EbankingAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DirectBanking1Amount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DirectBanking2Amount);
