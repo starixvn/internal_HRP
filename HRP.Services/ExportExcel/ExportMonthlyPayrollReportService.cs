@@ -153,7 +153,7 @@
                     = CalculationService.ConvertAmount(report.CurrencyExchangeRate, monthlySalary.DirectBanking2Amount, monthlySalary.DirectBanking2CurrencyId, monthlyBasicSalary.CurrencyId);
                 worksheet.Cells[row, colIndex++].Value
                     = CalculationService.ConvertAmount(report.CurrencyExchangeRate, monthlySalary.CashAmount, monthlySalary.CashCurrencyId, monthlyBasicSalary.CurrencyId);
-                worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.Salary);
+                worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
 
                 colIndex++;
                 FillAllowanceData(worksheet, row, colIndex, monthlyBasicAllowance, monthlyAllowance);
@@ -207,7 +207,7 @@
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DirectBanking1Amount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DirectBanking2Amount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.CashAmount);
-                worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.Salary);
+                worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
 
                 colIndex++;
                 FillAllowanceData(worksheet, row, colIndex, monthlyBasicAllowance, monthlyAllowance);
