@@ -32,7 +32,7 @@ BEGIN
 
 	IF NOT EXISTS (
 			SELECT 1
-			FROM #tblEmployeeInfo
+			FROM #tblEmployeeInfo WITH (NOLOCK)
 			)
 	BEGIN
 		RETURN
@@ -69,6 +69,7 @@ BEGIN
 
 	-- Get monthly salary
 	SELECT ei.EmployeeId
+		,ba.BankName AS DirectBanking1AccountName
 		,s.CurrencyId
 		,c.CurrencyCode
 		,s.Salary
@@ -85,6 +86,7 @@ BEGIN
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
 	LEFT JOIN dbo.MonthlySalary AS s WITH (NOLOCK) ON s.PayrollId = ei.PayrollId
 	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON s.CurrencyId = c.CurrencyId
+	LEFT JOIN dbo.BankAccount AS ba WITH (NOLOCK) ON s.DirectBanking1AccountId = ba.Id
 
 	-- Get basic Allowances
 	SELECT ei.EmployeeId
