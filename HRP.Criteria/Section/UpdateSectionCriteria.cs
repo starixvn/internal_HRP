@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.Section
 {
-    public class UpdateSectionCriteria : CommandBaseCriteria
+    public class UpdateSectionCriteria : BaseNonQueryCommand
     {
         public int SectionId { get; set; }
 

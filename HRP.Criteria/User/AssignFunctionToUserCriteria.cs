@@ -1,6 +1,6 @@
 namespace HRP.Criteria
 {
-    public class AssignFunctionToUserCriteria : CommandBaseCriteria
+    public class AssignFunctionToUserCriteria : BaseNonQueryCommand
     {
         public int UserId { get; set; }
 

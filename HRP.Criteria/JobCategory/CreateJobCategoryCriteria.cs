@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.JobCategory
 {
-    public class CreateJobCategoryCriteria : CommandBaseCriteria
+    public class CreateJobCategoryCriteria : BaseNonQueryCommand
     {
         public string Name { get; set; }
 

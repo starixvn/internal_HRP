@@ -3,7 +3,7 @@
     using System;
     using Fanex.Data.Repository;
 
-    public class LogSendMailCriteria : CriteriaBase
+    public class LogSendMailCriteria : NonQueryCommand
     {
         public string MailTo { get; set; }
         public string Subject { get; set; }

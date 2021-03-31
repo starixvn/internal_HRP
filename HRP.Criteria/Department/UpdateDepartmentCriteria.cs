@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.Department
 {
-    public class UpdateDepartmentCriteria : CommandBaseCriteria
+    public class UpdateDepartmentCriteria : BaseNonQueryCommand
     {
         public int DepartmentId { get; set; }
 

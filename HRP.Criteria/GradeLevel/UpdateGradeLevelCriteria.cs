@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.GradeLevel
 {
-    public class UpdateGradeLevelCriteria : CommandBaseCriteria
+    public class UpdateGradeLevelCriteria : BaseNonQueryCommand
     {
         public int GradeLevelId { get; set; }
 

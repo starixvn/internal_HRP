@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class UpdateSecretKeyCriteria : CommandBaseCriteria
+    public class UpdateSecretKeyCriteria : BaseNonQueryCommand
     {
         public string Username { get; set; }
 

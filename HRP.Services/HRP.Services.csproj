@@ -14,12 +14,12 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="EPPlus" Version="4.5.2.1" />
-    <PackageReference Include="Fanex.Data" Version="3.0.0-rc1" />
-    <PackageReference Include="Fanex.Data.Repository" Version="3.0.0-rc1" />
+    <PackageReference Include="Fanex.Data" Version="4.2.2" />
+    <PackageReference Include="Fanex.Data.Repository" Version="4.2.2" />
     <PackageReference Include="GoogleAuthenticator" Version="1.2.1" />
     <PackageReference Include="iTextSharp" Version="5.5.13" />
     <PackageReference Include="itextsharp.xmlworker" Version="5.5.13" />
-    <PackageReference Include="MailKit" Version="2.10.1" />
+    <PackageReference Include="MailKit" Version="2.11.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />

@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.RefResource
 {
-    public class CreateRefResourceCriteria : CommandBaseCriteria
+    public class CreateRefResourceCriteria : BaseNonQueryCommand
     {
         public string RefName { get; set; }
 

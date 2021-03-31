@@ -64,10 +64,7 @@
             {
                 new MultiSelectViewModel { Value = "3", Text = "DAR", Checked = true, ParentId = "2" }
             };
-            var tuple = new Tuple<
-                IEnumerable<MultiSelectViewModel>,
-                IEnumerable<MultiSelectViewModel>,
-                IEnumerable<MultiSelectViewModel>>(divisions, departments, costCenters);
+            var tuple = (divisions, departments, costCenters);
             var service = GetMonthlyPayrollService();
             baseService.FetchMultipleAsync<MultiSelectViewModel, MultiSelectViewModel, MultiSelectViewModel>(Arg.Any<GetHierarchyCompanyCriteria>()).Returns(tuple);
 
@@ -102,9 +99,7 @@
             {
                 CompanyId = 1
             };
-            var tuple = new Tuple<IEnumerable<EmployeeMonthlyPayrollModel>,
-                IEnumerable<EmployeeMonthlyPayrollBasicSalaryModel>,
-                IEnumerable<EmployeeMonthlyPayrollBasicSalaryModel>>(
+            var tuple = (
                     new List<EmployeeMonthlyPayrollModel> { new EmployeeMonthlyPayrollModel { PayrollId = 1 } },
                     new List<EmployeeMonthlyPayrollBasicSalaryModel> { new EmployeeMonthlyPayrollBasicSalaryModel { PayrollId = 1 } },
                     new List<EmployeeMonthlyPayrollBasicSalaryModel> { new EmployeeMonthlyPayrollBasicSalaryModel { PayrollId = 1 } });

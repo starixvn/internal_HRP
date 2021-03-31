@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class UpdateTokenResetPasswordCriteria : CommandBaseCriteria
+    public class UpdateTokenResetPasswordCriteria : BaseNonQueryCommand
     {
         public string Username { get; set; }
 

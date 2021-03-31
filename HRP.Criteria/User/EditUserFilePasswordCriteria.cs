@@ -1,8 +1,6 @@
 ﻿namespace HRP.Criteria.User
 {
-    using Fanex.Data.Repository;
-
-    public class EditUserFilePasswordCriteria : CriteriaBase
+    public class EditUserFilePasswordCriteria : BaseNonQueryCommand
     {
         public int UserId { get; set; }
 

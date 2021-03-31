@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.GradeLevel
 {
-    public class CreateGradeLevelCriteria : CommandBaseCriteria
+    public class CreateGradeLevelCriteria : BaseNonQueryCommand
     {
         public string Name { get; set; }
 

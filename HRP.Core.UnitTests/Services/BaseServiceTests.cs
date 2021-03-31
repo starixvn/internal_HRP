@@ -152,7 +152,7 @@
         public async Task FetchMultipleAsync_CriteriaIsValid_ReturnExpectedData()
         {
             // Arrange
-            var expected = new Tuple<IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 });
+            var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 });
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
             var baseService = GetBaseService();
@@ -166,7 +166,7 @@
         }
 
         [Fact]
-        public async Task FetchMultipleAsyncThird_CriteriaIsNull_ReturnTupleWithEmptyList()
+        public async Task FetchMultipleAsync_WithThreeDataSetCriteriaIsNull_ReturnTupleWithEmptyList()
         {
             // Arrange
             var baseService = GetBaseService();
@@ -181,7 +181,7 @@
         }
 
         [Fact]
-        public async Task FetchMultipleAsyncThird_CriteriaIsInvalid_ReturnTupleWithEmptyList()
+        public async Task FetchMultipleAsync_WithThreeDataCriteriaIsInvalid_ReturnTupleWithEmptyList()
         {
             // Arrange
             var criteria = Substitute.For<ICriteria>();
@@ -198,10 +198,10 @@
         }
 
         [Fact]
-        public async Task FetchMultipleAsyncThird_CriteriaIsValid_ReturnExpectedData()
+        public async Task FetchMultipleAsync_WithThreeDataCriteriaIsValid_ReturnExpectedData()
         {
             // Arrange
-            var expected = new Tuple<IEnumerable<int>, IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 }, new List<int> { 1, 2 });
+            var expected = new ValueTuple<IEnumerable<int>, IEnumerable<int>, IEnumerable<int>>(new List<int> { 1, 2 }, new List<int> { 1, 2 }, new List<int> { 1, 2 });
             var criteria = Substitute.For<ICriteria>();
             criteria.IsValid().Returns(true);
             var baseService = GetBaseService();
@@ -239,7 +239,7 @@
         {
             // Arrange
             var expected = new CommandResult();
-            var criteria = Substitute.For<ICriteria>();
+            var criteria = Substitute.For<INonQueryCommand>();
             criteria.IsValid().Returns(false);
             var baseService = GetBaseService();
 
@@ -256,7 +256,7 @@
         public async Task ExecuteNonQueryAsync_CriteriaIsValid_ExpectedExecuteQuery()
         {
             // Arrange
-            var criteria = Substitute.For<ICriteria>();
+            var criteria = Substitute.For<INonQueryCommand>();
             criteria.IsValid().Returns(true);
             var baseService = GetBaseService();
 
@@ -264,7 +264,7 @@
             await baseService.ExecuteNonQueryAsync(criteria);
 
             // Assert
-            await baseRepository.Received().ExecuteNonQueryAsync(Arg.Is<ICriteria>(x => x.IsValid()));
+            await baseRepository.Received().ExecuteNonQueryAsync(Arg.Is<INonQueryCommand>(x => x.IsValid()));
         }
 
         #endregion ExecuteNonQueryAsync

@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.CostCenter
 {
-    public class CreateCostCenterCriteria : CommandBaseCriteria
+    public class CreateCostCenterCriteria : BaseNonQueryCommand
     {
         public string Code { get; set; }
 

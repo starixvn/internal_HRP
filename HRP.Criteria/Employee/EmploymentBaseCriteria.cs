@@ -2,7 +2,7 @@
 {
     using System;
 
-    public abstract class EmploymentBaseCriteria : CommandBaseCriteria
+    public abstract class EmploymentBaseCriteria : BaseNonQueryCommand
     {
         public virtual int CompanyId { get; set; }
 

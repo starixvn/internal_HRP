@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class UpdateEmployeeCriteria : CommandBaseCriteria
+    public class UpdateEmployeeCriteria : BaseNonQueryCommand
     {
         public int EmployeeId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.Payslip
 {
-    public class UpdatePayslipCriteria : CommandBaseCriteria
+    public class UpdatePayslipCriteria : BaseNonQueryCommand
     {
         public int UserId { get; set; }
 

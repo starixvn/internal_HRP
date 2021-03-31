@@ -47,7 +47,7 @@
 
             // Assert
             Assert.True(actual);
-            Assert.IsAssignableFrom<CommandBaseCriteria>(criteria);
+            Assert.IsAssignableFrom<BaseNonQueryCommand>(criteria);
         }
     }
 }

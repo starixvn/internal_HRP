@@ -2,10 +2,10 @@ namespace HRP.Core.Repositories
 {
     using System.Threading.Tasks;
     using Fanex.Data.Repository;
-    using Model;
+    using HRP.Core.Model;
 
     public interface IBaseRepository
     {
-        Task<CommandResult> ExecuteNonQueryAsync(ICriteria criteria);
+        Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command);
     }
 }

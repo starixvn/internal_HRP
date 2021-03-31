@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.Mail
 {
-    public class EditMailSettingCriteria : CommandBaseCriteria
+    public class EditMailSettingCriteria : BaseNonQueryCommand
     {
         public int CompanyId { get; set; }
         public string Server { get; set; }

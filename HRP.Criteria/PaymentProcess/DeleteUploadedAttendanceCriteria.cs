@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class DeleteUploadedAttendanceCriteria : CommandBaseCriteria
+    public class DeleteUploadedAttendanceCriteria : BaseNonQueryCommand
     {
         public int CompanyId { get; set; }
 

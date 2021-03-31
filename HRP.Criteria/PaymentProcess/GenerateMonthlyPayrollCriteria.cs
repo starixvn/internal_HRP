@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class GenerateMonthlyPayrollCriteria : CommandBaseCriteria
+    public class GenerateMonthlyPayrollCriteria : BaseNonQueryCommand
     {
         public int CompanyId { get; set; }
 

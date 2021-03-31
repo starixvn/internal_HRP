@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class EditMonthlySalaryCriteria : CommandBaseCriteria
+    public class EditMonthlySalaryCriteria : BaseNonQueryCommand
     {
         public int PayrollId { get; set; }
         public int CompanyId { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.JobGrade
 {
-    public class UpdateJobGradeCriteria : CommandBaseCriteria
+    public class UpdateJobGradeCriteria : BaseNonQueryCommand
     {
         public int JobGradeId { get; set; }
 

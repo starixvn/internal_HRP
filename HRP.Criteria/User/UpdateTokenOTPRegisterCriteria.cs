@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class UpdateTokenOTPRegisterCriteria : CommandBaseCriteria
+    public class UpdateTokenOTPRegisterCriteria : BaseNonQueryCommand
     {
         public string Username { get; set; }
 

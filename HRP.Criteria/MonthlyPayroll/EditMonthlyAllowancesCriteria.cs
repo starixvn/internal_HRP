@@ -2,7 +2,7 @@
 {
     using HRP.Core.Enumerations;
 
-    public class EditMonthlyAllowancesCriteria : CommandBaseCriteria
+    public class EditMonthlyAllowancesCriteria : BaseNonQueryCommand
     {
         public int PayrollId { get; set; }
 

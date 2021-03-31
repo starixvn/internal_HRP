@@ -3,7 +3,7 @@
     using System;
     using HRP.Core.Enumerations;
 
-    public class UpdateEmployeePayrollCriteria : CommandBaseCriteria
+    public class UpdateEmployeePayrollCriteria : BaseNonQueryCommand
     {
         public int EmployeeId { get; set; }
 

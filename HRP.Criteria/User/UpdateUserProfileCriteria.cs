@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.User
 {
-    public class UpdateUserProfileCriteria : CommandBaseCriteria
+    public class UpdateUserProfileCriteria : BaseNonQueryCommand
     {
         public int UserId { get; set; }
 

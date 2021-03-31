@@ -2,7 +2,7 @@
 {
     using Fanex.Data.Repository;
 
-    public class CheckInUserCriteria : CriteriaBase
+    public class CheckInUserCriteria : BaseNonQueryCommand
     {
         public int UserId { get; set; }
 

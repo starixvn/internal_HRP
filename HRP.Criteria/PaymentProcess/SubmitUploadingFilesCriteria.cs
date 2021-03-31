@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class SubmitUploadingFilesCriteria : CommandBaseCriteria
+    public class SubmitUploadingFilesCriteria : BaseNonQueryCommand
     {
         public int CompanyId { get; set; }
 

@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class UpdateExchangeRatesCriteria : CommandBaseCriteria
+    public class UpdateExchangeRatesCriteria : BaseNonQueryCommand
     {
         public DateTime ExchangeRateMonth { get; set; }
 

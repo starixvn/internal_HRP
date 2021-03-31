@@ -12,7 +12,6 @@
     public class BaseRepositoryTests
     {
         private readonly IObjectDb objectDb;
-        ////private const string ExceptionMessage = "Object reference not set to an instance of an object.";
 
         public BaseRepositoryTests()
         {
@@ -47,8 +46,12 @@
             var repository = new BaseRepository();
             var criteria = FakeCriteria();
             var outputParams = FakeOutputParamsSuccess();
-            var expected = GetSuccessResult();
-            objectDb.GetOuputParams().Returns(outputParams);
+            var expected = new CommandResult
+            {
+                Code = 0,
+                Message = string.Empty
+            };
+            objectDb.GetOutputParams().Returns(outputParams);
 
             // Action
             var result = await repository.ExecuteNonQueryAsync(criteria);
@@ -58,32 +61,15 @@
             Assert.Equal(expected.Message, result.Message);
         }
 
-        ////[Fact]
-        ////public async Task ExecuteNonQueryAsync_CriteriaIsNull_ThrowNullReferenceException()
-        ////{
-        ////    // Arrange
-        ////    ICriteria criteria = null;
-        ////    var repository = new BaseRepository();
-
-        ////    // Act
-        ////    var task = Task.Run(() => repository.ExecuteNonQueryAsync(criteria));
-        ////    var exception = await Record.ExceptionAsync(async () => await task);
-
-        ////    // Assert
-        ////    Assert.Equal(exception.HResult, -2147467261);
-        ////    Assert.Equal(exception.Message, ExceptionMessage);
-        ////}
-
         #endregion ExecuteNonQueryAsync
 
         #region Helpers
 
-        private static ICriteria FakeCriteria()
+        private static INonQueryCommand FakeCriteria()
         {
-            var criteria = Substitute.For<ICriteria>();
+            var criteria = Substitute.For<INonQueryCommand>();
 
             criteria.GetSettingKey().Returns("key");
-            criteria.GetSpParams().Returns(new Hashtable());
             criteria.IsValid().Returns(true);
 
             return criteria;
@@ -95,15 +81,6 @@
             {
                 { "errcode", 0 },
                 { "errmsg", string.Empty },
-            };
-        }
-
-        private CommandResult GetSuccessResult()
-        {
-            return new CommandResult
-            {
-                Code = 0,
-                Message = string.Empty
             };
         }
 

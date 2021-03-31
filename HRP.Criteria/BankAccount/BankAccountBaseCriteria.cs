@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.BankAccount
 {
-    public abstract class BankAccountBaseCriteria : CommandBaseCriteria
+    public abstract class BankAccountBaseCriteria : BaseNonQueryCommand
     {
         public int PaymentTransactionId { get; set; }
 

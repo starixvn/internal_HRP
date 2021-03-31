@@ -5,16 +5,16 @@ namespace HRP.Core.Repositories
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
-    using Model;
+    using HRP.Core.Model;
 
     public class BaseRepository : IBaseRepository
     {
-        public async Task<CommandResult> ExecuteNonQueryAsync(ICriteria criteria)
+        public async Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command)
         {
-            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            using (var db = ObjectDbFactory.CreateInstance(command.GetSettingKey()))
             {
-                await db.ExecuteNonQueryAsync(criteria);
-                CommandResult commandResult = GetCommandResult(criteria.GetSpParams());
+                await db.ExecuteNonQueryAsync(command);
+                CommandResult commandResult = GetCommandResult(db.GetOutputParams());
 
                 return commandResult;
             }
@@ -22,8 +22,8 @@ namespace HRP.Core.Repositories
 
         private CommandResult GetCommandResult(Hashtable hash)
         {
-            var errCode = hash["errcode"];
-            var errMsg = hash["errmsg"];
+            var errCode = hash["errCode"];
+            var errMsg = hash["errMsg"];
 
             return new CommandResult
             {

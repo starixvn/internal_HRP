@@ -6,6 +6,7 @@
     using Core;
     using Core.Model;
     using Fanex.Data;
+    using Fanex.Data.SqlServer;
     using HRP.Core.Extensions;
     using HRP.Core.Filters;
     using HRP.Services.Extensions;
@@ -31,16 +32,19 @@
         public void ConfigureServices(IServiceCollection services)
         {
             //// string encryptedPassword = Cryptography.EncryptPassword("@357$abc^FFZ%");
-            Dictionary<string, string> connections = Configuration
-                .GetSection("ConnectionStrings")
-                .GetChildren()
-                .ToDictionary(connection => connection.Key, connection => connection.Value, StringComparer.OrdinalIgnoreCase);
+            var connections = Configuration.GetSection("ConnectionStrings")
+                         .GetChildren()
+                         .AsEnumerable()
+                         .Where(x => !string.IsNullOrWhiteSpace(x.GetValue<string>("Name")))
+                         .ToDictionary(x => x.GetValue<string>("Name"),
+                             y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName")));
 
             DbSettingProviderManager
-                .StartNewSession()
-                .UseConnectionStrings(connections)
-                .UseDefaultDbSettingProvider("~/App_Data")
-                .Run();
+               .StartNewSession()
+               .Use(connections)
+               .WithSqlServer()
+               .UseDefaultDbSettingProvider("~/App_Data")
+               .Run();
 
             services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
             services.Configure<OtpConfig>(options => Configuration.GetSection(nameof(OtpConfig)).Bind(options));

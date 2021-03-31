@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class CreateCompanyCriteria : CommandBaseCriteria
+    public class CreateCompanyCriteria : BaseNonQueryCommand
     {
         public string Code { get; set; }
 

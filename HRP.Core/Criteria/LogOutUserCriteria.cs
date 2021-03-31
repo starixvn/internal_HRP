@@ -2,7 +2,7 @@
 {
     using Fanex.Data.Repository;
 
-    public class LogOutUserCriteria : CriteriaBase
+    public class LogOutUserCriteria : NonQueryCommand
     {
         public int OnUserId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.Section
 {
-    public class CreateSectionCriteria : CommandBaseCriteria
+    public class CreateSectionCriteria : BaseNonQueryCommand
     {
         public string Code { get; set; }
 

@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class DeleteUploadedDSTNetSalaryCriteria : CommandBaseCriteria
+    public class DeleteUploadedDSTNetSalaryCriteria : BaseNonQueryCommand
     {
         public int CompanyId { get; set; }
 

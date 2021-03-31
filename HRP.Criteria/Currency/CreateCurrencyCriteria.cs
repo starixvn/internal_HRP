@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria.Currency
 {
-    public class CreateCurrencyCriteria : CommandBaseCriteria
+    public class CreateCurrencyCriteria : BaseNonQueryCommand
     {
         public string CurrencyCode { get; set; }
 

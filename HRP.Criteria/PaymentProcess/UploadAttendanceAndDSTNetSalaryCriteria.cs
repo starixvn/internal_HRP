@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class UploadAttendanceAndDSTNetSalaryCriteria : CommandBaseCriteria
+    public class UploadAttendanceAndDSTNetSalaryCriteria : BaseNonQueryCommand
     {
         public int CompanyId { get; set; }
         public DateTime Month { get; set; }

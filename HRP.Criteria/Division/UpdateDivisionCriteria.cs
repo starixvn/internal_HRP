@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class UpdateDivisionCriteria : CommandBaseCriteria
+    public class UpdateDivisionCriteria : BaseNonQueryCommand
     {
         public int DivisionId { get; set; }
 

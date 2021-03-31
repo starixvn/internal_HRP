@@ -1,6 +1,6 @@
 ﻿namespace HRP.Criteria
 {
-    public class UpdateCompanyCriteria : CommandBaseCriteria
+    public class UpdateCompanyCriteria : BaseNonQueryCommand
     {
         public int CompanyId { get; set; }
 
