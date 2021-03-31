@@ -64,7 +64,7 @@
                     }
                     else
                     {
-                        WriteNoData(template, worksheet);
+                        WriteNoData(template, worksheet, rowIndex);
                     }
 
                     worksheet.Cells.AutoFitColumns();
@@ -96,10 +96,12 @@
             worksheet.Cells["C5"].Value = string.Join(",", paymentTransactions.Select(x => x.Value));
         }
 
-        private static void WriteNoData(ExcelWorksheet template, ExcelWorksheet worksheet)
+        private static void WriteNoData(ExcelWorksheet template, ExcelWorksheet worksheet, int rowIndex)
         {
             const short NoDataRowIndex = 15;
-            template.Cells[1, 1, NoDataRowIndex, TotalCols].Copy(worksheet.Cells[1, 1, NoDataRowIndex, TotalCols]);
+            template.Cells[NoDataRowIndex, 1, NoDataRowIndex, TotalCols].Copy(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols]);
+            worksheet.Cells[rowIndex, 1, rowIndex, TotalCols].Merge = true;
+            worksheet.Cells[rowIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         private static int WriteDataDirectBankingTransaction(
