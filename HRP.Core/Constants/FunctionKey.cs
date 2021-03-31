@@ -14,6 +14,7 @@ namespace HRP.Core.Constants
         public const string Payslip = "Payslip";
         public const string Report = "Report";
         public const string DirectBankingReport = "DirectBankingReport";
+        public const string MiriBankAndCashReport = "MiriBankAndCashReport";
         public const string EbankingReport = "EbankingReport";
         public const string MonthlyPayrollReport = "MonthlyPayrollReport";
         public const string DynamicReport = "DynamicReport";

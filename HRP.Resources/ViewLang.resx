@@ -1128,4 +1128,7 @@
   <data name="EditMailSetting" xml:space="preserve">
     <value>Edit Mail Setting</value>
   </data>
+  <data name="MiriBankAndCash" xml:space="preserve">
+    <value>Miri Bank &amp; Cash</value>
+  </data>
 </root>

@@ -4,21 +4,21 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Enumerations;
     using Core.Services;
+    using Criteria;
     using Criteria.Report;
     using Fanex.Data.Repository;
-    using Core.Enumerations;
-    using Criteria;
+    using HRP.Core.Constants;
+    using HRP.Core.Model;
+    using HRP.Criteria.User;
+    using HRP.Models.ServiceModels;
     using Models.Currency;
     using Models.MonthlyPayroll;
     using Models.Report;
     using NSubstitute;
     using Repositories;
     using Xunit;
-    using HRP.Core.Constants;
-    using HRP.Models.ServiceModels;
-    using HRP.Criteria.User;
-    using HRP.Core.Model;
 
     public class ReportServiceTests
     {
@@ -32,14 +32,14 @@
         {
             // Arrange
             var reportService = GetReportService();
-            reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(new BankInReport());
+            reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(new DirectBankingReport());
 
             // Act
             var actual = await reportService.GetDirectBankingBankInAsync(0, DateTime.Now, PaymentType.Allowances, "");
 
-            Assert.Null(actual.EBankingBankIns);
+            Assert.Null(actual.DirectBankingBankIns);
             Assert.Null(actual.CashBankIns);
-            Assert.Null(actual.SelectedPaymentTransactions);
+            Assert.Null(actual.PaymentTransactions);
         }
 
         [Fact]
@@ -47,14 +47,14 @@
         {
             // Arrange
             var reportService = GetReportService();
-            reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(new BankInReport());
+            reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(new DirectBankingReport());
 
             // Act
             var actual = await reportService.GetEbankingBankInAsync(0, DateTime.Now, "");
 
-            Assert.Null(actual.EBankingBankIns);
+            Assert.Null(actual.DirectBankingBankIns);
             Assert.Null(actual.CashBankIns);
-            Assert.Null(actual.SelectedPaymentTransactions);
+            Assert.Null(actual.PaymentTransactions);
         }
 
         [Fact]
@@ -73,13 +73,17 @@
                 FakeBankInObject()
             };
 
-            var bankInReport = new BankInReport
+            var bankInReport = new DirectBankingReport
             {
-                EBankingBankIns = bankInData,
+                DirectBankingBankIns = bankInData,
                 CashBankIns = bankInData,
                 CompanyName = companyName,
-                ReportedMonth = reportedMonth,
-                SelectedPaymentTransactions = new List<string>(new[] { "EuroBank1" })
+                Month = reportedMonth,
+                PaymentTransactions = new List<ReferenceResourceModel>
+                {
+                    new ReferenceResourceModel { ResourceId = 1, Value = "e-banking" },
+                    new ReferenceResourceModel { ResourceId = 2, Value = "cash" }
+                }
             };
 
             reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(bankInReport);
@@ -89,7 +93,7 @@
             // Act
             var actual = await reportService.GetDirectBankingBankInAsync(1, DateTime.Now, PaymentType.BasicSalary, "1-1");
 
-            Assert.All(actual.EBankingBankIns, x =>
+            Assert.All(actual.DirectBankingBankIns, x =>
             {
                 Assert.Equal(salaryDescrypted, x.AmountDecrypted);
                 Assert.NotNull(x.IDNo);
@@ -120,8 +124,8 @@
             });
 
             Assert.Equal(companyName, actual.CompanyName);
-            Assert.Equal(reportedMonth, actual.ReportedMonth);
-            Assert.Equal(bankInReport.SelectedPaymentTransactions, actual.SelectedPaymentTransactions);
+            Assert.Equal(reportedMonth, actual.Month);
+            Assert.Equal(bankInReport.PaymentTransactions, actual.PaymentTransactions);
         }
 
         [Fact]
@@ -140,13 +144,17 @@
                 FakeBankInObject()
             };
 
-            var bankInReport = new BankInReport
+            var bankInReport = new DirectBankingReport
             {
-                EBankingBankIns = bankInData,
+                DirectBankingBankIns = bankInData,
                 CashBankIns = bankInData,
                 CompanyName = companyName,
-                ReportedMonth = reportedMonth,
-                SelectedPaymentTransactions = new List<string>(new[] { "EuroBank1" })
+                Month = reportedMonth,
+                PaymentTransactions = new List<ReferenceResourceModel>
+                {
+                    new ReferenceResourceModel { ResourceId = 1, Value = "e-banking" },
+                    new ReferenceResourceModel { ResourceId = 2, Value = "cash" }
+                }
             };
 
             reportRepository.GetDataForBankInReportAsync(Arg.Any<ICriteria>()).Returns(bankInReport);
@@ -156,7 +164,7 @@
             // Act
             var actual = await reportService.GetEbankingBankInAsync(1, DateTime.Now, "1-1");
 
-            Assert.All(actual.EBankingBankIns, x =>
+            Assert.All(actual.DirectBankingBankIns, x =>
             {
                 Assert.Equal(salaryDescrypted, x.AmountDecrypted);
                 Assert.NotNull(x.IDNo);
@@ -187,8 +195,8 @@
             });
 
             Assert.Equal(companyName, actual.CompanyName);
-            Assert.Equal(reportedMonth, actual.ReportedMonth);
-            Assert.Equal(bankInReport.SelectedPaymentTransactions, actual.SelectedPaymentTransactions);
+            Assert.Equal(reportedMonth, actual.Month);
+            Assert.Equal(bankInReport.PaymentTransactions, actual.PaymentTransactions);
         }
 
         [Fact]

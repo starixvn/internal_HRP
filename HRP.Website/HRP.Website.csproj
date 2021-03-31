@@ -110,6 +110,7 @@
     <None Remove="www\sources\js\pages\payslip\details.js" />
     <None Remove="www\sources\js\pages\payslip\index.js" />
     <None Remove="www\sources\js\pages\report\dynamic.js" />
+    <None Remove="www\sources\js\pages\report\miribank-cash.js" />
     <None Remove="www\sources\js\pages\report\monthly-payroll.js" />
     <None Remove="www\sources\js\pages\report\payment-transaction.js" />
     <None Remove="www\sources\js\pages\system-security\change-password.js" />
@@ -486,6 +487,10 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="www\sources\js\pages\report\monthly-payroll.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="www\sources\js\pages\report\miribank-cash.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

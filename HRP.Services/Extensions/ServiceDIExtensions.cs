@@ -30,6 +30,7 @@
             services.AddScoped<IMailSettingService, MailSettingService>();
 
             services.AddScoped<IExportMonthlyPayrollReportService, ExportMonthlyPayrollReportService>();
+            services.AddScoped<IExportMiriBankAndCashReportService, ExportMiriBankAndCashReportService>();
         }
     }
 }

@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Fanex.Data.Repository;
+    using HRP.Core.Model;
     using HRP.Models.ServiceModels;
     using Models.Currency;
     using Models.Employee;
@@ -11,26 +12,25 @@
 
     public class ReportRepository : IReportRepository
     {
-        public async Task<BankInReport> GetDataForBankInReportAsync(ICriteria criteria)
+        public async Task<DirectBankingReport> GetDataForBankInReportAsync(ICriteria criteria)
         {
             using (var database = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
                 using (IMultiResultReader results = await database.QueryMultipleAsync(criteria))
                 {
-                    BankInReport bankInReport = null;
-
+                    DirectBankingReport report = null;
                     if (!results.IsEmptyOrClosed)
                     {
-                        bankInReport = new BankInReport
+                        report = new DirectBankingReport
                         {
-                            EBankingBankIns = await results.ReadAsync<BankIn>(),
+                            DirectBankingBankIns = await results.ReadAsync<BankIn>(),
                             CashBankIns = await results.ReadAsync<BankIn>(),
                             CompanyName = await results.ReadSingleAsync<string>(),
-                            SelectedPaymentTransactions = await results.ReadAsync<string>()
+                            PaymentTransactions = await results.ReadAsync<ReferenceResourceModel>()
                         };
                     }
 
-                    return bankInReport;
+                    return report;
                 }
             }
         }

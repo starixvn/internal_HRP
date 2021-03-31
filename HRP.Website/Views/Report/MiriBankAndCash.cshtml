@@ -1,0 +1,92 @@
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Serialization
+@using HRP.Core.Enumerations
+@using HRP.Models.Report
+@using HRP.Resources
+@model MiriBankAndCashReportViewModel
+@{
+    ViewData["Title"] = $"{ViewLang.Report} - {ViewLang.MiriBankAndCash}";
+}
+
+@section Styles {
+    <link href="~/lib/fanex-multiselect/fanex.multiSelect.css" rel="stylesheet" asp-append-version="true" />
+    <environment include="Development">
+        <link href="~/css/dev/pages/report/direct-banking.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/pro/pages/report/direct-banking.chunk.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+}
+@section Scripts {
+    <script type="text/javascript">
+        window.paymentOptions = @Html.Raw(JsonConvert.SerializeObject(Model.PaymentOptions,
+                               Formatting.Indented,
+                               new JsonSerializerSettings
+                               {
+                                   ContractResolver = new CamelCasePropertyNamesContractResolver()
+                               }));
+    </script>
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/dev/pages/report/miribank-cash.chunk.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/pro/pages/report/miribank-cash.chunk.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<ol class="breadcrumb">
+    <li class="like-link">@ViewLang.Report</li>
+    <li class="active">@ViewLang.MiriBankAndCash</li>
+</ol>
+
+<input type="hidden" class="encryption-iv" asp-for="RijndaelIV.Value" id="RijndaelIV" />
+<input type="hidden" class="encryption-key" asp-for="RijndaelKey.Value" id="RijndaelKey" />
+
+<form class="search-form" asp-action="ExportExcel" asp-controller="MiriBankAndCashReport" method="get">
+    <input asp-for="BankType" type="hidden" id="banktype" />
+    <input hidden asp-for="RijndaelKey.Key" />
+    <input hidden asp-for="RijndaelIV.Key" />
+
+    <div class="list-message-error hidden" id="validation-summary">
+        <span asp-validation-for="FilePassword" class="message"></span>
+    </div>
+
+    <div class="group">
+        <label asp-for="CompanyId" class="text"></label>
+        <select asp-for="CompanyId" asp-items="Model.Companies" class="control js-select2"></select>
+    </div>
+
+    <div class="group">
+        <label asp-for="SelectedTime" class="text"></label>
+        <div class="calendar">
+            <input type="text" asp-for="SelectedTime" class="control datetimepicker" />
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+
+    <div class="group">
+        <label asp-for="TypeOfPayment" class="text"></label>
+        <select asp-for="TypeOfPayment" asp-items="Html.GetEnumSelectList(typeof(PaymentType))" class="control js-select2"></select>
+    </div>
+
+    <div class="group">
+        <label asp-for="PaymentTransactions" class="text"></label>
+        <input type="hidden" asp-for="PaymentTransactions" id="payment-transactions" />
+        <select class="control company width-200" id="transactions-multiselect"></select>
+    </div>
+
+    <div class="group">
+        <label class="text -has-required" asp-for="FilePassword"></label>
+        <div class="pass-wrap"><span class="icon-view"></span><input type="password" asp-for="FilePassword" /></div>
+        <input type="hidden" asp-for="EncryptedPassword" />
+    </div>
+    <div class="group reuse-pass-group">
+        <label>
+            <input class="hidden" type="checkbox" asp-for="ReusePassword" />
+            <span>@ViewLang.ReusePassword</span>
+        </label>
+    </div>
+    <div class="group">
+        <button type="button" class="button -excel" id="btn-export"><span class="icon-excel"></span>@ViewLang.ExportExcel</button>
+    </div>
+</form>

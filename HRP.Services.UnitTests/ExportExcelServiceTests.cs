@@ -4,13 +4,9 @@
     using System.Collections.Generic;
     using System.IO;
     using HRP.Core.Enumerations;
+    using HRP.Core.Model;
     using HRP.Core.Services;
-    using HRP.Models;
-    using HRP.Models.Currency;
-    using HRP.Models.Employee;
-    using HRP.Models.MonthlyPayroll;
     using HRP.Models.Report;
-    using HRP.Models.ServiceModels;
     using NSubstitute;
     using Xunit;
 
@@ -20,9 +16,13 @@
         public void ExportDirectBankingReports_HasNotData_ReturnAsExpected()
         {
             // Arrange
-            var data = new BankInReport
+            var data = new DirectBankingReport
             {
-                SelectedPaymentTransactions = new List<string> { "e-banking", "cash" }
+                PaymentTransactions = new List<ReferenceResourceModel>
+                {
+                    new ReferenceResourceModel { ResourceId = 1, Value = "e-banking" },
+                    new ReferenceResourceModel { ResourceId = 2, Value = "cash" }
+                }
             };
             var fileInfo = new FileInfo(@"FileTest\\TemplateTest.xlsx");
             var service = GetExportExcelService();
@@ -38,10 +38,14 @@
         public void ExportDirectBankingReports_HasData_ReturnAsExpected()
         {
             // Arrange
-            var data = new BankInReport
+            var data = new DirectBankingReport
             {
-                SelectedPaymentTransactions = new List<string> { "e-banking", "cash" },
-                EBankingBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } },
+                PaymentTransactions = new List<ReferenceResourceModel>
+                {
+                    new ReferenceResourceModel { ResourceId = 1, Value = "e-banking" },
+                    new ReferenceResourceModel { ResourceId = 2, Value = "cash" }
+                },
+                DirectBankingBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } },
                 CashBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } }
             };
             var fileInfo = new FileInfo(@"FileTest\\TemplateTest.xlsx");
@@ -59,10 +63,14 @@
         public void ExportDirectBankingReports_EmptyCashBankIns_ReturnAsExpected()
         {
             // Arrange
-            var data = new BankInReport
+            var data = new DirectBankingReport
             {
-                SelectedPaymentTransactions = new List<string> { "e-banking", "cash" },
-                EBankingBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } },
+                PaymentTransactions = new List<ReferenceResourceModel>
+                {
+                    new ReferenceResourceModel { ResourceId = 1, Value = "e-banking" },
+                    new ReferenceResourceModel { ResourceId = 2, Value = "cash" }
+                },
+                DirectBankingBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } },
                 CashBankIns = new List<BankIn>()
             };
 
@@ -81,9 +89,13 @@
         public void ExportEbankingReports_HasNotData_ReturnAsExpected()
         {
             // Arrange
-            var data = new BankInReport
+            var data = new DirectBankingReport
             {
-                SelectedPaymentTransactions = new List<string> { "e-banking", "cash" }
+                PaymentTransactions = new List<ReferenceResourceModel>
+                {
+                    new ReferenceResourceModel { ResourceId = 1, Value = "e-banking" },
+                    new ReferenceResourceModel { ResourceId = 2, Value = "cash" }
+                }
             };
             var fileInfo = new FileInfo(@"FileTest\\TemplateTest.xlsx");
             var service = GetExportExcelService();
@@ -99,10 +111,14 @@
         public void ExportEbankingReports_HasData_ReturnAsExpected()
         {
             // Arrange
-            var data = new BankInReport
+            var data = new DirectBankingReport
             {
-                SelectedPaymentTransactions = new List<string> { "e-banking", "cash" },
-                EBankingBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } },
+                PaymentTransactions = new List<ReferenceResourceModel>
+                {
+                    new ReferenceResourceModel { ResourceId = 1, Value = "e-banking" },
+                    new ReferenceResourceModel { ResourceId = 2, Value = "cash" }
+                },
+                DirectBankingBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } },
                 CashBankIns = new List<BankIn> { new BankIn { IDNo = "DAR1234", Nickname = "tim.trinh", BankName = "e-banking" } }
             };
             var fileInfo = new FileInfo(@"FileTest\\TemplateTest.xlsx");

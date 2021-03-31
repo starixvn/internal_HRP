@@ -96,7 +96,8 @@ const scriptPaths = {
     // report
     report_dynamic: ['./www/sources/js/pages/report/dynamic.js'],
     report_monthly_payroll: ['./www/sources/js/pages/report/monthly-payroll.js'],
-    report_payment_transaction: ['./www/sources/js/pages/report/payment-transaction.js']
+    report_payment_transaction: ['./www/sources/js/pages/report/payment-transaction.js'],
+    report_miribank_cash: ['./www/sources/js/pages/report/miribank-cash.js']
 };
 
 module.exports = {

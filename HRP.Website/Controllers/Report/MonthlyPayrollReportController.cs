@@ -101,9 +101,8 @@
                     var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = companyId });
                     report.Company = company;
                     report.SelectedCurrency = currencies.FirstOrDefault(x => x.CurrencyId == currencyId);
-                    string webRootFolder = hostingEnvironment.WebRootPath;
                     const string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
-                    var templatePath = Path.Combine(webRootFolder, fileName);
+                    var templatePath = Path.Combine(hostingEnvironment.WebRootPath, fileName);
                     var data = excelService.Export(templatePath, report, viewModel.FilePassword);
 
                     return File(data, MimeType.XLSX, $"Monthly_Payroll_Report_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx");

@@ -8,6 +8,7 @@
     using Core.Enumerations;
     using Core.Extensions;
     using HRP.Core.Constants;
+    using HRP.Core.Model;
     using HRP.Core.Services;
     using Models.Report;
     using OfficeOpenXml;
@@ -29,20 +30,19 @@
             this.cryptoService = cryptoService;
         }
 
-        public byte[] ExportDirectBankingReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, BankInReport data, string password = null)
+        public byte[] ExportDirectBankingReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, DirectBankingReport data, string password = null)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
             {
                 var worksheet = xlPackage.Workbook.Worksheets.First();
 
-                WriteBankingReportHeader(selectedTime, typeOfPayment, data, worksheet);
+                WriteBankingReportHeader(selectedTime, typeOfPayment, data.CompanyName, data.PaymentTransactions, worksheet);
 
                 const int startRow = 10;
-
                 if (data.IsExportable)
                 {
                     // EBanking
-                    var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
+                    var ebankingGroupedByBank = data.DirectBankingBankIns.GroupBy(x => x.BankName);
                     var currentRow = RenderReportRowsForDirectBankingBankIns(ebankingGroupedByBank, worksheet, startRow);
 
                     var cashGroupedByBank = data.CashBankIns.GroupBy(x => x.BankName);
@@ -52,8 +52,8 @@
                     worksheet.Cells[$"B9:J{currentRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
                     // summary for banking
-                    currentRow = currentRow + 1;
-                    var eBankingCurrencies = data.EBankingBankIns.GroupBy(x => x.CurrencyCode);
+                    currentRow++;
+                    var eBankingCurrencies = data.DirectBankingBankIns.GroupBy(x => x.CurrencyCode);
 
                     currentRow = RenderSummaryRowForBankIns(
                         worksheet,
@@ -62,7 +62,7 @@
                         eBankingCurrencies);
 
                     // summary for cash
-                    currentRow = currentRow + 1;
+                    currentRow++;
                     var cashCurrencies = data.CashBankIns.GroupBy(x => x.CurrencyCode);
                     RenderSummaryRowForBankIns(
                         worksheet,
@@ -92,21 +92,21 @@
             DateTime selectedTime,
             FileInfo fileInfo,
             PaymentType typeOfPayment,
-            BankInReport data,
+            DirectBankingReport data,
             string password = null)
         {
             using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
             {
                 ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
 
-                WriteBankingReportHeader(selectedTime, typeOfPayment, data, worksheet);
+                WriteBankingReportHeader(selectedTime, typeOfPayment, data.CompanyName, data.PaymentTransactions, worksheet);
 
                 const int startRow = 10;
 
                 if (data.IsExportable)
                 {
                     // EBanking
-                    var ebankingGroupedByBank = data.EBankingBankIns.GroupBy(x => x.BankName);
+                    var ebankingGroupedByBank = data.DirectBankingBankIns.GroupBy(x => x.BankName);
                     var currentRow = RenderReportRowsForEbankingBankIns(ebankingGroupedByBank, worksheet, startRow);
 
                     // Format for list bank ins
@@ -143,11 +143,12 @@
         private static void WriteBankingReportHeader(
             DateTime selectedTime,
             PaymentType typeOfPayment,
-            BankInReport data,
+            string company,
+            IEnumerable<ReferenceResourceModel> paymentTransactions,
             ExcelWorksheet worksheet)
         {
             // Set company name
-            worksheet.Cells["D2"].Value = data.CompanyName;
+            worksheet.Cells["D2"].Value = company;
 
             // Set month
             worksheet.Cells["D3"].Value = selectedTime.ToString("MM-yyyy");
@@ -156,7 +157,7 @@
             worksheet.Cells["D4"].Value = typeOfPayment != 0 ? typeOfPayment.GetDisplayName() : PaymentType.BasicSalary.GetDisplayName();
 
             // Set selected payment transaction
-            worksheet.Cells["D5"].Value = string.Join(",", data.SelectedPaymentTransactions);
+            worksheet.Cells["D5"].Value = string.Join(",", paymentTransactions.Select(x => x.Value));
         }
 
         private static void RenderFlatternedRows(

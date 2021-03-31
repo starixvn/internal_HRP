@@ -12,14 +12,14 @@
             DateTime selectedTime,
             FileInfo fileInfo,
             PaymentType typeOfPayment,
-            BankInReport data,
+            DirectBankingReport data,
             string password = null);
 
         byte[] ExportEbankingReports(
             DateTime selectedTime,
             FileInfo fileInfo,
             PaymentType typeOfPayment,
-            BankInReport data,
+            DirectBankingReport data,
             string password = null);
 
         byte[] ExportDynamicReport(IEnumerable<DynamicReportModel> records, IEnumerable<int> selectedIds, string password = null);

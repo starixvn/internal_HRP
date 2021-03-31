@@ -230,12 +230,12 @@
                 new BankIn { Amount = "1" },
             };
 
-            var bankInReport = new BankInReport
+            var bankInReport = new DirectBankingReport
             {
-                EBankingBankIns = bankInData,
+                DirectBankingBankIns = bankInData,
                 CashBankIns = bankInData,
                 CompanyName = companyName,
-                ReportedMonth = reportedMonth
+                Month = reportedMonth
             };
 
             var reportController = GetReportController();
@@ -302,12 +302,12 @@
                 new BankIn { Amount = "1" },
             };
 
-            var bankInReport = new BankInReport
+            var bankInReport = new DirectBankingReport
             {
-                EBankingBankIns = bankInData,
+                DirectBankingBankIns = bankInData,
                 CashBankIns = bankInData,
                 CompanyName = companyName,
-                ReportedMonth = reportedMonth
+                Month = reportedMonth
             };
 
             var reportController = GetReportController();

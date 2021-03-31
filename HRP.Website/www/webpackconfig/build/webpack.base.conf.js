@@ -53,6 +53,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/report/dynamic`]: pathConfig.scriptPaths.report_dynamic,
             [`${jsPath}/pages/report/monthly-payroll`]: pathConfig.scriptPaths.report_monthly_payroll,
             [`${jsPath}/pages/report/payment-transaction`]: pathConfig.scriptPaths.report_payment_transaction,
+            [`${jsPath}/pages/report/miribank-cash`]: pathConfig.scriptPaths.report_miribank_cash,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,

@@ -49,7 +49,7 @@
             await baseService.ExecuteNonQueryAsync(new EditUserFilePasswordCriteria { UserId = userId, Password = encryptedPassword });
         }
 
-        public async Task<BankInReport> GetDirectBankingBankInAsync(
+        public async Task<DirectBankingReport> GetDirectBankingBankInAsync(
             int companyId,
             DateTime selectedTime,
             PaymentType typeOfPayment,
@@ -68,14 +68,14 @@
 
             if (bankInData != null)
             {
-                DecryptBankInAmount(bankInData.EBankingBankIns);
+                DecryptBankInAmount(bankInData.DirectBankingBankIns);
                 DecryptBankInAmount(bankInData.CashBankIns);
             }
 
             return bankInData;
         }
 
-        public async Task<BankInReport> GetEbankingBankInAsync(int companyId, DateTime selectedTime, string selectedPaymentTransactions)
+        public async Task<DirectBankingReport> GetEbankingBankInAsync(int companyId, DateTime selectedTime, string selectedPaymentTransactions)
         {
             var criteria = new GetDataForEbankingReportCriteria
             {
@@ -87,7 +87,7 @@
 
             var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria);
 
-            DecryptBankInAmount(bankInData.EBankingBankIns);
+            DecryptBankInAmount(bankInData.DirectBankingBankIns);
             DecryptBankInAmount(bankInData.CashBankIns);
 
             return bankInData;

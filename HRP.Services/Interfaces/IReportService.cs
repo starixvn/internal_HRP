@@ -8,13 +8,13 @@
 
     public interface IReportService
     {
-        Task<BankInReport> GetDirectBankingBankInAsync(
+        Task<DirectBankingReport> GetDirectBankingBankInAsync(
             int companyId,
             DateTime selectedTime,
             PaymentType typeOfPayment,
             string selectedPaymentTransactions);
 
-        Task<BankInReport> GetEbankingBankInAsync(
+        Task<DirectBankingReport> GetEbankingBankInAsync(
             int companyId,
             DateTime selectedTime,
             string selectedPaymentTransactions);

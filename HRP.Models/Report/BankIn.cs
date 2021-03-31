@@ -8,6 +8,7 @@
 
         public string Nickname { get; set; }
 
+        public int PaymentTransactionId { get; set; }
         public string PaymentTransaction { get; set; }
 
         public string BankName { get; set; }

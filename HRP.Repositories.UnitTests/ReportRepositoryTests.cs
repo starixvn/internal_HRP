@@ -44,7 +44,7 @@
             var actual = await repository.GetDataForBankInReportAsync(criteria);
 
             // Assert
-            Assert.IsType<BankInReport>(actual);
+            Assert.IsType<DirectBankingReport>(actual);
         }
 
         [Fact]
