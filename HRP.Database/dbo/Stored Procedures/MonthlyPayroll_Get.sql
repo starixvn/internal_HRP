@@ -26,9 +26,11 @@ BEGIN
 		,@startDate DATE
 		,@dueDate DATE
 		,@today DATE = GETDATE()
+		,@previousMonth DATE
 		,@readPolicy TINYINT = 1
 
 	SET @firstDayOfWorkingMonth = DATEADD(MONTH, DATEDIFF(MONTH, 0, @Month), 0)
+	SET @previousMonth = DATEADD(MONTH, -1, @today)
 
 	CREATE TABLE #tblCostCenterId (Id SMALLINT)
 
@@ -147,8 +149,8 @@ BEGIN
 			ELSE 1 END
 			) AS HasSettingAllowance
 		,(CASE 
-			WHEN @today BETWEEN @startDate
-					AND @dueDate THEN policy.Policy
+			WHEN (@previousMonth BETWEEN @startDate AND @dueDate)
+				OR (@today BETWEEN @startDate AND @dueDate) THEN policy.Policy
 			ELSE @readPolicy END
 			) AS Policy
 		,(CASE 

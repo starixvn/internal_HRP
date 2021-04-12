@@ -21,7 +21,10 @@ BEGIN
 		,@startDate DATE
 		,@dueDate DATE
 		,@today DATE = GETDATE()
+		,@previousMonth DATE
 		,@totalEmps INT = 0
+
+	SET @previousMonth = DATEADD(MONTH, -1, @today)
 
 	SELECT @startDate = StartDate
 		,@dueDate = DueDate
@@ -51,8 +54,7 @@ BEGIN
 		,mbs.WorkingDays
 		,@totalEmps AS TotalEmployees
 		,(CASE 
-			WHEN @today BETWEEN @startDate
-					AND @dueDate
+			WHEN ((@previousMonth BETWEEN @startDate AND @dueDate) OR (@today BETWEEN @startDate AND @dueDate))
 				AND @policy = 2 THEN 1
 			ELSE 0 END
 			) AS IsHost

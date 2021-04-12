@@ -148,7 +148,6 @@
             if (isHost && IsInPaymentProcessDuration(paymentProcess))
             {
                 var viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
-
                 return View(viewModel);
             }
 
@@ -283,7 +282,9 @@
         private static bool IsInPaymentProcessDuration(PaymentProcess paymentProcess)
         {
             var today = DateTime.Today;
-            return paymentProcess.StartDate <= today && today <= paymentProcess.DueDate;
+            var previousMonth = today.AddMonths(-1);
+            return (paymentProcess.StartDate <= previousMonth && previousMonth <= paymentProcess.DueDate)
+                || (paymentProcess.StartDate <= today && today <= paymentProcess.DueDate);
         }
 
         #endregion UploadAttendanceAndDSTSalary
@@ -559,7 +560,6 @@
             }
 
             CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);
-
             return Json(result);
         }
 
@@ -614,8 +614,12 @@
                 IsActive = true
             }), nameof(ReferenceResourceModel.ResourceId), nameof(ReferenceResourceModel.Value));
 
-            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host)
-                && DateTime.Today >= viewModel.EmployeeInfo.StartDate && DateTime.Today <= viewModel.EmployeeInfo.DueDate;
+            var today = DateTime.Today;
+            var previousMonth = today.AddMonths(-1);
+            var isInPaymentProcessDuration = (previousMonth >= viewModel.EmployeeInfo.StartDate && previousMonth <= viewModel.EmployeeInfo.DueDate)
+                    || (today >= viewModel.EmployeeInfo.StartDate && today <= viewModel.EmployeeInfo.DueDate);
+
+            viewModel.CanEdit = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host) && isInPaymentProcessDuration;
             viewModel.VNDCurrencyId = currencies.FirstOrDefault(x => string.Equals(x.CurrencyCode, Constants.VNDCurrencyCode, StringComparison.OrdinalIgnoreCase))?.CurrencyId ?? 0;
 
             return viewModel;

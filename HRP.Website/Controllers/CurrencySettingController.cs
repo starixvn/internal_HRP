@@ -34,12 +34,15 @@
         public async Task<IActionResult> Index(DateTime? selectedTime)
         {
             var date = selectedTime ?? DateTime.Today;
-
             var criteria = new GetExchangeRateCriteria
             {
                 Month = date.Month,
                 Year = date.Year,
             };
+            var today = DateTime.Today;
+            var previousMonth = today.AddMonths(-1);
+            var isInPaymentProcessDuration = (date.Month == previousMonth.Month && date.Year == previousMonth.Year)
+                    || (date.Month == today.Month && date.Year == today.Year);
 
             var viewModel = new CurrencySettingViewModel
             {
@@ -47,7 +50,7 @@
                 MinMonth = configuration.Value.LaunchMonth,
                 CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria),
                 Currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetCurrencyCodesForSettingCriteria { Month = date }),
-                CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && date.Month == DateTime.Today.Month && date.Year == DateTime.Today.Year
+                CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && isInPaymentProcessDuration
             };
 
             return View(viewModel);
@@ -63,7 +66,6 @@
                 ExchangeRates = exchangeRates.ToXML().ToString(),
                 UpdatedBy = sessionService.UserId
             };
-
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
 
             return Json(commandResult);
