@@ -18,7 +18,10 @@
 
         public int EmployeeId { get; set; }
 
-        public int Type { get; set; }
+        public short Type { get; set; }
+
+        [XmlIgnore]
+        public string AdditionName { get; set; }
 
         [RequiredIfRelatedFieldHasValue(RelatedName = nameof(NoOfDays), ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "UnitAmountRequired")]
         public string UnitAmount { get; set; }

@@ -13,7 +13,10 @@
 
         public int EmployeeId { get; set; }
 
-        public int Type { get; set; }
+        public short Type { get; set; }
+
+        [XmlIgnore]
+        public string DeductionName { get; set; }
 
         public string UnitAmount { get; set; }
 

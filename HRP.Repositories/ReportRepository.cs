@@ -39,17 +39,19 @@
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader results = await db.QueryMultipleAsync(criteria))
+                using (IMultiResultReader result = await db.QueryMultipleAsync(criteria))
                 {
                     return new MonthlyPayrollReport
                     {
-                        Employees = await results.ReadAsync<EmployeeBasicInfo>(),
-                        MonthlyBasicSalary = await results.ReadAsync<MonthlyBasicSalaryModel>(),
-                        MonthlySalary = await results.ReadAsync<MonthlySalaryModel>(),
-                        MonthlyBasicAllowance = await results.ReadAsync<MonthlyPayrollBasicAllowanceModel>(),
-                        MonthlyAllowance = await results.ReadAsync<MonthlyAllowanceModel>(),
-                        CurrencyExchangeRate = await results.ReadAsync<CurrencyExchangeRateModel>(),
-                        CurrencyList = await results.ReadAsync<Currency>()
+                        Employees = await result.ReadAsync<EmployeeBasicInfo>(),
+                        MonthlyBasicSalary = await result.ReadAsync<MonthlyBasicSalaryModel>(),
+                        MonthlySalary = await result.ReadAsync<MonthlySalaryModel>(),
+                        MonthlyBasicAllowance = await result.ReadAsync<MonthlyPayrollBasicAllowanceModel>(),
+                        MonthlyAllowance = await result.ReadAsync<MonthlyAllowanceModel>(),
+                        CurrencyExchangeRate = await result.ReadAsync<CurrencyExchangeRateModel>(),
+                        CurrencyList = await result.ReadAsync<Currency>(),
+                        Additions = await result.ReadAsync<MonthlySalaryAdditionModel>(),
+                        Deductions = await result.ReadAsync<MonthlySalaryDeductionModel>()
                     };
                 }
             }

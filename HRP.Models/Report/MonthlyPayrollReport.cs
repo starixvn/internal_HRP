@@ -23,6 +23,9 @@
 
         public IEnumerable<Currency> CurrencyList { get; set; }
 
+        public IEnumerable<MonthlySalaryAdditionModel> Additions { get; set; } = new List<MonthlySalaryAdditionModel>();
+        public IEnumerable<MonthlySalaryDeductionModel> Deductions { get; set; } = new List<MonthlySalaryDeductionModel>();
+
         public Company Company { get; set; }
         public Currency SelectedCurrency { get; set; }
         public DateTime Month { get; set; }

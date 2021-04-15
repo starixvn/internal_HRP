@@ -317,14 +317,14 @@
                 .Where(x => (int)x != (int)MonthlySalaryAdditionType.BackPay).Select(x => new MonthlySalaryAdditionModel
                 {
                     EmployeeId = payroll.EmployeeId,
-                    Type = (int)x
-                });
+                    Type = (short)x
+                }).ToList();
             var salaryDeductions = Enum.GetValues(typeof(MonthlySalaryDeductionType)).Cast<MonthlySalaryDeductionType>()
                 .Select(x => new MonthlySalaryDeductionModel
                 {
                     EmployeeId = payroll.EmployeeId,
-                    Type = (int)x
-                });
+                    Type = (short)x
+                }).ToList();
             var backPay = new MonthlySalaryAdditionModel { EmployeeId = payroll.EmployeeId, Type = (int)MonthlySalaryAdditionType.BackPay };
             var monthlySalary = new MonthlySalaryModel { EmployeeId = payroll.EmployeeId };
             DecryptMonthlyBasicSalary(monthlyBasicSalary);

@@ -20,8 +20,10 @@
 
     public class ExportMonthlyPayrollReportService : IExportMonthlyPayrollReportService
     {
-        private const short TotalCols = 48;
+        private const short TotalCols = 50;
+        private const short ActualBasicSalaryAmountColIndex = 12;
         private const short MonthlyPayrollAdditionColIndex = 13;
+        private const short SubsistenceColIndex = 26;
 
         public byte[] Export(string templatePath, MonthlyPayrollReport report, string password = null)
         {
@@ -55,7 +57,6 @@
         {
             WriteHeader(template, worksheet, report.SelectedCurrency, report);
             const short BodyRowIndex = 9;
-            const short ActualBasicSalaryAmountColIndex = 10;
 
             int row = BodyRowIndex;
             var serialNo = 1;
@@ -66,6 +67,8 @@
                 MonthlySalaryModel monthlySalary = report.MonthlySalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                 MonthlyPayrollBasicAllowanceModel monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                 MonthlyAllowanceModel monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                IEnumerable<MonthlySalaryAdditionModel> additions = report.Additions.Where(x => x.EmployeeId == employee.EmployeeId);
+                IEnumerable<MonthlySalaryDeductionModel> deductions = report.Deductions.Where(x => x.EmployeeId == employee.EmployeeId);
 
                 template.Cells[BodyRowIndex, 1, BodyRowIndex, TotalCols].Copy(worksheet.Cells[row, 1, row, TotalCols]);
                 worksheet.Cells[row, colIndex++].Value = serialNo;
@@ -81,7 +84,11 @@
                 worksheet.Cells[row, colIndex++].Value = monthlyBasicSalary.CurrencyCode;
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
+                worksheet.Cells[row, colIndex++].Value = 
+                    string.Join(Environment.NewLine, additions.Select(x => string.Format("{0}: {1}", x.AdditionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
+                worksheet.Cells[row, colIndex++].Value =
+                    string.Join(Environment.NewLine, deductions.Select(x => string.Format("{0}: {1}", x.DeductionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
                 worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking1AccountName;
                 worksheet.Cells[row, colIndex++].Value
@@ -116,7 +123,6 @@
         {
             WriteHeader(template, worksheet, null, report);
             const short BodyRowIndex = 9;
-            const short ActualBasicSalaryAmountColIndex = 10;
 
             int row = BodyRowIndex;
             var serialNo = 1;
@@ -127,6 +133,8 @@
                 MonthlySalaryModel monthlySalary = report.MonthlySalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                 MonthlyPayrollBasicAllowanceModel monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                 MonthlyAllowanceModel monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                IEnumerable<MonthlySalaryAdditionModel> additions = report.Additions.Where(x => x.EmployeeId == employee.EmployeeId);
+                IEnumerable<MonthlySalaryDeductionModel> deductions = report.Deductions.Where(x => x.EmployeeId == employee.EmployeeId);
 
                 template.Cells[BodyRowIndex, 1, BodyRowIndex, TotalCols].Copy(worksheet.Cells[row, 1, row, TotalCols]);
                 worksheet.Cells[row, colIndex++].Value = serialNo;
@@ -142,7 +150,11 @@
                 worksheet.Cells[row, colIndex++].Value = monthlyBasicSalary.CurrencyCode;
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
+                worksheet.Cells[row, colIndex++].Value =
+                    string.Join(Environment.NewLine, additions.Select(x => string.Format("{0}: {1}", x.AdditionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
+                worksheet.Cells[row, colIndex++].Value =
+                    string.Join(Environment.NewLine, deductions.Select(x => string.Format("{0}: {1}", x.DeductionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
                 worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking1AccountName;
                 worksheet.Cells[row, colIndex++].Value
@@ -174,7 +186,6 @@
         {
             WriteHeader(template, worksheet, null, report);
             const short BodyRowIndex = 9;
-            const short ActualBasicSalaryAmountColIndex = 10;
 
             int row = BodyRowIndex;
             var serialNo = 1;
@@ -185,6 +196,8 @@
                 MonthlySalaryModel monthlySalary = report.MonthlySalary.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                 MonthlyPayrollBasicAllowanceModel monthlyBasicAllowance = report.MonthlyBasicAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
                 MonthlyAllowanceModel monthlyAllowance = report.MonthlyAllowance.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                IEnumerable<MonthlySalaryAdditionModel> additions = report.Additions.Where(x => x.EmployeeId == employee.EmployeeId);
+                IEnumerable<MonthlySalaryDeductionModel> deductions = report.Deductions.Where(x => x.EmployeeId == employee.EmployeeId);
 
                 template.Cells[BodyRowIndex, 1, BodyRowIndex, TotalCols].Copy(worksheet.Cells[row, 1, row, TotalCols]);
                 worksheet.Cells[row, colIndex++].Value = serialNo;
@@ -200,7 +213,11 @@
                 worksheet.Cells[row, colIndex++].Value = monthlyBasicSalary.CurrencyCode;
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
+                worksheet.Cells[row, colIndex++].Value =
+                    string.Join(Environment.NewLine, additions.Select(x => string.Format("{0}: {1}", x.AdditionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
+                worksheet.Cells[row, colIndex++].Value =
+                    string.Join(Environment.NewLine, deductions.Select(x => string.Format("{0}: {1}", x.DeductionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
                 worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking1AccountName;
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.EbankingAmount);
@@ -322,11 +339,9 @@
             Currency selectedCurrency,
             MonthlyPayrollReport report)
         {
-            const short SubsistenceColIndex = 24;
             const short HeaderRowIndex = 18;
             const short BodyRowIndex = 19;
             const short StartColIndex = 9;
-            const short ActualBasicSalaryAmountColIndex = 10;
 
             // Write header
             template.Cells[HeaderRowIndex, StartColIndex, HeaderRowIndex, TotalCols].Copy(worksheet.Cells[startRow, StartColIndex, startRow, TotalCols]);
@@ -346,7 +361,9 @@
                 colIndex++;
                 worksheet.Cells[row, colIndex++].Value = basicSalaryList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.AdditionAmount));
+                colIndex++;
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.DeductionAmount));
+                colIndex++;
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.Salary));
                 colIndex++;
 
@@ -379,11 +396,9 @@
             ExcelWorksheet worksheet,
             MonthlyPayrollReport report)
         {
-            const short SubsistenceColIndex = 24;
             const short HeaderRowIndex = 18;
             const short BodyRowIndex = 19;
             const short StartColIndex = 9;
-            const short ActualBasicSalaryAmountColIndex = 10;
 
             // Write header
             template.Cells[HeaderRowIndex, StartColIndex, HeaderRowIndex, TotalCols].Copy(worksheet.Cells[startRow, StartColIndex, startRow, TotalCols]);
@@ -403,7 +418,9 @@
                 colIndex++;
                 worksheet.Cells[row, colIndex++].Value = basicSalaryList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.AdditionAmount));
+                colIndex++;
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.DeductionAmount));
+                colIndex++;
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.Salary));
                 colIndex++;
 
@@ -433,11 +450,9 @@
             ExcelWorksheet worksheet,
             MonthlyPayrollReport report)
         {
-            const short SubsistenceColIndex = 24;
             const short HeaderRowIndex = 18;
             const short BodyRowIndex = 19;
             const short StartColIndex = 9;
-            const short ActualBasicSalaryAmountColIndex = 10;
 
             // Write header
             template.Cells[HeaderRowIndex, StartColIndex, HeaderRowIndex, TotalCols].Copy(worksheet.Cells[startRow, StartColIndex, startRow, TotalCols]);
@@ -457,7 +472,9 @@
                 colIndex++;
                 worksheet.Cells[row, colIndex++].Value = basicSalaryList.Sum(x => ParseToDecimal(x.AfterAdjustmentAmount));
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.AdditionAmount));
+                colIndex++;
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.DeductionAmount));
+                colIndex++;
                 worksheet.Cells[row, colIndex++].Value = salaryList.Sum(x => ParseToDecimal(x.Salary));
                 colIndex++;
 

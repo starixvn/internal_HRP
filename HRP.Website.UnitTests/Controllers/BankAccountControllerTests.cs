@@ -126,7 +126,7 @@
         {
             // Arrange
             var employeeId = 1;
-            var resources = GetReferenceResourcesForTest();
+            var resources = GetReferenceResourcesForTest().OrderBy(x => x.ResourceId);
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
@@ -153,7 +153,7 @@
         public async Task CreateBankAccountInPayrollPost_InvalidModelState_ReturnAsExpectedPartialView()
         {
             // Arrange
-            var resources = GetReferenceResourcesForTest();
+            var resources = GetReferenceResourcesForTest().OrderBy(x => x.ResourceId);
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
@@ -181,7 +181,7 @@
         {
             // Arrange
             var commandResult = new CommandResult();
-            var resources = GetReferenceResourcesForTest();
+            var resources = GetReferenceResourcesForTest().OrderBy(x => x.ResourceId);
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
@@ -212,7 +212,7 @@
         public async Task CreateBankAccountInPayroll_CreateSuccessfully_ReturnAsExpectedPartialView()
         {
             // Arrange
-            var resources = GetReferenceResourcesForTest();
+            var resources = GetReferenceResourcesForTest().OrderBy(x => x.ResourceId);
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
@@ -269,7 +269,7 @@
         {
             // Arrange
             var employeeId = 1;
-            var resources = GetReferenceResourcesForTest();
+            var resources = GetReferenceResourcesForTest().OrderBy(x => x.ResourceId);
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
@@ -296,7 +296,7 @@
         public async Task CreateBankAccountPost_InvalidModelState_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var resources = GetReferenceResourcesForTest();
+            var resources = GetReferenceResourcesForTest().OrderBy(x => x.ResourceId);
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
@@ -324,7 +324,7 @@
         public async Task CreateBankAccount_CreateUnsuccessfully_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var resources = GetReferenceResourcesForTest();
+            var resources = GetReferenceResourcesForTest().OrderBy(x => x.ResourceId);
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,
@@ -356,7 +356,7 @@
         public async Task CreateBankAccount_CreateSuccessfully_ReturnAsExpectedViewResult()
         {
             // Arrange
-            var resources = GetReferenceResourcesForTest();
+            var resources = GetReferenceResourcesForTest().OrderBy(x => x.ResourceId);
             var employee = new EmployeeBasicInfo
             {
                 CompanyId = 1,

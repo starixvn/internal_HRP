@@ -189,14 +189,14 @@
                                                 .Select(x => new MonthlySalaryAdditionModel
                                                 {
                                                     PayrollId = payslip.PayrollId,
-                                                    Type = (int)x
+                                                    Type = (short)x
                                                 }).ToList();
             payslip.SalaryDeductions = payslip.SalaryDeductions.Any()
                 ? payslip.SalaryDeductions : Enum.GetValues(typeof(MonthlySalaryDeductionType)).Cast<MonthlySalaryDeductionType>()
                                                 .Select(x => new MonthlySalaryDeductionModel
                                                 {
                                                     PayrollId = payslip.PayrollId,
-                                                    Type = (int)x
+                                                    Type = (short)x
                                                 }).ToList();
 
             foreach (MonthlySalaryAdditionModel addition in payslip.SalaryAdditions)
