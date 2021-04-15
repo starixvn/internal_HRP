@@ -7,9 +7,9 @@
     [Serializable]
     public class EmergencyContact
     {
-        private const int SmallLength = 20;
-        private const int MediumLength = 70;
-        private const int LargeLength = 500;
+        private const short PhoneNumber_MaxLength = 15;
+        private const short MediumLength = 70;
+        private const short LargeLength = 500;
 
         public int EmployeeId { get; set; }
 
@@ -26,10 +26,10 @@
         public string Address { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.ECTelephoneNoRequired))]
-        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.ECTelephoneNoMaxLength))]
+        [StringLength(PhoneNumber_MaxLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.ECTelephoneNoMaxLength))]
         public string PhoneNo1 { get; set; }
 
-        [StringLength(SmallLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.ECTelephoneNoMaxLength))]
+        [StringLength(PhoneNumber_MaxLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.ECTelephoneNoMaxLength))]
         public string PhoneNo2 { get; set; }
     }
 }

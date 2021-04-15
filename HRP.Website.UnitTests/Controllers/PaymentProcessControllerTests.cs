@@ -1049,13 +1049,16 @@
                 Value = "value"
             };
             var tuple = (rijndaelKeyValuePair, rijndaelKeyValuePair);
+            var month = DateTime.Today;
+            var payrollId = 1;
             var companyId = 1;
             var controller = GetPaymentProcessController();
             controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             rijndaelService.Encrypt(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(string.Empty);
             rijndaelService.GenerateRijndaelKeyValuePair().Returns(tuple);
             sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Read).Returns(true);
-            monthlyAllowancesService.GetMonthlyAllowancesAsync(Arg.Any<int>(), Arg.Any<DateTime>())
+            monthlyPayrollService.GetFilterInfoAsync(companyId, month, payrollId).Returns(new MonthlyPayrollFilterInfoModel());
+            monthlyAllowancesService.GetMonthlyAllowancesAsync(payrollId, month)
                 .Returns(new MonthlyAllowancesModel
                 {
                     Allowance = new MonthlyAllowanceModel()
@@ -1064,7 +1067,7 @@
             baseService.GetDataAsync<CurrencyExchangeRateModel>(Arg.Any<GetExchangeRateCriteria>()).Returns(new List<CurrencyExchangeRateModel>());
             baseService.GetDataAsync<ReferenceResourceModel>(Arg.Any<GetRefResourceByNamesCriteria>()).Returns(new List<ReferenceResourceModel>());
 
-            var actual = await controller.EditAllowances(1, companyId, DateTime.Today, new CachingFilterViewModel());
+            var actual = await controller.EditAllowances(payrollId, companyId, month, new CachingFilterViewModel());
 
             var result = Assert.IsType<ViewResult>(actual);
             Assert.IsType<EditMonthlyAllowancesViewModel>(result.Model);

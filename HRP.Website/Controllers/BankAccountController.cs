@@ -64,7 +64,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateBankAccount(int employeeId, int bankTypeId = 1)
+        public async Task<IActionResult> CreateBankAccount(int employeeId, short bankTypeId = 1)
         {
             bool isHost = await IsUserHavePermissionOnEmployee(employeeId);
 
@@ -104,7 +104,7 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.EmployeeBankDetails, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateBankAccountInPayroll(int employeeId, int bankType)
+        public async Task<IActionResult> CreateBankAccountInPayroll(int employeeId, short bankType)
         {
             bool isHost = await IsUserHavePermissionOnEmployee(employeeId);
 
@@ -261,16 +261,15 @@
             EmployeeBasicInfo employee = await employeeService.GetEmployeeBasicInfoByIdAsync(viewModel.EmployeeId);
 
             viewModel.NickName = employee.Nickname;
-
-            if (viewModel.BankTypeId == default(int))
+            if (viewModel.BankTypeId == default(short))
             {
-                // Default: Ebanking
-                viewModel.BankTypeId = (int)BankTypes.Ebanking;
+                viewModel.BankTypeId = (short)BankTypes.Ebanking;
             }
 
             IEnumerable<ReferenceResourceModel> refResources = await commonService.GetReferenceResourcesByNamesAsync(refNames);
             viewModel.BankTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.BankType);
-            viewModel.BankAccountTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount);
+            viewModel.BankAccountTypeResources = commonService.FilterReferenceResources(refResources, ReferenceResource.TypeOfBankAccount)
+                .OrderBy(x => x.ResourceId).ToList();
             viewModel.HaveHostPermission = sessionService.HasPermissionOnCompany(employee.CompanyId, FunctionKey.EmployeeBankDetails, Policy.Host);
         }
     }

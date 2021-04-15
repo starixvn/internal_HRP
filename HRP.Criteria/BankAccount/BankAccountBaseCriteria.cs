@@ -6,7 +6,7 @@
 
         public string AccountNumber { get; set; }
 
-        public int AccountType { get; set; }
+        public short AccountType { get; set; }
 
         public string BankAddress { get; set; }
 
@@ -16,7 +16,7 @@
 
         public string BankSwiftCode { get; set; }
 
-        public int BankType { get; set; }
+        public short BankType { get; set; }
 
         public string BeneficiaryName { get; set; }
 

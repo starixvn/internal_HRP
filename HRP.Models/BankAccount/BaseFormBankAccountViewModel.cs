@@ -34,12 +34,12 @@
         public string AccountNumber { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.TypeOfAccount))]
-        public int AccountTypeId { get; set; }
+        public short AccountTypeId { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankAddress))]
         [RequiredIfRelatedFieldIsTrue(
             RelatedFieldName = nameof(BankTypeId),
-            DesiredValue = (int)Core.Enumerations.BankTypes.Ebanking,
+            DesiredValue = (short)Core.Enumerations.BankTypes.Ebanking,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(BankAddressLength, ErrorMessageResourceType = typeof(Message),
@@ -49,7 +49,7 @@
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BankBranch))]
         [RequiredIfRelatedFieldIsTrue(
             RelatedFieldName = nameof(BankTypeId),
-            DesiredValue = (int)Core.Enumerations.BankTypes.Ebanking,
+            DesiredValue = (short)Core.Enumerations.BankTypes.Ebanking,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(MediumLength, ErrorMessageResourceType = typeof(Message),
@@ -67,7 +67,7 @@
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.SwiftCode))]
         [RequiredIfRelatedFieldIsTrue(
             RelatedFieldName = nameof(BankTypeId),
-            DesiredValue = (int)Core.Enumerations.BankTypes.Ebanking,
+            DesiredValue = (short)Core.Enumerations.BankTypes.Ebanking,
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
         [StringLength(
@@ -80,7 +80,7 @@
         [Required(
             ErrorMessageResourceType = typeof(Message),
             ErrorMessageResourceName = nameof(Message.RequiredErrorMessage))]
-        public int BankTypeId { get; set; }
+        public short BankTypeId { get; set; }
 
         [Display(ResourceType = typeof(ViewLang), Name = nameof(ViewLang.BeneficiaryName))]
         [Required(

@@ -11,6 +11,7 @@
     [Serializable]
     public class CreateEmployeeViewModel
     {
+        private const short PhoneNumber_MaxLength = 15;
         private const int MinLength = 20;
         private const int NickNameLength = 30;
         private const int SkypeLength = 32;
@@ -70,13 +71,13 @@
         public string PlaceOfIssue { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoRequired")]
-        [StringLength(MinLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoMaxLength")]
+        [StringLength(PhoneNumber_MaxLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OverseasPhoneNoMaxLength")]
         public string OverseasPhoneNo { get; set; }
 
-        [StringLength(MinLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalPhoneNoMaxLength")]
+        [StringLength(PhoneNumber_MaxLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "LocalPhoneNoMaxLength")]
         public string LocalPhoneNo { get; set; }
 
-        [StringLength(MinLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OtherPhoneNoMaxLength")]
+        [StringLength(PhoneNumber_MaxLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "OtherPhoneNoMaxLength")]
         public string OtherPhoneNo { get; set; }
 
         [StringLength(SkypeLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = "SkypeMaxLength")]

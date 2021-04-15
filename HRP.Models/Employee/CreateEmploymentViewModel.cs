@@ -37,7 +37,7 @@
         public int Nationality { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NRICNoRequired))]
-        [StringLength(MinLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NRICNoMaxLength))]
+        [StringLength(NickNameLength, ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.NRICNoMaxLength))]
         public string NRICNo { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Message), ErrorMessageResourceName = nameof(Message.MaritalStatusRequired))]

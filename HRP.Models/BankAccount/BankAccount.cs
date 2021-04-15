@@ -12,7 +12,7 @@
 
         public int CompanyId { get; set; }
 
-        public int BankType { get; set; } = (int)BankTypes.Ebanking;
+        public short BankType { get; set; } = (short)BankTypes.Ebanking;
 
         public string BankTypeName { get; set; }
 
@@ -28,7 +28,7 @@
 
         public string AccountNumber { get; set; }
 
-        public int AccountType { get; set; } = (int)BankAccountType.Savings;
+        public short AccountType { get; set; } = (short)BankAccountType.Savings;
 
         public string AccountTypeName { get; set; }
 

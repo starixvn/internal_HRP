@@ -11,9 +11,7 @@
             BankAccountTypeResources = new List<ReferenceResourceModel>();
             IsActive = true;
             IsSuccessful = false;
-
-            // Default bank type: savings
-            AccountTypeId = 1;
+            AccountTypeId = (short)Core.Enumerations.BankAccountType.Savings;
         }
     }
 }
