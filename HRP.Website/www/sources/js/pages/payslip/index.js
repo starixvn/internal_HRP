@@ -1,4 +1,5 @@
-﻿import 'jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax';
+﻿import 'bootstrap/dist/js/bootstrap';
+import 'jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax';
 import 'datatables.net-bs/js/dataTables.bootstrap';
 import 'select2/dist/js/select2';
 import 'eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker';

@@ -22,7 +22,7 @@
     public class PayslipService : IPayslipService
     {
         private const string EmailTemplate = @"wwwroot\\EmailTemplates\\Payslip.cshtml";
-        private const string cssFilePath = @"assets\\bundles\\payslip\\css\\pdf.min.css";
+        private const string cssFilePath = @"css\\pro\\pages\\payslip\\pdf.chunk.css";
         private readonly IBaseService baseService;
         private readonly ISessionService sessionService;
         private readonly ICryptoService cryptoService;
@@ -33,7 +33,6 @@
         private readonly IMailSettingService mailSettingService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
-
         public PayslipService(
             IBaseService baseService,
             ISessionService sessionService,
