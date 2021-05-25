@@ -24,6 +24,7 @@
         private const short ActualBasicSalaryAmountColIndex = 12;
         private const short MonthlyPayrollAdditionColIndex = 13;
         private const short SubsistenceColIndex = 26;
+        private const string DescriptionOfAdditionFormat = "{0}: {1}";
 
         public byte[] Export(string templatePath, MonthlyPayrollReport report, string password = null)
         {
@@ -85,10 +86,10 @@
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
                 worksheet.Cells[row, colIndex++].Value = 
-                    string.Join(Environment.NewLine, additions.Select(x => string.Format("{0}: {1}", x.AdditionName, x.Description)));
+                    string.Join(Environment.NewLine, additions.Select(x => string.Format(DescriptionOfAdditionFormat, x.AdditionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
                 worksheet.Cells[row, colIndex++].Value =
-                    string.Join(Environment.NewLine, deductions.Select(x => string.Format("{0}: {1}", x.DeductionName, x.Description)));
+                    string.Join(Environment.NewLine, deductions.Select(x => string.Format(DescriptionOfAdditionFormat, x.DeductionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
                 worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking1AccountName;
                 worksheet.Cells[row, colIndex++].Value
@@ -151,10 +152,10 @@
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
                 worksheet.Cells[row, colIndex++].Value =
-                    string.Join(Environment.NewLine, additions.Select(x => string.Format("{0}: {1}", x.AdditionName, x.Description)));
+                    string.Join(Environment.NewLine, additions.Select(x => string.Format(DescriptionOfAdditionFormat, x.AdditionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
                 worksheet.Cells[row, colIndex++].Value =
-                    string.Join(Environment.NewLine, deductions.Select(x => string.Format("{0}: {1}", x.DeductionName, x.Description)));
+                    string.Join(Environment.NewLine, deductions.Select(x => string.Format(DescriptionOfAdditionFormat, x.DeductionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
                 worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking1AccountName;
                 worksheet.Cells[row, colIndex++].Value
@@ -214,10 +215,10 @@
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlyBasicSalary.AfterAdjustmentAmount);
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.AdditionAmount);
                 worksheet.Cells[row, colIndex++].Value =
-                    string.Join(Environment.NewLine, additions.Select(x => string.Format("{0}: {1}", x.AdditionName, x.Description)));
+                    string.Join(Environment.NewLine, additions.Select(x => string.Format(DescriptionOfAdditionFormat, x.AdditionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.DeductionAmount);
                 worksheet.Cells[row, colIndex++].Value =
-                    string.Join(Environment.NewLine, deductions.Select(x => string.Format("{0}: {1}", x.DeductionName, x.Description)));
+                    string.Join(Environment.NewLine, deductions.Select(x => string.Format(DescriptionOfAdditionFormat, x.DeductionName, x.Description)));
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.Salary);
                 worksheet.Cells[row, colIndex++].Value = monthlySalary.DirectBanking1AccountName;
                 worksheet.Cells[row, colIndex++].Value = ParseToDecimal(monthlySalary.EbankingAmount);
