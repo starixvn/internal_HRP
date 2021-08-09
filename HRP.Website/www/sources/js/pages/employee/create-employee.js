@@ -1,5 +1,6 @@
 ﻿import 'jquery-ui-dist/jquery-ui';
 import 'select2/dist/js/select2';
+import 'bootstrap/dist/js/bootstrap';
 import 'jquery-validation/dist/jquery.validate';
 import 'jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive';
 import 'jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax';
@@ -27,21 +28,19 @@ const createEmployee = (function ($) {
                     contentType: false,
                     data: formData,
                     processData: false,
-                    success: onUpdateSuccess,
+                    success: function (response) {
+                        if (response.isSuccessful) {
+                            $personalDetailsStep.removeClass('active').addClass('finished');
+                            $employmentStep.addClass('active');
+                            $('#EmploymentHeaderTab').trigger('click');
+                        } else {
+                            $form.validate().showErrors(response.errors);
+                        }
+                    },
                     error: commonFunctions.handleAjaxError
                 });
             }
         });
-    }
-
-    function onUpdateSuccess(response) {
-        if (response.isSuccessful) {
-            $personalDetailsStep.removeClass('active').addClass('finished');
-            $employmentStep.addClass('active');
-            $('#EmploymentHeaderTab').trigger('click');
-        } else {
-            $form.validate().showErrors(response.errors);
-        }
     }
 
     function initModule() {

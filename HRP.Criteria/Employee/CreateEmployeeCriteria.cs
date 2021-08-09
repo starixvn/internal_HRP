@@ -74,7 +74,7 @@
             && Nationality > 0
             && !string.IsNullOrWhiteSpace(NRICNo)
             && MaritalStatus > 0
-            && NoOfChildren > 0
+            && NoOfChildren >= 0
             && !string.IsNullOrWhiteSpace(OverseasPhoneNo)
             && !string.IsNullOrWhiteSpace(PermanentAddress)
             && !string.IsNullOrWhiteSpace(ResidenceAddress)

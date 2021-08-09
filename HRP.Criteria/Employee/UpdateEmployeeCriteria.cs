@@ -73,7 +73,7 @@
                 && Gender > 0
                 && Nationality > 0
                 && MaritalStatus > 0
-                && NoOfChildren > 0
+                && NoOfChildren >= 0
                 && !string.IsNullOrWhiteSpace(FullName)
                 && !string.IsNullOrWhiteSpace(Nickname)
                 && !string.IsNullOrWhiteSpace(OverseasPhoneNo)

@@ -1,5 +1,6 @@
 ﻿import 'jquery-ui-dist/jquery-ui';
 import 'select2/dist/js/select2';
+import 'bootstrap/dist/js/bootstrap';
 import 'jquery-validation/dist/jquery.validate';
 import 'jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive';
 import 'jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax';
@@ -25,23 +26,21 @@ const editEmployee = (function ($) {
                     contentType: false,
                     data: formData,
                     processData: false,
-                    success: onUpdateSuccess,
+                    success: function (response) {
+                        if (response.isSuccessful) {
+                            commonFunctions.showSuccessMessage($form.find('.msg-success'));
+                        } else {
+                            if (response.errors) {
+                                $form.validate().showErrors(response.errors);
+                            } else {
+                                commonFunctions.showErrorMessage($form.find('.msg-error'), response.message);
+                            }
+                        }
+                    },
                     error: commonFunctions.handleAjaxError
                 });
             }
         });
-    }
-
-    function onUpdateSuccess(response) {
-        if (response.isSuccessful) {
-            commonFunctions.showSuccessMessage($form.find('.msg-success'));
-        } else {
-            if (response.errors) {
-                $form.validate().showErrors(response.errors);
-            } else {
-                commonFunctions.showErrorMessage($form.find('.msg-error'), response.message);
-            }
-        }
     }
 
     function initModule() {
