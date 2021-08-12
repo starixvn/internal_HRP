@@ -32,6 +32,7 @@
         private readonly IPaymentProcessRepository paymentProcessRepository;
         private readonly IObjectStream fileStream;
         private readonly ITemplateReader templateReader;
+        private readonly IAdditionDeductionTemplateReader additionDeductionTemplateReader;
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public PaymentProcessService(IBaseService baseService,
@@ -42,7 +43,8 @@
             IMonthlyAllowancesService monthlyAllowancesService,
             ITemplateReader templateReader,
             IPaymentProcessRepository paymentProcessRepository,
-            IObjectStream fileStream)
+            IObjectStream fileStream,
+            IAdditionDeductionTemplateReader additionDeductionTemplateReader)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             this.baseService = baseService;
@@ -54,6 +56,7 @@
             this.templateReader = templateReader;
             this.paymentProcessRepository = paymentProcessRepository;
             this.fileStream = fileStream;
+            this.additionDeductionTemplateReader = additionDeductionTemplateReader;
         }
 
         public async Task<PaymentProcess> GetCurrentDuration()
@@ -84,44 +87,15 @@
             return await baseService.GetDataEntityAsync<PaymentProcess>(criteria);
         }
 
-        private CommandResult CheckValidExcelFile(IFormFile file)
-        {
-            var fileExt = Path.GetExtension(file.FileName);
-            if (file.Length / (Coefficient * Coefficient) > MultipleFileNumber)
-            {
-                return new CommandResult
-                {
-                    Code = 1,
-                    Message = Message.FileTooLarge
-                };
-            }
-            else if (!(fileExt.Equals(".xls") || fileExt.Equals(".xlsx")))
-            {
-                return new CommandResult
-                {
-                    Code = 1,
-                    Message = Message.InvalidFileType
-                };
-            }
-            else
-            {
-                return new CommandResult
-                {
-                    Code = 0,
-                    Message = string.Empty
-                };
-            }
-        }
-
-        public async Task<Result<AttendanceTemplate>> ReadAttendanceFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
+        public async Task<Result<AttendanceTemplate>> ReadAttendanceFileAsync(UploadFilesViewModel viewModel)
         {
             if (viewModel.AttendanceFile == null)
             {
                 return new Success<AttendanceTemplate>(null);
             }
 
-            var checkValidFile = CheckValidExcelFile(viewModel.AttendanceFile);
-            if (checkValidFile.IsSuccessful)
+            var result = CheckValidExcelFile(viewModel.AttendanceFile);
+            if (result.IsSuccessful)
             {
                 var employeeCodeList = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId);
                 var sheet = templateReader.CreateSheet(viewModel.AttendanceFile.OpenReadStream());
@@ -135,18 +109,18 @@
                 return templateReader.ReadAttendance(template);
             }
 
-            return new Failure<AttendanceTemplate>(checkValidFile.Message);
+            return new Failure<AttendanceTemplate>(result.Message);
         }
 
-        public async Task<Result<DSTNetSalaryTemplate>> ReadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel)
+        public async Task<Result<DSTNetSalaryTemplate>> ReadDSTNetSalaryFileAsync(UploadFilesViewModel viewModel)
         {
             if (viewModel.DSTNetSalaryFile == null)
             {
                 return new Success<DSTNetSalaryTemplate>(null);
             }
 
-            var checkValidFile = CheckValidExcelFile(viewModel.DSTNetSalaryFile);
-            if (checkValidFile.IsSuccessful)
+            var result = CheckValidExcelFile(viewModel.DSTNetSalaryFile);
+            if (result.IsSuccessful)
             {
                 var employeeCodeList = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId);
                 IEnumerable<Currency> currencies = await commonService.GetCurrencyAsync();
@@ -162,12 +136,44 @@
                 return templateReader.ReadDSTNetSalary(template);
             }
 
-            return new Failure<DSTNetSalaryTemplate>(checkValidFile.Message);
+            return new Failure<DSTNetSalaryTemplate>(result.Message);
         }
 
-        public async Task<CommandResult> UploadAttendanceAndDSTNetSalaryAsync(int companyId, DateTime month, AttendanceTemplate attendanceTemplate, DSTNetSalaryTemplate dstNetSalaryTemplate)
+        public async Task<Result<AdditionDeductionTemplate>> ReadAdditionDeductionFileAsync(UploadFilesViewModel viewModel)
         {
-            var criteria = new UploadAttendanceAndDSTNetSalaryCriteria
+            if (viewModel.AdditionDeductionFile == null)
+            {
+                return new Success<AdditionDeductionTemplate>(null);
+            }
+
+            var result = CheckValidExcelFile(viewModel.AdditionDeductionFile);
+            if (result.IsSuccessful)
+            {
+                var employeeCodes = await GetAllEmployeeCodeByCompanyIdAsync(viewModel.CompanyId);
+                IEnumerable<Currency> currencies = await commonService.GetCurrencyAsync();
+                var sheet = templateReader.CreateSheet(viewModel.AdditionDeductionFile.OpenReadStream());
+                var template = new AdditionDeductionTemplate
+                {
+                    CompanyCode = viewModel.CompanyCode,
+                    FileName = viewModel.AdditionDeductionFile.FileName,
+                    Sheet = sheet,
+                    EmployeeCodes = employeeCodes,
+                    Currencies = currencies
+                };
+                return additionDeductionTemplateReader.ReadFile(template);
+            }
+
+            return new Failure<AdditionDeductionTemplate>(result.Message);
+        }
+
+        public async Task<CommandResult> UploadFilesAsync(
+            int companyId,
+            DateTime month,
+            AttendanceTemplate attendanceTemplate,
+            DSTNetSalaryTemplate dstNetSalaryTemplate,
+            AdditionDeductionTemplate additionDeductionTemplate)
+        {
+            var criteria = new UploadFilesCommand
             {
                 CompanyId = companyId,
                 Month = month,
@@ -190,10 +196,18 @@
                 criteria.DSTNetSalaryResultXMLDoc = dstNetSalaryTemplate.ValidationResults.ToXML().ToString();
             }
 
+            if (additionDeductionTemplate != null)
+            {
+                criteria.AdditionDeductionSessionId = Guid.NewGuid().ToString();
+                criteria.AdditionDeductionFileName = additionDeductionTemplate.FileName;
+                criteria.AdditionDeductionUploadingXMLDoc = additionDeductionTemplate.Records.ToXML().ToString();
+                criteria.AdditionDeductionResultXMLDoc = additionDeductionTemplate.ValidationResults.ToXML().ToString();
+            }
+
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        public async Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(int companyId, DateTime month)
+        public async Task<UploadFilesViewModel> GetUploadingFilesResultAsync(int companyId, DateTime month)
         {
             var criteria = new GetUploadingFilesResultCriteria
             {
@@ -201,10 +215,11 @@
                 Month = month
             };
 
-            var result = new UploadAttendanceAndSalaryViewModel();
+            var result = new UploadFilesViewModel();
             if (criteria.IsValid())
             {
-                (var paymentProcess, var attendanceErrors, var dstNetSalaryErrors) = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria);
+                (var paymentProcess, var attendanceErrors, var dstNetSalaryErrors, var additionDeductionErrors)
+                    = await paymentProcessRepository.GetUploadingFilesResultAsync(criteria);
                 if (paymentProcess != null)
                 {
                     result.CompanyId = paymentProcess.CompanyId;
@@ -213,7 +228,7 @@
                     result.StartDate = paymentProcess.StartDate;
                     result.DueDate = paymentProcess.DueDate;
 
-                    if (paymentProcess.AttendanceFileName != null)
+                    if (!string.IsNullOrWhiteSpace(paymentProcess.AttendanceFileName))
                     {
                         result.AttendanceFileName = paymentProcess.AttendanceFileName;
                         result.AttendanceResult = new FileResultViewModel
@@ -223,13 +238,23 @@
                         };
                     }
 
-                    if (paymentProcess.DSTNetSalaryFileName != null)
+                    if (!string.IsNullOrWhiteSpace(paymentProcess.DSTNetSalaryFileName))
                     {
                         result.DSTNetSalaryFileName = paymentProcess.DSTNetSalaryFileName;
                         result.DSTNetSalaryResult = new FileResultViewModel
                         {
                             TotalRow = paymentProcess.DSTNetSalaryTotalRow,
                             ValidationErrors = dstNetSalaryErrors
+                        };
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(paymentProcess.AdditionDeductionFileName))
+                    {
+                        result.AdditionDeductionFileName = paymentProcess.AdditionDeductionFileName;
+                        result.AdditionDeductionResult = new FileResultViewModel
+                        {
+                            TotalRow = paymentProcess.AdditionDeductionTotalRow,
+                            ValidationErrors = additionDeductionErrors
                         };
                     }
                 }
@@ -258,10 +283,49 @@
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
+        public async Task<CommandResult> DeleteUploadedAdditionDeductionAsync(int companyId, DateTime month)
+        {
+            var criteria = new DeleteUploadedAdditionDeductionCommand
+            {
+                CompanyId = companyId,
+                Month = month
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
         private async Task<IEnumerable<string>> GetAllEmployeeCodeByCompanyIdAsync(int companyId)
         {
             var criteria = new GetAllEmployeeCodeByCompanyIdCriteria { CompanyId = companyId };
             return await baseService.GetDataAsync<string>(criteria);
+        }
+
+        private CommandResult CheckValidExcelFile(IFormFile file)
+        {
+            var fileExt = Path.GetExtension(file.FileName);
+            if (file.Length / (Coefficient * Coefficient) > MultipleFileNumber)
+            {
+                return new CommandResult
+                {
+                    Code = 1,
+                    Message = Message.FileTooLarge
+                };
+            }
+            else if (!(fileExt.Equals(".xls") || fileExt.Equals(".xlsx")))
+            {
+                return new CommandResult
+                {
+                    Code = 1,
+                    Message = Message.InvalidFileType
+                };
+            }
+            else
+            {
+                return new CommandResult
+                {
+                    Code = 0,
+                    Message = string.Empty
+                };
+            }
         }
 
         #region GenerateMonthlyPayroll

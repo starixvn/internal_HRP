@@ -171,7 +171,7 @@
         [InlineData(false, true, true)]
         [InlineData(true, false, true)]
         [InlineData(true, true, false)]
-        public async Task IndexPost_UserHasHostPermissionAndPayrollIsNotGenerated_ReturnRedirectToUploadAttendanceAndSalary
+        public async Task IndexPost_UserHasHostPermissionAndPayrollIsNotGenerated_ReturnRedirectToUploadFiles
             (bool isPayrollGenerated, bool isAttendanceSubmitted, bool isDSTNetSalarySubmitted)
         {
             // Arrange
@@ -197,7 +197,7 @@
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
             var routeValues = viewResult.RouteValues;
-            Assert.Equal("UploadAttendanceAndSalary", viewResult.ActionName);
+            Assert.Equal("UploadFiles", viewResult.ActionName);
             Assert.Equal(paramModel.CompanyId, routeValues["companyId"]);
             Assert.Equal(paramModel.SelectedTime, routeValues["month"]);
         }
@@ -301,7 +301,7 @@
         }
 
         [Fact]
-        public async Task UploadAttendanceAndSalary_UserHasPermission_ReturnViewResultWithExpectedViewModel()
+        public async Task UploadFiles_UserHasPermission_ReturnViewResultWithExpectedViewModel()
         {
             // Arrange
             var companyId = 13;
@@ -311,7 +311,7 @@
                 StartDate = startDate,
                 DueDate = dueDate,
             };
-            var expected = new UploadAttendanceAndSalaryViewModel
+            var expected = new UploadFilesViewModel
             {
                 CompanyId = companyId,
                 SelectedTime = month
@@ -322,18 +322,18 @@
             paymentProcessService.GetUploadingFilesResultAsync(companyId, month).Returns(expected);
 
             // Act
-            var actual = await controller.UploadAttendanceAndSalary(companyId, month);
+            var actual = await controller.UploadFiles(companyId, month);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewData = Assert.IsType<UploadAttendanceAndSalaryViewModel>(viewResult.ViewData.Model);
+            var viewData = Assert.IsType<UploadFilesViewModel>(viewResult.ViewData.Model);
             Assert.Equal(expected, viewData);
         }
 
         [Theory]
         [InlineData("2018-3-1", "2018-3-30", false)]
         [InlineData("2018-3-1", "2018-3-11", true)]
-        public async Task UploadAttendanceAndSalary_UserNotHasPermission_ReturnViewResultWithExpectedViewModel
+        public async Task UploadFiles_UserNotHasPermission_ReturnViewResultWithExpectedViewModel
             (string startDate, string dueDate, bool isHostOnCompany)
         {
             // Arrange
@@ -349,7 +349,7 @@
             paymentProcessService.GetPaymentProcessAsync(companyId, month).Returns(paymentProcess);
 
             // Act
-            var actual = await controller.UploadAttendanceAndSalary(companyId, month);
+            var actual = await controller.UploadFiles(companyId, month);
 
             // Assert
             var viewResult = Assert.IsType<RedirectToActionResult>(actual);
@@ -361,7 +361,7 @@
         public async Task ValidationFilesResult_WhenCalled_ReturnPartialViewWithValidationFilesResultViewModel()
         {
             // Arrange
-            var expected = new UploadAttendanceAndSalaryViewModel
+            var expected = new UploadFilesViewModel
             {
                 AttendanceResult = new FileResultViewModel { TotalRow = 3 },
                 DSTNetSalaryResult = new FileResultViewModel { TotalRow = 4 }
@@ -376,7 +376,7 @@
 
             // Assert
             var viewResult = Assert.IsType<PartialViewResult>(actual);
-            var model = Assert.IsType<UploadAttendanceAndSalaryViewModel>(viewResult.Model);
+            var model = Assert.IsType<UploadFilesViewModel>(viewResult.Model);
             Assert.Equal("_ValidationFilesResult", viewResult.ViewName);
             Assert.Equal(expected, model);
         }
@@ -473,14 +473,14 @@
         }
 
         [Fact]
-        public async Task UploadAttendanceAndSalaryPost_AttendanceFileAndDSTNetSalaryFileAreNull_ReturnJsonResultWithErrors()
+        public async Task UploadFilesPost_AttendanceFileAndDSTNetSalaryFileAreNull_ReturnJsonResultWithErrors()
         {
             // Arrange
-            var viewModel = new UploadAttendanceAndSalaryViewModel();
+            var viewModel = new UploadFilesViewModel();
             var controller = GetPaymentProcessController();
 
             // Act
-            var actual = await controller.UploadAttendanceAndSalary(viewModel);
+            var actual = await controller.UploadFiles(viewModel);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -491,18 +491,18 @@
         }
 
         [Fact]
-        public async Task UploadAttendanceAndSalaryPost_FailureWhenReadAttendanceFileAndDSTNetSalaryFile_ReturnJsonResultWithErrors()
+        public async Task UploadFilesPost_FailureWhenReadAttendanceFileAndDSTNetSalaryFile_ReturnJsonResultWithErrors()
         {
             // Arrange
-            var viewModel = new UploadAttendanceAndSalaryViewModel { AttendanceFile = Substitute.For<IFormFile>() };
+            var viewModel = new UploadFilesViewModel { AttendanceFile = Substitute.For<IFormFile>() };
             var failureAttendance = MockFailureResultAttendanceTemplate();
             var failureDSTNetSalary = MockFailureResultDSTNetSalaryTemplate();
             var controller = GetPaymentProcessController();
-            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(failureAttendance);
-            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(failureDSTNetSalary);
+            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadFilesViewModel>(x => x == viewModel)).Returns(failureAttendance);
+            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadFilesViewModel>(x => x == viewModel)).Returns(failureDSTNetSalary);
 
             // Act
-            var actual = await controller.UploadAttendanceAndSalary(viewModel);
+            var actual = await controller.UploadFiles(viewModel);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -514,11 +514,11 @@
         }
 
         [Fact]
-        public async Task UploadAttendanceAndSalaryPost_ModelStateIsValidAndUploadFilesSuccessful_ReturnJsonResultSuccessful()
+        public async Task UploadFilesPost_ModelStateIsValidAndUploadFilesSuccessful_ReturnJsonResultSuccessful()
         {
             // Arrange
             var commandResult = new CommandResult { Code = 0 };
-            var viewModel = new UploadAttendanceAndSalaryViewModel
+            var viewModel = new UploadFilesViewModel
             {
                 CompanyId = 3,
                 SelectedTime = DateTime.Today,
@@ -526,14 +526,20 @@
             };
             var successAttendance = MockSuccessResultAttendanceTemplate();
             var successDSTNetSalary = MockSuccessResultDSTNetSalaryTemplate();
+            var successAdditionDeduction = new Success<AdditionDeductionTemplate>(null);
             var controller = GetPaymentProcessController();
-            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(successAttendance);
-            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(successDSTNetSalary);
-            paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(Arg.Is<int>(x => x == viewModel.CompanyId), Arg.Is<DateTime>(x => x == viewModel.SelectedTime),
-                                   Arg.Is<AttendanceTemplate>(x => x == successAttendance.Value), Arg.Is<DSTNetSalaryTemplate>(x => x == successDSTNetSalary.Value)).Returns(commandResult);
+            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadFilesViewModel>(x => x == viewModel)).Returns(successAttendance);
+            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadFilesViewModel>(x => x == viewModel)).Returns(successDSTNetSalary);
+            paymentProcessService.ReadAdditionDeductionFileAsync(Arg.Is<UploadFilesViewModel>(x => x == viewModel)).Returns(successAdditionDeduction);
+            paymentProcessService.UploadFilesAsync(
+                Arg.Is<int>(x => x == viewModel.CompanyId),
+                Arg.Is<DateTime>(x => x == viewModel.SelectedTime),
+                Arg.Is<AttendanceTemplate>(x => x == successAttendance.Value),
+                Arg.Is<DSTNetSalaryTemplate>(x => x == successDSTNetSalary.Value),
+                Arg.Is<AdditionDeductionTemplate>(x => x == successAdditionDeduction.Value)).Returns(commandResult);
 
             // Act
-            var actual = await controller.UploadAttendanceAndSalary(viewModel);
+            var actual = await controller.UploadFiles(viewModel);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -542,11 +548,11 @@
         }
 
         [Fact]
-        public async Task UploadAttendanceAndSalaryPost_ModelStateIsValidAndUploadFilesNotSuccessful_ReturnJsonResultSuccessful()
+        public async Task UploadFilesPost_ModelStateIsValidAndUploadFilesNotSuccessful_ReturnJsonResultSuccessful()
         {
             // Arrange
             var commandResult = new CommandResult();
-            var viewModel = new UploadAttendanceAndSalaryViewModel
+            var viewModel = new UploadFilesViewModel
             {
                 CompanyId = 3,
                 SelectedTime = DateTime.Today,
@@ -554,14 +560,20 @@
             };
             var successAttendance = MockSuccessResultAttendanceTemplate();
             var successDSTNetSalary = MockSuccessResultDSTNetSalaryTemplate();
+            var successAdditionDeduction = new Success<AdditionDeductionTemplate>(null);
             var controller = GetPaymentProcessController();
-            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(successAttendance);
-            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadAttendanceAndSalaryViewModel>(x => x == viewModel)).Returns(successDSTNetSalary);
-            paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(Arg.Is<int>(x => x == viewModel.CompanyId), Arg.Is<DateTime>(x => x == viewModel.SelectedTime),
-                                   Arg.Is<AttendanceTemplate>(x => x == successAttendance.Value), Arg.Is<DSTNetSalaryTemplate>(x => x == successDSTNetSalary.Value)).Returns(commandResult);
+            paymentProcessService.ReadAttendanceFileAsync(Arg.Is<UploadFilesViewModel>(x => x == viewModel)).Returns(successAttendance);
+            paymentProcessService.ReadDSTNetSalaryFileAsync(Arg.Is<UploadFilesViewModel>(x => x == viewModel)).Returns(successDSTNetSalary);
+            paymentProcessService.ReadAdditionDeductionFileAsync(Arg.Is<UploadFilesViewModel>(x => x == viewModel)).Returns(successAdditionDeduction);
+            paymentProcessService.UploadFilesAsync(
+                Arg.Is<int>(x => x == viewModel.CompanyId),
+                Arg.Is<DateTime>(x => x == viewModel.SelectedTime),
+                Arg.Is<AttendanceTemplate>(x => x == successAttendance.Value),
+                Arg.Is<DSTNetSalaryTemplate>(x => x == successDSTNetSalary.Value),
+                Arg.Is<AdditionDeductionTemplate>(x => x == successAdditionDeduction.Value)).Returns(commandResult);
 
             // Act
-            var actual = await controller.UploadAttendanceAndSalary(viewModel);
+            var actual = await controller.UploadFiles(viewModel);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);

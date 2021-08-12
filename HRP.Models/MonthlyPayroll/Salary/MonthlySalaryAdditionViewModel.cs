@@ -6,7 +6,7 @@
 
     public class MonthlySalaryAdditionViewModel : SecurityData
     {
-        private const int DescriptionLength = 200;
+        private const int DescriptionLength = 1000;
 
         public short Type { get; set; }
 

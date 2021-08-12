@@ -2878,6 +2878,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upload Addition and Deduction File (Max: 5MB).
+        /// </summary>
+        public static string UploadAdditionAndDeductionFile {
+            get {
+                return ResourceManager.GetString("UploadAdditionAndDeductionFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload Attendance.
         /// </summary>
         public static string UploadAttendance {

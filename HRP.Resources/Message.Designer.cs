@@ -19,7 +19,7 @@ namespace HRP.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Message {
@@ -84,6 +84,24 @@ namespace HRP.Resources {
         public static string AccountNumberExisted {
             get {
                 return ResourceManager.GetString("AccountNumberExisted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Addition and Deduction File: There is no failed record in the total of {0} record(s)..
+        /// </summary>
+        public static string AdditionDeductionFileUploadSuccess {
+            get {
+                return ResourceManager.GetString("AdditionDeductionFileUploadSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Addition and Deduction File: Number of error(s): {0}.
+        /// </summary>
+        public static string AdditionDeductionFileUploadWarning {
+            get {
+                return ResourceManager.GetString("AdditionDeductionFileUploadWarning", resourceCulture);
             }
         }
         
@@ -322,7 +340,7 @@ namespace HRP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Currency does not exist.
+        ///   Looks up a localized string similar to The Currency does not exist..
         /// </summary>
         public static string CurrencyNotExists {
             get {

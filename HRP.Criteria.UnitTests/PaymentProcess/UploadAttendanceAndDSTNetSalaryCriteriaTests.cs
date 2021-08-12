@@ -9,13 +9,13 @@
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new UploadAttendanceAndDSTNetSalaryCriteria();
+            var criteria = new UploadFilesCommand();
 
             // Act
             var actual = criteria.GetSettingKey();
 
             // Assert
-            Assert.Equal("PaymentProcess_UploadAttendanceAndDSTNetSalary", actual);
+            Assert.Equal("PaymentProcess_UploadFiles", actual);
         }
 
         [Theory]
@@ -23,7 +23,7 @@
         public void IsValid_ParamsAreValid_ReturnTrue(int id)
         {
             // Arrange
-            var criteria = new UploadAttendanceAndDSTNetSalaryCriteria
+            var criteria = new UploadFilesCommand
             {
                 CompanyId = id,
                 CreatedBy = id
@@ -42,7 +42,7 @@
         public void IsValid_ParamsAreInvalid_ReturnFalse(int id)
         {
             // Arrange
-            var criteria = new UploadAttendanceAndDSTNetSalaryCriteria
+            var criteria = new UploadFilesCommand
             {
                 CompanyId = id,
                 CreatedBy = id

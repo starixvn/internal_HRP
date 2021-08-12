@@ -26,7 +26,7 @@
     <li class="active">@ViewLang.ViewEmployeeMonthlyPayroll</li>
 </ol>
 
-@Html.Partial("_Steps", (int)PaymentProcessStep.MonthlyPayroll)
+@Html.Partial("_Steps", (short)PaymentProcessStep.MonthlyPayroll)
 
 <div class="list-message-error hidden">
     <p class="message">@Message.SelectAtLeastOneOption</p>
@@ -280,7 +280,7 @@
     </tbody>
 </table>
 <div class="list-button">
-    <a class="button -second" asp-controller="PaymentProcess" asp-action="UploadAttendanceAndSalary"
+    <a class="button -second" asp-controller="PaymentProcess" asp-action="UploadFiles"
        asp-route-companyId="@Model.CompanyId" asp-route-month="@Model.Month">@ViewLang.Back</a>
 </div>
 

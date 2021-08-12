@@ -32,6 +32,7 @@
         private ITemplateReader templateReader;
         private IMonthlySalaryService monthlySalaryService;
         private IMonthlyAllowancesService monthlyAllowancesService;
+        private IAdditionDeductionTemplateReader additionDeductionTemplateReader;
 
         [Fact]
         public async Task GetCurrentDuration_WhenCalled_ReturnExpectedPaymenProcessInstance()
@@ -90,7 +91,7 @@
             var paymentProcessService = GetPaymentProcessService();
 
             // Act
-            var actual = await paymentProcessService.ReadAttendanceFileAsync(new UploadAttendanceAndSalaryViewModel { });
+            var actual = await paymentProcessService.ReadAttendanceFileAsync(new UploadFilesViewModel { });
 
             // Assert
             var result = Assert.IsType<Success<AttendanceTemplate>>(actual);
@@ -101,7 +102,7 @@
         public async Task ReadAttendanceFileAsync_AttendanceFileSizeIsLargerThan5Mb_ReturnFailureResult()
         {
             // Arrange
-            var viewModel = new UploadAttendanceAndSalaryViewModel
+            var viewModel = new UploadFilesViewModel
             {
                 AttendanceFile = MockExcelFile(1024 * 1024 * 6)
             };
@@ -120,7 +121,7 @@
         public async Task ReadAttendanceFileAsync_AttendanceFileIsNotAnExcelFile_ReturnFailureResult()
         {
             // Arrange
-            var viewModel = new UploadAttendanceAndSalaryViewModel
+            var viewModel = new UploadFilesViewModel
             {
                 AttendanceFile = MockTxtFile()
             };
@@ -168,7 +169,7 @@
             var paymentProcessService = GetPaymentProcessService();
 
             // Act
-            var actual = await paymentProcessService.ReadDSTNetSalaryFileAsync(new UploadAttendanceAndSalaryViewModel { });
+            var actual = await paymentProcessService.ReadDSTNetSalaryFileAsync(new UploadFilesViewModel { });
 
             // Assert
             var result = Assert.IsType<Success<DSTNetSalaryTemplate>>(actual);
@@ -179,7 +180,7 @@
         public async Task ReadDSTNetSalaryFileAsync_DSTNetSalaryFileIsNotAnExcelFile_ReturnFailureResult()
         {
             // Arrange
-            var viewModel = new UploadAttendanceAndSalaryViewModel
+            var viewModel = new UploadFilesViewModel
             {
                 DSTNetSalaryFile = MockTxtFile()
             };
@@ -229,7 +230,7 @@
         public async Task GetUploadingFilesResultAsync_CriteriaIsInvalid_ReturnEmptyUploadAttendanceAndSalaryViewModel()
         {
             // Arrange
-            var expected = new UploadAttendanceAndSalaryViewModel();
+            var expected = new UploadFilesViewModel();
             var companyId = 0;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
@@ -238,7 +239,7 @@
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.IsType<UploadFilesViewModel>(actual);
             Assert.Equal(expected.AttendanceFileName, actual.AttendanceFileName);
             Assert.Equal(expected.AttendanceResult, actual.AttendanceResult);
             Assert.Equal(expected.DSTNetSalaryFileName, actual.DSTNetSalaryFileName);
@@ -252,18 +253,19 @@
             PaymentProcess paymentProcess = null;
             IEnumerable<ValidationResult> attendanceErrors = null;
             IEnumerable<ValidationResult> dstNetSalaryErrors = null;
-            var expected = new UploadAttendanceAndSalaryViewModel();
+            IEnumerable<ValidationResult> additionDeductionErrors = null;
+            var expected = new UploadFilesViewModel();
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns((paymentProcess, attendanceErrors, dstNetSalaryErrors));
+                .Returns((paymentProcess, attendanceErrors, dstNetSalaryErrors, additionDeductionErrors));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.IsType<UploadFilesViewModel>(actual);
             Assert.Equal(expected.AttendanceFileName, actual.AttendanceFileName);
             Assert.Equal(expected.AttendanceResult, actual.AttendanceResult);
             Assert.Equal(expected.DSTNetSalaryFileName, actual.DSTNetSalaryFileName);
@@ -285,17 +287,18 @@
 
             IEnumerable<ValidationResult> attendanceErrors = null;
             IEnumerable<ValidationResult> dstNetSalaryErrors = null;
+            IEnumerable<ValidationResult> additionDeductionErrors = null;
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns((paymentProcess, attendanceErrors, dstNetSalaryErrors));
+                .Returns((paymentProcess, attendanceErrors, dstNetSalaryErrors, additionDeductionErrors));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.IsType<UploadFilesViewModel>(actual);
             Assert.Equal(paymentProcess.CompanyId, actual.CompanyId);
             Assert.Equal(paymentProcess.Month, actual.SelectedTime);
             Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
@@ -324,17 +327,18 @@
                 DSTNetSalaryTotalRow = 12
             };
             var validationResults = MockListValidationResult();
+            IEnumerable<ValidationResult> additionDeductionErrors = null;
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns((paymentProcess, validationResults, validationResults));
+                .Returns((paymentProcess, validationResults, validationResults, additionDeductionErrors));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.IsType<UploadFilesViewModel>(actual);
             Assert.Equal(paymentProcess.CompanyId, actual.CompanyId);
             Assert.Equal(paymentProcess.Month, actual.SelectedTime);
             Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
@@ -364,17 +368,18 @@
             };
             var validationResults = MockListValidationResult();
             IEnumerable<ValidationResult> attendanceErrors = null;
+            IEnumerable<ValidationResult> additionDeductionErrors = null;
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns((paymentProcess, attendanceErrors, validationResults));
+                .Returns((paymentProcess, attendanceErrors, validationResults, additionDeductionErrors));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.IsType<UploadFilesViewModel>(actual);
             Assert.Equal(paymentProcess.CompanyId, actual.CompanyId);
             Assert.Equal(paymentProcess.Month, actual.SelectedTime);
             Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
@@ -403,17 +408,18 @@
             };
             var validationResults = MockListValidationResult();
             IEnumerable<ValidationResult> dstNetSalaryErrors = null;
+            IEnumerable<ValidationResult> additionDeductionErrors = null;
             var companyId = 2;
             var month = DateTime.Now;
             var paymentProcessService = GetPaymentProcessService();
             paymentProcessRepository.GetUploadingFilesResultAsync(Arg.Is<GetUploadingFilesResultCriteria>(x => x.CompanyId == companyId && x.Month == month))
-                .Returns((paymentProcess, validationResults, dstNetSalaryErrors));
+                .Returns((paymentProcess, validationResults, dstNetSalaryErrors, additionDeductionErrors));
 
             // Act
             var actual = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             // Assert
-            Assert.IsType<UploadAttendanceAndSalaryViewModel>(actual);
+            Assert.IsType<UploadFilesViewModel>(actual);
             Assert.Equal(paymentProcess.CompanyId, actual.CompanyId);
             Assert.Equal(paymentProcess.Month, actual.SelectedTime);
             Assert.Equal(paymentProcess.CompanyCode, actual.CompanyCode);
@@ -428,10 +434,10 @@
 
         #endregion GetUploadingFilesResultAsync
 
-        #region UploadAttendanceAndDSTNetSalaryAsync
+        #region UploadFilesAsync
 
         [Fact]
-        public async Task UploadAttendanceAndDSTNetSalaryAsync_AttendanceTemplateAndDSTNetSalaryTemplateAreNotNull_ReturnExpectedCommandResult()
+        public async Task UploadFilesAsync_TemplatesAreNotNull_ReturnExpectedCommandResult()
         {
             // Arrange
             var companyId = 1;
@@ -442,16 +448,19 @@
                 Records = MockListAttendanceUploading(),
                 ValidationResults = MockListValidationResult()
             };
-
             var dstNetSalaryTemplate = new DSTNetSalaryTemplate
             {
                 FileName = "dst.xls",
                 Records = MockListDSTNetSalaryUploading(),
                 ValidationResults = MockListValidationResult()
             };
+            var additionDeductionTemplate = new AdditionDeductionTemplate
+            {
+                FileName = "addition - deduction.xlsx"
+            };
 
             var paymentProcessService = GetPaymentProcessService();
-            baseService.ExecuteNonQueryAsync(Arg.Is<UploadAttendanceAndDSTNetSalaryCriteria>(x => x.CompanyId == companyId && x.Month == month
+            baseService.ExecuteNonQueryAsync(Arg.Is<UploadFilesCommand>(x => x.CompanyId == companyId && x.Month == month
                 && x.AttendanceFileName == attendanceTemplate.FileName
                 && x.AttendanceUploadingXMLDoc == attendanceTemplate.Records.ToXML().ToString()
                 && x.AttendanceResultXMLDoc == attendanceTemplate.ValidationResults.ToXML().ToString()
@@ -461,14 +470,14 @@
             )).Returns(new CommandResult());
 
             // Act
-            var actual = await paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(companyId, month, attendanceTemplate, dstNetSalaryTemplate);
+            var actual = await paymentProcessService.UploadFilesAsync(companyId, month, attendanceTemplate, dstNetSalaryTemplate, additionDeductionTemplate);
 
             // Assert
             var result = Assert.IsType<CommandResult>(actual);
             Assert.False(result.IsSuccessful);
         }
 
-        #endregion UploadAttendanceAndDSTNetSalaryAsync
+        #endregion UploadFilesAsync
 
         #region DeleteUploadedAttendance
 
@@ -622,6 +631,7 @@
             paymentProcessRepository = Substitute.For<IPaymentProcessRepository>();
             monthlySalaryService = Substitute.For<IMonthlySalaryService>();
             monthlyAllowancesService = Substitute.For<IMonthlyAllowancesService>();
+            additionDeductionTemplateReader = Substitute.For<IAdditionDeductionTemplateReader>();
             var service = new PaymentProcessService(
                 baseService,
                 sessionService,
@@ -631,7 +641,8 @@
                 monthlyAllowancesService,
                 templateReader,
                 paymentProcessRepository,
-                fileStream);
+                fileStream,
+                additionDeductionTemplateReader);
 
             return service;
         }
@@ -700,9 +711,9 @@
             };
         }
 
-        private UploadAttendanceAndSalaryViewModel MockUploadAttendanceAndSalaryViewModel()
+        private UploadFilesViewModel MockUploadAttendanceAndSalaryViewModel()
         {
-            return new UploadAttendanceAndSalaryViewModel
+            return new UploadFilesViewModel
             {
                 AttendanceFile = MockExcelFile(),
                 DSTNetSalaryFile = MockExcelFile(),

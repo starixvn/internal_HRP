@@ -1131,4 +1131,7 @@
   <data name="MiriBankAndCash" xml:space="preserve">
     <value>Miri Bank &amp; Cash</value>
   </data>
+  <data name="UploadAdditionAndDeductionFile" xml:space="preserve">
+    <value>Upload Addition and Deduction File (Max: 5MB)</value>
+  </data>
 </root>

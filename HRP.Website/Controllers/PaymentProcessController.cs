@@ -80,8 +80,8 @@
             return View(viewModel);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
         public async Task<IActionResult> Index(SelectWorkingMonthCompanyViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -94,7 +94,7 @@
                     if (paymentProcess.IsHasCurrencySetting)
                     {
                         return IsRedirectToPageUploadFiles(paymentProcess)
-                            ? RedirectToAction("UploadAttendanceAndSalary", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime })
+                            ? RedirectToAction("UploadFiles", new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime })
                             : RedirectToAction(EmployeeMonthlyPayrollString, new { companyId = viewModel.CompanyId, month = viewModel.SelectedTime });
                     }
 
@@ -140,7 +140,18 @@
         }
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
-        public async Task<IActionResult> UploadAttendanceAndSalary(int companyId, DateTime month)
+        public async Task<IActionResult> DownloadAdditionDeduction()
+        {
+            string sWebRootFolder = hostingEnvironment.WebRootPath;
+            const string sFileName = @"ExcelTemplates\Template - Addition - Deduction.xlsx";
+            var path = Path.Combine(sWebRootFolder, sFileName);
+            MemoryStream stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
+
+            return File(stream, MimeType.XLSX, Path.GetFileName(path));
+        }
+
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> UploadFiles(int companyId, DateTime month)
         {
             var isHost = sessionService.HasPermissionOnCompany(companyId, FunctionKey.PaymentProcess, Policy.Host);
             PaymentProcess paymentProcess = await paymentProcessService.GetPaymentProcessAsync(companyId, month);
@@ -154,17 +165,18 @@
             return RedirectToAction("Index");
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         [HttpPost]
-        public async Task<IActionResult> UploadAttendanceAndSalary(UploadAttendanceAndSalaryViewModel viewModel)
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> UploadFiles(UploadFilesViewModel viewModel)
         {
-            if (viewModel.AttendanceFile == null && viewModel.DSTNetSalaryFile == null)
+            if (viewModel.AttendanceFile == null && viewModel.DSTNetSalaryFile == null && viewModel.AdditionDeductionFile == null)
             {
                 ModelState.AddModelError(nameof(viewModel.CommonError), Message.PleaseSelectFile);
             }
 
             Result<AttendanceTemplate> readAttendanceResult = await paymentProcessService.ReadAttendanceFileAsync(viewModel);
             Result<DSTNetSalaryTemplate> readDSTNetSalaryResult = await paymentProcessService.ReadDSTNetSalaryFileAsync(viewModel);
+            Result<AdditionDeductionTemplate> readAdditionDeductionResult = await paymentProcessService.ReadAdditionDeductionFileAsync(viewModel);
             if (readAttendanceResult is Failure<AttendanceTemplate> failureAttendance)
             {
                 ModelState.AddModelError(nameof(viewModel.AttendanceFile), string.Concat(ViewLang.AttendanceFile, ": ", failureAttendance.Message));
@@ -175,15 +187,22 @@
                 ModelState.AddModelError(nameof(viewModel.DSTNetSalaryFile), string.Concat(ViewLang.DSTNetSalaryFile, ": ", failureDSTNetSalary.Message));
             }
 
+            if (readAdditionDeductionResult is Failure<AdditionDeductionTemplate> failureAdditionDeduction)
+            {
+                ModelState.AddModelError(nameof(viewModel.AdditionDeductionFile), string.Concat(ViewLang.UploadAdditionAndDeductionFile, ": ", failureAdditionDeduction.Message));
+            }
+
             if (ModelState.IsValid)
             {
                 var attendanceResult = (Success<AttendanceTemplate>)readAttendanceResult;
                 var dstNetSalaryResult = (Success<DSTNetSalaryTemplate>)readDSTNetSalaryResult;
-                CommandResult uploadFiles = await paymentProcessService.UploadAttendanceAndDSTNetSalaryAsync(
+                var additionDeductionResult = (Success<AdditionDeductionTemplate>)readAdditionDeductionResult;
+                CommandResult uploadFiles = await paymentProcessService.UploadFilesAsync(
                     viewModel.CompanyId,
                     viewModel.SelectedTime,
                     attendanceResult.Value,
-                    dstNetSalaryResult.Value);
+                    dstNetSalaryResult.Value,
+                    additionDeductionResult.Value);
 
                 if (uploadFiles.IsSuccessful)
                 {
@@ -200,7 +219,7 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> ValidationFilesResult(int companyId, DateTime month)
         {
-            UploadAttendanceAndSalaryViewModel viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
+            UploadFilesViewModel viewModel = await paymentProcessService.GetUploadingFilesResultAsync(companyId, month);
 
             return PartialView("_ValidationFilesResult", viewModel);
         }
@@ -213,8 +232,8 @@
             return Json(processInfo);
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> ProcessActionNextToMonthlyPayroll(int companyId, DateTime month)
         {
             CommandResult submitResult = await paymentProcessService.SubmitUploadingFilesAsync(companyId, month);
@@ -226,11 +245,11 @@
                     return Json(new { isSuccessful = true });
                 }
 
-                ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), generateResult.Message);
+                ModelState.AddModelError(nameof(UploadFilesViewModel.CommonError), generateResult.Message);
             }
             else
             {
-                ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), submitResult.Message);
+                ModelState.AddModelError(nameof(UploadFilesViewModel.CommonError), submitResult.Message);
             }
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
@@ -247,14 +266,14 @@
                 return Json(new { isSuccessful = true });
             }
 
-            ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), deleteResult.Message);
+            ModelState.AddModelError(nameof(UploadFilesViewModel.CommonError), deleteResult.Message);
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 
-        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> DeleteUploadedDSTNetSalary(int companyId, DateTime month)
         {
             CommandResult deleteSalaryResult = await paymentProcessService.DeleteUploadedDSTNetSalary(companyId, month);
@@ -263,7 +282,23 @@
                 return Json(new { isSuccessful = true });
             }
 
-            ModelState.AddModelError(nameof(UploadAttendanceAndSalaryViewModel.CommonError), deleteSalaryResult.Message);
+            ModelState.AddModelError(nameof(UploadFilesViewModel.CommonError), deleteSalaryResult.Message);
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            return Json(new { isSuccessful = false, errors });
+        }
+
+        [HttpPost]
+        [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
+        public async Task<IActionResult> DeleteUploadedAdditionDeduction(int companyId, DateTime month)
+        {
+            CommandResult deleteSalaryResult = await paymentProcessService.DeleteUploadedAdditionDeductionAsync(companyId, month);
+            if (deleteSalaryResult.IsSuccessful)
+            {
+                return Json(new { isSuccessful = true });
+            }
+
+            ModelState.AddModelError(nameof(UploadFilesViewModel.CommonError), deleteSalaryResult.Message);
 
             var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
             return Json(new { isSuccessful = false, errors });

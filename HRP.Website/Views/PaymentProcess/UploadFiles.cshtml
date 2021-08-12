@@ -1,11 +1,12 @@
 ﻿@using HRP.Core.Enumerations
 @using HRP.Resources
 @using HRP.Models.PaymentProcess
-@model UploadAttendanceAndSalaryViewModel
+@model UploadFilesViewModel
 @{
     ViewData["Title"] = ViewLang.UploadFiles;
     var isEmptyAttendanceFilename = string.IsNullOrWhiteSpace(Model.AttendanceFileName);
     var isEmptyDSTNetSalaryFilename = string.IsNullOrWhiteSpace(Model.DSTNetSalaryFileName);
+    var isEmptyAdditionDeductionFilename = string.IsNullOrWhiteSpace(Model.AdditionDeductionFileName);
 }
 @section Styles {
     <environment include="Development">
@@ -28,7 +29,7 @@
     <li class="active">@ViewLang.UploadFiles</li>
 </ol>
 
-@Html.Partial("_Steps", (int)PaymentProcessStep.UploadFiles)
+@Html.Partial("_Steps", (short)PaymentProcessStep.UploadFiles)
 
 <div class="search-form">
     <div class="group">
@@ -52,12 +53,13 @@
     </div>
 </div>
 
-<form class="form-information upload-files" id="uploadFilesForm" enctype="multipart/form-data" asp-action="UploadAttendanceAndSalary">
+<form class="form-information upload-files" id="uploadFilesForm" enctype="multipart/form-data" asp-action="UploadFiles">
     <div class="list-message-error hidden">
         <span asp-validation-for="CompanyId" class="message"></span>
         <span asp-validation-for="SelectedTime" class="message"></span>
         <span asp-validation-for="AttendanceFile" class="message"></span>
         <span asp-validation-for="DSTNetSalaryFile" class="message"></span>
+        <span asp-validation-for="AdditionDeductionFile" class="message"></span>
         <span asp-validation-for="CommonError" class="message"></span>
     </div>
 
@@ -67,9 +69,12 @@
     <input type="hidden" asp-for="SelectedTime" />
     <input type="file" asp-for="AttendanceFile" class="hidden" />
     <input type="file" asp-for="DSTNetSalaryFile" class="hidden" />
+    <input type="file" asp-for="AdditionDeductionFile" class="hidden" />
     <input type="hidden" id="isHasAttendanceFileSelected" value="0" />
     <input type="hidden" id="isHasDSTNetSalaryFileSelected" value="0" />
-    <input type="hidden" id="isShowBrowseFileWarning" value=@((isEmptyAttendanceFilename && isEmptyDSTNetSalaryFilename) ? "0" : "1") />
+    <input type="hidden" id="isHasAdditionDeductionFileSelected" value="0" />
+    <input type="hidden" id="isShowBrowseFileWarning"
+           value=@((isEmptyAttendanceFilename && isEmptyDSTNetSalaryFilename && isEmptyAdditionDeductionFilename) ? "0" : "1") />
 
     <div class="text width-660">
         @ViewLang.UploadAttendanceFile
@@ -89,7 +94,7 @@
                 <span class="button -browser js-browseAttendance">@ViewLang.Browse</span>
             </label>
         </div>
-        <button type="button" class="button -delete js-deleteAttendance" @(isEmptyAttendanceFilename ? "disabled" : "")>@ViewLang.Delete</button>
+        <button type="button" class="button -delete js-deleteAttendance" @(isEmptyAttendanceFilename ? "disabled" : string.Empty)>@ViewLang.Delete</button>
     </div>
     <div class="text width-660">
         @ViewLang.UploadDSTNetSalaryFile
@@ -103,13 +108,33 @@
             <label for="file" class="file">
                 <span class="file-box">
                     <span class="file-name js-dstNetSalaryFileName" data-filename-uploaded="@Model.DSTNetSalaryFileName">@Model.DSTNetSalaryFileName</span>
-                    <span class="icon-successful js-dstNetSalaryIconSuccess @(isEmptyDSTNetSalaryFilename ? "hidden" :"")"></span>
+                    <span class="icon-successful js-dstNetSalaryIconSuccess @(isEmptyDSTNetSalaryFilename ? "hidden" : string.Empty)"></span>
                     <span class="icon-close js-dstNetSalaryIconClose hidden"></span>
                 </span>
                 <span class="button -browser js-browseDSTNetSalary">@ViewLang.Browse</span>
             </label>
         </div>
-        <button type="button" class="button -delete js-deleteDSTNetSalary" @(isEmptyDSTNetSalaryFilename ? "disabled" : "")>@ViewLang.Delete</button>
+        <button type="button" class="button -delete js-deleteDSTNetSalary" @(isEmptyDSTNetSalaryFilename ? "disabled" : string.Empty)>@ViewLang.Delete</button>
+    </div>
+    <div class="text width-660">
+        @ViewLang.UploadAdditionAndDeductionFile
+        <div class="download-template">
+            <span class="icon-excel"></span>
+            <a asp-controller="PaymentProcess" asp-action="DownloadAdditionDeduction">@ViewLang.DownloadTemplate</a>
+        </div>
+    </div>
+    <div class="group-control width-660">
+        <div class="inputfile-box">
+            <label for="file" class="file">
+                <span class="file-box">
+                    <span class="file-name js-additionDeductionFileName" data-filename-uploaded="@Model.AdditionDeductionFileName">@Model.AdditionDeductionFileName</span>
+                    <span class="icon-successful js-additionDeductionIconSuccess @(isEmptyAdditionDeductionFilename ? "hidden" : string.Empty)"></span>
+                    <span class="icon-close js-additionDeductionIconClose hidden"></span>
+                </span>
+                <span class="button -browser js-browseAdditionDeduction">@ViewLang.Browse</span>
+            </label>
+        </div>
+        <button type="button" class="button -delete js-deleteAdditionDeduction" @(isEmptyAdditionDeductionFilename ? "disabled" : string.Empty)>@ViewLang.Delete</button>
     </div>
 
     <div class="info-list" id="validationFilesResult">

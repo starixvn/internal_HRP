@@ -15,17 +15,26 @@
 
         Task<PaymentProcess> GetPaymentProcessAsync(int companyId, DateTime month);
 
-        Task<Result<AttendanceTemplate>> ReadAttendanceFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
+        Task<Result<AttendanceTemplate>> ReadAttendanceFileAsync(UploadFilesViewModel viewModel);
 
-        Task<Result<DSTNetSalaryTemplate>> ReadDSTNetSalaryFileAsync(UploadAttendanceAndSalaryViewModel viewModel);
+        Task<Result<DSTNetSalaryTemplate>> ReadDSTNetSalaryFileAsync(UploadFilesViewModel viewModel);
 
-        Task<CommandResult> UploadAttendanceAndDSTNetSalaryAsync(int companyId, DateTime month, AttendanceTemplate attendanceTemplate, DSTNetSalaryTemplate dstNetSalaryTemplate);
+        Task<Result<AdditionDeductionTemplate>> ReadAdditionDeductionFileAsync(UploadFilesViewModel viewModel);
 
-        Task<UploadAttendanceAndSalaryViewModel> GetUploadingFilesResultAsync(int companyId, DateTime month);
+        Task<CommandResult> UploadFilesAsync(
+            int companyId,
+            DateTime month,
+            AttendanceTemplate attendanceTemplate,
+            DSTNetSalaryTemplate dstNetSalaryTemplate,
+            AdditionDeductionTemplate additionDeductionTemplate);
+
+        Task<UploadFilesViewModel> GetUploadingFilesResultAsync(int companyId, DateTime month);
 
         Task<CommandResult> DeleteUploadedAttendance(int companyId, DateTime month);
 
         Task<CommandResult> DeleteUploadedDSTNetSalary(int companyId, DateTime month);
+
+        Task<CommandResult> DeleteUploadedAdditionDeductionAsync(int companyId, DateTime month);
 
         Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month);
 

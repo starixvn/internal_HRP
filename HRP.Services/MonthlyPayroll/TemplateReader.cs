@@ -60,7 +60,6 @@
                     var row = template.Sheet.GetRow(i);
 
                     if (IsValidRow(row))
-
                     {
                         var currentRowNumber = row.RowNum + 1;
                         var record = new AttendanceUploading
@@ -230,7 +229,7 @@
                 result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMissing, columnName);
             }
-            else if (!decimal.TryParse(value, out decimal number))
+            else if (!decimal.TryParse(value, out decimal _))
             {
                 result.ResultType = (int)ValidationResultType.Error;
                 result.Message = string.Format(Message.ValueMustBeANumber, columnName);

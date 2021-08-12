@@ -3,6 +3,6 @@
     public enum ValidationResultType
     {
         Success = 1,
-        Error = 2
+        Error
     }
 }

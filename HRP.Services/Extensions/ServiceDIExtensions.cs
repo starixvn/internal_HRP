@@ -19,11 +19,12 @@
             services.AddScoped<IBankAccountService, BankAccountService>();
             services.AddScoped<IEmployeePayrollService, EmployeePayrollService>();
             services.AddScoped<IDataConfigurationService, DataConfigurationService>();
+            services.AddScoped<ITemplateReader, TemplateReader>();
+            services.AddScoped<IAdditionDeductionTemplateReader, AdditionDeductionTemplateReader>();
             services.AddScoped<IPaymentProcessService, PaymentProcessService>();
             services.AddScoped<IMonthlyPayrollService, MonthlyPayrollService>();
             services.AddScoped<IMonthlySalaryService, MonthlySalaryService>();
             services.AddScoped<IMonthlyAllowancesService, MonthlyAllowancesService>();
-            services.AddScoped<ITemplateReader, TemplateReader>();
             services.AddScoped<IPayslipService, PayslipService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IExportExcelService, ExportExcelService>();

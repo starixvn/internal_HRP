@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class UploadAttendanceAndDSTNetSalaryCriteria : BaseNonQueryCommand
+    public class UploadFilesCommand : BaseNonQueryCommand
     {
         public int CompanyId { get; set; }
         public DateTime Month { get; set; }
@@ -17,9 +17,14 @@
         public string DSTNetSalaryUploadingXMLDoc { get; set; }
         public string DSTNetSalaryResultXMLDoc { get; set; }
 
+        public string AdditionDeductionSessionId { get; set; }
+        public string AdditionDeductionFileName { get; set; }
+        public string AdditionDeductionUploadingXMLDoc { get; set; }
+        public string AdditionDeductionResultXMLDoc { get; set; }
+
         public int CreatedBy { get; set; }
 
-        public override string GetSettingKey() => "PaymentProcess_UploadAttendanceAndDSTNetSalary";
+        public override string GetSettingKey() => "PaymentProcess_UploadFiles";
 
         public override bool IsValid() => CompanyId > 0 && CreatedBy > 0;
     }

@@ -11,7 +11,7 @@
 
     public class PaymentProcessRepository : IPaymentProcessRepository
     {
-        public async Task<(PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>)> GetUploadingFilesResultAsync(ICriteria criteria)
+        public async Task<(PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>)> GetUploadingFilesResultAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
@@ -20,8 +20,9 @@
                     var paymentProcess = await multi.ReadFirstOrDefaultAsync<PaymentProcess>();
                     var attendanceErrors = await multi.ReadAsync<ValidationResult>();
                     var dstNetSalaryErrors = await multi.ReadAsync<ValidationResult>();
+                    var additionDeductionErrors = await multi.ReadAsync<ValidationResult>();
 
-                    return (paymentProcess, attendanceErrors, dstNetSalaryErrors);
+                    return (paymentProcess, attendanceErrors, dstNetSalaryErrors, additionDeductionErrors);
                 }
             }
         }

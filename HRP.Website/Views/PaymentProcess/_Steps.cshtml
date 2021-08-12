@@ -1,18 +1,18 @@
 ﻿@using HRP.Core.Enumerations
 @using HRP.Resources
-@model int
+@model short
 
 <div class="steps payment-process clearfix">
-    <div class="step @(Model == (int)PaymentProcessStep.SelectMonthAndCompany ? "active" :
-            Model > (int)PaymentProcessStep.SelectMonthAndCompany ? "finished" : string.Empty)">
+    <div class="step @(Model == (short)PaymentProcessStep.SelectMonthAndCompany ? "active" :
+            Model > (short)PaymentProcessStep.SelectMonthAndCompany ? "finished" : string.Empty)">
         <label class="step-title select-working-date">Select Working <br> Month/Company</label>
     </div>
-    <div class="step @(Model == (int)PaymentProcessStep.UploadFiles ? "active" :
-            Model > (int)PaymentProcessStep.UploadFiles ? "finished" : string.Empty)">
-        <label class="step-title upload">@ViewLang.UploadAttendance <br> & @ViewLang.DSTSalaryFiles</label>
+    <div class="step @(Model == (short)PaymentProcessStep.UploadFiles ? "active" :
+            Model > (short)PaymentProcessStep.UploadFiles ? "finished" : string.Empty)">
+        <label class="step-title upload">@ViewLang.UploadFiles</label>
     </div>
-    <div class="step @(Model == (int)PaymentProcessStep.MonthlyPayroll ? "active" :
-            Model > (int)PaymentProcessStep.MonthlyPayroll ? "finished" : string.Empty)">
+    <div class="step @(Model == (short)PaymentProcessStep.MonthlyPayroll ? "active" :
+            Model > (short)PaymentProcessStep.MonthlyPayroll ? "finished" : string.Empty)">
         <label class="step-title view-employee">@ViewLang.ViewEmployeeMonthlyPayroll <br> @ViewLang.AdjustBasicSalaryAndAllowances</label>
     </div>
 </div>

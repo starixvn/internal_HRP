@@ -739,7 +739,7 @@
     <value>DST NET Salary File: Number of error(s): {0}</value>
   </data>
   <data name="CurrencyNotExists" xml:space="preserve">
-    <value>The Currency does not exist</value>
+    <value>The Currency does not exist.</value>
   </data>
   <data name="UnitAmountRequired" xml:space="preserve">
     <value>Unit Amount is required!</value>
@@ -827,5 +827,11 @@
   </data>
   <data name="MailSettingMissing" xml:space="preserve">
     <value>The payslip could not be delivered to the employee because there is no setting for mail server. Please check the Email setting.</value>
+  </data>
+  <data name="AdditionDeductionFileUploadSuccess" xml:space="preserve">
+    <value>Addition and Deduction File: There is no failed record in the total of {0} record(s).</value>
+  </data>
+  <data name="AdditionDeductionFileUploadWarning" xml:space="preserve">
+    <value>Addition and Deduction File: Number of error(s): {0}</value>
   </data>
 </root>

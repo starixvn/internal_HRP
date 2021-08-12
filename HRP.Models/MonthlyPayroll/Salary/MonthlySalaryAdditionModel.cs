@@ -12,7 +12,7 @@
     [XMLName("Row")]
     public class MonthlySalaryAdditionModel
     {
-        private const int DescriptionLength = 200;
+        private const int DescriptionLength = 1000;
 
         public int PayrollId { get; set; }
 

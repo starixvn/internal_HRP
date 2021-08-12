@@ -1,0 +1,31 @@
+﻿@using HRP.Models.PaymentProcess
+@using HRP.Resources
+@model FileResultViewModel
+
+@if (Model.ValidationErrors.Any())
+{
+    <div class="msg-warning -no-border">@string.Format(Message.AdditionDeductionFileUploadWarning, Model.ValidationErrors.Count())</div>
+    <table class="table table-bordered js-additionDeductionErrorsTable" >
+        <thead class="thead-light">
+            <tr>
+                <th class="row-no">@ViewLang.RowNo</th>
+                <th class="error-desc">@ViewLang.ErrorDescription</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.ValidationErrors)
+            {
+                <tr>
+                    <td class="text-center">@row.RowNumber</td>
+                    <td>@row.Message</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="msg-success -no-border">@string.Format(Message.AdditionDeductionFileUploadSuccess, Model.TotalRow)</div>
+}
+
+<input type="hidden" class="js-additionDeductionTotalError" value="@Model.ValidationErrors.Count()" />

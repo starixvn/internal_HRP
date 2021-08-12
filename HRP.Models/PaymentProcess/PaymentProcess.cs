@@ -11,16 +11,16 @@
         public DateTime Month { get; set; }
 
         public string AttendanceFileName { get; set; }
-
         public int AttendanceTotalRow { get; set; }
-
         public bool IsAttendanceFileSubmitted { get; set; }
 
         public string DSTNetSalaryFileName { get; set; }
-
         public int DSTNetSalaryTotalRow { get; set; }
-
         public bool IsDSTNetSalaryFileSubmitted { get; set; }
+
+        public string AdditionDeductionFileName { get; set; }
+        public int AdditionDeductionTotalRow { get; set; }
+        public bool IsAdditionDeductionFileSubmitted { get; set; }
 
         public bool IsPayrollGenerated { get; set; }
 
