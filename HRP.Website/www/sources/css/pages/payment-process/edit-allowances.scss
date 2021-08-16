@@ -9,3 +9,27 @@
 @import "common_edit";
 @import "payment-process";
 @import "../employee/common";
+
+.group-complex {
+    &.-alw-layout-add {
+        &.comment {
+            grid-template-columns: 104px 482px;
+        }
+    }
+
+    &.-alw-layout-deduction {
+        &.comment {
+            grid-template-columns: 100%;
+        }
+    }
+
+    &.-alw-layout-add, &.-alw-layout-deduction {
+        &.comment {
+            .text-comment {
+                min-height: 62px;
+                resize: vertical;
+                overflow: hidden;
+            }
+        }
+    }
+}

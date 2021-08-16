@@ -123,7 +123,7 @@
         {
             EncryptMonthlySalaryAddition(additions);
             EncryptMonthlySalaryDeduction(deductions);
-            var criteria = new EditMonthlySalaryCriteria
+            var criteria = new EditMonthlySalaryCommand
             {
                 PayrollId = payrollId,
                 CompanyId = companyId,
@@ -174,18 +174,20 @@
         public void CalculateMonthlySalary(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             MonthlyBasicSalaryModel basicSalary,
-            MonthlySalaryAdditionModel backPay,
-            MonthlySalaryModel monthlySalary)
+            MonthlySalaryModel monthlySalary,
+            IList<MonthlySalaryAdditionModel> additions,
+            IList<MonthlySalaryDeductionModel> deductions)
         {
             decimal amount = 0;
             decimal.TryParse(basicSalary.Salary, out decimal salaryAmount);
             decimal.TryParse(basicSalary.AfterAdjustmentAmount, out decimal afterAdjustmentAmount);
-            decimal.TryParse(backPay.NetSalary, out decimal backPayAmount);
+            var additionAmount = GetAdditionAmount(additions);
+            var deductionAmount = GetDeductionAmount(deductions);
             decimal ebanking = CalculationService.ConvertAmount(currencyExchangeRates, basicSalary.EbankingAmount, basicSalary.EbankingCurrencyId, basicSalary.CurrencyId);
             decimal directBanking1 = CalculationService.ConvertAmount(currencyExchangeRates, basicSalary.DirectBanking1Amount, basicSalary.DirectBanking1CurrencyId, basicSalary.CurrencyId);
             decimal directBanking2 = CalculationService.ConvertAmount(currencyExchangeRates, basicSalary.DirectBanking2Amount, basicSalary.DirectBanking2CurrencyId, basicSalary.CurrencyId);
             decimal cash = CalculationService.ConvertAmount(currencyExchangeRates, basicSalary.CashAmount, basicSalary.CashCurrencyId, basicSalary.CurrencyId);
-            decimal salary = CalculationService.RoundAmountWithCurrency(afterAdjustmentAmount + backPayAmount, basicSalary.CurrencyCode, 0);
+            decimal salary = CalculationService.RoundAmountWithCurrency(afterAdjustmentAmount + additionAmount - deductionAmount, basicSalary.CurrencyCode, 0);
 
             switch (basicSalary.AutoCalculateOn)
             {
@@ -215,7 +217,7 @@
             }
 
             monthlySalary.CurrencyId = basicSalary.CurrencyId;
-            monthlySalary.Salary = GetMonthlySalaryAmount(salary, basicSalary.AfterAdjustmentAmount, backPay.NetSalary);
+            monthlySalary.Salary = salary != 0 ? salary.ToString(CultureInfo.InvariantCulture) : string.Empty;
             monthlySalary.EbankingCurrencyId = basicSalary.EbankingCurrencyId;
             monthlySalary.EbankingAccountId = basicSalary.EbankingAccountId;
             monthlySalary.DirectBanking1CurrencyId = basicSalary.DirectBanking1CurrencyId;
@@ -225,8 +227,35 @@
             monthlySalary.CashCurrencyId = basicSalary.CashCurrencyId;
             monthlySalary.CashAccountId = basicSalary.CashAccountId;
             monthlySalary.AutoCalculateOn = basicSalary.AutoCalculateOn;
-            monthlySalary.AdditionAmount = backPay.NetSalary;
+            monthlySalary.AdditionAmount = additionAmount > 0
+                ? CalculationService.RoundAmountWithCurrency(additionAmount, basicSalary.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture) : string.Empty;
+            monthlySalary.DeductionAmount = deductionAmount > 0
+                ? CalculationService.RoundAmountWithCurrency(deductionAmount, basicSalary.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture) : string.Empty;
             monthlySalary.Status = amount < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Default;
+        }
+
+        private static decimal GetAdditionAmount(IList<MonthlySalaryAdditionModel> additions)
+        {
+            decimal additionAmount = 0;
+            foreach (var addition in additions)
+            {
+                decimal.TryParse(addition.NetSalary, out decimal amount);
+                additionAmount += amount;
+            }
+
+            return additionAmount;
+        }
+
+        private static decimal GetDeductionAmount(IList<MonthlySalaryDeductionModel> deductions)
+        {
+            decimal deductionAmount = 0;
+            foreach (var deduction in deductions)
+            {
+                decimal.TryParse(deduction.NetSalary, out decimal amount);
+                deductionAmount += amount;
+            }
+
+            return deductionAmount;
         }
 
         private static void PayrollAutoCalculateOnEbanking(
@@ -329,17 +358,6 @@
             }
         }
 
-        private static decimal GetExchangeRate(
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            int fromCurrencyId,
-            int toCurrencyId)
-        {
-            CurrencyExchangeRateModel currencyExchangeRate =
-                currencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrencyId && x.ToCurrencyId == toCurrencyId);
-
-            return currencyExchangeRate?.ExchangeRate ?? 0;
-        }
-
         private void EncryptMonthlySalaryAddition(IEnumerable<MonthlySalaryAdditionModel> additions)
         {
             foreach (var addition in additions)
@@ -360,12 +378,6 @@
 
         #region Back Pay and After Adjustment
 
-        private static string GetMonthlySalaryAmount(decimal monthlySalaryAmount, string afterAdjustmentAmount, string backPayAmount)
-        {
-            return !string.IsNullOrWhiteSpace(afterAdjustmentAmount) || !string.IsNullOrWhiteSpace(backPayAmount)
-                ? monthlySalaryAmount.ToString(CultureInfo.InvariantCulture) : null;
-        }
-
         private static decimal? GetAfterAdjustmentAmount(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             DateTime workingMonth,
@@ -379,7 +391,7 @@
                 var currencyId = basicSetting.CurrencyId ?? 0;
                 decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
                 decimal.TryParse(basicSetting.Salary, out decimal newSalary);
-                oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
+                oldSalary *= CalculationService.GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
                 int daysInMonth = DateTime.DaysInMonth(workingMonth.Year, workingMonth.Month);
                 int startDay = CalculationService.GetDifferenceMonth(groupStartDate, workingMonth) == 0 ? groupStartDate.Day : 1;
                 int endDay = (groupEndDate.HasValue && CalculationService.GetDifferenceMonth(groupEndDate.Value, workingMonth) == 0) ? groupEndDate.Value.Day : daysInMonth;
@@ -405,7 +417,7 @@
             var currencyId = basicSetting.CurrencyId ?? 0;
             decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
             decimal.TryParse(basicSetting.Salary, out decimal newSalary);
-            oldSalary = oldSalary * GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
+            oldSalary *= CalculationService.GetExchangeRate(currencyExchangeRates, basicSetting.OldCurrencyId, currencyId);
             decimal? backPayAmount = null;
 
             if (basicSetting.SalaryChangeReason == BasicSalaryChangeReason.AnnualIncrement
@@ -433,7 +445,7 @@
             DateTime? groupEndDate,
             decimal afterAdjustmentAmount)
         {
-            decimal.TryParse(basicSetting.OldSalary, out decimal oldSalary);
+            decimal.TryParse(basicSetting.OldSalary, out decimal _);
             decimal.TryParse(basicSetting.Salary, out decimal salary);
             decimal differenceAmount = CalculationService.RoundAmountWithCurrency(afterAdjustmentAmount - salary, basicSetting.CurrencyCode, roundingThousand: false);
             var reason = new StringBuilder();
@@ -456,7 +468,7 @@
                         reason.AppendFormat(
                             " Basic Salary changed on {0} for {1}.",
                             basicSetting.EffectiveDate.HasValue ? basicSetting.EffectiveDate.Value.ToString(Constants.DateFormat) : string.Empty,
-                            EnumHelper.GetDescription(basicSetting.SalaryChangeReason.Value));
+                            basicSetting.SalaryChangeReason.Value.GetDisplayName());
                         break;
 
                     default:

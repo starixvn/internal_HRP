@@ -8,6 +8,7 @@ const selectMonthCompany = (function ($) {
     function init() {
         var maxdate = $('#SelectedTime').data('maxdate');
         $('.datetimepicker').datetimepicker({
+            viewMode: 'months',
             format: 'MM-YYYY',
             maxDate: maxdate,
             useCurrent: false

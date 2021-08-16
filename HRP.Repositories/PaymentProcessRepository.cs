@@ -27,7 +27,7 @@
             }
         }
 
-        public async Task<GeneratePayrollModel> GetDataForGeneratePayroll(ICriteria criteria)
+        public async Task<GeneratePayrollModel> GetDataForGeneratePayrollAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
@@ -36,6 +36,7 @@
                     var monthlyPayroll = await multi.ReadAsync<MonthlyPayroll>();
                     var monthlyAttendance = await multi.ReadAsync<MonthlyAttendance>();
                     var monthlyDSTNetSalary = await multi.ReadAsync<MonthlyDSTNetSalary>();
+                    var additionDeductions = await multi.ReadAsync<AdditionDeductionUploading>();
                     var monthlyBasicSalary = await multi.ReadAsync<MonthlyBasicSalaryModel>();
                     var monthlyBasicAllowance = await multi.ReadAsync<MonthlyPayrollBasicAllowanceModel>();
                     var currencyExchangeRate = await multi.ReadAsync<CurrencyExchangeRateModel>();
@@ -47,7 +48,8 @@
                         MonthlyDSTNetSalary = monthlyDSTNetSalary,
                         MonthlyBasicSalary = monthlyBasicSalary,
                         MonthlyBasicAllowance = monthlyBasicAllowance,
-                        CurrencyExchangeRate = currencyExchangeRate
+                        CurrencyExchangeRate = currencyExchangeRate,
+                        AdditionDeductions = additionDeductions
                     };
 
                     return result;

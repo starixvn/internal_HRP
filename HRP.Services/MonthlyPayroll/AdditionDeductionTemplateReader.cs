@@ -37,6 +37,7 @@
         {
             { 1, "Addition" }, { 10, "Deduction" }, { 18, "Addition" }, { 48, "Deduction" }
         };
+
         private readonly Dictionary<int, string> ThirdColumnHeaders = new Dictionary<int, string>
         {
             { 1, "Adjustments" }, { 4, "Others 1" }, { 7, "Others 2" }, { 10, "UPL/Absenteeism" }, { 12, "Tardiness" }, { 14, "Salary Advance" },
@@ -45,6 +46,7 @@
             { 48, "Subsistence" }, { 51, "Home Passage" }, { 54, "Housing" }, { 57, "Mobile Phone" }, { 60, "HPI" },
             { 63, "Duty Meal" }, { 65, "Secondment" }, { 68, "Others" }, { 71, "Comment" }
         };
+
         private readonly Dictionary<int, string> FourthColumnHeaders = new Dictionary<int, string>
         {
             { 0, "ID No" }, { 1, "Comment" }, { 2, "Amount" }, { 3, "No.of Days" }, { 4, "Comment" }, { 5, "Amount" }, { 6, "No.of Days" },
@@ -345,10 +347,16 @@
                 RowNumber = rowNumber
             };
 
-            if (!string.IsNullOrWhiteSpace(value) && !decimal.TryParse(value, out decimal _))
+            var isValid = decimal.TryParse(value, out decimal amount);
+            if (!string.IsNullOrWhiteSpace(value) && !isValid)
             {
                 result.ResultType = (short)ValidationResultType.Error;
                 result.Message = string.Format("Column {0} - {1} must be a number.", colIndex, FourthColumnHeaders[colIndex]);
+            }
+            else if (isValid && amount <= 0)
+            {
+                result.ResultType = (short)ValidationResultType.Error;
+                result.Message = string.Format("Column {0} - {1} must be greater than 0.", colIndex, FourthColumnHeaders[colIndex]);
             }
             else
             {

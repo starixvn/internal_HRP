@@ -1,22 +1,24 @@
 ﻿namespace HRP.Core.Enumerations
 {
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using HRP.Resources;
 
     public enum BasicSalaryChangeReason
     {
-        [Description("Annual Increment")]
+        [Display(Name = nameof(ViewLang.AnnualIncrement), ResourceType = typeof(ViewLang))]
         AnnualIncrement = 1,
 
-        [Description("Promotion")]
+        [Display(Name = nameof(ViewLang.Promotion), ResourceType = typeof(ViewLang))]
         Promotion,
 
-        [Description("Salary Adjustment")]
+        [Display(Name = nameof(ViewLang.SalaryAdjustment), ResourceType = typeof(ViewLang))]
         SalaryAdjustment,
 
-        [Description("Demotion")]
+        [Display(Name = nameof(ViewLang.Demotion), ResourceType = typeof(ViewLang))]
         Demotion,
 
-        [Description("Penalty")]
+        [Display(Name = nameof(ViewLang.Penalty), ResourceType = typeof(ViewLang))]
         Penalty
     }
 }

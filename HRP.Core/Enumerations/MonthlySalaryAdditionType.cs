@@ -1,18 +1,20 @@
 namespace HRP.Core.Enumerations
 {
-    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using HRP.Resources;
 
     public enum MonthlySalaryAdditionType
     {
-        [Description("Back Pay")]
+        [Display(Name = nameof(ViewLang.BackPay), ResourceType = typeof(ViewLang))]
         BackPay = 1,
 
+        [Display(Name = nameof(ViewLang.Adjustments), ResourceType = typeof(ViewLang))]
         Adjustments,
 
-        [Description("Others")]
+        [Display(Name = nameof(ViewLang.Others), ResourceType = typeof(ViewLang))]
         Others1,
 
-        [Description("")]
+        [Display(Name = "")]
         Others2
     }
 }

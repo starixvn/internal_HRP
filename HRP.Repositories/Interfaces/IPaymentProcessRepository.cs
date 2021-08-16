@@ -9,6 +9,6 @@
     {
         Task<(PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>)> GetUploadingFilesResultAsync(ICriteria criteria);
 
-        Task<GeneratePayrollModel> GetDataForGeneratePayroll(ICriteria criteria);
+        Task<GeneratePayrollModel> GetDataForGeneratePayrollAsync(ICriteria criteria);
     }
 }

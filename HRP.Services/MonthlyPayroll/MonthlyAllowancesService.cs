@@ -14,6 +14,7 @@
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.PaymentProcess;
     using HRP.Models.ServiceModels;
     using HRP.Repositories;
 
@@ -36,14 +37,15 @@
         public async Task<MonthlyAllowancesModel> GetMonthlyAllowancesAsync(int payrollId, DateTime month)
         {
             var criteria = new GetMonthlyAllowanceCriteria { PayrollId = payrollId };
-            var result = await monthlyPayrollRepository.GetMonthlyAllowancesAsync(criteria);
+            (var allowance, var additions, var deductions, var basicAllowance)
+                = await monthlyPayrollRepository.GetMonthlyAllowancesAsync(criteria);
             var model = new MonthlyAllowancesModel
             {
                 Month = month,
-                Allowance = result.Item1 ?? new MonthlyAllowanceModel(),
-                Additions = result.Item2.OrderBy(x => x.Type).ToList(),
-                Deductions = result.Item3.OrderBy(x => x.Type).ToList(),
-                BasicAllowance = result.Item4 ?? new MonthlyPayrollBasicAllowanceModel()
+                Allowance = allowance ?? new MonthlyAllowanceModel(),
+                Additions = additions.ToList(),
+                Deductions = deductions.ToList(),
+                BasicAllowance = basicAllowance ?? new MonthlyPayrollBasicAllowanceModel()
             };
 
             DecryptMonthlyBasicAllowance(model.BasicAllowance);
@@ -63,7 +65,7 @@
             decimal.TryParse(model.Allowance.CashAmount, out decimal cash);
             var status = directbanking1 < 0 || directbanking2 < 0 || cash < 0 ? MonthlyPayrollStatus.Unsatisfied : MonthlyPayrollStatus.Satisfied;
 
-            var criteria = new EditMonthlyAllowancesCriteria
+            var criteria = new EditMonthlyAllowancesCommand
             {
                 PayrollId = model.Allowance.PayrollId,
                 CurrencyId = model.Allowance.CurrencyId,
@@ -83,8 +85,8 @@
                 DSTNetSalaryAmount = cryptoService.Encrypt(model.Allowance.DSTNetSalaryAmount),
                 AdditionAmount = cryptoService.Encrypt(model.Allowance.AdditionAmount),
                 DeductionAmount = cryptoService.Encrypt(model.Allowance.DeductionAmount),
-                AllowanceAddition = model.Additions.ToXML().ToString(),
-                AllowanceDeduction = model.Deductions.ToXML().ToString(),
+                AdditionXml = model.Additions.ToXML().ToString(),
+                DeductionXml = model.Deductions.ToXML().ToString(),
                 UserId = userId,
                 Status = status
             };
@@ -130,26 +132,24 @@
                 {
                     var roomingCharge = CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.RoomingChargesAmount,
                         basicAllowance.RoomingChargesCurrencyId.Value, basicAllowance.CurrencyId.Value);
-                    totalAmount = totalAmount - roomingCharge;
+                    totalAmount -= roomingCharge;
                 }
 
                 if (basicAllowance.FitnessFirstCurrencyId.HasValue && !string.IsNullOrEmpty(basicAllowance.FitnessFirstAmount))
                 {
                     var fitnessFirst = CalculationService.ConvertAmount(currencyExchangeRates, basicAllowance.FitnessFirstAmount,
                         basicAllowance.FitnessFirstCurrencyId.Value, basicAllowance.CurrencyId.Value);
-                    totalAmount = totalAmount - fitnessFirst;
+                    totalAmount -= fitnessFirst;
                 }
 
-                var dutyMealAddition = allowanceAdditions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
-                decimal.TryParse(dutyMealAddition.NetAllowance, out decimal dutyMealAdditionAmount);
-                totalAmount = totalAmount + dutyMealAdditionAmount;
-                monthlyAllowance.AdditionAmount = dutyMealAdditionAmount.ToString(CultureInfo.InvariantCulture);
+                var additionAmount = GetAdditionAmount(allowanceAdditions);
+                var deductionAmount = GetDeductionAmount(allowanceDeductions);
 
-                var dutyMealDeduction = allowanceDeductions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
-                decimal.TryParse(dutyMealDeduction.NetAllowance, out decimal dutyMealDeductionAmount);
-                totalAmount = totalAmount - dutyMealDeductionAmount;
-                monthlyAllowance.DeductionAmount = dutyMealDeductionAmount.ToString(CultureInfo.InvariantCulture);
+                totalAmount += additionAmount;
+                totalAmount -= deductionAmount;
 
+                monthlyAllowance.AdditionAmount = CalculationService.RoundAmountWithCurrency(additionAmount, monthlyAllowance.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture);
+                monthlyAllowance.DeductionAmount = CalculationService.RoundAmountWithCurrency(deductionAmount, monthlyAllowance.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture);
                 monthlyAllowance.TotalAmount = CalculationService.RoundAmountWithCurrency(totalAmount, monthlyAllowance.CurrencyCode, 0).ToString(CultureInfo.InvariantCulture);
                 CalculateAutoAllowance(currencyExchangeRates, monthlyAllowance);
                 CalculateTotalNetAmount(currencyExchangeRates, monthlyAllowance);
@@ -206,20 +206,31 @@
             int standardWorkingDays,
             decimal actualWorkingDays,
             MonthlyPayrollBasicAllowanceModel basicAllowance,
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+            GeneratePayrollModel data)
         {
-            var additions = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
+            var additions = Enum.GetValues(typeof(MonthlyAllowanceAdditionType)).Cast<MonthlyAllowanceAdditionType>()
                 .Select(x => new MonthlyAllowanceAdditionModel
                 {
                     PayrollId = basicAllowance.PayrollId,
                     EmployeeId = basicAllowance.EmployeeId,
-                    Type = (int)x,
+                    Type = (byte)x,
                     CurrencyId = GetCurrencyBaseOnAllowanceType(x, basicAllowance)
                 }).ToList();
-
-            if (standardWorkingDays < actualWorkingDays)
+            var additionDeductionUpload = data.AdditionDeductions.FirstOrDefault(x => x.EmployeeId == basicAllowance.EmployeeId);
+            if (additionDeductionUpload != null)
             {
-                var dutyMeal = additions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+                MappingAllowanceAddition(
+                    standardWorkingDays, basicAllowance, additions,
+                    additionDeductionUpload, data.Currencies,
+                    data.CurrencyExchangeRate);
+            }
+
+            if ((additionDeductionUpload == null
+                    || string.IsNullOrWhiteSpace(additionDeductionUpload.Allowance_Addition_DutyMeal_CurrencyCode)
+                    || string.IsNullOrWhiteSpace(additionDeductionUpload.Allowance_Addition_DutyMeal_NoOfDays))
+                && standardWorkingDays < actualWorkingDays)
+            {
+                var dutyMeal = additions.FirstOrDefault(x => x.Type == (byte)MonthlyAllowanceAdditionType.DutyMeal);
                 dutyMeal.NoOfDays = actualWorkingDays - standardWorkingDays;
                 decimal.TryParse(basicAllowance.DutyMealAmount, out decimal dutyMealAmount);
 
@@ -230,7 +241,7 @@
 
                 if (dutyMeal.CurrencyId.HasValue && basicAllowance.CurrencyId.HasValue)
                 {
-                    var netAllowance = totalAmount.Value * GetExchangeRate(currencyExchangeRates, dutyMeal.CurrencyId.Value, basicAllowance.CurrencyId.Value);
+                    var netAllowance = totalAmount.Value * CalculationService.GetExchangeRate(data.CurrencyExchangeRate, dutyMeal.CurrencyId.Value, basicAllowance.CurrencyId.Value);
                     dutyMeal.NetAllowance = netAllowance.ToString(CultureInfo.InvariantCulture);
                 }
             }
@@ -242,20 +253,30 @@
             int standardWorkingDays,
             decimal actualWorkingDays,
             MonthlyPayrollBasicAllowanceModel basicAllowance,
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates)
+            GeneratePayrollModel data)
         {
-            var deductions = Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
+            var deductions = Enum.GetValues(typeof(MonthlyAllowanceAdditionType)).Cast<MonthlyAllowanceAdditionType>()
                 .Select(x => new MonthlyAllowanceDeductionModel
                 {
                     PayrollId = basicAllowance.PayrollId,
                     EmployeeId = basicAllowance.EmployeeId,
-                    Type = (int)x,
+                    Type = (byte)x,
                     CurrencyId = GetCurrencyBaseOnAllowanceType(x, basicAllowance)
-                }).ToList();
-
-            if (standardWorkingDays > actualWorkingDays)
+                }).ToList(); var additionDeductionUpload = data.AdditionDeductions.FirstOrDefault(x => x.EmployeeId == basicAllowance.EmployeeId);
+            if (additionDeductionUpload != null)
             {
-                var dutyMeal = deductions.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+                MappingAllowanceDeduction(
+                    standardWorkingDays, basicAllowance, deductions,
+                    additionDeductionUpload, data.Currencies,
+                    data.CurrencyExchangeRate);
+            }
+
+            if ((additionDeductionUpload == null
+                    || string.IsNullOrWhiteSpace(additionDeductionUpload.Allowance_Deduction_DutyMeal_CurrencyCode)
+                    || string.IsNullOrWhiteSpace(additionDeductionUpload.Allowance_Deduction_DutyMeal_NoOfDays))
+                && standardWorkingDays > actualWorkingDays)
+            {
+                var dutyMeal = deductions.FirstOrDefault(x => x.Type == (byte)MonthlyAllowanceAdditionType.DutyMeal);
                 dutyMeal.NoOfDays = standardWorkingDays - actualWorkingDays;
                 decimal.TryParse(basicAllowance.DutyMealAmount, out decimal dutyMealAmount);
 
@@ -266,12 +287,308 @@
 
                 if (dutyMeal.CurrencyId.HasValue && basicAllowance.CurrencyId.HasValue)
                 {
-                    var netAllowance = totalAmount.Value * GetExchangeRate(currencyExchangeRates, dutyMeal.CurrencyId.Value, basicAllowance.CurrencyId.Value);
+                    var netAllowance = totalAmount.Value * CalculationService.GetExchangeRate(data.CurrencyExchangeRate, dutyMeal.CurrencyId.Value, basicAllowance.CurrencyId.Value);
                     dutyMeal.NetAllowance = netAllowance.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
             return deductions;
+        }
+
+        private static decimal GetAdditionAmount(IEnumerable<MonthlyAllowanceAdditionModel> additions)
+        {
+            decimal additionAmount = 0;
+            foreach (var addition in additions)
+            {
+                decimal.TryParse(addition.NetAllowance, out decimal amount);
+                additionAmount += amount;
+            }
+
+            return additionAmount;
+        }
+
+        private static decimal GetDeductionAmount(IEnumerable<MonthlyAllowanceDeductionModel> deductions)
+        {
+            decimal deductionAmount = 0;
+            foreach (var deduction in deductions)
+            {
+                decimal.TryParse(deduction.NetAllowance, out decimal amount);
+                deductionAmount += amount;
+            }
+
+            return deductionAmount;
+        }
+
+        private static void MappingAllowanceAddition(
+            int standardWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            IEnumerable<MonthlyAllowanceAdditionModel> additions,
+            AdditionDeductionUploading additionDeductionUpload,
+            IEnumerable<Currency> currencies,
+            IEnumerable<CurrencyExchangeRateModel> exchangeRates)
+        {
+            foreach (var addition in additions)
+            {
+                string currencyCode;
+                string amount;
+                string noOfDays;
+                switch (addition.Type)
+                {
+                    case (byte)MonthlyAllowanceAdditionType.Subsistence:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_Subsistence_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_Subsistence_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_Subsistence_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.HomePassage:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_HomePassage_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_HomePassage_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_HomePassage_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.Housing:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_Housing_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_Housing_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_Housing_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.MobilePhone:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_MobilePhone_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_MobilePhone_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_MobilePhone_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.HPI:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_HPI_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_HPI_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_HPI_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.DutyMeal:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_DutyMeal_CurrencyCode;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_DutyMeal_NoOfDays;
+                        MappingDutyMealAllowanceAddition(standardWorkingDays, basicAllowance, addition, currencyCode, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.Secondment:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_Secondment_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_Secondment_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_Secondment_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.SpecialAllowances:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_SpecialAllowance_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_SpecialAllowance_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_SpecialAllowance_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.OT:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_OT_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_OT_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_OT_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.Others:
+                        currencyCode = additionDeductionUpload.Allowance_Addition_Others_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Addition_Others_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Addition_Others_NoOfDays;
+                        MappingAllowanceAddition(basicAllowance.CurrencyId, addition, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    default:
+                        // do nothing
+                        break;
+                }
+            }
+        }
+
+        private static void MappingAllowanceAddition(
+            int? basicAllowanceCurrencyId,
+            MonthlyAllowanceAdditionModel addition,
+            string currencyCode,
+            string amount,
+            string noOfDays,
+            IEnumerable<Currency> currencies,
+            IEnumerable<CurrencyExchangeRateModel> exchangeRates)
+        {
+            var currency = currencies.FirstOrDefault(x => x.CurrencyCode.ToLower(CultureInfo.InvariantCulture).Equals(currencyCode?.ToLower(CultureInfo.InvariantCulture)));
+            decimal.TryParse(amount, out decimal tempAmount);
+            decimal.TryParse(noOfDays, out decimal tempNoOfDays);
+            tempAmount = Math.Round(tempAmount, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+            var totalAmount = tempAmount * tempNoOfDays;
+            addition.NoOfDays = tempNoOfDays > 0 ? tempNoOfDays : (decimal?)null;
+            addition.UnitAmount = tempAmount > 0 ? tempAmount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            addition.TotalAmount = totalAmount > 0 ? totalAmount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            addition.CurrencyId = currency?.CurrencyId;
+
+            if (addition.CurrencyId.HasValue && basicAllowanceCurrencyId.HasValue)
+            {
+                var netAllowance = totalAmount * CalculationService.GetExchangeRate(exchangeRates, addition.CurrencyId.Value, basicAllowanceCurrencyId.Value);
+                addition.NetAllowance = netAllowance > 0 ? netAllowance.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            }
+        }
+
+        private static void MappingDutyMealAllowanceAddition(
+            int standardWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            MonthlyAllowanceAdditionModel addition,
+            string currencyCode,
+            string noOfDays,
+            IEnumerable<Currency> currencies,
+            IEnumerable<CurrencyExchangeRateModel> exchangeRates)
+        {
+            decimal.TryParse(noOfDays, out decimal tempNoOfDays);
+            decimal.TryParse(basicAllowance.DutyMealAmount, out decimal dutyMealAmount);
+            var currency = currencies.FirstOrDefault(x => x.CurrencyCode.ToLower(CultureInfo.InvariantCulture).Equals(currencyCode?.ToLower(CultureInfo.InvariantCulture)));
+            var unitAmount = dutyMealAmount / standardWorkingDays;
+            var totalAmount = unitAmount * tempNoOfDays;
+            addition.NoOfDays = tempNoOfDays > 0 ? tempNoOfDays : (decimal?)null;
+            addition.UnitAmount = unitAmount > 0 ? unitAmount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            addition.TotalAmount = totalAmount > 0 ? totalAmount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            addition.CurrencyId = currency?.CurrencyId;
+
+            if (addition.CurrencyId.HasValue && basicAllowance.CurrencyId.HasValue)
+            {
+                var netAllowance = totalAmount * CalculationService.GetExchangeRate(exchangeRates, addition.CurrencyId.Value, basicAllowance.CurrencyId.Value);
+                addition.NetAllowance = netAllowance > 0 ? netAllowance.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            }
+        }
+
+        private static void MappingAllowanceDeduction(
+            int standardWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            IEnumerable<MonthlyAllowanceDeductionModel> deductions,
+            AdditionDeductionUploading additionDeductionUpload,
+            IEnumerable<Currency> currencies,
+            IEnumerable<CurrencyExchangeRateModel> exchangeRates)
+        {
+            foreach (var deduction in deductions)
+            {
+                string currencyCode;
+                string amount;
+                string noOfDays;
+                switch (deduction.Type)
+                {
+                    case (byte)MonthlyAllowanceAdditionType.Subsistence:
+                        currencyCode = additionDeductionUpload.Allowance_Deduction_Subsistence_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Deduction_Subsistence_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Deduction_Subsistence_NoOfDays;
+                        MappingAllowanceDeduction(basicAllowance.CurrencyId, deduction, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.HomePassage:
+                        currencyCode = additionDeductionUpload.Allowance_Deduction_HomePassage_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Deduction_HomePassage_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Deduction_HomePassage_NoOfDays;
+                        MappingAllowanceDeduction(basicAllowance.CurrencyId, deduction, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.Housing:
+                        currencyCode = additionDeductionUpload.Allowance_Deduction_Housing_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Deduction_Housing_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Deduction_Housing_NoOfDays;
+                        MappingAllowanceDeduction(basicAllowance.CurrencyId, deduction, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.MobilePhone:
+                        currencyCode = additionDeductionUpload.Allowance_Deduction_MobilePhone_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Deduction_MobilePhone_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Deduction_MobilePhone_NoOfDays;
+                        MappingAllowanceDeduction(basicAllowance.CurrencyId, deduction, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.HPI:
+                        currencyCode = additionDeductionUpload.Allowance_Deduction_HPI_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Deduction_HPI_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Deduction_HPI_NoOfDays;
+                        MappingAllowanceDeduction(basicAllowance.CurrencyId, deduction, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.DutyMeal:
+                        currencyCode = additionDeductionUpload.Allowance_Deduction_DutyMeal_CurrencyCode;
+                        noOfDays = additionDeductionUpload.Allowance_Deduction_DutyMeal_NoOfDays;
+                        MappingDutyMealAllowanceDeduction(standardWorkingDays, basicAllowance, deduction, currencyCode, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.Secondment:
+                        currencyCode = additionDeductionUpload.Allowance_Deduction_Secondment_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Deduction_Secondment_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Deduction_Secondment_NoOfDays;
+                        MappingAllowanceDeduction(basicAllowance.CurrencyId, deduction, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    case (byte)MonthlyAllowanceAdditionType.Others:
+                        currencyCode = additionDeductionUpload.Allowance_Deduction_Others_CurrencyCode;
+                        amount = additionDeductionUpload.Allowance_Deduction_Others_Amount;
+                        noOfDays = additionDeductionUpload.Allowance_Deduction_Others_NoOfDays;
+                        MappingAllowanceDeduction(basicAllowance.CurrencyId, deduction, currencyCode, amount, noOfDays, currencies, exchangeRates);
+                        break;
+
+                    default:
+                        // do nothing
+                        break;
+                }
+            }
+        }
+
+        private static void MappingAllowanceDeduction(
+            int? basicAllowanceCurrencyId,
+            MonthlyAllowanceDeductionModel deduction,
+            string currencyCode,
+            string amount,
+            string noOfDays,
+            IEnumerable<Currency> currencies,
+            IEnumerable<CurrencyExchangeRateModel> exchangeRates)
+        {
+            var currency = currencies.FirstOrDefault(x => x.CurrencyCode.ToLower(CultureInfo.InvariantCulture).Equals(currencyCode?.ToLower(CultureInfo.InvariantCulture)));
+            decimal.TryParse(amount, out decimal tempAmount);
+            decimal.TryParse(noOfDays, out decimal tempNoOfDays);
+            tempAmount = Math.Round(tempAmount, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+            var totalAmount = tempAmount * tempNoOfDays;
+            deduction.NoOfDays = tempNoOfDays > 0 ? tempNoOfDays : (decimal?)null;
+            deduction.UnitAmount = tempAmount > 0 ? tempAmount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            deduction.TotalAmount = totalAmount > 0 ? totalAmount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            deduction.CurrencyId = currency?.CurrencyId;
+
+            if (deduction.CurrencyId.HasValue && basicAllowanceCurrencyId.HasValue)
+            {
+                var netAllowance = totalAmount * CalculationService.GetExchangeRate(exchangeRates, deduction.CurrencyId.Value, basicAllowanceCurrencyId.Value);
+                deduction.NetAllowance = netAllowance > 0 ? netAllowance.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            }
+        }
+
+        private static void MappingDutyMealAllowanceDeduction(
+            int standardWorkingDays,
+            MonthlyPayrollBasicAllowanceModel basicAllowance,
+            MonthlyAllowanceDeductionModel deduction,
+            string currencyCode,
+            string noOfDays,
+            IEnumerable<Currency> currencies,
+            IEnumerable<CurrencyExchangeRateModel> exchangeRates)
+        {
+            decimal.TryParse(noOfDays, out decimal tempNoOfDays);
+            decimal.TryParse(basicAllowance.DutyMealAmount, out decimal dutyMealAmount);
+            var currency = currencies.FirstOrDefault(x => x.CurrencyCode.ToLower(CultureInfo.InvariantCulture).Equals(currencyCode?.ToLower(CultureInfo.InvariantCulture)));
+            var unitAmount = dutyMealAmount / standardWorkingDays;
+            var totalAmount = unitAmount * tempNoOfDays;
+            deduction.NoOfDays = tempNoOfDays > 0 ? tempNoOfDays : (decimal?)null;
+            deduction.UnitAmount = unitAmount > 0 ? unitAmount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            deduction.TotalAmount = totalAmount > 0 ? totalAmount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            deduction.CurrencyId = currency?.CurrencyId;
+
+            if (deduction.CurrencyId.HasValue && basicAllowance.CurrencyId.HasValue)
+            {
+                var netAllowance = totalAmount * CalculationService.GetExchangeRate(exchangeRates, deduction.CurrencyId.Value, basicAllowance.CurrencyId.Value);
+                deduction.NetAllowance = netAllowance > 0 ? netAllowance.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            }
         }
 
         private static void CalculateAfterAdjustment(
@@ -350,17 +667,6 @@
             }
 
             return string.Empty;
-        }
-
-        private static decimal GetExchangeRate(
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
-            int fromCurrencyId,
-            int toCurrencyId)
-        {
-            CurrencyExchangeRateModel currencyExchangeRate =
-                currencyExchangeRates.FirstOrDefault(x => x.FromCurrencyId == fromCurrencyId && x.ToCurrencyId == toCurrencyId);
-
-            return currencyExchangeRate?.ExchangeRate ?? 0;
         }
 
         private void DecryptMonthlyBasicAllowance(MonthlyPayrollBasicAllowanceModel basicAllowance)
@@ -486,18 +792,18 @@
             }
         }
 
-        private static int? GetCurrencyBaseOnAllowanceType(AllowanceType type, MonthlyPayrollBasicAllowanceModel basicAllowance)
+        private static int? GetCurrencyBaseOnAllowanceType(MonthlyAllowanceAdditionType type, MonthlyPayrollBasicAllowanceModel basicAllowance)
         {
             switch (type)
             {
-                case AllowanceType.Subsistence: return basicAllowance.SubsistenceCurrencyId;
-                case AllowanceType.HomePassage: return basicAllowance.HomePassageCurrencyId;
-                case AllowanceType.Housing: return basicAllowance.HousingCurrencyId;
-                case AllowanceType.MobilePhone: return basicAllowance.MobilePhoneCurrencyId;
-                case AllowanceType.HPI: return basicAllowance.HPICurrencyId;
-                case AllowanceType.DutyMeal: return basicAllowance.DutyMealCurrencyId;
-                case AllowanceType.Secondment: return basicAllowance.SecondmentCurrencyId;
-                case AllowanceType.Others: return basicAllowance.OthersCurrencyId;
+                case MonthlyAllowanceAdditionType.Subsistence: return basicAllowance.SubsistenceCurrencyId;
+                case MonthlyAllowanceAdditionType.HomePassage: return basicAllowance.HomePassageCurrencyId;
+                case MonthlyAllowanceAdditionType.Housing: return basicAllowance.HousingCurrencyId;
+                case MonthlyAllowanceAdditionType.MobilePhone: return basicAllowance.MobilePhoneCurrencyId;
+                case MonthlyAllowanceAdditionType.HPI: return basicAllowance.HPICurrencyId;
+                case MonthlyAllowanceAdditionType.DutyMeal: return basicAllowance.DutyMealCurrencyId;
+                case MonthlyAllowanceAdditionType.Secondment: return basicAllowance.SecondmentCurrencyId;
+                case MonthlyAllowanceAdditionType.Others: return basicAllowance.OthersCurrencyId;
                 default: return null;
             }
         }
@@ -626,9 +932,5 @@
                 monthlyAllowance.TotalNetAmount = totalAmount.ToStringWithCurrency(monthlyAllowance.CurrencyCode);
             }
         }
-
-        
-
-        
     }
 }

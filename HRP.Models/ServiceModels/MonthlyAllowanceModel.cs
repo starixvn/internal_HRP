@@ -97,18 +97,15 @@
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
         [XMLName("AutoCalculateOn")]
-        public string XmlAutoCalculateOn
-        {
-            get => AutoCalculateOn.ToString();
-        }
+        public string XmlAutoCalculateOn => AutoCalculateOn.ToString();
 
         [XmlIgnore]
         public MonthlyPayrollStatus Status { get; set; }
 
         [XMLName("Status")]
-        public int XmlStatus
-        {
-            get => (int)Status;
-        }
+        public int XmlStatus => (int)Status;
+
+        public string AdditionComment { get; set; }
+        public string DeductionComment { get; set; }
     }
 }

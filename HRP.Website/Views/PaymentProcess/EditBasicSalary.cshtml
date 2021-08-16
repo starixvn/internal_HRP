@@ -157,46 +157,59 @@
                     <input type="text" class="control number js-positiveNumberOnly"
                            asp-for="Additions[0].PlainValue" asp-encrypt-for="Additions[0].EncryptedValue" readonly />
                     <input type="text" class="control number -start-col-5 js-positiveNumberOnly js-addition-netSalaryDisplay"
-                           asp-for="Additions[0].NetSalaryDisplay.PlainValue" asp-encrypt-for="Additions[0].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-addition-netSalary" asp-for="Additions[0].NetSalary.PlainValue" asp-encrypt-for="Additions[0].NetSalary.EncryptedValue" />
+                           asp-for="Additions[0].NetSalaryDisplay.PlainValue"
+                           asp-encrypt-for="Additions[0].NetSalaryDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-addition-netSalary" asp-for="Additions[0].NetSalary.PlainValue"
+                           asp-encrypt-for="Additions[0].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-add">
                     <div class="like-group-title">@ViewLang.Adjustments</div>
                     <input hidden asp-for="Additions[1].Type" />
-                    <input type="text" class="control js-description" asp-for="Additions[1].Description" />
+                    <input type="text" class="control js-description" asp-for="Additions[1].Description" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-unitAmount"
-                           asp-for="Additions[1].PlainValue" asp-encrypt-for="Additions[1].EncryptedValue" />
-                    <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[1].NoOfDays" maxlength="5" />
+                           asp-for="Additions[1].PlainValue" asp-encrypt-for="Additions[1].EncryptedValue" autocomplete="off" />
+                    <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[1].NoOfDays"
+                           maxlength="5" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-netSalaryDisplay"
-                           asp-for="Additions[1].NetSalaryDisplay.PlainValue" asp-encrypt-for="Additions[1].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-addition-netSalary" asp-for="Additions[1].NetSalary.PlainValue" asp-encrypt-for="Additions[1].NetSalary.EncryptedValue" />
+                           asp-for="Additions[1].NetSalaryDisplay.PlainValue"
+                           asp-encrypt-for="Additions[1].NetSalaryDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-addition-netSalary" asp-for="Additions[1].NetSalary.PlainValue"
+                           asp-encrypt-for="Additions[1].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-add">
                     <div class="like-group-title">@ViewLang.Others</div>
                     <input hidden asp-for="Additions[2].Type" />
-                    <input type="text" class="control js-description" asp-for="Additions[2].Description" />
+                    <input type="text" class="control js-description" asp-for="Additions[2].Description" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-unitAmount"
-                           asp-for="Additions[2].PlainValue" asp-encrypt-for="Additions[2].EncryptedValue" />
-                    <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[2].NoOfDays" maxlength="5" />
+                           asp-for="Additions[2].PlainValue" asp-encrypt-for="Additions[2].EncryptedValue" autocomplete="off" />
+                    <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[2].NoOfDays"
+                           maxlength="5" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-netSalaryDisplay"
-                           asp-for="Additions[2].NetSalaryDisplay.PlainValue" asp-encrypt-for="Additions[2].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-addition-netSalary" asp-for="Additions[2].NetSalary.PlainValue" asp-encrypt-for="Additions[2].NetSalary.EncryptedValue" />
+                           asp-for="Additions[2].NetSalaryDisplay.PlainValue"
+                           asp-encrypt-for="Additions[2].NetSalaryDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-addition-netSalary" asp-for="Additions[2].NetSalary.PlainValue"
+                           asp-encrypt-for="Additions[2].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-add">
                     <input hidden asp-for="Additions[3].Type" />
-                    <input type="text" class="control -start-col-2 js-description" asp-for="Additions[3].Description" />
+                    <input type="text" class="control -start-col-2 js-description" asp-for="Additions[3].Description" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-unitAmount"
-                           asp-for="Additions[3].PlainValue" asp-encrypt-for="Additions[3].EncryptedValue" />
-                    <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[3].NoOfDays" maxlength="5" />
+                           asp-for="Additions[3].PlainValue" asp-encrypt-for="Additions[3].EncryptedValue" autocomplete="off" />
+                    <input type="text" class="control js-positiveNumberOnly js-addition-noOfDays" asp-for="Additions[3].NoOfDays"
+                           maxlength="5" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-addition-netSalaryDisplay"
-                           asp-for="Additions[3].NetSalaryDisplay.PlainValue" asp-encrypt-for="Additions[3].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-addition-netSalary" asp-for="Additions[3].NetSalary.PlainValue" asp-encrypt-for="Additions[3].NetSalary.EncryptedValue" />
+                           asp-for="Additions[3].NetSalaryDisplay.PlainValue"
+                           asp-encrypt-for="Additions[3].NetSalaryDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-addition-netSalary" asp-for="Additions[3].NetSalary.PlainValue"
+                           asp-encrypt-for="Additions[3].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-add">
                     <div class="text-specific">@ViewLang.TotalAdd</div>
                     <input type="text" class="control number highlighted -start-col-5 bold js-positiveNumberOnly js-addition-totalNetSalaryDisplay"
-                           asp-for="MonthlySalary.AdditionAmountDisplay.PlainValue" asp-encrypt-for="MonthlySalary.AdditionAmountDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-addition-totalNetSalary" asp-for="MonthlySalary.AdditionAmount.PlainValue" asp-encrypt-for="MonthlySalary.AdditionAmount.EncryptedValue" />
+                           asp-for="MonthlySalary.AdditionAmountDisplay.PlainValue"
+                           asp-encrypt-for="MonthlySalary.AdditionAmountDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-addition-totalNetSalary" asp-for="MonthlySalary.AdditionAmount.PlainValue"
+                           asp-encrypt-for="MonthlySalary.AdditionAmount.EncryptedValue" />
                 </div>
             </div>
             <div class="deduction">
@@ -208,48 +221,60 @@
                 <div class="group-complex -layout-deduction">
                     <div class="like-group-title">@ViewLang.UPLAbsenteeism</div>
                     <input hidden asp-for="Deductions[0].Type" />
-                    <input type="text" class="control js-description" asp-for="Deductions[0].Description" />
-                    <input type="text" class="control number js-positiveNumberOnly js-unpaidleave-absenteeism" asp-for="Deductions[0].NoOfDays" maxlength="5" />
+                    <input type="text" class="control js-description" asp-for="Deductions[0].Description" autocomplete="off" />
+                    <input type="text" class="control number js-positiveNumberOnly js-unpaidleave-absenteeism"
+                           asp-for="Deductions[0].NoOfDays" maxlength="5" autocomplete="off" />
                     <div>days</div>
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay"
-                           asp-for="Deductions[0].NetSalaryDisplay.PlainValue" asp-encrypt-for="Deductions[0].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[0].NetSalary.PlainValue" asp-encrypt-for="Deductions[0].NetSalary.EncryptedValue" />
+                           asp-for="Deductions[0].NetSalaryDisplay.PlainValue"
+                           asp-encrypt-for="Deductions[0].NetSalaryDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[0].NetSalary.PlainValue"
+                           asp-encrypt-for="Deductions[0].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-deduction">
                     <div class="like-group-title">@ViewLang.Tardiness</div>
                     <input hidden asp-for="Deductions[1].Type" />
-                    <input type="text" class="control js-description" asp-for="Deductions[1].Description" />
-                    <input type="text" class="control number js-positiveNumberOnly js-tardiness" asp-for="Deductions[1].NoOfDays" maxlength="8" />
+                    <input type="text" class="control js-description" asp-for="Deductions[1].Description" autocomplete="off" />
+                    <input type="text" class="control number js-positiveNumberOnly js-tardiness"
+                           asp-for="Deductions[1].NoOfDays" maxlength="8" autocomplete="off" />
                     <div>minutes</div>
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay"
-                           asp-for="Deductions[1].NetSalaryDisplay.PlainValue" asp-encrypt-for="Deductions[1].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[1].NetSalary.PlainValue" asp-encrypt-for="Deductions[1].NetSalary.EncryptedValue" />
+                           asp-for="Deductions[1].NetSalaryDisplay.PlainValue"
+                           asp-encrypt-for="Deductions[1].NetSalaryDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[1].NetSalary.PlainValue"
+                           asp-encrypt-for="Deductions[1].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-deduction-2">
                     <div class="like-group-title">@ViewLang.SalaryAdvance</div>
                     <input hidden asp-for="Deductions[2].Type" />
-                    <input type="text" class="control js-description" asp-for="Deductions[2].Description" />
+                    <input type="text" class="control js-description" asp-for="Deductions[2].Description" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-unitAmount"
-                           asp-for="Deductions[2].PlainValue" asp-encrypt-for="Deductions[2].EncryptedValue" />
+                           asp-for="Deductions[2].PlainValue" asp-encrypt-for="Deductions[2].EncryptedValue" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay"
-                           asp-for="Deductions[2].NetSalaryDisplay.PlainValue" asp-encrypt-for="Deductions[2].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[2].NetSalary.PlainValue" asp-encrypt-for="Deductions[2].NetSalary.EncryptedValue" />
+                           asp-for="Deductions[2].NetSalaryDisplay.PlainValue"
+                           asp-encrypt-for="Deductions[2].NetSalaryDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[2].NetSalary.PlainValue"
+                           asp-encrypt-for="Deductions[2].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-deduction-2">
                     <div class="like-group-title">@ViewLang.Others</div>
                     <input hidden asp-for="Deductions[3].Type" />
-                    <input type="text" class="control js-description" asp-for="Deductions[3].Description" />
+                    <input type="text" class="control js-description" asp-for="Deductions[3].Description" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-unitAmount"
-                           asp-for="Deductions[3].PlainValue" asp-encrypt-for="Deductions[3].EncryptedValue" />
+                           asp-for="Deductions[3].PlainValue" asp-encrypt-for="Deductions[3].EncryptedValue" autocomplete="off" />
                     <input type="text" class="control number js-positiveNumberOnly js-deduction-netSalaryDisplay"
-                           asp-for="Deductions[3].NetSalaryDisplay.PlainValue" asp-encrypt-for="Deductions[3].NetSalaryDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[3].NetSalary.PlainValue" asp-encrypt-for="Deductions[3].NetSalary.EncryptedValue" />
+                           asp-for="Deductions[3].NetSalaryDisplay.PlainValue"
+                           asp-encrypt-for="Deductions[3].NetSalaryDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-deduction-netSalary" asp-for="Deductions[3].NetSalary.PlainValue"
+                           asp-encrypt-for="Deductions[3].NetSalary.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-deduction">
                     <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
                     <input type="text" class="control number -start-col-5 highlighted bold js-positiveNumberOnly js-deduction-totalNetSalaryDisplay"
-                           asp-for="MonthlySalary.DeductionAmountDisplay.PlainValue" asp-encrypt-for="MonthlySalary.DeductionAmountDisplay.EncryptedValue" readonly />
-                    <input hidden class="js-deduction-totalNetSalary" asp-for="MonthlySalary.DeductionAmount.PlainValue" asp-encrypt-for="MonthlySalary.DeductionAmount.EncryptedValue" />
+                           asp-for="MonthlySalary.DeductionAmountDisplay.PlainValue"
+                           asp-encrypt-for="MonthlySalary.DeductionAmountDisplay.EncryptedValue" readonly />
+                    <input hidden class="js-deduction-totalNetSalary" asp-for="MonthlySalary.DeductionAmount.PlainValue"
+                           asp-encrypt-for="MonthlySalary.DeductionAmount.EncryptedValue" />
                 </div>
             </div>
         </div>
@@ -331,7 +356,7 @@
                             asp-for="MonthlySalary.Ebanking.CurrencyId" asp-items="Model.Currencies">
                         <option></option>
                     </select>
-                    <input type="text" class="control number js-numberOnly js-autoCalculateAmount" data-group="ebanking"
+                    <input type="text" class="control number js-numberOnly js-autoCalculateAmount" data-group="ebanking" autocomplete="off"
                            asp-for="MonthlySalary.Ebanking.PlainValue" asp-encrypt-for="MonthlySalary.Ebanking.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-payroll js-monthlySalary">
@@ -343,7 +368,7 @@
                             asp-for="MonthlySalary.DirectBanking1.CurrencyId" asp-items="Model.Currencies">
                         <option></option>
                     </select>
-                    <input type="text" class="control number js-numberOnly js-autoCalculateAmount" data-group="directbanking1"
+                    <input type="text" class="control number js-numberOnly js-autoCalculateAmount" data-group="directbanking1" autocomplete="off"
                            asp-for="MonthlySalary.DirectBanking1.PlainValue" asp-encrypt-for="MonthlySalary.DirectBanking1.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-payroll js-monthlySalary">
@@ -355,7 +380,7 @@
                             asp-for="MonthlySalary.DirectBanking2.CurrencyId" asp-items="Model.Currencies">
                         <option></option>
                     </select>
-                    <input type="text" class="control number js-numberOnly js-autoCalculateAmount" data-group="directbanking2"
+                    <input type="text" class="control number js-numberOnly js-autoCalculateAmount" data-group="directbanking2" autocomplete="off"
                            asp-for="MonthlySalary.DirectBanking2.PlainValue" asp-encrypt-for="MonthlySalary.DirectBanking2.EncryptedValue" />
                 </div>
                 <div class="group-complex -layout-payroll js-monthlySalary">

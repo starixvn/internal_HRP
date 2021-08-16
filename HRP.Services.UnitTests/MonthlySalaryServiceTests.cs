@@ -122,13 +122,13 @@
             var additions = new List<MonthlySalaryAdditionModel> { new MonthlySalaryAdditionModel() };
             var deductions = new List<MonthlySalaryDeductionModel> { new MonthlySalaryDeductionModel() };
             var commandResult = new CommandResult();
-            var criteria = new EditMonthlySalaryCriteria();
+            var criteria = new EditMonthlySalaryCommand();
             var cipherText = "cipherText";
             var payrollId = 1;
             var companyId = 1;
             var month = DateTime.Now;
             var monthlyPayrollService = GetMonthlySalaryService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<EditMonthlySalaryCriteria>(x => criteria = x)).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<EditMonthlySalaryCommand>(x => criteria = x)).Returns(commandResult);
             cryptoService.Encrypt(Arg.Any<string>()).Returns(cipherText);
 
             // Act

@@ -7,7 +7,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using HRP.Core.Constants;
-    using HRP.Core.Enumerations;
     using HRP.Core.Model;
     using HRP.Core.Services;
     using HRP.Criteria.Payslip;
@@ -183,21 +182,6 @@
                 CalculationService.RoundAmountWithCurrency(basicSalaryAmount, payslip.SalaryCurrencyCode, roundingThousand: false),
                 payslip.SalaryCurrencyCode);
 
-            payslip.SalaryAdditions = payslip.SalaryAdditions.Any()
-                ? payslip.SalaryAdditions : Enum.GetValues(typeof(MonthlySalaryAdditionType)).Cast<MonthlySalaryAdditionType>()
-                                                .Select(x => new MonthlySalaryAdditionModel
-                                                {
-                                                    PayrollId = payslip.PayrollId,
-                                                    Type = (short)x
-                                                }).ToList();
-            payslip.SalaryDeductions = payslip.SalaryDeductions.Any()
-                ? payslip.SalaryDeductions : Enum.GetValues(typeof(MonthlySalaryDeductionType)).Cast<MonthlySalaryDeductionType>()
-                                                .Select(x => new MonthlySalaryDeductionModel
-                                                {
-                                                    PayrollId = payslip.PayrollId,
-                                                    Type = (short)x
-                                                }).ToList();
-
             foreach (MonthlySalaryAdditionModel addition in payslip.SalaryAdditions)
             {
                 addition.NetSalary = cryptoService.Decrypt(addition.NetSalary);
@@ -246,21 +230,6 @@
             payslip.AllowanceAmount = CalculationService.FormatAmount(
                 CalculationService.RoundAmountWithCurrency(basicAllowanceAmount, payslip.AllowanceCurrencyCode, roundingThousand: false),
                 payslip.AllowanceCurrencyCode);
-
-            payslip.AllowanceAdditions = payslip.AllowanceAdditions.Any()
-                ? payslip.AllowanceAdditions : Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
-                                                .Select(x => new MonthlyAllowanceAdditionModel
-                                                {
-                                                    PayrollId = payslip.PayrollId,
-                                                    Type = (int)x
-                                                }).ToList();
-            payslip.AllowanceDeductions = payslip.AllowanceDeductions.Any()
-                ? payslip.AllowanceDeductions : Enum.GetValues(typeof(AllowanceType)).Cast<AllowanceType>()
-                                                .Select(x => new MonthlyAllowanceDeductionModel
-                                                {
-                                                    PayrollId = payslip.PayrollId,
-                                                    Type = (int)x
-                                                }).ToList();
 
             foreach (var addition in payslip.AllowanceAdditions)
             {

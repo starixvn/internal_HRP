@@ -8,7 +8,7 @@
         [Fact]
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
-            var criteria = new EditMonthlyAllowancesCriteria();
+            var criteria = new EditMonthlyAllowancesCommand();
             var expected = "MonthlyPayroll_UpdateAllowances";
 
             var actual = criteria.GetSettingKey();
@@ -19,7 +19,7 @@
         [Fact]
         public void IsValid_ValidData_ReturnTrue()
         {
-            var criteria = new EditMonthlyAllowancesCriteria { PayrollId = 1, UserId = 1 };
+            var criteria = new EditMonthlyAllowancesCommand { PayrollId = 1, UserId = 1 };
 
             var actual = criteria.IsValid();
 
@@ -29,7 +29,7 @@
         [Fact]
         public void IsValid_InvalidUserId_ReturnTrue()
         {
-            var criteria = new EditMonthlyAllowancesCriteria { PayrollId = 1 };
+            var criteria = new EditMonthlyAllowancesCommand { PayrollId = 1 };
 
             var actual = criteria.IsValid();
 
@@ -39,7 +39,7 @@
         [Fact]
         public void IsValid_InvalidPayrollId_ReturnTrue()
         {
-            var criteria = new EditMonthlyAllowancesCriteria { UserId = 1 };
+            var criteria = new EditMonthlyAllowancesCommand { UserId = 1 };
 
             var actual = criteria.IsValid();
 

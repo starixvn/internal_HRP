@@ -1,4 +1,5 @@
 ﻿@using HRP.Core.Enumerations
+@using HRP.Core.Extensions
 @using HRP.Resources
 @model HRP.Models.MonthlyPayroll.EditMonthlyAllowancesViewModel
 @{
@@ -84,7 +85,8 @@
 
 @foreach (var currency in Model.CurrencyExchangeRates)
 {
-    <input type="hidden" data-from-currency="@currency.FromCurrencyId" data-to-currency="@currency.ToCurrencyId" value="@currency.ExchangeRate" />
+    <input type="hidden" data-from-currency="@currency.FromCurrencyId"
+           data-to-currency="@currency.ToCurrencyId" value="@currency.ExchangeRate" />
 }
 <input type="hidden" id="get-bank-account-url" value="@Url.Action("GetEmployeeBankAccounts", "BankAccount")" />
 
@@ -127,14 +129,14 @@
     <input hidden data-val="false" asp-for="RijndaelKey.Key" />
     <input hidden data-val="false" asp-for="RijndaelIV.Key" />
 
-    <input type="hidden" asp-for="BasicAllowance.SubsistenceAmount.PlainValue" asp-encrypt-for="BasicAllowance.SubsistenceAmount.EncryptedValue" data-currency="@Model.BasicAllowance.SubsistenceCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Subsistence)" />
-    <input type="hidden" asp-for="BasicAllowance.HomePassageAmount.PlainValue" asp-encrypt-for="BasicAllowance.HomePassageAmount.EncryptedValue" data-currency="@Model.BasicAllowance.HomePassageCurrencyId" class="basic-allowance-amount @((int)AllowanceType.HomePassage)" />
-    <input type="hidden" asp-for="BasicAllowance.HousingAmount.PlainValue" asp-encrypt-for="BasicAllowance.HousingAmount.EncryptedValue" data-currency="@Model.BasicAllowance.HousingCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Housing)" />
-    <input type="hidden" asp-for="BasicAllowance.MobilePhoneAmount.PlainValue" asp-encrypt-for="BasicAllowance.MobilePhoneAmount.EncryptedValue" data-currency="@Model.BasicAllowance.MobilePhoneCurrencyId" class="basic-allowance-amount @((int)AllowanceType.MobilePhone)" />
-    <input type="hidden" asp-for="BasicAllowance.HPIAmount.PlainValue" asp-encrypt-for="BasicAllowance.HPIAmount.EncryptedValue" data-currency="@Model.BasicAllowance.HPICurrencyId" class="basic-allowance-amount @((int)AllowanceType.HPI)" />
-    <input type="hidden" asp-for="BasicAllowance.DutyMealAmount.PlainValue" asp-encrypt-for="BasicAllowance.DutyMealAmount.EncryptedValue" data-currency="@Model.BasicAllowance.DutyMealCurrencyId" class="basic-allowance-amount @((int)AllowanceType.DutyMeal)" />
-    <input type="hidden" asp-for="BasicAllowance.SecondmentAmount.PlainValue" asp-encrypt-for="BasicAllowance.SecondmentAmount.EncryptedValue" data-currency="@Model.BasicAllowance.SecondmentCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Secondment)" />
-    <input type="hidden" asp-for="BasicAllowance.OthersAmount.PlainValue" asp-encrypt-for="BasicAllowance.OthersAmount.EncryptedValue" data-currency="@Model.BasicAllowance.OthersCurrencyId" class="basic-allowance-amount @((int)AllowanceType.Others)" />
+    <input type="hidden" asp-for="BasicAllowance.SubsistenceAmount.PlainValue" asp-encrypt-for="BasicAllowance.SubsistenceAmount.EncryptedValue" data-currency="@Model.BasicAllowance.SubsistenceCurrencyId" class="basic-allowance-amount @((int)MonthlyAllowanceAdditionType.Subsistence)" />
+    <input type="hidden" asp-for="BasicAllowance.HomePassageAmount.PlainValue" asp-encrypt-for="BasicAllowance.HomePassageAmount.EncryptedValue" data-currency="@Model.BasicAllowance.HomePassageCurrencyId" class="basic-allowance-amount @((int)MonthlyAllowanceAdditionType.HomePassage)" />
+    <input type="hidden" asp-for="BasicAllowance.HousingAmount.PlainValue" asp-encrypt-for="BasicAllowance.HousingAmount.EncryptedValue" data-currency="@Model.BasicAllowance.HousingCurrencyId" class="basic-allowance-amount @((int)MonthlyAllowanceAdditionType.Housing)" />
+    <input type="hidden" asp-for="BasicAllowance.MobilePhoneAmount.PlainValue" asp-encrypt-for="BasicAllowance.MobilePhoneAmount.EncryptedValue" data-currency="@Model.BasicAllowance.MobilePhoneCurrencyId" class="basic-allowance-amount @((int)MonthlyAllowanceAdditionType.MobilePhone)" />
+    <input type="hidden" asp-for="BasicAllowance.HPIAmount.PlainValue" asp-encrypt-for="BasicAllowance.HPIAmount.EncryptedValue" data-currency="@Model.BasicAllowance.HPICurrencyId" class="basic-allowance-amount @((int)MonthlyAllowanceAdditionType.HPI)" />
+    <input type="hidden" asp-for="BasicAllowance.DutyMealAmount.PlainValue" asp-encrypt-for="BasicAllowance.DutyMealAmount.EncryptedValue" data-currency="@Model.BasicAllowance.DutyMealCurrencyId" class="basic-allowance-amount @((int)MonthlyAllowanceAdditionType.DutyMeal)" />
+    <input type="hidden" asp-for="BasicAllowance.SecondmentAmount.PlainValue" asp-encrypt-for="BasicAllowance.SecondmentAmount.EncryptedValue" data-currency="@Model.BasicAllowance.SecondmentCurrencyId" class="basic-allowance-amount @((int)MonthlyAllowanceAdditionType.Secondment)" />
+    <input type="hidden" asp-for="BasicAllowance.OthersAmount.PlainValue" asp-encrypt-for="BasicAllowance.OthersAmount.EncryptedValue" data-currency="@Model.BasicAllowance.OthersCurrencyId" class="basic-allowance-amount @((int)MonthlyAllowanceAdditionType.Others)" />
 
     <div class="form-information">
         <div class="list-message-error hidden" id="validation-summary">
@@ -171,20 +173,14 @@
                     <div>@ViewLang.TotalAmountActualCurrency</div>
                     <div class="-start-col-6">@ViewLang.NetAllowance (@Model.Allowance.Total.CurrencyCode)</div>
                 </div>
-
-                @{
-                    var allowanceTypes = Html.GetEnumSelectList<AllowanceType>();
-                }
-
                 @for (var i = 0; i < Model.Additions.Count; i++)
                 {
                     <div class="group-complex -alw-layout-add">
-
-                        <div class="like-group-title">@allowanceTypes.FirstOrDefault(x => x.Value == Model.Additions[i].Type.ToString()).Text</div>
+                        <div class="like-group-title">@(((MonthlyAllowanceAdditionType)Model.Additions[i].Type).GetDisplayName())</div>
                         <input type="hidden" asp-for="Additions[i].PayrollId">
                         <input type="hidden" asp-for="Additions[i].Type">
 
-                        @if (Model.Deductions[i].Type == (int)AllowanceType.DutyMeal)
+                        @if (Model.Deductions[i].Type == (byte)MonthlyAllowanceAdditionType.DutyMeal)
                         {
                             <input type="text" class="control addition unit-amount" data-group="addition-@i" asp-for="Additions[i].PlainValue"
                                    asp-encrypt-for="Additions[i].EncryptedValue" readonly />
@@ -195,23 +191,39 @@
                                    asp-encrypt-for="Additions[i].EncryptedValue" />
                         }
 
-                        <select class="control select2 addition currency" data-group="addition-@i" asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
+                        <select class="control select2 addition currency" data-group="addition-@i"
+                                asp-for="Additions[i].CurrencyId" asp-items="Model.Currencies">
                             <option></option>
                         </select>
-                        <input type="text" class="control addition no-of-days" data-allowance-type="@Model.Additions[i].Type" data-group="addition-@i" asp-for="Additions[i].NoOfDays" />
+                        <input type="text" class="control addition no-of-days"
+                               data-allowance-type="@Model.Additions[i].Type" data-group="addition-@i" asp-for="Additions[i].NoOfDays" />
 
-                        <input type="hidden" class="addition total-amount" data-group="addition-@i" asp-for="Additions[i].TotalAmount.PlainValue" asp-encrypt-for="Additions[i].TotalAmount.EncryptedValue" />
-                        <input type="text" class="control addition total-amount-display" data-group="addition-@i" readonly asp-for="Additions[i].TotalAmountToDisplay.PlainValue" asp-encrypt-for="Additions[i].TotalAmountToDisplay.EncryptedValue" />
+                        <input type="hidden" class="addition total-amount" data-group="addition-@i"
+                               asp-for="Additions[i].TotalAmount.PlainValue"
+                               asp-encrypt-for="Additions[i].TotalAmount.EncryptedValue" />
+                        <input type="text" class="control addition total-amount-display" data-group="addition-@i" readonly
+                               asp-for="Additions[i].TotalAmountToDisplay.PlainValue"
+                               asp-encrypt-for="Additions[i].TotalAmountToDisplay.EncryptedValue" />
 
-                        <input type="hidden" class="addition net-allowance" data-group="addition-@i" asp-for="Additions[i].NetAllowance.PlainValue" asp-encrypt-for="Additions[i].NetAllowance.EncryptedValue">
-                        <input type="text" class="control addition net-allowance-display" data-group="addition-@i" readonly asp-for="Additions[i].NetAllowanceToDisplay.PlainValue" asp-encrypt-for="Additions[i].NetAllowanceToDisplay.EncryptedValue" />
+                        <input type="hidden" class="addition net-allowance" data-group="addition-@i"
+                               asp-for="Additions[i].NetAllowance.PlainValue" asp-encrypt-for="Additions[i].NetAllowance.EncryptedValue">
+                        <input type="text" class="control addition net-allowance-display" data-group="addition-@i" readonly
+                               asp-for="Additions[i].NetAllowanceToDisplay.PlainValue"
+                               asp-encrypt-for="Additions[i].NetAllowanceToDisplay.EncryptedValue" />
                     </div>
                 }
 
                 <div class="group-complex -alw-layout-add">
                     <div class="text-specific">@ViewLang.TotalAdd</div>
-                    <input type="hidden" id="total-addition" asp-for="Allowance.Addition.PlainValue" asp-encrypt-for="Allowance.Addition.EncryptedValue">
-                    <input type="text" id="total-addition-display" class="control highlighted -start-col-6" disabled asp-for="Allowance.AdditionDisplay.PlainValue" asp-encrypt-for="Allowance.AdditionDisplay.EncryptedValue">
+                    <input type="hidden" id="total-addition" asp-for="Allowance.Addition.PlainValue"
+                           asp-encrypt-for="Allowance.Addition.EncryptedValue" />
+                    <input type="text" id="total-addition-display" class="control highlighted -start-col-6" disabled
+                           asp-for="Allowance.AdditionDisplay.PlainValue"
+                           asp-encrypt-for="Allowance.AdditionDisplay.EncryptedValue" />
+                </div>
+                <div class="group-complex -alw-layout-add comment">
+                    <div class="like-group-title">@ViewLang.Comment</div>
+                    <textarea asp-for="Allowance.AdditionComment" class="control text-comment"></textarea>
                 </div>
             </div>
             <div class="deduction">
@@ -230,7 +242,9 @@
                         <input type="hidden" asp-for="Deductions[i].PayrollId">
                         <input type="hidden" asp-for="Deductions[i].Type">
 
-                        @if (Model.Deductions[i].Type == (int)AllowanceType.DutyMeal)
+                        @if (Model.Deductions[i].Type == (byte)MonthlyAllowanceAdditionType.DutyMeal
+                            || Model.Deductions[i].Type == (byte)MonthlyAllowanceAdditionType.SpecialAllowances
+                            || Model.Deductions[i].Type == (byte)MonthlyAllowanceAdditionType.OT)
                         {
                             <input type="text" asp-for="Deductions[i].PlainValue" asp-encrypt-for="Deductions[i].EncryptedValue"
                                    class="control deduction unit-amount" data-group="deduction-@i" readonly />
@@ -240,16 +254,37 @@
                             <input type="text" asp-for="Deductions[i].PlainValue" asp-encrypt-for="Deductions[i].EncryptedValue"
                                    class="control deduction unit-amount" data-group="deduction-@i" />
                         }
-                        <select class="control select2 deduction currency" data-group="deduction-@i" asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
-                            <option></option>
-                        </select>
-                        <input type="text" class="control deduction no-of-days" data-allowance-type="@Model.Deductions[i].Type" data-group="deduction-@i" asp-for="Deductions[i].NoOfDays" />
+                        @if (Model.Deductions[i].Type == (byte)MonthlyAllowanceAdditionType.SpecialAllowances
+                            || Model.Deductions[i].Type == (byte)MonthlyAllowanceAdditionType.OT)
+                        {
+                            <select class="control select2 deduction currency" disabled></select>
+                            <input type="hidden" asp-for="Deductions[i].CurrencyId" />
+                            <input type="text" class="control deduction no-of-days" readonly
+                                   data-allowance-type="@Model.Deductions[i].Type"
+                                   data-group="deduction-@i" asp-for="Deductions[i].NoOfDays" />
+                        }
+                        else
+                        {
+                            <select class="control select2 deduction currency" data-group="deduction-@i"
+                                    asp-for="Deductions[i].CurrencyId" asp-items="Model.Currencies">
+                                <option></option>
+                            </select>
+                            <input type="text" class="control deduction no-of-days"
+                                   data-allowance-type="@Model.Deductions[i].Type"
+                                   data-group="deduction-@i" asp-for="Deductions[i].NoOfDays" />
+                        }
 
-                        <input type="hidden" class="deduction total-amount" data-group="deduction-@i" asp-for="Deductions[i].TotalAmount.PlainValue" asp-encrypt-for="Deductions[i].TotalAmount.EncryptedValue" />
-                        <input type="text" class="control deduction total-amount-display" data-group="deduction-@i" readonly asp-for="Deductions[i].TotalAmountToDisplay.PlainValue" asp-encrypt-for="Deductions[i].TotalAmountToDisplay.EncryptedValue" />
+                        <input type="hidden" class="deduction total-amount" data-group="deduction-@i"
+                               asp-for="Deductions[i].TotalAmount.PlainValue" asp-encrypt-for="Deductions[i].TotalAmount.EncryptedValue" />
+                        <input type="text" class="control deduction total-amount-display" data-group="deduction-@i"
+                               asp-for="Deductions[i].TotalAmountToDisplay.PlainValue"
+                               asp-encrypt-for="Deductions[i].TotalAmountToDisplay.EncryptedValue" readonly />
 
-                        <input type="hidden" class="deduction net-allowance" data-group="deduction-@i" asp-for="Deductions[i].NetAllowance.PlainValue" asp-encrypt-for="Deductions[i].NetAllowance.EncryptedValue">
-                        <input type="text" class="control deduction net-allowance-display" data-group="deduction-@i" readonly asp-for="Deductions[i].NetAllowanceToDisplay.PlainValue" asp-encrypt-for="Deductions[i].NetAllowanceToDisplay.EncryptedValue" />
+                        <input type="hidden" class="deduction net-allowance" data-group="deduction-@i"
+                               asp-for="Deductions[i].NetAllowance.PlainValue" asp-encrypt-for="Deductions[i].NetAllowance.EncryptedValue" />
+                        <input type="text" class="control deduction net-allowance-display" data-group="deduction-@i"
+                               asp-for="Deductions[i].NetAllowanceToDisplay.PlainValue"
+                               asp-encrypt-for="Deductions[i].NetAllowanceToDisplay.EncryptedValue" readonly />
                     </div>
                 }
 
@@ -257,6 +292,9 @@
                     <div class="text-specific text-red">@ViewLang.TotalDeduction</div>
                     <input type="hidden" id="total-deduction" asp-for="Allowance.Deduction.PlainValue" asp-encrypt-for="Allowance.Deduction.EncryptedValue">
                     <input type="text" id="total-deduction-display" class="control highlighted -start-col-4" disabled asp-for="Allowance.DeductiontDisplay.PlainValue" asp-encrypt-for="Allowance.DeductiontDisplay.EncryptedValue">
+                </div>
+                <div class="group-complex -alw-layout-deduction comment">
+                    <textarea asp-for="Allowance.DeductionComment" class="control text-comment"></textarea>
                 </div>
             </div>
         </div>

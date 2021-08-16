@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using HRP.Core.Constants;
     using HRP.Core.Enumerations;
     using HRP.Core.Extensions;
     using HRP.Core.Model;
@@ -330,9 +332,9 @@
 
         #region GenerateMonthlyPayroll
 
-        public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId)
+        public async Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId = null)
         {
-            GeneratePayrollModel dataModel = await GetDataForGenerateMonthlyPayroll(companyId, month, employeeId);
+            GeneratePayrollModel dataModel = await GetDataForGenerateMonthlyPayrollAsync(companyId, month, employeeId);
             var monthlySalaries = new List<MonthlySalaryModel>();
             var monthlySalaryAdditions = new List<MonthlySalaryAdditionModel>();
             var monthlySalaryDeductions = new List<MonthlySalaryDeductionModel>();
@@ -377,32 +379,174 @@
             MonthlyPayroll payroll,
             MonthlyBasicSalaryModel monthlyBasicSalary)
         {
+            var backPay = new MonthlySalaryAdditionModel { EmployeeId = payroll.EmployeeId, Type = (int)MonthlySalaryAdditionType.BackPay };
+            var monthlySalary = new MonthlySalaryModel { EmployeeId = payroll.EmployeeId };
+            DecryptMonthlyBasicSalary(monthlyBasicSalary);
+
+            var additionDeductionUpload = dataModel.AdditionDeductions.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
             var salaryAdditions = Enum.GetValues(typeof(MonthlySalaryAdditionType)).Cast<MonthlySalaryAdditionType>()
-                .Where(x => (int)x != (int)MonthlySalaryAdditionType.BackPay).Select(x => new MonthlySalaryAdditionModel
+                .Where(x => (byte)x != (byte)MonthlySalaryAdditionType.BackPay).Select(x => new MonthlySalaryAdditionModel
                 {
                     EmployeeId = payroll.EmployeeId,
-                    Type = (short)x
+                    Type = (byte)x
                 }).ToList();
             var salaryDeductions = Enum.GetValues(typeof(MonthlySalaryDeductionType)).Cast<MonthlySalaryDeductionType>()
                 .Select(x => new MonthlySalaryDeductionModel
                 {
                     EmployeeId = payroll.EmployeeId,
-                    Type = (short)x
+                    Type = (byte)x
                 }).ToList();
-            var backPay = new MonthlySalaryAdditionModel { EmployeeId = payroll.EmployeeId, Type = (int)MonthlySalaryAdditionType.BackPay };
-            var monthlySalary = new MonthlySalaryModel { EmployeeId = payroll.EmployeeId };
-            DecryptMonthlyBasicSalary(monthlyBasicSalary);
+            if (additionDeductionUpload != null)
+            {
+                MappingMonthlySalaryAddition(salaryAdditions, additionDeductionUpload, monthlyBasicSalary.CurrencyCode);
+                MappingMonthlySalaryDeduction(salaryDeductions, additionDeductionUpload, monthlyBasicSalary);
+            }
 
             monthlySalaryService.CalculateBackPayAndAfterAdjustment(dataModel.CurrencyExchangeRate, month, monthlyBasicSalary, backPay, payroll.GroupStartDate, payroll.GroupEndDate);
-            monthlySalaryService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, backPay, monthlySalary);
+            monthlySalaryService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, monthlySalary, salaryAdditions, salaryDeductions);
+
+            salaryAdditions.Add(backPay);
 
             EncryptMonthlyBasicSalary(monthlyBasicSalary);
             EncryptMonthlySalary(monthlySalary);
-            EncryptMonthlySalaryAddition(backPay);
+            EncryptMonthlySalaryAddition(salaryAdditions);
+            EncryptMonthlySalaryDeduction(salaryDeductions);
             monthlySalaries.Add(monthlySalary);
             monthlySalaryAdditions.AddRange(salaryAdditions);
-            monthlySalaryAdditions.Add(backPay);
             monthlySalaryDeductions.AddRange(salaryDeductions);
+        }
+
+        private static void MappingMonthlySalaryAddition(
+            List<MonthlySalaryAdditionModel> additions,
+            AdditionDeductionUploading additionDeductionUpload,
+            string currencyCode)
+        {
+            foreach(var addition in additions)
+            {
+                switch (addition.Type)
+                {
+                    case (byte)MonthlySalaryAdditionType.Adjustments:
+                        MappingMonthlySalaryAddition(addition,
+                            additionDeductionUpload.Salary_Addition_Adjustments_Amount,
+                            additionDeductionUpload.Salary_Addition_Adjustments_NoOfDays,
+                            currencyCode);
+                        addition.Description = additionDeductionUpload.Salary_Addition_Adjustments_Comment;
+                        break;
+
+                    case (byte)MonthlySalaryAdditionType.Others1:
+                        MappingMonthlySalaryAddition(addition,
+                            additionDeductionUpload.Salary_Addition_Others1_Amount,
+                            additionDeductionUpload.Salary_Addition_Others1_NoOfDays,
+                            currencyCode);
+                        addition.Description = additionDeductionUpload.Salary_Addition_Others1_Comment;
+                        break;
+
+                    case (byte)MonthlySalaryAdditionType.Others2:
+                        MappingMonthlySalaryAddition(addition,
+                            additionDeductionUpload.Salary_Addition_Others2_Amount,
+                            additionDeductionUpload.Salary_Addition_Others2_NoOfDays,
+                            currencyCode);
+                        addition.Description = additionDeductionUpload.Salary_Addition_Others2_Comment;
+                        break;
+
+                    default:
+                        // do nothing
+                        break;
+                }
+            }
+        }
+
+        private static void MappingMonthlySalaryAddition(MonthlySalaryAdditionModel addition, string unitAmount, string noOfDays, string currencyCode)
+        {
+            decimal.TryParse(unitAmount, out decimal amount);
+            decimal.TryParse(noOfDays, out decimal tempNoOfDays);
+            amount = Math.Round(amount, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+            if (amount > 0)
+            {
+                amount = CalculationService.RoundAmountWithCurrency(amount, currencyCode);
+                tempNoOfDays = Math.Round(tempNoOfDays, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+                var netAmount = CalculationService.RoundAmountWithCurrency(amount * (tempNoOfDays == 0 ? 1 : tempNoOfDays), currencyCode);
+                addition.UnitAmount = amount.ToString(CultureInfo.InvariantCulture);
+                addition.NoOfDays = tempNoOfDays == 0 ? (decimal?)null : tempNoOfDays;
+                addition.NetSalary = netAmount.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        private static void MappingMonthlySalaryDeduction(
+            List<MonthlySalaryDeductionModel> deductions,
+            AdditionDeductionUploading additionDeductionUpload,
+            MonthlyBasicSalaryModel monthlyBasicSalary)
+        {
+            decimal amount;
+            foreach (var deduction in deductions)
+            {
+                switch (deduction.Type)
+                {
+                    case (byte)MonthlySalaryDeductionType.Absenteeism:
+                        MappingAbsenteeismDeduction(deduction, additionDeductionUpload, monthlyBasicSalary);
+                        break;
+
+                    case (byte)MonthlySalaryDeductionType.Tardiness:
+                        MappingTardinessDeduction(deduction, additionDeductionUpload, monthlyBasicSalary);
+                        break;
+
+                    case (byte)MonthlySalaryDeductionType.SalaryAdvance:
+                        decimal.TryParse(additionDeductionUpload.Salary_Deduction_Advance_Amount, out amount);
+                        amount = Math.Round(amount, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+                        amount = CalculationService.RoundAmountWithCurrency(amount, monthlyBasicSalary.CurrencyCode);
+
+                        deduction.UnitAmount = amount > 0 ? amount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+                        deduction.NetSalary = deduction.UnitAmount;
+                        deduction.Description = additionDeductionUpload.Salary_Deduction_Advance_Comment;
+                        break;
+
+                    case (byte)MonthlySalaryDeductionType.Others:
+                        decimal.TryParse(additionDeductionUpload.Salary_Deduction_Others_Amount, out amount);
+                        amount = Math.Round(amount, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+                        amount = CalculationService.RoundAmountWithCurrency(amount, monthlyBasicSalary.CurrencyCode);
+
+                        deduction.UnitAmount = amount > 0 ? amount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+                        deduction.NetSalary = deduction.UnitAmount;
+                        deduction.Description = additionDeductionUpload.Salary_Deduction_Others_Comment;
+                        break;
+
+                    default:
+                        // do nothing
+                        break;
+                }
+            }
+        }
+
+        private static void MappingAbsenteeismDeduction(
+            MonthlySalaryDeductionModel deduction,
+            AdditionDeductionUploading dataUpload,
+            MonthlyBasicSalaryModel monthlyBasicSalary)
+        {
+            decimal.TryParse(dataUpload.Salary_Deduction_Absenteeism_Days, out decimal days);
+            days = Math.Round(days, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+            var amount = monthlyBasicSalary.SalaryPerDay * days;
+            amount = Math.Round(amount, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+            amount = CalculationService.RoundAmountWithCurrency(amount, monthlyBasicSalary.CurrencyCode);
+
+            deduction.NoOfDays = days > 0 ? days : (decimal?)null;
+            deduction.NetSalary = amount > 0 ? amount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            deduction.Description = dataUpload.Salary_Deduction_Absenteeism_Comment;
+        }
+
+        private static void MappingTardinessDeduction(
+            MonthlySalaryDeductionModel deduction,
+            AdditionDeductionUploading dataUpload,
+            MonthlyBasicSalaryModel monthlyBasicSalary)
+        {
+            decimal.TryParse(dataUpload.Salary_Deduction_Tardiness_Minutes, out decimal minutes);
+            minutes = Math.Round(minutes, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+            var amount = (monthlyBasicSalary.SalaryPerDay / (8 * 60)) * minutes;
+            amount = Math.Round(amount, Constants.DefaultNoOfFractionalDigits, MidpointRounding.AwayFromZero);
+            amount = CalculationService.RoundAmountWithCurrency(amount, monthlyBasicSalary.CurrencyCode);
+
+            deduction.NoOfDays = minutes > 0 ? minutes : (decimal?)null;
+            deduction.NetSalary = amount > 0 ? amount.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            deduction.Description = dataUpload.Salary_Deduction_Tardiness_Comment;
         }
 
         private void GenerateEmployeeAllowance(
@@ -418,16 +562,25 @@
             var monthlyAttendance = dataModel.MonthlyAttendance.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
             var monthlyDSTNetSalary = dataModel.MonthlyDSTNetSalary.FirstOrDefault(x => x.EmployeeId == payroll.EmployeeId);
             var actualWorkingDay = monthlyAttendance?.ActualWorkingDay ?? monthlyBasicSalary.WorkingDays;
+            var additionDeductionUpload = dataModel.AdditionDeductions.FirstOrDefault(x => x.EmployeeId == monthlyBasicAllowance.EmployeeId);
             DecryptMonthlyDSTNetSalary(monthlyDSTNetSalary);
             DecryptMonthlyBasicAllowance(monthlyBasicAllowance);
 
-            monthlyAllowancesService.CalculateMonthlyBasicAllowance(dataModel.CurrencyExchangeRate, monthlyBasicAllowance, month, payroll.GroupStartDate, payroll.GroupEndDate);
-            var allowanceAdditions = monthlyAllowancesService.InitializeAllowanceAdditions(monthlyBasicSalary.WorkingDays,
-                actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
-            var allowanceDeductions = monthlyAllowancesService.InitializeAllowanceDeductions(monthlyBasicSalary.WorkingDays,
-                actualWorkingDay, monthlyBasicAllowance, dataModel.CurrencyExchangeRate);
-            var allowance = monthlyAllowancesService.InitializeMonthlyAllowance(monthlyBasicAllowance, allowanceAdditions, allowanceDeductions,
+            monthlyAllowancesService.CalculateMonthlyBasicAllowance(
+                dataModel.CurrencyExchangeRate, monthlyBasicAllowance,
+                month, payroll.GroupStartDate, payroll.GroupEndDate);
+            var allowanceAdditions = monthlyAllowancesService.InitializeAllowanceAdditions(
+                monthlyBasicSalary.WorkingDays, actualWorkingDay,
+                monthlyBasicAllowance, dataModel);
+            var allowanceDeductions = monthlyAllowancesService.InitializeAllowanceDeductions(
+                monthlyBasicSalary.WorkingDays, actualWorkingDay,
+                monthlyBasicAllowance,
+                dataModel);
+            MonthlyAllowanceModel allowance = monthlyAllowancesService.InitializeMonthlyAllowance(
+                monthlyBasicAllowance, allowanceAdditions, allowanceDeductions,
                 dataModel.CurrencyExchangeRate, monthlyDSTNetSalary);
+            allowance.AdditionComment = additionDeductionUpload?.Allowance_Addition_Comment;
+            allowance.DeductionComment = additionDeductionUpload?.Allowance_Deduction_Comment;
 
             EncryptMonthlyBasicAllowance(monthlyBasicAllowance);
             EncryptMonthlyAllowance(allowance);
@@ -448,7 +601,7 @@
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        private async Task<GeneratePayrollModel> GetDataForGenerateMonthlyPayroll(int companyId, DateTime month, int? employeeId = null)
+        private async Task<GeneratePayrollModel> GetDataForGenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId = null)
         {
             var criteria = new GetDataForGeneratePayrollCriteria
             {
@@ -456,7 +609,41 @@
                 Month = month,
                 EmployeeId = employeeId
             };
-            return await paymentProcessRepository.GetDataForGeneratePayroll(criteria);
+            GeneratePayrollModel data = await paymentProcessRepository.GetDataForGeneratePayrollAsync(criteria);
+            data.Currencies = await commonService.GetCurrencyAsync();
+            DescryptAdditionDeduction(data.AdditionDeductions);
+
+            return data;
+        }
+
+        private void DescryptAdditionDeduction(IEnumerable<AdditionDeductionUploading> additionDeductions)
+        {
+            foreach(var item in additionDeductions)
+            {
+                item.Salary_Addition_Adjustments_Amount = cryptoService.Decrypt(item.Salary_Addition_Adjustments_Amount);
+                item.Salary_Addition_Others1_Amount = cryptoService.Decrypt(item.Salary_Addition_Others1_Amount);
+                item.Salary_Addition_Others2_Amount = cryptoService.Decrypt(item.Salary_Addition_Others2_Amount);
+                item.Salary_Deduction_Advance_Amount = cryptoService.Decrypt(item.Salary_Deduction_Advance_Amount);
+                item.Salary_Deduction_Others_Amount = cryptoService.Decrypt(item.Salary_Deduction_Others_Amount);
+
+                item.Allowance_Addition_Subsistence_Amount = cryptoService.Decrypt(item.Allowance_Addition_Subsistence_Amount);
+                item.Allowance_Addition_HomePassage_Amount = cryptoService.Decrypt(item.Allowance_Addition_HomePassage_Amount);
+                item.Allowance_Addition_Housing_Amount = cryptoService.Decrypt(item.Allowance_Addition_Housing_Amount);
+                item.Allowance_Addition_MobilePhone_Amount = cryptoService.Decrypt(item.Allowance_Addition_MobilePhone_Amount);
+                item.Allowance_Addition_HPI_Amount = cryptoService.Decrypt(item.Allowance_Addition_HPI_Amount);
+                item.Allowance_Addition_Secondment_Amount = cryptoService.Decrypt(item.Allowance_Addition_Secondment_Amount);
+                item.Allowance_Addition_SpecialAllowance_Amount = cryptoService.Decrypt(item.Allowance_Addition_SpecialAllowance_Amount);
+                item.Allowance_Addition_OT_Amount = cryptoService.Decrypt(item.Allowance_Addition_OT_Amount);
+                item.Allowance_Addition_Others_Amount = cryptoService.Decrypt(item.Allowance_Addition_Others_Amount);
+
+                item.Allowance_Deduction_Subsistence_Amount = cryptoService.Decrypt(item.Allowance_Deduction_Subsistence_Amount);
+                item.Allowance_Deduction_HomePassage_Amount = cryptoService.Decrypt(item.Allowance_Deduction_HomePassage_Amount);
+                item.Allowance_Deduction_Housing_Amount = cryptoService.Decrypt(item.Allowance_Deduction_Housing_Amount);
+                item.Allowance_Deduction_MobilePhone_Amount = cryptoService.Decrypt(item.Allowance_Deduction_MobilePhone_Amount);
+                item.Allowance_Deduction_HPI_Amount = cryptoService.Decrypt(item.Allowance_Deduction_HPI_Amount);
+                item.Allowance_Deduction_Secondment_Amount = cryptoService.Decrypt(item.Allowance_Deduction_Secondment_Amount);
+                item.Allowance_Deduction_Others_Amount = cryptoService.Decrypt(item.Allowance_Deduction_Others_Amount);
+            }
         }
 
         private void DecryptMonthlyBasicSalary(MonthlyBasicSalaryModel basicSalary)
@@ -496,12 +683,21 @@
             }
         }
 
-        private void EncryptMonthlySalaryAddition(MonthlySalaryAdditionModel addition)
+        private void EncryptMonthlySalaryAddition(List<MonthlySalaryAdditionModel> additions)
         {
-            if (addition != null)
+            foreach (var addition in additions)
             {
                 addition.UnitAmount = cryptoService.Encrypt(addition.UnitAmount);
                 addition.NetSalary = cryptoService.Encrypt(addition.NetSalary);
+            }
+        }
+
+        private void EncryptMonthlySalaryDeduction(List<MonthlySalaryDeductionModel> deductions)
+        {
+            foreach (var deduction in deductions)
+            {
+                deduction.UnitAmount = cryptoService.Encrypt(deduction.UnitAmount);
+                deduction.NetSalary = cryptoService.Encrypt(deduction.NetSalary);
             }
         }
 

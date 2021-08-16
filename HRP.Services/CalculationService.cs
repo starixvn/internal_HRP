@@ -108,7 +108,7 @@
             return Math.Abs(monthsApart);
         }
 
-        private static decimal GetExchangeRate(
+        public static decimal GetExchangeRate(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             int fromCurrencyId,
             int toCurrencyId)

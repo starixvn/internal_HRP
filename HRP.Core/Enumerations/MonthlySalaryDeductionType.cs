@@ -1,17 +1,20 @@
 namespace HRP.Core.Enumerations
 {
-    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using HRP.Resources;
 
     public enum MonthlySalaryDeductionType
     {
-        [Description("UPL/Absenteeism")]
+        [Display(Name = nameof(ViewLang.UPLAbsenteeism), ResourceType = typeof(ViewLang))]
         Absenteeism = 1,
 
+        [Display(Name = nameof(ViewLang.Tardiness), ResourceType = typeof(ViewLang))]
         Tardiness,
 
-        [Description("Salary Advance")]
+        [Display(Name = nameof(ViewLang.SalaryAdvance), ResourceType = typeof(ViewLang))]
         SalaryAdvance,
 
+        [Display(Name = nameof(ViewLang.Others), ResourceType = typeof(ViewLang))]
         Others
     }
 }

@@ -523,7 +523,7 @@
 
         #endregion DeleteUploadedDSTNetSalary
 
-        #region GenerateMonthlyPayroll
+        #region GetDataForGeneratePayrollAsync
 
         [Fact]
         public async Task GenerateMonthlyPayrollAsync_MonthlyBasicSalaryIsNull_ReturnExpectedCommandResult()
@@ -544,7 +544,7 @@
             var month = DateTime.Today;
             var employeeId = 1;
             var paymentProcessService = GetPaymentProcessService();
-            paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
+            paymentProcessRepository.GetDataForGeneratePayrollAsync(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
                 .Returns(generatePayrollViewModel);
             baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
 
@@ -577,7 +577,7 @@
             var allowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel() };
             var allowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel() };
             var paymentProcessService = GetPaymentProcessService();
-            paymentProcessRepository.GetDataForGeneratePayroll(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
+            paymentProcessRepository.GetDataForGeneratePayrollAsync(Arg.Is<GetDataForGeneratePayrollCriteria>(x => x.CompanyId == companyId && x.Month == month && x.EmployeeId == employeeId))
                 .Returns(generatePayrollViewModel);
             baseService.ExecuteNonQueryAsync(Arg.Is<GenerateMonthlyPayrollCriteria>(x => x.CompanyId == companyId && x.Month == month)).Returns(expected);
             monthlyAllowancesService.InitializeMonthlyAllowance(Arg.Any<MonthlyPayrollBasicAllowanceModel>(),

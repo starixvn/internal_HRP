@@ -205,6 +205,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Annual Increment.
+        /// </summary>
+        public static string AnnualIncrement {
+            get {
+                return ResourceManager.GetString("AnnualIncrement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assign Permission.
         /// </summary>
         public static string AssignPermission {
@@ -480,6 +489,15 @@ namespace HRP.Resources {
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        public static string Comment {
+            get {
+                return ResourceManager.GetString("Comment", resourceCulture);
             }
         }
         
@@ -822,6 +840,15 @@ namespace HRP.Resources {
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Demotion.
+        /// </summary>
+        public static string Demotion {
+            get {
+                return ResourceManager.GetString("Demotion", resourceCulture);
             }
         }
         
@@ -1987,6 +2014,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OT.
+        /// </summary>
+        public static string OT {
+            get {
+                return ResourceManager.GetString("OT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Other.
         /// </summary>
         public static string Other {
@@ -2185,6 +2221,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Penalty.
+        /// </summary>
+        public static string Penalty {
+            get {
+                return ResourceManager.GetString("Penalty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permanent Address (Overseas).
         /// </summary>
         public static string PermanentAddress {
@@ -2320,6 +2365,15 @@ namespace HRP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Promotion.
+        /// </summary>
+        public static string Promotion {
+            get {
+                return ResourceManager.GetString("Promotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rate.
         /// </summary>
         public static string Rate {
@@ -2433,6 +2487,15 @@ namespace HRP.Resources {
         public static string RowNo {
             get {
                 return ResourceManager.GetString("RowNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary Adjustment.
+        /// </summary>
+        public static string SalaryAdjustment {
+            get {
+                return ResourceManager.GetString("SalaryAdjustment", resourceCulture);
             }
         }
         
@@ -2613,6 +2676,15 @@ namespace HRP.Resources {
         public static string SMTP {
             get {
                 return ResourceManager.GetString("SMTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special Allowances.
+        /// </summary>
+        public static string SpecialAllowances {
+            get {
+                return ResourceManager.GetString("SpecialAllowances", resourceCulture);
             }
         }
         

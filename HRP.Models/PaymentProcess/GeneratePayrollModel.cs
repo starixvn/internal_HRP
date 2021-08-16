@@ -18,5 +18,7 @@
         public IEnumerable<MonthlyPayrollBasicAllowanceModel> MonthlyBasicAllowance { get; set; }
 
         public IEnumerable<CurrencyExchangeRateModel> CurrencyExchangeRate { get; set; }
+        public IEnumerable<AdditionDeductionUploading> AdditionDeductions { get; set; } = new List<AdditionDeductionUploading>();
+        public IEnumerable<Currency> Currencies { get; set; } = new List<Currency>();
     }
 }

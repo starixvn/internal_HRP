@@ -791,7 +791,9 @@
                     CurrencyCode = allowance.CashCurrencyCode,
                     EncryptedValue = rijndaelService.Encrypt(allowance.CashAmount, rijndaelKey, rijndaelIV),
                     AccountId = allowance.CashAccountId,
-                }
+                },
+                AdditionComment = allowance.AdditionComment,
+                DeductionComment = allowance.DeductionComment
             };
         }
 
@@ -881,6 +883,8 @@
                     DSTNetSalaryAmount = viewModel.Allowance.DST.PlainValue,
                     AdditionAmount = viewModel.Allowance.Addition.PlainValue,
                     DeductionAmount = viewModel.Allowance.Deduction.PlainValue,
+                    AdditionComment = viewModel.Allowance.AdditionComment,
+                    DeductionComment = viewModel.Allowance.DeductionComment
                 },
                 Additions = viewModel.Additions.Select(x => new MonthlyAllowanceAdditionModel
                 {

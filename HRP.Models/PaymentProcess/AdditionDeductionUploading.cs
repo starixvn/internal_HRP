@@ -1,10 +1,14 @@
 ﻿namespace HRP.Models.PaymentProcess
 {
+    using System.Xml.Serialization;
     using HRP.Core.Extensions;
 
     [XMLName("Row")]
     public class AdditionDeductionUploading : TemplateUploading
     {
+        [XmlIgnore]
+        public int EmployeeId { get; set; }
+
         public string Salary_Addition_Adjustments_Comment { get; set; }
         public string Salary_Addition_Adjustments_Amount { get; set; }
         public string Salary_Addition_Adjustments_NoOfDays { get; set; }

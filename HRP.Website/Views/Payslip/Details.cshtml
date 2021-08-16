@@ -64,7 +64,7 @@
                     @foreach (MonthlySalaryAdditionModel addition in Model.SalaryAdditions)
                     {
                         <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((MonthlySalaryAdditionType)addition.Type)</div>
+                            <div class="key">@(((MonthlySalaryAdditionType)addition.Type).GetDisplayName())</div>
                             <div class="value">
                                 <span class="js-encrypted hidden">@addition.NetSalaryDisplay</span> @Model.SalaryCurrencyCode
                             </div>
@@ -92,7 +92,7 @@
                     @foreach (MonthlyAllowanceAdditionModel addition in Model.AllowanceAdditions)
                     {
                         <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((AllowanceType)addition.Type)</div>
+                            <div class="key">@(((MonthlyAllowanceAdditionType)addition.Type).GetDisplayName())</div>
                             <div class="value">
                                 <span class="js-encrypted hidden">@addition.NetAllowanceToDisplay</span> @Model.AllowanceCurrencyCode
                             </div>
@@ -114,7 +114,7 @@
                     @foreach (MonthlySalaryDeductionModel deduction in Model.SalaryDeductions)
                     {
                         <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((MonthlySalaryDeductionType)deduction.Type)</div>
+                            <div class="key">@(((MonthlySalaryDeductionType)deduction.Type).GetDisplayName())</div>
                             <div class="value">
                                 <span class="js-encrypted hidden">@deduction.NetSalaryDisplay</span> @Model.SalaryCurrencyCode
                             </div>
@@ -135,12 +135,15 @@
                 <div class="content">
                     @foreach (MonthlyAllowanceDeductionModel deduction in Model.AllowanceDeductions)
                     {
-                        <div class="row">
-                            <div class="key">@EnumHelper.GetDescription((AllowanceType)deduction.Type)</div>
-                            <div class="value">
-                                <span class="js-encrypted hidden">@deduction.NetAllowanceToDisplay</span> @Model.AllowanceCurrencyCode
+                        if (deduction.Type != (byte)MonthlyAllowanceAdditionType.SpecialAllowances && deduction.Type != (byte)MonthlyAllowanceAdditionType.OT)
+                        {
+                            <div class="row">
+                                <div class="key">@(((MonthlyAllowanceAdditionType)deduction.Type).GetDisplayName())</div>
+                                <div class="value">
+                                    <span class="js-encrypted hidden">@deduction.NetAllowanceToDisplay</span> @Model.AllowanceCurrencyCode
+                                </div>
                             </div>
-                        </div>
+                        }
                     }
                 </div>
                 <div class="footer">

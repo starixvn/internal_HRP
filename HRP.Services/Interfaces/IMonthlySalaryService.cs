@@ -33,7 +33,8 @@
         void CalculateMonthlySalary(
             IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates,
             MonthlyBasicSalaryModel basicSalary,
-            MonthlySalaryAdditionModel backPay,
-            MonthlySalaryModel monthlySalary);
+            MonthlySalaryModel monthlySalary,
+            IList<MonthlySalaryAdditionModel> additions,
+            IList<MonthlySalaryDeductionModel> deductions);
     }
 }

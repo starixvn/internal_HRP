@@ -31,7 +31,7 @@
     <div class="group">
         <label class="text">@ViewLang.MonthYear</label>
         <div class="calendar">
-            <input type="text" class="control datetimepicker" asp-for="Month" />
+            <input type="text" class="control datetimepicker" asp-for="Month" data-maxdate="@DateTime.Today" />
             <span class="icon-calendar"></span>
         </div>
     </div>

@@ -6,6 +6,7 @@
     using HRP.Core.Model;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.PaymentProcess;
     using HRP.Models.ServiceModels;
 
     public interface IMonthlyAllowancesService
@@ -25,13 +26,13 @@
             int standardWorkingDays,
             decimal actualWorkingDays,
             MonthlyPayrollBasicAllowanceModel basicAllowance,
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
+            GeneratePayrollModel data);
 
         IEnumerable<MonthlyAllowanceDeductionModel> InitializeAllowanceDeductions(
             int standardWorkingDays,
             decimal actualWorkingDays,
             MonthlyPayrollBasicAllowanceModel basicAllowance,
-            IEnumerable<CurrencyExchangeRateModel> currencyExchangeRates);
+            GeneratePayrollModel data);
 
         MonthlyAllowanceModel InitializeMonthlyAllowance(
             MonthlyPayrollBasicAllowanceModel basicAllowance,

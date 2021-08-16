@@ -1134,4 +1134,28 @@
   <data name="UploadAdditionAndDeductionFile" xml:space="preserve">
     <value>Upload Addition and Deduction File (Max: 5MB)</value>
   </data>
+  <data name="AnnualIncrement" xml:space="preserve">
+    <value>Annual Increment</value>
+  </data>
+  <data name="Demotion" xml:space="preserve">
+    <value>Demotion</value>
+  </data>
+  <data name="OT" xml:space="preserve">
+    <value>OT</value>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Penalty</value>
+  </data>
+  <data name="Promotion" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
+  <data name="SalaryAdjustment" xml:space="preserve">
+    <value>Salary Adjustment</value>
+  </data>
+  <data name="SpecialAllowances" xml:space="preserve">
+    <value>Special Allowances</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
 </root>

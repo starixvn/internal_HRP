@@ -53,10 +53,10 @@
 
         #endregion GetUploadingFilesResultAsync
 
-        #region GetDataForGeneratePayroll
+        #region GetDataForGeneratePayrollAsync
 
         [Fact]
-        public async Task GetDataForGeneratePayroll_WhenCalled_ReturnGeneratePayrollModelAsync()
+        public async Task GetDataForGeneratePayrollAsync_WhenCalled_ReturnGeneratePayrollModelAsync()
         {
             // Arrange
             var expected = new GeneratePayrollModel
@@ -76,7 +76,7 @@
             var repository = new PaymentProcessRepository();
 
             // Act
-            var actual = await repository.GetDataForGeneratePayroll(criteria);
+            var actual = await repository.GetDataForGeneratePayrollAsync(criteria);
 
             // Assert
             Assert.IsType<GeneratePayrollModel>(actual);

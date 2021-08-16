@@ -16,7 +16,9 @@ window.payslips = (function ($) {
     function initDatetimepicker() {
         $('.datetimepicker').datetimepicker({
             viewMode: 'months',
-            format: 'MM-YYYY'
+            format: 'MM-YYYY',
+            maxDate: $('.datetimepicker').data('maxdate'),
+            useCurrent: false
         });
 
         $('.icon-calendar:not(.disabled)').on('click', function () {

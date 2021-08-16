@@ -65,7 +65,7 @@
                     <tr class="body">
                         @if (i < salaryLength)
                         {
-                            <td class="key border-left">@EnumHelper.GetDescription((MonthlySalaryAdditionType)Model.SalaryAdditions[i].Type)</td>
+                            <td class="key border-left">@(((MonthlySalaryAdditionType)Model.SalaryAdditions[i].Type).GetDisplayName())</td>
                             <td class="value align-right">@Model.SalaryAdditions[i].NetSalaryDisplay @Model.SalaryCurrencyCode</td>
                         }
                         else
@@ -75,7 +75,7 @@
                         }
                         @if (i < allowanceLength)
                         {
-                            <td class="key border-left">@EnumHelper.GetDescription((AllowanceType)Model.AllowanceAdditions[i].Type)</td>
+                            <td class="key border-left">@(((MonthlyAllowanceAdditionType)Model.AllowanceAdditions[i].Type).GetDisplayName())</td>
                             <td class="value border-right align-right">@Model.AllowanceAdditions[i].NetAllowanceToDisplay @Model.AllowanceCurrencyCode</td>
                         }
                         else
@@ -99,8 +99,10 @@
                     <td class="border-right"></td>
                 </tr>
                 @{
+                    var allowanceDeductions = Model.AllowanceDeductions
+                        .Where(x => x.Type != (byte)MonthlyAllowanceAdditionType.SpecialAllowances && x.Type != (byte)MonthlyAllowanceAdditionType.OT).ToList();
                     salaryLength = Model.SalaryDeductions.Count;
-                    allowanceLength = Model.AllowanceDeductions.Count;
+                    allowanceLength = allowanceDeductions.Count();
                     total = salaryLength > allowanceLength ? salaryLength : allowanceLength;
                 }
 
@@ -109,7 +111,7 @@
                     <tr class="body">
                         @if (i < salaryLength)
                         {
-                            <td class="key border-left">@EnumHelper.GetDescription((MonthlySalaryDeductionType)Model.SalaryDeductions[i].Type)</td>
+                            <td class="key border-left">@(((MonthlySalaryDeductionType)Model.SalaryDeductions[i].Type).GetDisplayName())</td>
                             <td class="value align-right">@Model.SalaryDeductions[i].NetSalaryDisplay @Model.SalaryCurrencyCode</td>
                         }
                         else
@@ -119,8 +121,8 @@
                         }
                         @if (i < allowanceLength)
                         {
-                            <td class="key border-left">@EnumHelper.GetDescription((AllowanceType)Model.AllowanceDeductions[i].Type)</td>
-                            <td class="value border-right align-right">@Model.AllowanceDeductions[i].NetAllowanceToDisplay @Model.AllowanceCurrencyCode</td>
+                            <td class="key border-left">@(((MonthlyAllowanceAdditionType)allowanceDeductions[i].Type).GetDisplayName())</td>
+                            <td class="value border-right align-right">@allowanceDeductions[i].NetAllowanceToDisplay @Model.AllowanceCurrencyCode</td>
                         }
                         else
                         {

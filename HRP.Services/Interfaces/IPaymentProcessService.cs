@@ -38,6 +38,6 @@
 
         Task<CommandResult> SubmitUploadingFilesAsync(int companyId, DateTime month);
 
-        Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId);
+        Task<CommandResult> GenerateMonthlyPayrollAsync(int companyId, DateTime month, int? employeeId = null);
     }
 }

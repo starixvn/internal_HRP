@@ -18,7 +18,7 @@
 
         public int EmployeeId { get; set; }
 
-        public short Type { get; set; }
+        public byte Type { get; set; }
 
         [XmlIgnore]
         public string AdditionName { get; set; }

@@ -76,7 +76,7 @@
         {
             var monthlyPayrollService = GetMonthlyAllowancesService();
             cryptoService.Encrypt(Arg.Any<string>()).Returns(string.Empty);
-            baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlyAllowancesCriteria>()).Returns(new CommandResult { Code = 0 });
+            baseService.ExecuteNonQueryAsync(Arg.Any<EditMonthlyAllowancesCommand>()).Returns(new CommandResult { Code = 0 });
             var viewModel = new MonthlyAllowancesModel
             {
                 EmployeeId = 22,
@@ -247,8 +247,8 @@
                 new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
             };
 
-            var allowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel { Type = (int)AllowanceType.DutyMeal } };
-            var allowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel { Type = (int)AllowanceType.DutyMeal } };
+            var allowanceAdditions = new List<MonthlyAllowanceAdditionModel> { new MonthlyAllowanceAdditionModel { Type = (int)MonthlyAllowanceAdditionType.DutyMeal } };
+            var allowanceDeductions = new List<MonthlyAllowanceDeductionModel> { new MonthlyAllowanceDeductionModel { Type = (int)MonthlyAllowanceAdditionType.DutyMeal } };
             var dstNetSalary = new MonthlyDSTNetSalary { CurrencyId = 1, NetSalaryReceived = "333" };
 
             var basicAllowance = new MonthlyPayrollBasicAllowanceModel
@@ -311,7 +311,7 @@
 
             // Assert
             Assert.NotEmpty(result);
-            var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+            var dutyMeal = result.FirstOrDefault(x => x.Type == (int)MonthlyAllowanceAdditionType.DutyMeal);
             Assert.NotNull(dutyMeal);
             Assert.Equal(actualWorkingDays - standardWorkingDays, dutyMeal.NoOfDays);
             Assert.Equal(unitAmount.ToString(), dutyMeal.UnitAmount);
@@ -348,7 +348,7 @@
             var result = monthlyPayrollService.InitializeAllowanceDeductions(standardWorkingDays, actualWorkingDays, basicAllowance, currencyExchangeRates);
 
             Assert.NotEmpty(result);
-            var dutyMeal = result.FirstOrDefault(x => x.Type == (int)AllowanceType.DutyMeal);
+            var dutyMeal = result.FirstOrDefault(x => x.Type == (int)MonthlyAllowanceAdditionType.DutyMeal);
             Assert.NotNull(dutyMeal);
             Assert.Equal(standardWorkingDays - actualWorkingDays, dutyMeal.NoOfDays);
             Assert.Equal(unitAmount.ToString(), dutyMeal.UnitAmount);

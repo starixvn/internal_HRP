@@ -31,5 +31,8 @@
         public PayrollAutoCalculateOn AutoCalculateOn { get; set; }
 
         public MonthlyPayrollStatus Status { get; set; }
+
+        public string AdditionComment { get; set; }
+        public string DeductionComment { get; set; }
     }
 }
