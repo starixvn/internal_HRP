@@ -5,6 +5,9 @@
     [Value]         NVARCHAR (500) NOT NULL,
     [Description]   NVARCHAR (500) NULL,
     [IsActive]      BIT            NOT NULL,
+    [DisplayOrder]  INT            NULL,
     CONSTRAINT [PK_RefResource] PRIMARY KEY CLUSTERED ([RefResourceId] ASC)
 );
+
+
 

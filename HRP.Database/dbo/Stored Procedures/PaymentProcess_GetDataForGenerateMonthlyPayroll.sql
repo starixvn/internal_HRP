@@ -16,7 +16,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	DECLARE @FirstDayOfWorkingMonth DATE
-			,@LastDayOfWorkingMonth DATE
+		,@LastDayOfWorkingMonth DATE
 
 	CREATE TABLE #tblMonthlyPayroll (
 		EmployeeId INT
@@ -28,9 +28,9 @@ BEGIN
 		)
 
 	CREATE TABLE #tblCurrentSalary (
-		[EmployeeId] INT
-		,[EffectiveDate] DATE
-		,[ReasonId] TINYINT
+		EmployeeId INT
+		,EffectiveDate DATE
+		,ReasonId TINYINT
 		)
 
 	CREATE TABLE #tblLastMonthSalary (
@@ -58,7 +58,7 @@ BEGIN
 			FROM dbo.EmployeePayrollBasicSalaryHistory AS h1 WITH (NOLOCK)
 			WHERE h1.EmployeeId = h.EmployeeId
 			)
-		AND h.EmployeeId = ISNULL(@EmployeeId, h.EmployeeId)
+		AND (@EmployeeId IS NULL OR h.EmployeeId = @EmployeeId)
 
 	-- Get monthly payroll
 	INSERT INTO #tblMonthlyPayroll (
@@ -79,7 +79,7 @@ BEGIN
 		LEFT JOIN #tblCurrentSalary AS s WITH (NOLOCK) ON e.EmployeeId = s.EmployeeId
 	WHERE e.CompanyId = @CompanyId
 		AND (
-			(e.GroupEndDate IS NULL)
+			e.GroupEndDate IS NULL
 			OR (
 				e.GroupEndDate IS NOT NULL
 				AND e.GroupEndDate > @FirstDayOfWorkingMonth
@@ -87,7 +87,7 @@ BEGIN
 			)
 		AND e.GroupStartDate IS NOT NULL
 		AND e.GroupStartDate <= @LastDayOfWorkingMonth
-		AND e.EmployeeId = ISNULL(@EmployeeId, e.EmployeeId)
+		AND (@EmployeeId IS NULL OR e.EmployeeId = @EmployeeId)
 
 	-- Get last month salary
 	INSERT INTO #tblLastMonthSalary (
@@ -103,19 +103,19 @@ BEGIN
 	UPDATE ls
 	SET ls.OldCurrencyId = s.CurrencyId
 		,ls.OldSalary = s.Salary
-	FROM #tblLastMonthSalary AS ls
+	FROM #tblLastMonthSalary AS ls WITH (ROWLOCK)
 	LEFT JOIN dbo.Employment AS e WITH (NOLOCK) ON ls.EmployeeId = e.EmployeeId
 	LEFT JOIN dbo.MonthlyPayroll AS p WITH (NOLOCK) ON p.EmployeeId = ls.EmployeeId
 	LEFT JOIN dbo.MonthlyBasicSalary AS s WITH (NOLOCK) ON p.PayrollId = s.PayrollId
 	WHERE p.[Month] = DATEADD(MONTH, - 1, @FirstDayOfWorkingMonth)
-		AND p.EmployeeId = ISNULL(@EmployeeId, p.EmployeeId)
+		AND (@EmployeeId IS NULL OR p.EmployeeId = @EmployeeId)
 		AND e.GroupStartDate < @FirstDayOfWorkingMonth
 
 	-- get old salary for new employee
 	UPDATE ls
 	SET ls.OldCurrencyId = h.CurrencyId
 		,ls.OldSalary = h.Salary
-	FROM #tblLastMonthSalary AS ls
+	FROM #tblLastMonthSalary AS ls WITH (ROWLOCK)
 		LEFT JOIN dbo.EmployeePayrollBasicSalaryHistory AS h WITH (NOLOCK) ON ls.EmployeeId = h.EmployeeId
 	WHERE ls.OldSalary IS NULL
 		AND h.HistoryId = (
@@ -134,7 +134,7 @@ BEGIN
 		,SalaryChangeReasonId
 		,GroupStartDate
 		,GroupEndDate
-	FROM #tblMonthlyPayroll
+	FROM #tblMonthlyPayroll WITH (ROWLOCK)
 
 	-- Get MonthlyAttendance
 	SELECT a.EmployeeId
@@ -142,7 +142,7 @@ BEGIN
 		,a.ActualWorkingDay
 	FROM dbo.MonthlyAttendance AS a WITH (NOLOCK)
 		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON a.EmployeeId = p.EmployeeId
-														AND a.[Month] = p.[Month]
+		AND a.[Month] = p.[Month]
 
 	-- Get MonthlyDSTNetSalary
 	SELECT d.EmployeeId
@@ -151,88 +151,105 @@ BEGIN
 		,d.NetSalaryReceived
 	FROM dbo.MonthlyDSTNetSalary AS d WITH (NOLOCK)
 		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON d.EmployeeId = p.EmployeeId
-														AND d.[Month] = p.[Month]
+		AND d.[Month] = p.[Month]
+
+	-- addition, deduction uploading
+	SELECT e.EmployeeId, upload.*
+	FROM dbo.PaymentProcess AS p WITH (NOLOCK)
+		INNER JOIN dbo.AdditionDeductionUploading AS upload WITH (NOLOCK) ON p.AdditionDeductionSessionId = upload.SessionId
+		INNER JOIN dbo.Employment AS e WITH (NOLOCK) ON upload.EmployeeCode = e.EmployeeCode
+		AND p.CompanyId = e.CompanyId
+		INNER JOIN #tblMonthlyPayroll AS mp WITH (NOLOCK) ON e.EmployeeId = mp.EmployeeId
+	WHERE p.CompanyId = @CompanyId
+		AND p.[Month] = @Month
+		AND NOT EXISTS (
+			SELECT 1
+			FROM dbo.AdditionDeductionUploadingResult AS result WITH (NOLOCK)
+			WHERE upload.SessionId = result.SessionId
+				AND upload.RowNumber = result.RowNumber
+				AND result.ResultType = 2
+		)
 
 	-- Get MonthlyBasicSalary
-	SELECT p.[EmployeeId]
-		,bs.[CurrencyId]
+	SELECT p.EmployeeId
+		,bs.CurrencyId
 		,c1.CurrencyCode AS CurrencyCode
-		,[Salary]
+		,Salary
 		,os.OldCurrencyId
 		,os.OldSalary
 		,p.SalaryEffectiveDate AS EffectiveDate
 		,p.SalaryChangeReasonId AS SalaryChangeReason
-		,[WorkingDays]
-		,[EbankingCurrencyId]
+		,WorkingDays
+		,EbankingCurrencyId
 		,c2.CurrencyCode AS EbankingCurrencyCode
-		,[EbankingAmount]
-		,[EbankingAccountId]
-		,[DirectBanking1CurrencyId]
+		,EbankingAmount
+		,EbankingAccountId
+		,DirectBanking1CurrencyId
 		,c3.CurrencyCode AS DirectBanking1CurrencyCode
-		,[DirectBanking1Amount]
-		,[DirectBanking1AccountId]
-		,[DirectBanking2CurrencyId]
+		,DirectBanking1Amount
+		,DirectBanking1AccountId
+		,DirectBanking2CurrencyId
 		,c4.CurrencyCode AS DirectBanking2CurrencyCode
-		,[DirectBanking2Amount]
-		,[DirectBanking2AccountId]
-		,[CashCurrencyId]
+		,DirectBanking2Amount
+		,DirectBanking2AccountId
+		,CashCurrencyId
 		,c5.CurrencyCode AS CashCurrencyCode
-		,[CashAmount]
-		,[CashAccountId]
-		,[AutoCalculateOn]
+		,CashAmount
+		,CashAccountId
+		,AutoCalculateOn
 	FROM dbo.EmployeePayrollBasicSalary AS bs WITH (NOLOCK)
 		LEFT JOIN #tblLastMonthSalary AS os WITH (NOLOCK) ON bs.EmployeeId = os.EmployeeId
 		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON bs.EmployeeId = p.EmployeeId
 		LEFT JOIN dbo.Currency AS c1 WITH (NOLOCK) ON bs.CurrencyId = c1.CurrencyId
-		LEFT JOIN dbo.Currency AS c2 WITH (NOLOCK) ON bs.[EbankingCurrencyId] = c2.CurrencyId
-		LEFT JOIN dbo.Currency AS c3 WITH (NOLOCK) ON bs.[DirectBanking1CurrencyId] = c3.CurrencyId
-		LEFT JOIN dbo.Currency AS c4 WITH (NOLOCK) ON bs.[DirectBanking2CurrencyId] = c4.CurrencyId
-		LEFT JOIN dbo.Currency AS c5 WITH (NOLOCK) ON bs.[CashCurrencyId] = c5.CurrencyId
+		LEFT JOIN dbo.Currency AS c2 WITH (NOLOCK) ON bs.EbankingCurrencyId = c2.CurrencyId
+		LEFT JOIN dbo.Currency AS c3 WITH (NOLOCK) ON bs.DirectBanking1CurrencyId = c3.CurrencyId
+		LEFT JOIN dbo.Currency AS c4 WITH (NOLOCK) ON bs.DirectBanking2CurrencyId = c4.CurrencyId
+		LEFT JOIN dbo.Currency AS c5 WITH (NOLOCK) ON bs.CashCurrencyId = c5.CurrencyId
 
 	-- Get MonthlyBasicAllowance
-	SELECT p.[EmployeeId]
-		,ba.[CurrencyId]
+	SELECT p.EmployeeId
+		,ba.CurrencyId
 		,c1.CurrencyCode
-		,[DirectBanking1CurrencyId]
+		,DirectBanking1CurrencyId
 		,c2.CurrencyCode AS DirectBanking1CurrencyCode
-		,[DirectBanking1Amount]
-		,[DirectBanking1AccountId]
-		,[DirectBanking2CurrencyId]
+		,DirectBanking1Amount
+		,DirectBanking1AccountId
+		,DirectBanking2CurrencyId
 		,c3.CurrencyCode AS DirectBanking2CurrencyCode
-		,[DirectBanking2Amount]
-		,[DirectBanking2AccountId]
-		,[CashCurrencyId]
+		,DirectBanking2Amount
+		,DirectBanking2AccountId
+		,CashCurrencyId
 		,c4.CurrencyCode AS CashCurrencyCode
-		,[CashAmount]
-		,[CashAccountId]
-		,[AutoCalculateOn]
-		,[SubsistenceCurrencyId]
-		,[SubsistenceAmount]
-		,[HomePassageCurrencyId]
-		,[HomePassageAmount]
-		,[HousingCurrencyId]
-		,[HousingAmount]
-		,[MobilePhoneCurrencyId]
-		,[MobilePhoneAmount]
-		,[HPICurrencyId]
-		,[HPIAmount]
-		,[DutyMealCurrencyId]
-		,[DutyMealAmount]
-		,[SecondmentCurrencyId]
-		,[SecondmentAmount]
-		,[OthersCurrencyId]
-		,[OthersAmount]
+		,CashAmount
+		,CashAccountId
+		,AutoCalculateOn
+		,SubsistenceCurrencyId
+		,SubsistenceAmount
+		,HomePassageCurrencyId
+		,HomePassageAmount
+		,HousingCurrencyId
+		,HousingAmount
+		,MobilePhoneCurrencyId
+		,MobilePhoneAmount
+		,HPICurrencyId
+		,HPIAmount
+		,DutyMealCurrencyId
+		,DutyMealAmount
+		,SecondmentCurrencyId
+		,SecondmentAmount
+		,OthersCurrencyId
+		,OthersAmount
 		,d.RoomingChargesCurrencyId
 		,d.RoomingChargesAmount
 		,d.FitnessFirstCurrencyId
 		,d.FitnessFirstAmount
-	FROM [dbo].[EmployeePayrollAllowance] AS ba WITH (NOLOCK)
+	FROM dbo.EmployeePayrollAllowance AS ba WITH (NOLOCK)
 		LEFT JOIN dbo.EmployeePayrollDeduction AS d WITH (NOLOCK) ON ba.EmployeeId = d.EmployeeId
 		INNER JOIN #tblMonthlyPayroll AS p WITH (NOLOCK) ON ba.EmployeeId = p.EmployeeId
 		LEFT JOIN dbo.Currency AS c1 WITH (NOLOCK) ON ba.CurrencyId = c1.CurrencyId 
-		LEFT JOIN dbo.Currency AS c2 WITH (NOLOCK) ON ba.[DirectBanking1CurrencyId] = c2.CurrencyId
-		LEFT JOIN dbo.Currency AS c3 WITH (NOLOCK) ON ba.[DirectBanking2CurrencyId] = c3.CurrencyId
-		LEFT JOIN dbo.Currency AS c4 WITH (NOLOCK) ON ba.[CashCurrencyId] = c4.CurrencyId
+		LEFT JOIN dbo.Currency AS c2 WITH (NOLOCK) ON ba.DirectBanking1CurrencyId = c2.CurrencyId
+		LEFT JOIN dbo.Currency AS c3 WITH (NOLOCK) ON ba.DirectBanking2CurrencyId = c3.CurrencyId
+		LEFT JOIN dbo.Currency AS c4 WITH (NOLOCK) ON ba.CashCurrencyId = c4.CurrencyId
 
 	-- Get currency exchange Rate
 	SELECT r.ExchangeRate

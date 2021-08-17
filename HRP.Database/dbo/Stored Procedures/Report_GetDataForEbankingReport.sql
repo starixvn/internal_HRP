@@ -19,6 +19,8 @@ BEGIN
 
 	DECLARE @EBankingRefName NVARCHAR(50) = 'PaymentTransactionEbanking'
 			,@CashRefName NVARCHAR(50) = 'PaymentTransactionCash'
+	DECLARE @firstDayOfWorkingMonth DATE
+	SET @firstDayOfWorkingMonth = DATEADD(MONTH, DATEDIFF(MONTH, 0, @Month), 0)
 
 	-- Check Permission on Company
 	IF dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @CompanyId, 'EbankingReport') = 0 -- don't have read permission
@@ -106,6 +108,10 @@ BEGIN
 		WHERE YEAR(MonthlyPayroll.[Month]) = YEAR(@month)
 			AND MONTH(MonthlyPayroll.[Month]) = MONTH(@month)
 			AND ep.CompanyId = @CompanyId
+			AND (
+				ep.GroupEndDate IS NULL
+				OR ep.GroupEndDate > @firstDayOfWorkingMonth
+			)
 		ORDER BY ba.BankName ASC
 			,e.Nickname ASC
 
@@ -131,6 +137,10 @@ BEGIN
 		WHERE YEAR(mp.[Month]) = YEAR(@month)
 			AND MONTH(mp.[Month]) = MONTH(@month)
 			AND ep.CompanyId = @CompanyId
+			AND (
+				ep.GroupEndDate IS NULL
+				OR ep.GroupEndDate > @firstDayOfWorkingMonth
+			)
 		ORDER BY e.Nickname ASC
 
 	-- Company
@@ -139,7 +149,7 @@ BEGIN
 	WHERE CompanyId = @CompanyId
 
 	-- Get Payment transaction's names that were selected by user
-	SELECT ref.[Value]
+	SELECT ref.RefName, ref.ResourceId, ref.[Value]
 	FROM dbo.RefResource AS ref WITH (NOLOCK)
 		INNER JOIN #SelectedPaymentTransactions AS pt WITH (NOLOCK) ON ref.ResourceId = pt.PaymentTransactionId
 		AND ref.RefName =

@@ -47,6 +47,8 @@ BEGIN
 		,[Status] TINYINT
 		,[AdditionAmount] VARCHAR(MAX)
 		,[DeductionAmount] VARCHAR(MAX)
+		,AdditionComment NVARCHAR(MAX)
+		,DeductionComment NVARCHAR(MAX)
 		)
 
 	CREATE TABLE #tblOldLogData (
@@ -69,6 +71,8 @@ BEGIN
 		,[Status] TINYINT
 		,[AdditionAmount] VARCHAR(MAX)
 		,[DeductionAmount] VARCHAR(MAX)
+		,AdditionComment NVARCHAR(MAX)
+		,DeductionComment NVARCHAR(MAX)
 		)
 
 	-- Convert XMLDoc to table
@@ -97,6 +101,8 @@ BEGIN
 		,[Status]
 		,[AdditionAmount]
 		,[DeductionAmount]
+		,AdditionComment
+		,DeductionComment
 		)
 	SELECT mp.PayrollId
 		,NULLIF(ISNULL(Data.[CurrencyId], ''), '')
@@ -117,6 +123,8 @@ BEGIN
 		,Data.[Status]
 		,Data.[AdditionAmount]
 		,Data.[DeductionAmount]
+		,Data.AdditionComment
+		,Data.DeductionComment
 	FROM OPENXML(@iDoc, '/Root/Row', 1) WITH (
 			EmployeeId INT
 			,[CurrencyId] VARCHAR(50)
@@ -137,6 +145,8 @@ BEGIN
 			,[Status] TINYINT
 			,[AdditionAmount] VARCHAR(MAX)
 			,[DeductionAmount] VARCHAR(MAX)
+			,AdditionComment NVARCHAR(MAX)
+			,DeductionComment NVARCHAR(MAX)
 			) AS Data
 	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON mp.EmployeeId = Data.EmployeeId
 		AND mp.[Month] = @Month
@@ -165,8 +175,13 @@ BEGIN
 			,[Status]
 			,[AdditionAmount]
 			,[DeductionAmount]
+			,AdditionComment
+			,DeductionComment
 		FROM #tblTempMonthlyAllowance WITH (NOLOCK)
-		) AS val([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [DSTNetSalaryCurrencyId], [DSTNetSalaryAmount], [AutoCalculateOn], [TotalNetAmount], [Status], [AdditionAmount], [DeductionAmount])
+		) AS val([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1AccountId]
+			,[DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2AccountId]
+			,[CashCurrencyId], [CashAmount], [CashAccountId]
+			,[DSTNetSalaryCurrencyId], [DSTNetSalaryAmount], [AutoCalculateOn], [TotalNetAmount], [Status], [AdditionAmount], [DeductionAmount], AdditionComment ,DeductionComment)
 		ON a.PayrollId = val.PayrollId
 	WHEN MATCHED
 		THEN
@@ -189,6 +204,8 @@ BEGIN
 				,a.[Status] = val.[Status]
 				,a.[AdditionAmount] = val.[AdditionAmount]
 				,a.[DeductionAmount] = val.[DeductionAmount]
+				,a.AdditionComment = val.AdditionComment
+				,a.DeductionComment = val.DeductionComment
 	WHEN NOT MATCHED
 		THEN
 			INSERT (
@@ -211,6 +228,8 @@ BEGIN
 				,[Status]
 				,[AdditionAmount]
 				,[DeductionAmount]
+				,AdditionComment
+				,DeductionComment
 				)
 			VALUES (
 				val.PayrollId
@@ -232,6 +251,8 @@ BEGIN
 				,val.[Status]
 				,val.[AdditionAmount]
 				,val.[DeductionAmount]
+				,val.AdditionComment
+				,val.DeductionComment
 				)
 	OUTPUT DELETED.PayrollId
 		,DELETED.[CurrencyId]
@@ -252,7 +273,12 @@ BEGIN
 		,DELETED.[Status]
 		,DELETED.[AdditionAmount]
 		,DELETED.[DeductionAmount]
-	INTO #tblOldLogData([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1AccountId], [DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2AccountId], [CashCurrencyId], [CashAmount], [CashAccountId], [DSTNetSalaryCurrencyId], [DSTNetSalaryAmount], [AutoCalculateOn], [TotalNetAmount], [Status],[AdditionAmount],[DeductionAmount]);
+		,DELETED.AdditionComment
+		,DELETED.DeductionComment
+	INTO #tblOldLogData([PayrollId], [CurrencyId], [TotalAmount], [DirectBanking1CurrencyId], [DirectBanking1Amount], [DirectBanking1AccountId]
+		,[DirectBanking2CurrencyId], [DirectBanking2Amount], [DirectBanking2AccountId]
+		,[CashCurrencyId], [CashAmount], [CashAccountId]
+		,[DSTNetSalaryCurrencyId], [DSTNetSalaryAmount], [AutoCalculateOn], [TotalNetAmount], [Status], [AdditionAmount], [DeductionAmount], AdditionComment, DeductionComment);
 
 	--WRITE LOG
 	SELECT @maxLength = Count(1)
@@ -280,8 +306,10 @@ BEGIN
 					,o.[Status] AS '@s'
 					,o.[AdditionAmount] AS '@aa'
 					,o.[DeductionAmount] AS '@da'
+					,o.AdditionComment AS '@acomment'
+					,o.DeductionComment AS '@dcomment'
 				FROM #tblOldLogData AS o WITH (NOLOCK)
-				INNER JOIN #tblTempMonthlyAllowance AS t WITH (NOLOCK) ON o.PayrollId = t.PayrollId
+					INNER JOIN #tblTempMonthlyAllowance AS t WITH (NOLOCK) ON o.PayrollId = t.PayrollId
 				WHERE t.RowNum = @i
 				FOR XML PATH('r')
 					,TYPE
@@ -308,6 +336,8 @@ BEGIN
 					,t.[Status] AS '@s'
 					,t.[AdditionAmount] AS '@aa'
 					,t.[DeductionAmount] AS '@da'
+					,t.AdditionComment AS '@acomment'
+					,t.DeductionComment AS '@dcomment'
 				FROM #tblTempMonthlyAllowance AS t WITH (NOLOCK)
 				WHERE RowNum = @i
 				FOR XML PATH('r')

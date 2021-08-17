@@ -42,6 +42,7 @@ BEGIN
 		,@startDate DATE
 		,@dueDate DATE
 		,@today DATE = GETDATE()
+		,@previousMonth DATE
 		,@startRun DATETIME = GETDATE()
 		,@endRun DATETIME
 		,@duration INT
@@ -67,13 +68,14 @@ BEGIN
 		)
 
 	-- Check permission
+	SET @previousMonth = DATEADD(MONTH, -1, @today)
+
 	SELECT @startDate = StartDate
 		,@dueDate = DueDate
 	FROM dbo.fnc_GetPaymentProcessDuration(@Month)
 
 	IF dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @CompanyId, @functionKey) <> 2
-		OR @today < @startDate
-		OR @today > @dueDate
+		OR ((@previousMonth NOT BETWEEN @startDate AND @dueDate) AND (@today NOT BETWEEN @startDate AND @dueDate))
 	BEGIN
 		SET @ErrCode = 1
 		SET @ErrMsg = 'You do not have permission to update basic salary.'
@@ -149,6 +151,8 @@ BEGIN
 		,[Description]
 	FROM OPENXML(@idoc, '/Root/Row', 1) WITH ([Type] TINYINT, UnitAmount VARCHAR(MAX), NoOfDays VARCHAR(20), NetSalary VARCHAR(MAX), [Description] NVARCHAR(1000)) AS data
 
+	EXEC sp_xml_removedocument @idoc
+
 	EXEC sp_xml_preparedocument @idoc OUTPUT
 		,@DeductionXml
 
@@ -168,6 +172,8 @@ BEGIN
 		,NetSalary
 		,[Description]
 	FROM OPENXML(@idoc, '/Root/Row', 1) WITH ([Type] TINYINT, UnitAmount VARCHAR(MAX), NoOfDays VARCHAR(20), NetSalary VARCHAR(MAX), [Description] NVARCHAR(1000)) AS data
+
+	EXEC sp_xml_removedocument @idoc
 
 	UPDATE ms
 	SET ms.Salary = @Salary

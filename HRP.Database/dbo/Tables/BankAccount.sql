@@ -5,7 +5,7 @@
     [BankName]             NVARCHAR (70)  NOT NULL,
     [BankBranch]           NVARCHAR (70)  NULL,
     [BankAddress]          NVARCHAR (500) NULL,
-    [BankSwiftCode]        VARCHAR (15)   NULL,
+    [BankSwiftCode]        NVARCHAR (50)  NULL,
     [AccountName]          NVARCHAR (30)  NULL,
     [AccountNumber]        VARCHAR (30)   NOT NULL,
     [AccountType]          INT            NULL,
@@ -13,6 +13,8 @@
     [PaymentTransactionId] INT            NULL,
     [IsActive]             BIT            NULL
 );
+
+
 
 
 

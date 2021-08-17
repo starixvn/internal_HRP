@@ -33,6 +33,8 @@ BEGIN
 		,[Status]
 		,[AdditionAmount]
 		,[DeductionAmount]
+		,ma.AdditionComment
+		,ma.DeductionComment
 	FROM [dbo].[MonthlyAllowance] AS ma WITH (NOLOCK)
 		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON c.CurrencyId = ma.CurrencyId
 		LEFT JOIN dbo.Currency AS dst WITH (NOLOCK) ON dst.CurrencyId = ma.DSTNetSalaryCurrencyId
@@ -45,30 +47,36 @@ BEGIN
 	WHERE PayrollId = @PayrollId
 
 	SELECT [PayrollId]
-		,[Type]
+		,ref.ResourceId AS [Type]
 		,[NoOfDays]
 		,[UnitAmount]
 		,[TotalAmount]
 		,[NetAllowance]
 		,a.[CurrencyId]
 		,c.CurrencyCode
-	FROM [dbo].[MonthlyAllowanceAddition] a WITH (NOLOCK)
-	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON a.CurrencyId = c.CurrencyId
-	WHERE PayrollId = @PayrollId
-	ORDER BY [Type]
+		,ref.DisplayOrder
+	FROM dbo.RefResource AS ref WITH (NOLOCK)
+		LEFT JOIN dbo.MonthlyAllowanceAddition AS a WITH (NOLOCK) ON ref.ResourceId = a.[Type]
+		AND a.PayrollId = @PayrollId
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON a.CurrencyId = c.CurrencyId
+	WHERE ref.RefName = 'MonthlyAllowanceAdditionType'
+	ORDER BY ref.DisplayOrder
 
 	SELECT [PayrollId]
-		,[Type]
+		,ref.ResourceId AS [Type]
 		,[NoOfDays]
 		,[UnitAmount]
 		,[TotalAmount]
 		,[NetAllowance]
 		,d.[CurrencyId]
 		,c.CurrencyCode
-	FROM [dbo].[MonthlyAllowanceDeduction] AS d WITH (NOLOCK)
-	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON d.CurrencyId = c.CurrencyId
-	WHERE PayrollId = @PayrollId
-	ORDER BY [Type]
+		,ref.DisplayOrder
+	FROM dbo.RefResource AS ref WITH (NOLOCK)
+		LEFT JOIN [dbo].[MonthlyAllowanceDeduction] AS d WITH (NOLOCK) ON ref.ResourceId = d.[Type]
+		AND d.PayrollId = @PayrollId
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON d.CurrencyId = c.CurrencyId
+	WHERE ref.RefName = 'MonthlyAllowanceAdditionType'
+	ORDER BY ref.DisplayOrder
 
 	SELECT [PayrollId]
 		,mba.[CurrencyId]
@@ -106,6 +114,6 @@ BEGIN
 		,[AfterAdjustmentAmount]
 		,[Reason]
 	FROM [dbo].[MonthlyBasicAllowance] AS mba WITH (NOLOCK)
-	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON c.CurrencyId = mba.CurrencyId
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON c.CurrencyId = mba.CurrencyId
 	WHERE PayrollId = @PayrollId
 END

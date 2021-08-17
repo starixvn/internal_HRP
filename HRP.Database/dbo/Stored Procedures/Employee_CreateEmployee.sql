@@ -6,7 +6,7 @@ CREATE PROCEDURE [dbo].[Employee_CreateEmployee] @EmployeeId INT OUTPUT
 	,@DateOfBirth DATE
 	,@PlaceOfBirth NVARCHAR(100) = NULL
 	,@Nationality SMALLINT
-	,@NRICNo VARCHAR(20)
+	,@NRICNo VARCHAR(30)
 	,@MaritalStatus TINYINT
 	,@NoOfChildren TINYINT
 	,@OverseasPhoneNo VARCHAR(15)

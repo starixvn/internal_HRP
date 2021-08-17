@@ -22,7 +22,7 @@ BEGIN
 		RETURN
 	END
 
-	CREATE TABLE #tblPayrollId (Id SMALLINT)
+	CREATE TABLE #tblPayrollId (Id INT)
 
 	INSERT INTO #tblPayrollId (Id)
 	SELECT val
@@ -58,40 +58,54 @@ BEGIN
 	ORDER BY mp.PayrollId
 
 	SELECT mp.PayrollId
-		,[Type]
-		,NetSalary
+		,ref.ResourceId AS [Type]
+		,msa.NetSalary
 	FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
-		INNER JOIN dbo.MonthlySalaryAddition AS msa WITH (NOLOCK) ON mp.PayrollId = msa.PayrollId
-		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON msa.PayrollId = tbl.Id
+		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON mp.PayrollId = tbl.Id
+		CROSS APPLY dbo.RefResource AS ref WITH (NOLOCK)
+		LEFT JOIN dbo.MonthlySalaryAddition AS msa WITH (NOLOCK) ON mp.PayrollId = msa.PayrollId
+		AND msa.[Type] = ref.ResourceId
+	WHERE ref.RefName = 'MonthlySalaryAdditionType'
 	ORDER BY mp.PayrollId
-		,msa.[Type]
+		,ref.ResourceId
 
 	SELECT mp.PayrollId
-		,msd.[Type]
+		,ref.ResourceId AS [Type]
 		,msd.NetSalary
 	FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
 		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON mp.PayrollId = tbl.Id
-		INNER JOIN dbo.MonthlySalaryDeduction AS msd WITH (NOLOCK) ON mp.PayrollId = msd.PayrollId
+		CROSS APPLY dbo.RefResource AS ref WITH (NOLOCK)
+		LEFT JOIN dbo.MonthlySalaryDeduction AS msd WITH (NOLOCK) ON mp.PayrollId = msd.PayrollId
+		AND msd.[Type] = ref.ResourceId
+	WHERE ref.RefName = 'MonthlySalaryDeductionType'
 	ORDER BY mp.PayrollId
-		,msd.[Type]
+		,ref.ResourceId
 
 	SELECT mp.PayrollId
-		,[Type]
+		,ref.ResourceId AS [Type]
 		,maa.NetAllowance
+		,ref.DisplayOrder
 	FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
-		INNER JOIN dbo.MonthlyAllowanceAddition AS maa WITH (NOLOCK) ON mp.PayrollId = maa.PayrollId
-		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON maa.PayrollId = tbl.Id
+		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON mp.PayrollId = tbl.Id
+		CROSS APPLY dbo.RefResource AS ref WITH (NOLOCK)
+		LEFT JOIN dbo.MonthlyAllowanceAddition AS maa WITH (NOLOCK) ON mp.PayrollId = maa.PayrollId
+		AND maa.[Type] = ref.ResourceId
+	WHERE ref.RefName = 'MonthlyAllowanceAdditionType'
 	ORDER BY mp.PayrollId
-		,maa.[Type]
+		,ref.DisplayOrder
 
 	SELECT mp.PayrollId
 		,[Type]
 		,mad.NetAllowance
+		,ref.DisplayOrder
 	FROM dbo.MonthlyPayroll AS mp WITH (NOLOCK)
-		INNER JOIN dbo.MonthlyAllowanceDeduction AS mad WITH (NOLOCK) ON mp.PayrollId = mad.PayrollId
-		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON mad.PayrollId = tbl.Id
+		INNER JOIN #tblPayrollId AS tbl WITH (NOLOCK) ON mp.PayrollId = tbl.Id
+		CROSS APPLY dbo.RefResource AS ref WITH (NOLOCK)
+		LEFT JOIN dbo.MonthlyAllowanceDeduction AS mad WITH (NOLOCK) ON mp.PayrollId = mad.PayrollId
+		AND mad.[Type] = ref.ResourceId
+	WHERE ref.RefName = 'MonthlyAllowanceAdditionType'
 	ORDER BY mp.PayrollId
-		,mad.[Type]
+		,ref.DisplayOrder
 
 	DROP TABLE #tblPayrollId
 END

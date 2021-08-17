@@ -14,6 +14,9 @@ Param's Explanation:
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @firstDayOfWorkingMonth DATE
+	SET @firstDayOfWorkingMonth = DATEADD(MONTH, DATEDIFF(MONTH, 0, @Month), 0)
+
 	CREATE TABLE #tblEmployeeInfo (
 		EmployeeId INT
 		,PayrollId INT
@@ -26,9 +29,13 @@ BEGIN
 	SELECT ep.EmployeeId
 		,mp.PayrollId
 	FROM dbo.Employment AS ep WITH (NOLOCK)
-	INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON ep.EmployeeId = mp.EmployeeId
+		INNER JOIN dbo.MonthlyPayroll AS mp WITH (NOLOCK) ON ep.EmployeeId = mp.EmployeeId
 	WHERE mp.[Month] = @Month
 		AND ep.CompanyId = @CompanyId
+		AND (
+			ep.GroupEndDate IS NULL
+			OR ep.GroupEndDate > @firstDayOfWorkingMonth
+			)
 
 	IF NOT EXISTS (
 			SELECT 1
@@ -49,13 +56,13 @@ BEGIN
 		,e.FullName
 		,e.Nickname
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
-	INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON e.EmployeeId = ei.EmployeeId
-	INNER JOIN dbo.Employment AS ep WITH (NOLOCK) ON ep.EmployeeId = ei.EmployeeId
-	LEFT JOIN dbo.Company AS co WITH (NOLOCK) ON co.CompanyId = ep.CompanyId
-	LEFT JOIN dbo.Division AS di WITH (NOLOCK) ON di.DivisionId = ep.DivisionId
-	LEFT JOIN dbo.Department AS de WITH (NOLOCK) ON de.DepartmentId = ep.DepartmentId
-	LEFT JOIN dbo.CostCenter AS cc WITH (NOLOCK) ON cc.CostCenterId = ep.CostCenterId
-	LEFT JOIN dbo.Section AS se WITH (NOLOCK) ON se.SectionId = ep.SectionId
+		INNER JOIN dbo.Employee AS e WITH (NOLOCK) ON e.EmployeeId = ei.EmployeeId
+		INNER JOIN dbo.Employment AS ep WITH (NOLOCK) ON ep.EmployeeId = ei.EmployeeId
+		LEFT JOIN dbo.Company AS co WITH (NOLOCK) ON co.CompanyId = ep.CompanyId
+		LEFT JOIN dbo.Division AS di WITH (NOLOCK) ON di.DivisionId = ep.DivisionId
+		LEFT JOIN dbo.Department AS de WITH (NOLOCK) ON de.DepartmentId = ep.DepartmentId
+		LEFT JOIN dbo.CostCenter AS cc WITH (NOLOCK) ON cc.CostCenterId = ep.CostCenterId
+		LEFT JOIN dbo.Section AS se WITH (NOLOCK) ON se.SectionId = ep.SectionId
 
 	-- Get monthly Basic salary
 	SELECT ei.EmployeeId
@@ -64,8 +71,8 @@ BEGIN
 		,bs.Salary
 		,bs.AfterAdjustmentAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
-	LEFT JOIN dbo.MonthlyBasicSalary AS bs WITH (NOLOCK) ON bs.PayrollId = ei.PayrollId
-	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON bs.CurrencyId = c.CurrencyId
+		LEFT JOIN dbo.MonthlyBasicSalary AS bs WITH (NOLOCK) ON bs.PayrollId = ei.PayrollId
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON bs.CurrencyId = c.CurrencyId
 
 	-- Get monthly salary
 	SELECT ei.EmployeeId
@@ -84,9 +91,9 @@ BEGIN
 		,s.AdditionAmount
 		,s.DeductionAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
-	LEFT JOIN dbo.MonthlySalary AS s WITH (NOLOCK) ON s.PayrollId = ei.PayrollId
-	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON s.CurrencyId = c.CurrencyId
-	LEFT JOIN dbo.BankAccount AS ba WITH (NOLOCK) ON s.DirectBanking1AccountId = ba.Id
+		LEFT JOIN dbo.MonthlySalary AS s WITH (NOLOCK) ON s.PayrollId = ei.PayrollId
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON s.CurrencyId = c.CurrencyId
+		LEFT JOIN dbo.BankAccount AS ba WITH (NOLOCK) ON s.DirectBanking1AccountId = ba.Id
 
 	-- Get basic Allowances
 	SELECT ei.EmployeeId
@@ -123,8 +130,8 @@ BEGIN
 		,ba.[OthersAfterAdjustmentAmount]
 		,ba.[SecondmentAfterAdjustmentAmount]
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
-	LEFT JOIN dbo.MonthlyBasicAllowance AS ba WITH (NOLOCK) ON ba.PayrollId = ei.PayrollId
-	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON ba.CurrencyId = c.CurrencyId
+		LEFT JOIN dbo.MonthlyBasicAllowance AS ba WITH (NOLOCK) ON ba.PayrollId = ei.PayrollId
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON ba.CurrencyId = c.CurrencyId
 
 	-- Get Allowances
 	SELECT ei.EmployeeId
@@ -137,8 +144,8 @@ BEGIN
 		,a.AdditionAmount
 		,a.DeductionAmount
 	FROM #tblEmployeeInfo AS ei WITH (NOLOCK)
-	LEFT JOIN dbo.MonthlyAllowance AS a WITH (NOLOCK) ON a.PayrollId = ei.PayrollId
-	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON a.CurrencyId = c.CurrencyId
+		LEFT JOIN dbo.MonthlyAllowance AS a WITH (NOLOCK) ON a.PayrollId = ei.PayrollId
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON a.CurrencyId = c.CurrencyId
 
 	-- Get currency exchange Rate
 	SELECT r.ExchangeRate
@@ -152,9 +159,32 @@ BEGIN
 		,c.CurrencyCode
 		,c.[Order]
 	FROM dbo.CurrencyExchangeRate AS r WITH (NOLOCK)
-	LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON r.FromCurrencyId = c.CurrencyId
+		LEFT JOIN dbo.Currency AS c WITH (NOLOCK) ON r.FromCurrencyId = c.CurrencyId
 	WHERE r.ExchangeRateMonth = @Month
 	ORDER BY c.[Order]
+
+	-- addition, deduction
+	SELECT tbl.EmployeeId
+		,addition.[Type]
+		,ref.Value AS AdditionName
+		,addition.[Description]
+	FROM #tblEmployeeInfo AS tbl WITH (NOLOCK)
+		INNER JOIN dbo.MonthlySalaryAddition AS addition WITH (NOLOCK) ON tbl.PayrollId = addition.PayrollId
+		INNER JOIN dbo.RefResource AS ref WITH (NOLOCK) ON ref.RefName = 'MonthlySalaryAdditionType' AND ref.ResourceId = addition.[Type]
+	WHERE ISNULL(addition.[Description], '') <> ''
+	ORDER BY tbl.EmployeeId
+		,addition.[Type]
+
+	SELECT tbl.EmployeeId
+		,deduction.[Type]
+		,ref.Value AS DeductionName
+		,deduction.[Description]
+	FROM #tblEmployeeInfo AS tbl WITH (NOLOCK)
+		INNER JOIN dbo.MonthlySalaryDeduction AS deduction WITH (NOLOCK) ON tbl.PayrollId = deduction.PayrollId
+		INNER JOIN dbo.RefResource AS ref WITH (NOLOCK) ON ref.RefName = 'MonthlySalaryDeductionType' AND ref.ResourceId = deduction.[Type]
+	WHERE ISNULL(deduction.[Description], '') <> ''
+	ORDER BY tbl.EmployeeId
+		,deduction.[Type]
 
 	DROP TABLE #tblEmployeeInfo
 END

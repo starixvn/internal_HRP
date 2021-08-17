@@ -23,7 +23,9 @@ BEGIN
 		,@today DATE = GETDATE()
 		,@previousMonth DATE
 		,@totalEmps INT = 0
+		,@firstDayOfWorkingMonth DATE
 
+	SET @firstDayOfWorkingMonth = DATEADD(MONTH, DATEDIFF(MONTH, 0, @Month), 0)
 	SET @previousMonth = DATEADD(MONTH, -1, @today)
 
 	SELECT @startDate = StartDate
@@ -40,6 +42,10 @@ BEGIN
 	WHERE MONTH(mp.[Month]) = MONTH(@Month)
 		AND YEAR(mp.[Month]) = YEAR(@Month)
 		AND c.CompanyId = @CompanyId
+		AND (
+			em.GroupEndDate IS NULL
+			OR em.GroupEndDate > @firstDayOfWorkingMonth
+			)
 
 	SELECT TOP 1 mp.PayrollId
 		,emp.EmployeeId
@@ -68,4 +74,8 @@ BEGIN
 		AND c.CompanyId = @CompanyId
 		AND MONTH(mp.[Month]) = MONTH(@Month)
 		AND YEAR(mp.[Month]) = YEAR(@Month)
+		AND (
+			em.GroupEndDate IS NULL
+			OR em.GroupEndDate > @firstDayOfWorkingMonth
+			)
 END

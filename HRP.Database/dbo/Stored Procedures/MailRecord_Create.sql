@@ -5,6 +5,8 @@ CREATE PROCEDURE [dbo].[MailRecord_Create] @MailTo VARCHAR(254)
 	,@IsSuccessful BIT = NULL
 	,@ErrorMessage NVARCHAR(1000) = NULL
 	,@StackTrace NVARCHAR(2000) = NULL
+	,@ErrCode INT = 0 OUTPUT
+	,@ErrMsg NVARCHAR(1000) = '' OUTPUT
 AS
 /*
 Created: 20180524@Tim.Trinh

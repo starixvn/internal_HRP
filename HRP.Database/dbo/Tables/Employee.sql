@@ -6,7 +6,7 @@
     [DateOfBirth]      DATE           NULL,
     [PlaceOfBirth]     NVARCHAR (100) NULL,
     [Nationality]      SMALLINT       NULL,
-    [NRICNo]           VARCHAR (20)   NULL,
+    [NRICNo]           VARCHAR (30)   NULL,
     [MaritalStatus]    TINYINT        NULL,
     [NoOfChildren]     TINYINT        NULL,
     [OverseasPhoneNo]  VARCHAR (15)   NULL,
@@ -24,6 +24,8 @@
     [ProfilePic]       VARCHAR (200)  NULL,
     CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED ([EmployeeId] ASC)
 );
+
+
 
 
 

@@ -19,7 +19,7 @@ BEGIN
 	--Update PaymentProcess
 	UPDATE dbo.PaymentProcess
 	WITH (ROWLOCK,UPDLOCK)
-	SET IsAttendanceFileSubmited = 0
+	SET IsAttendanceFileSubmitted = 0
 		,AttendanceSessionId = NULL
 		,AttendanceFileName = NULL
 		,IsPayrollGenerated = 0

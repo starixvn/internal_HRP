@@ -18,8 +18,10 @@ CREATE PROCEDURE [dbo].[MonthlyPayroll_UpdateAllowances] @PayrollId INT
 	,@Status TINYINT = NULL
 	,@AdditionAmount VARCHAR(MAX) = NULL
 	,@DeductionAmount VARCHAR(MAX) = NULL
-	,@AllowanceAddition VARCHAR(MAX)
-	,@AllowanceDeduction VARCHAR(MAX)
+	,@AdditionComment NVARCHAR(MAX) = NULL
+	,@DeductionComment NVARCHAR(MAX) = NULL
+	,@AdditionXml VARCHAR(MAX) = NULL
+	,@DeductionXml VARCHAR(MAX) = NULL
 	,@UserId INT
 	,@ErrCode INT = 0 OUTPUT
 	,@ErrMsg NVARCHAR(1000) = '' OUTPUT
@@ -56,10 +58,9 @@ BEGIN
 		,@logData NVARCHAR(MAX)
 		,@logDataOld NVARCHAR(MAX)
 		,@xml XML
-		,@idocAddition INT
-		,@idocDeduction INT
+		,@idoc INT
 
-	CREATE TABLE #addition (
+	CREATE TABLE #tblAddition (
 		PayrollId INT
 		,[Type] TINYINT
 		,NoOfDays DECIMAL(6, 2) NULL
@@ -69,7 +70,7 @@ BEGIN
 		,CurrencyId INT
 		)
 
-	CREATE TABLE #deduction (
+	CREATE TABLE #tblDeduction (
 		PayrollId INT
 		,[Type] TINYINT
 		,NoOfDays DECIMAL(6, 2) NULL
@@ -79,13 +80,10 @@ BEGIN
 		,CurrencyId INT
 		)
 
-	EXEC sp_xml_preparedocument @idocAddition OUTPUT
-		,@AllowanceAddition
+	EXEC sp_xml_preparedocument @idoc OUTPUT
+		,@AdditionXml
 
-	EXEC sp_xml_preparedocument @idocDeduction OUTPUT
-		,@AllowanceDeduction
-
-	INSERT INTO #addition (
+	INSERT INTO #tblAddition (
 		PayrollId
 		,[Type]
 		,NoOfDays
@@ -104,9 +102,14 @@ BEGIN
 		,TotalAmount
 		,NetAllowance
 		,CurrencyId
-	FROM OPENXML(@idocAddition, '/Root/Row', 1) WITH ([Type] TINYINT, NoOfDays VARCHAR(20), UnitAmount VARCHAR(MAX), TotalAmount VARCHAR(MAX), NetAllowance NVARCHAR(MAX), CurrencyId TINYINT) AS data
+	FROM OPENXML(@idoc, '/Root/Row', 1) WITH ([Type] TINYINT, NoOfDays VARCHAR(20), UnitAmount VARCHAR(MAX), TotalAmount VARCHAR(MAX), NetAllowance NVARCHAR(MAX), CurrencyId TINYINT) AS data
+	
+	EXEC sp_xml_removedocument @idoc
 
-	INSERT INTO #deduction (
+	EXEC sp_xml_preparedocument @idoc OUTPUT
+		,@DeductionXml
+
+	INSERT INTO #tblDeduction (
 		PayrollId
 		,[Type]
 		,NoOfDays
@@ -125,7 +128,9 @@ BEGIN
 		,TotalAmount
 		,NetAllowance
 		,CurrencyId
-	FROM OPENXML(@idocDeduction, '/Root/Row', 1) WITH ([Type] TINYINT, NoOfDays VARCHAR(20), UnitAmount VARCHAR(MAX), TotalAmount VARCHAR(MAX), NetAllowance NVARCHAR(MAX), CurrencyId TINYINT) AS data
+	FROM OPENXML(@idoc, '/Root/Row', 1) WITH ([Type] TINYINT, NoOfDays VARCHAR(20), UnitAmount VARCHAR(MAX), TotalAmount VARCHAR(MAX), NetAllowance NVARCHAR(MAX), CurrencyId TINYINT) AS data
+	
+	EXEC sp_xml_removedocument @idoc
 
 	SET @xml = (
 			SELECT [PayrollId] AS '@pi'
@@ -147,6 +152,8 @@ BEGIN
 				,[Status] AS '@st'
 				,[AdditionAmount] AS '@aa'
 				,[DeductionAmount] AS '@da'
+				,AdditionComment AS '@acomment'
+				,DeductionComment AS '@dcomment'
 				,(
 					SELECT maa.[Type] AS '@t'
 						,maa.UnitAmount AS '@ua'
@@ -197,6 +204,8 @@ BEGIN
 		,[Status] = @Status
 		,[AdditionAmount] = @AdditionAmount
 		,[DeductionAmount] = @DeductionAmount
+		,AdditionComment = @AdditionComment
+		,DeductionComment = @DeductionComment
 	FROM [dbo].[MonthlyAllowance] AS ma WITH (ROWLOCK, UPDLOCK)
 	WHERE ma.PayrollId = @PayrollId
 
@@ -207,7 +216,7 @@ BEGIN
 		,maa.NetAllowance = a.NetAllowance
 		,maa.CurrencyId = a.CurrencyId
 	FROM dbo.MonthlyAllowanceAddition AS maa WITH (ROWLOCK, UPDLOCK)
-		INNER JOIN #addition AS a ON maa.PayrollId = a.PayrollId
+		INNER JOIN #tblAddition AS a WITH (NOLOCK) ON maa.PayrollId = a.PayrollId
 		AND maa.[Type] = a.[Type]
 
 	UPDATE mad
@@ -217,7 +226,7 @@ BEGIN
 		,mad.NetAllowance = d.NetAllowance
 		,mad.CurrencyId = d.CurrencyId
 	FROM dbo.MonthlyAllowanceDeduction AS mad WITH (ROWLOCK, UPDLOCK)
-		INNER JOIN #deduction AS d ON mad.PayrollId = d.PayrollId
+		INNER JOIN #tblDeduction AS d WITH (NOLOCK) ON mad.PayrollId = d.PayrollId
 		AND mad.[Type] = d.[Type]
 
 	SET @xml = (
@@ -240,6 +249,8 @@ BEGIN
 				,[Status] AS '@st'
 				,[AdditionAmount] AS '@aa'
 				,[DeductionAmount] AS '@da'
+				,AdditionComment AS '@acomment'
+				,DeductionComment AS '@dcomment'
 				,(
 					SELECT maa.[Type] AS '@t'
 						,maa.UnitAmount AS '@ua'
@@ -280,7 +291,7 @@ BEGIN
 		,@OldData = @logDataOld
 		,@Duration = @Duration
 
-	DROP TABLE #addition
+	DROP TABLE #tblAddition
 
-	DROP TABLE #deduction
+	DROP TABLE #tblDeduction
 END

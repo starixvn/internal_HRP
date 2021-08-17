@@ -27,7 +27,7 @@ BEGIN
 		RETURN
 	END
 
-	CREATE TABLE #tblPayrollId (Id SMALLINT)
+	CREATE TABLE #tblPayrollId (Id INT)
 
 	INSERT INTO #tblPayrollId (Id)
 	SELECT val

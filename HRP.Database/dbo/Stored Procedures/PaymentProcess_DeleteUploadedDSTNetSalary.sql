@@ -19,7 +19,7 @@ BEGIN
 	--Update PaymentProcess
 	UPDATE dbo.PaymentProcess
 	WITH (ROWLOCK,UPDLOCK)
-	SET IsDSTNetSalaryFileSubmited = 0
+	SET IsDSTNetSalaryFileSubmitted = 0
 		,DSTNetSalarySessionId = NULL
 		,DSTNetSalaryFileName = NULL
 		,IsPayrollGenerated = 0

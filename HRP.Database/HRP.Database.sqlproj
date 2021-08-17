@@ -264,6 +264,10 @@
     <Build Include="dbo\Stored Procedures\MailSetting_GetForSendMail.sql" />
     <Build Include="dbo\Stored Procedures\MailSetting_GetByCompanyId.sql" />
     <Build Include="dbo\Stored Procedures\MailSetting_Get.sql" />
+    <Build Include="dbo\Tables\AdditionDeductionUploadingResult.sql" />
+    <Build Include="dbo\Tables\AdditionDeductionUploading.sql" />
+    <Build Include="dbo\Stored Procedures\PaymentProcess_UploadFiles.sql" />
+    <Build Include="dbo\Stored Procedures\PaymentProcess_DeleteUploadedAdditionDeduction.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HRP.Database.publish.xml" />

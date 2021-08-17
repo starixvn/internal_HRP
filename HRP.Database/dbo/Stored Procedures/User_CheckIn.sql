@@ -4,6 +4,8 @@ CREATE PROCEDURE [dbo].[User_CheckIn] @UserId INT
 	,@IP VARCHAR(50) = ''
 	,@Platform VARCHAR(255) = ''
 	,@OnUserId INT OUTPUT
+	,@ErrCode INT = 0 OUTPUT
+	,@ErrMsg NVARCHAR(1000) = '' OUTPUT
 AS
 /*
 Created: 20171221@Tim.Trinh

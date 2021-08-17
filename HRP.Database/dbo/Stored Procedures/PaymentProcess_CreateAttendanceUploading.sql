@@ -81,7 +81,7 @@ BEGIN
 			UPDATE
 			SET pp.AttendanceFileName = @FileName
 				,pp.AttendanceSessionId = @SessionId
-				,pp.IsAttendanceFileSubmited = 0
+				,pp.IsAttendanceFileSubmitted = 0
 	WHEN NOT MATCHED
 		THEN
 			INSERT (
@@ -89,7 +89,7 @@ BEGIN
 				,[Month]
 				,AttendanceSessionId
 				,AttendanceFileName
-				,IsAttendanceFileSubmited
+				,IsAttendanceFileSubmitted
 				,IsPayrollGenerated
 				)
 			VALUES (

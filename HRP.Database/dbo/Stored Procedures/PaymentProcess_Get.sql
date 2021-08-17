@@ -33,13 +33,15 @@ BEGIN
 			CompanyId
 			,[Month]
 			,IsPayrollGenerated
-			,IsAttendanceFileSubmited
-			,IsDSTNetSalaryFileSubmited
+			,IsAttendanceFileSubmitted
+			,IsDSTNetSalaryFileSubmitted
+			,IsAdditionDeductionFileSubmitted
 			)
 		VALUES (
 			@CompanyId
 			,@Month
 			,0
+			,1
 			,1
 			,1
 			)
@@ -49,11 +51,14 @@ BEGIN
 		,p.[Month]
 		,p.AttendanceSessionId
 		,p.AttendanceFileName
-		,p.IsAttendanceFileSubmited
+		,p.IsAttendanceFileSubmitted
 		,p.DSTNetSalarySessionId
 		,p.DSTNetSalaryFileName
-		,p.IsDSTNetSalaryFileSubmited
+		,p.IsDSTNetSalaryFileSubmitted
 		,p.IsPayrollGenerated
+		,p.AdditionDeductionFileName
+		,p.AdditionDeductionSessionId
+		,p.IsAdditionDeductionFileSubmitted
 		,@startDate AS StartDate
 		,@dueDate AS DueDate
 		,CASE 

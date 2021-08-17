@@ -48,11 +48,7 @@ BEGIN
 				,Data.RowNumber
 				,Data.EmployeeCode
 				,Data.ActualWorkingDay
-			FROM OPENXML(@upDoc, '/Root/Row', 1) WITH (
-					RowNumber INT
-					,EmployeeCode NVARCHAR(2000)
-					,ActualWorkingDay NVARCHAR(20)
-					) AS Data
+			FROM OPENXML(@upDoc, '/Root/Row', 1) WITH (RowNumber INT, EmployeeCode NVARCHAR(2000), ActualWorkingDay NVARCHAR(20)) AS Data
 
 			EXEC sp_xml_removedocument @upDoc
 
@@ -70,31 +66,22 @@ BEGIN
 				,Data.RowNumber
 				,Data.ResultType
 				,Data.[Message]
-			FROM OPENXML(@reDoc, '/Root/Row', 1) WITH (
-					RowNumber INT
-					,ResultType SMALLINT
-					,[Message] NVARCHAR(MAX)
-					) AS Data
+			FROM OPENXML(@reDoc, '/Root/Row', 1) WITH (RowNumber INT, ResultType SMALLINT, [Message] NVARCHAR(MAX)) AS Data
 
 			EXEC sp_xml_removedocument @reDoc
 
 			--Update table PaymentProcess
-			UPDATE dbo.PaymentProcess
-			WITH (
-					ROWLOCK
-					,UPDLOCK
-					)
-
+			UPDATE dbo.PaymentProcess WITH (ROWLOCK, UPDLOCK)
 			SET AttendanceFileName = @AttendanceFileName
 				,AttendanceSessionId = @AttendanceSessionId
-				,IsAttendanceFileSubmited = 0
+				,IsAttendanceFileSubmitted = 0
 				,IsPayrollGenerated = 0
 			WHERE CompanyId = @CompanyId
 				AND [Month] = @Month
 		END
 
 		-- Upload DST Net Salary
-		IF (@DSTNetSalarySessionId IS NOT NULL)
+		IF @DSTNetSalarySessionId IS NOT NULL
 		BEGIN
 			--Insert into table DSTNetSalaryUploading
 			EXEC sp_xml_preparedocument @upDoc OUTPUT
@@ -112,12 +99,7 @@ BEGIN
 				,Data.EmployeeCode
 				,Data.Currency
 				,Data.NetSalaryReceived
-			FROM OPENXML(@upDoc, '/Root/Row', 1) WITH (
-					RowNumber INT
-					,EmployeeCode NVARCHAR(2000)
-					,Currency NVARCHAR(20)
-					,NetSalaryReceived VARCHAR(MAX)
-					) AS Data
+			FROM OPENXML(@upDoc, '/Root/Row', 1) WITH (RowNumber INT, EmployeeCode NVARCHAR(2000), Currency NVARCHAR(20), NetSalaryReceived VARCHAR(MAX)) AS Data
 
 			EXEC sp_xml_removedocument @upDoc
 
@@ -135,24 +117,15 @@ BEGIN
 				,Data.RowNumber
 				,Data.ResultType
 				,Data.[Message]
-			FROM OPENXML(@reDoc, '/Root/Row', 1) WITH (
-					RowNumber INT
-					,ResultType SMALLINT
-					,[Message] NVARCHAR(MAX)
-					) AS Data
+			FROM OPENXML(@reDoc, '/Root/Row', 1) WITH (RowNumber INT, ResultType SMALLINT, [Message] NVARCHAR(MAX)) AS Data
 
 			EXEC sp_xml_removedocument @reDoc
 
 			--Update table PaymentProcess
-			UPDATE dbo.PaymentProcess
-			WITH (
-					ROWLOCK
-					,UPDLOCK
-					)
-
+			UPDATE dbo.PaymentProcess WITH (ROWLOCK, UPDLOCK)
 			SET DSTNetSalaryFileName = @DSTNetSalaryFileName
 				,DSTNetSalarySessionId = @DSTNetSalarySessionId
-				,IsDSTNetSalaryFileSubmited = 0
+				,IsDSTNetSalaryFileSubmitted = 0
 				,IsPayrollGenerated = 0
 			WHERE CompanyId = @CompanyId
 				AND [Month] = @Month
@@ -173,9 +146,6 @@ BEGIN
 		END
 
 		SET @ErrCode = 1
-		SET @ErrMsg = 'ENumber: ' + CAST(ERROR_NUMBER() AS VARCHAR(50)) 
-					+ ' --EProcedure: ' + ERROR_PROCEDURE() 
-					+ ' --ELine: ' + CAST(ERROR_LINE() AS VARCHAR(50)) 
-					+ ' --ErrorMessage: ' + ERROR_MESSAGE()
+		SET @ErrMsg = 'ENumber: ' + CAST(ERROR_NUMBER() AS VARCHAR(50)) + ' --EProcedure: ' + ERROR_PROCEDURE() + ' --ELine: ' + CAST(ERROR_LINE() AS VARCHAR(50)) + ' --ErrorMessage: ' + ERROR_MESSAGE()
 	END CATCH
 END

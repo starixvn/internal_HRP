@@ -2,6 +2,8 @@
 CREATE PROCEDURE [dbo].[User_Logout] @OnUserId INT
 	,@IP VARCHAR(50) = ''
 	,@Platform VARCHAR(255) = ''
+	,@ErrCode INT = 0 OUTPUT
+	,@ErrMsg NVARCHAR(1000) = '' OUTPUT
 AS
 /*
 Created: 20171221@Tim.Trinh

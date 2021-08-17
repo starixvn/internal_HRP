@@ -84,7 +84,7 @@ BEGIN
 			UPDATE
 			SET pp.DSTNetSalaryFileName = @FileName
 				,pp.DSTNetSalarySessionId = @SessionId
-				,pp.IsDSTNetSalaryFileSubmited = 0
+				,pp.IsDSTNetSalaryFileSubmitted = 0
 	WHEN NOT MATCHED
 		THEN
 			INSERT (
@@ -92,7 +92,7 @@ BEGIN
 				,[Month]
 				,DSTNetSalarySessionId
 				,DSTNetSalaryFileName
-				,IsDSTNetSalaryFileSubmited
+				,IsDSTNetSalaryFileSubmitted
 				,IsPayrollGenerated
 				)
 			VALUES (

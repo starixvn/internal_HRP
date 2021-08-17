@@ -1,4 +1,5 @@
 ﻿
+
 CREATE PROCEDURE [dbo].[Report_GetDataForDirectBankingReport]
 	@UserId INT
 	,@Month SMALLDATETIME
@@ -20,6 +21,8 @@ BEGIN
 
 	DECLARE @DirectBankingRefName NVARCHAR(50) = 'PaymentTransactionDirectBanking'
 			,@CashRefName NVARCHAR(50) = 'PaymentTransactionCash'
+	DECLARE @firstDayOfWorkingMonth DATE
+	SET @firstDayOfWorkingMonth = DATEADD(MONTH, DATEDIFF(MONTH, 0, @Month), 0)
 
 	-- Check Permission on Company
 	IF dbo.fnc_GetFunctionPermissionOnCompany(@UserId, @CompanyId, 'DirectBankingReport') = 0 -- don't have read permission
@@ -95,6 +98,7 @@ BEGIN
 			,ba.BankAddress
 			,ba.BankSwiftCode
 			,ba.AccountNumber
+			,ref.ResourceId AS PaymentTransactionId
 			,ref.[Value] AS PaymentTransaction
 			,mm.BankAmount AS Amount
 			,cur.CurrencyCode
@@ -113,6 +117,10 @@ BEGIN
 		WHERE YEAR(mp.[Month]) = YEAR(@month) 
 			AND MONTH(mp.[Month]) = MONTH(@month)
 			AND ep.CompanyId = @CompanyId
+			AND (
+				ep.GroupEndDate IS NULL
+				OR ep.GroupEndDate > @firstDayOfWorkingMonth
+			)
 		ORDER BY ba.BankName ASC
 			,e.Nickname ASC
 
@@ -122,6 +130,7 @@ BEGIN
 			,e.FullName AS BeneficiaryName
 			,NULL AS BankName
 			,NULL AS AccountNumber
+			,ref.ResourceId AS PaymentTransactionId
 			,ref.[Value] AS PaymentTransaction
 			,ms.CashAmount AS Amount
 			,cur.CurrencyCode
@@ -138,6 +147,10 @@ BEGIN
 		WHERE YEAR(mp.[Month]) = YEAR(@month)
 			AND MONTH(mp.[Month]) = MONTH(@month)
 			AND ep.CompanyId = @CompanyId
+			AND (
+				ep.GroupEndDate IS NULL
+				OR ep.GroupEndDate > @firstDayOfWorkingMonth
+			)
 		ORDER BY e.Nickname ASC
 	END
 	ELSE -- Allowances
@@ -175,6 +188,7 @@ BEGIN
 			,ba.BankAddress
 			,ba.BankSwiftCode
 			,ba.AccountNumber
+			,ref.ResourceId AS PaymentTransactionId
 			,ref.[Value] AS PaymentTransaction
 			,mm.BankAmount AS Amount
 			,cur.CurrencyCode
@@ -193,6 +207,10 @@ BEGIN
 		WHERE YEAR(MonthlyPayroll.[Month]) = YEAR(@month)
 			AND MONTH(MonthlyPayroll.[Month]) = MONTH(@month)
 			AND ep.CompanyId = @CompanyId
+			AND (
+				ep.GroupEndDate IS NULL
+				OR ep.GroupEndDate > @firstDayOfWorkingMonth
+			)
 		ORDER BY ba.BankName ASC
 			,e.Nickname ASC
 
@@ -202,6 +220,7 @@ BEGIN
 			,e.FullName AS BeneficiaryName
 			,NULL AS BankName
 			,NULL AS AccountNumber
+			,ref.ResourceId AS PaymentTransactionId
 			,ref.[Value] AS PaymentTransaction
 			,ma.CashAmount AS Amount
 			,cur.CurrencyCode
@@ -218,6 +237,10 @@ BEGIN
 		WHERE YEAR(mm.[Month]) = YEAR(@month)
 			AND MONTH(mm.[Month]) = MONTH(@month)
 			AND ep.CompanyId = @CompanyId
+			AND (
+				ep.GroupEndDate IS NULL
+				OR ep.GroupEndDate > @firstDayOfWorkingMonth
+			)
 		ORDER BY e.Nickname ASC
 	END
 
@@ -227,7 +250,7 @@ BEGIN
 	WHERE CompanyId = @CompanyId
 
 	-- Get Payment transaction's names that were selected by user
-	SELECT ref.[Value]
+	SELECT ref.RefName, ref.ResourceId, ref.[Value]
 	FROM dbo.RefResource AS ref WITH (NOLOCK)
 		INNER JOIN #SelectedPaymentTransactions AS spt WITH (NOLOCK) ON ref.ResourceId = spt.PaymentTransactionId
 		AND ref.RefName =
