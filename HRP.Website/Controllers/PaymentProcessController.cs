@@ -239,7 +239,7 @@
             CommandResult submitResult = await paymentProcessService.SubmitUploadingFilesAsync(companyId, month);
             if (submitResult.IsSuccessful)
             {
-                CommandResult generateResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
+                CommandResult generateResult = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month);
                 if (generateResult.IsSuccessful)
                 {
                     return Json(new { isSuccessful = true });
@@ -607,7 +607,7 @@
                 return RedirectToAction(AccessDenied, Error);
             }
 
-            CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, null);
+            CommandResult result = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month);
 
             return Json(result);
         }

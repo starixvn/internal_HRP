@@ -319,7 +319,9 @@
             return deductionAmount;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         private static void MappingAllowanceAddition(
+#pragma warning restore S1541 // Methods and properties should not be too complex
             int standardWorkingDays,
             MonthlyPayrollBasicAllowanceModel basicAllowance,
             IEnumerable<MonthlyAllowanceAdditionModel> additions,
