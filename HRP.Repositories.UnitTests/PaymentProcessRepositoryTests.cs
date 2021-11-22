@@ -39,16 +39,19 @@
             objectDb.QueryMultipleAsync(Arg.Any<ICriteria>()).Returns(multiResult);
             multiResult.ReadFirstOrDefaultAsync<PaymentProcess>().Returns(paymentProcess);
             multiResult.ReadAsync<ValidationResult>().Returns(validationResults);
+            multiResult.ReadAsync<ValidationResult>().Returns(validationResults);
+            multiResult.ReadAsync<ValidationResult>().Returns(validationResults);
             var repository = new PaymentProcessRepository();
 
             // Act
             var actual = await repository.GetUploadingFilesResultAsync(criteria);
 
             // Assert
-            Assert.IsType<(PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>)>(actual);
+            Assert.IsType<(PaymentProcess, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>, IEnumerable<ValidationResult>)>(actual);
             Assert.Equal(paymentProcess, actual.Item1);
             Assert.Equal(validationResults, actual.Item2);
             Assert.Equal(validationResults, actual.Item3);
+            Assert.Equal(validationResults, actual.Item4);
         }
 
         #endregion GetUploadingFilesResultAsync

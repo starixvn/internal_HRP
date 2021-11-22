@@ -42,7 +42,7 @@ BEGIN
 			SELECT COUNT(1)
 			FROM dbo.AdditionDeductionUploading AS ad WITH (NOLOCK)
 			WHERE ad.SessionId = p.AdditionDeductionSessionId
-			) AS AttendanceTotalRow
+			) AS AdditionDeductionTotalRow
 		,@startDate AS StartDate
 		,@dueDate AS DueDate
 	FROM dbo.PaymentProcess AS p WITH (NOLOCK)

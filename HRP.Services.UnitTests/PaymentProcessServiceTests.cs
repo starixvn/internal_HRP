@@ -586,9 +586,9 @@
                 Arg.Any<IEnumerable<CurrencyExchangeRateModel>>(),
                 Arg.Any<MonthlyDSTNetSalary>()).Returns(mockAllowance);
             monthlyAllowancesService.InitializeAllowanceAdditions(Arg.Any<int>(), Arg.Any<decimal>(),
-                Arg.Any<MonthlyPayrollBasicAllowanceModel>(), Arg.Any<IEnumerable<CurrencyExchangeRateModel>>()).Returns(allowanceAdditions);
+                Arg.Any<MonthlyPayrollBasicAllowanceModel>(), Arg.Any<GeneratePayrollModel>()).Returns(allowanceAdditions);
             monthlyAllowancesService.InitializeAllowanceDeductions(Arg.Any<int>(), Arg.Any<decimal>(),
-                Arg.Any<MonthlyPayrollBasicAllowanceModel>(), Arg.Any<IEnumerable<CurrencyExchangeRateModel>>()).Returns(allowanceDeductions);
+                Arg.Any<MonthlyPayrollBasicAllowanceModel>(), Arg.Any<GeneratePayrollModel>()).Returns(allowanceDeductions);
 
             // Act
             var actual = await paymentProcessService.GenerateMonthlyPayrollAsync(companyId, month, employeeId);

@@ -11,6 +11,7 @@
     using HRP.Criteria.MonthlyPayroll;
     using HRP.Models.Currency;
     using HRP.Models.MonthlyPayroll;
+    using HRP.Models.PaymentProcess;
     using HRP.Models.ServiceModels;
     using HRP.Repositories;
     using NSubstitute;
@@ -300,14 +301,16 @@
                 DutyMealAmount = dutyMealAmount.ToString(),
                 DutyMealCurrencyId = 1
             };
-
-            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            var data = new GeneratePayrollModel
             {
-                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+                CurrencyExchangeRate = new List<CurrencyExchangeRateModel>
+                {
+                    new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+                }
             };
 
             // Act
-            var result = monthlyPayrollService.InitializeAllowanceAdditions(standardWorkingDays, actualWorkingDays, basicAllowance, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeAllowanceAdditions(standardWorkingDays, actualWorkingDays, basicAllowance, data);
 
             // Assert
             Assert.NotEmpty(result);
@@ -339,13 +342,15 @@
                 DutyMealAmount = dutyMealAmount.ToString(),
                 DutyMealCurrencyId = 1
             };
-
-            var currencyExchangeRates = new List<CurrencyExchangeRateModel>
+            var data = new GeneratePayrollModel
             {
-                new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+                CurrencyExchangeRate = new List<CurrencyExchangeRateModel>
+                {
+                    new CurrencyExchangeRateModel { FromCurrencyId = 1, ToCurrencyId = 1, ExchangeRate = 1 }
+                }
             };
 
-            var result = monthlyPayrollService.InitializeAllowanceDeductions(standardWorkingDays, actualWorkingDays, basicAllowance, currencyExchangeRates);
+            var result = monthlyPayrollService.InitializeAllowanceDeductions(standardWorkingDays, actualWorkingDays, basicAllowance, data);
 
             Assert.NotEmpty(result);
             var dutyMeal = result.FirstOrDefault(x => x.Type == (int)MonthlyAllowanceAdditionType.DutyMeal);

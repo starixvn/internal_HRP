@@ -551,20 +551,27 @@
                 CashCurrencyId = 1,
                 CashAmount = "5000"
             };
-            var backPay = new MonthlySalaryAdditionModel { NetSalary = "1000" };
             var monthlySalary = new MonthlySalaryModel();
             var monthlyPayrollService = GetMonthlySalaryService();
+            var additions = new List<MonthlySalaryAdditionModel>
+            {
+                new MonthlySalaryAdditionModel { NetSalary = "1000" }
+            };
+            var deductions = new List<MonthlySalaryDeductionModel>
+            {
+                new MonthlySalaryDeductionModel { NetSalary = "1000" }
+            };
 
             // Act
-            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, backPay, monthlySalary);
+            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, monthlySalary, additions, deductions);
 
             // Assert
             Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
             Assert.Equal("10000", basicSalary.AfterAdjustmentAmount);
-            Assert.Equal("11000", monthlySalary.Salary);
+            Assert.Equal("10000", monthlySalary.Salary);
             Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
             Assert.Equal("4000", basicSalary.EbankingAmount);
-            Assert.Equal("5000", monthlySalary.EbankingAmount);
+            Assert.Equal("4000", monthlySalary.EbankingAmount);
             Assert.Equal(basicSalary.EbankingAccountId, monthlySalary.EbankingAccountId);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
@@ -576,7 +583,8 @@
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
             Assert.Equal(basicSalary.CashAccountId, monthlySalary.CashAccountId);
             Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
-            Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
+            Assert.Equal("1000", monthlySalary.AdditionAmount);
+            Assert.Equal("1000", monthlySalary.DeductionAmount);
         }
 
         [Fact]
@@ -599,28 +607,36 @@
                 CashCurrencyId = 1,
                 CashAmount = "5000"
             };
-            var backPay = new MonthlySalaryAdditionModel { NetSalary = "1000" };
             var monthlySalary = new MonthlySalaryModel();
             var monthlyPayrollService = GetMonthlySalaryService();
+            var additions = new List<MonthlySalaryAdditionModel>
+            {
+                new MonthlySalaryAdditionModel { NetSalary = "1000" }
+            };
+            var deductions = new List<MonthlySalaryDeductionModel>
+            {
+                new MonthlySalaryDeductionModel { NetSalary = "1000" }
+            };
 
             // Act
-            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, backPay, monthlySalary);
+            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, monthlySalary, additions, deductions);
 
             // Assert
             Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
             Assert.Equal("10000", basicSalary.AfterAdjustmentAmount);
-            Assert.Equal("11000", monthlySalary.Salary);
+            Assert.Equal("10000", monthlySalary.Salary);
             Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
             Assert.Equal(basicSalary.EbankingAmount, monthlySalary.EbankingAmount);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal("4000", basicSalary.DirectBanking1Amount);
-            Assert.Equal("5000", monthlySalary.DirectBanking1Amount);
+            Assert.Equal("4000", monthlySalary.DirectBanking1Amount);
             Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
             Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
-            Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
+            Assert.Equal("1000", monthlySalary.AdditionAmount);
+            Assert.Equal("1000", monthlySalary.DeductionAmount);
         }
 
         [Fact]
@@ -643,28 +659,36 @@
                 CashCurrencyId = 1,
                 CashAmount = "5000"
             };
-            var backPay = new MonthlySalaryAdditionModel { NetSalary = "1000" };
             var monthlySalary = new MonthlySalaryModel();
             var monthlyPayrollService = GetMonthlySalaryService();
+            var additions = new List<MonthlySalaryAdditionModel>
+            {
+                new MonthlySalaryAdditionModel { NetSalary = "1000" }
+            };
+            var deductions = new List<MonthlySalaryDeductionModel>
+            {
+                new MonthlySalaryDeductionModel { NetSalary = "1000" }
+            };
 
             // Act
-            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, backPay, monthlySalary);
+            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, monthlySalary, additions, deductions);
 
             // Assert
             Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
             Assert.Equal("10000", basicSalary.AfterAdjustmentAmount);
-            Assert.Equal("11000", monthlySalary.Salary);
+            Assert.Equal("10000", monthlySalary.Salary);
             Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
             Assert.Equal(basicSalary.EbankingAmount, monthlySalary.EbankingAmount);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
             Assert.Equal(basicSalary.DirectBanking1Amount, monthlySalary.DirectBanking1Amount);
             Assert.Equal(basicSalary.DirectBanking2CurrencyId, monthlySalary.DirectBanking2CurrencyId);
             Assert.Equal("4000", basicSalary.DirectBanking2Amount);
-            Assert.Equal("5000", monthlySalary.DirectBanking2Amount);
+            Assert.Equal("4000", monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal(basicSalary.CashAmount, monthlySalary.CashAmount);
             Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
-            Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
+            Assert.Equal("1000", monthlySalary.AdditionAmount);
+            Assert.Equal("1000", monthlySalary.DeductionAmount);
         }
 
         [Fact]
@@ -687,17 +711,24 @@
                 DirectBanking1Amount = "5000",
                 CashCurrencyId = 1
             };
-            var backPay = new MonthlySalaryAdditionModel { NetSalary = "1000" };
             var monthlySalary = new MonthlySalaryModel();
             var monthlyPayrollService = GetMonthlySalaryService();
+            var additions = new List<MonthlySalaryAdditionModel>
+            {
+                new MonthlySalaryAdditionModel { NetSalary = "1000" }
+            };
+            var deductions = new List<MonthlySalaryDeductionModel>
+            {
+                new MonthlySalaryDeductionModel { NetSalary = "1000" }
+            };
 
             // Act
-            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, backPay, monthlySalary);
+            monthlyPayrollService.CalculateMonthlySalary(currencyExchangeRates, basicSalary, monthlySalary, additions, deductions);
 
             // Assert
             Assert.Equal(basicSalary.CurrencyId, monthlySalary.CurrencyId);
             Assert.Equal("10000", basicSalary.AfterAdjustmentAmount);
-            Assert.Equal("11000", monthlySalary.Salary);
+            Assert.Equal("10000", monthlySalary.Salary);
             Assert.Equal(basicSalary.EbankingCurrencyId, monthlySalary.EbankingCurrencyId);
             Assert.Equal(basicSalary.EbankingAmount, monthlySalary.EbankingAmount);
             Assert.Equal(basicSalary.DirectBanking1CurrencyId, monthlySalary.DirectBanking1CurrencyId);
@@ -706,9 +737,10 @@
             Assert.Equal(basicSalary.DirectBanking2Amount, monthlySalary.DirectBanking2Amount);
             Assert.Equal(basicSalary.CashCurrencyId, monthlySalary.CashCurrencyId);
             Assert.Equal("4000", basicSalary.CashAmount);
-            Assert.Equal("5000", monthlySalary.CashAmount);
+            Assert.Equal("4000", monthlySalary.CashAmount);
             Assert.Equal(MonthlyPayrollStatus.Default, monthlySalary.Status);
-            Assert.Equal(backPay.NetSalary, monthlySalary.AdditionAmount);
+            Assert.Equal("1000", monthlySalary.AdditionAmount);
+            Assert.Equal("1000", monthlySalary.DeductionAmount);
         }
 
         #endregion CalculateMonthlySalary
