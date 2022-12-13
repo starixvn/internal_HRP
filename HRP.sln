@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRP.Models.UnitTests", "HRP
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{91298549-D7F1-44D3-AFC1-A00E126AFFDA}"
 	ProjectSection(SolutionItems) = preProject
+		SonarQube\hrp_js_settings.json = SonarQube\hrp_js_settings.json
+		SonarQube\hrp_ts_settings.json = SonarQube\hrp_ts_settings.json
 		SonarQube\HRPCSharp.ruleset = SonarQube\HRPCSharp.ruleset
 		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
 		SonarQube\hrp\CSharp\SonarLint.xml = SonarQube\hrp\CSharp\SonarLint.xml

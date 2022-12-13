@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Fanex.Data" Version="4.2.2" />
     <PackageReference Include="Fanex.Data.Repository" Version="4.2.2" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.9.0.19135">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.34.0.42011">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
