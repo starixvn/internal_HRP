@@ -92,7 +92,7 @@
 
         public bool IsCorrectPasswordAccessTheCertificate(string password)
         {
-            X509Certificate2 cert = null;
+            X509Certificate2 cert;
 
             try
             {

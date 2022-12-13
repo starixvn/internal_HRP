@@ -435,7 +435,9 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
             Assert.Null(viewResult.ViewName);
-            Assert.Equal(true, viewResult.ViewData["IsHost"]);
+
+            var isHost = (bool)viewResult.ViewData["IsHost"];
+            Assert.True(isHost);
         }
 
         #region Helpers

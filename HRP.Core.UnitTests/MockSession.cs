@@ -8,7 +8,7 @@
 
     public class MockSession : ISession
     {
-        private Dictionary<string, dynamic> sessionFactory = new Dictionary<string, dynamic>();
+        private readonly Dictionary<string, dynamic> sessionFactory = new Dictionary<string, dynamic>();
 
         public bool IsAvailable => throw new NotImplementedException();
         public string Id => throw new NotImplementedException();

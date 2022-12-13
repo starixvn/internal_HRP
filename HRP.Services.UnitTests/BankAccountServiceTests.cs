@@ -119,12 +119,12 @@
             return new BankAccountService(baseService, sessionService);
         }
 
-        private IBaseService FakeBaseService()
+        private static IBaseService FakeBaseService()
         {
             return Substitute.For<IBaseService>();
         }
 
-        private ISessionService FakeSessionService()
+        private static ISessionService FakeSessionService()
         {
             var service = Substitute.For<ISessionService>();
             service.UserId = 1;
