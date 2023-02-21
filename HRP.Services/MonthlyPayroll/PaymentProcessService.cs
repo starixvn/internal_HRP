@@ -403,9 +403,10 @@
             }
 
             monthlySalaryService.CalculateBackPayAndAfterAdjustment(dataModel.CurrencyExchangeRate, month, monthlyBasicSalary, backPay, payroll.GroupStartDate, payroll.GroupEndDate);
-            monthlySalaryService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, monthlySalary, salaryAdditions, salaryDeductions);
 
             salaryAdditions.Add(backPay);
+
+            monthlySalaryService.CalculateMonthlySalary(dataModel.CurrencyExchangeRate, monthlyBasicSalary, monthlySalary, salaryAdditions, salaryDeductions);
 
             EncryptMonthlyBasicSalary(monthlyBasicSalary);
             EncryptMonthlySalary(monthlySalary);
