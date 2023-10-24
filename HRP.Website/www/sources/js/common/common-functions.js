@@ -83,6 +83,10 @@ window.commonFunctions = (function ($) {
                 url = 'auth/login';
                 break;
 
+            case 404:
+                url = 'error/404';
+                break;
+
             case 405:
                 url = 'error/405';
                 break;

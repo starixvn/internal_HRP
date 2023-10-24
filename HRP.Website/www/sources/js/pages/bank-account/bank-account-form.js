@@ -13,103 +13,99 @@ window.bankAccountForm = {
     },
 
     initPaymentTransactionSelect: function () {
-        $(".bank-account-form").on("change",
-            ".change-payment-transaction",
-            function () {
-                var ajaxUrl = $(".payment-transaction-select").data("url") +
-                    "?bankTypeId=" +
-                    $("#BankTypeId").val() +
-                    "&employeeId=" +
-                    $("#EmployeeId").val();
+        $('.bank-account-form').on('change', '.change-payment-transaction', function () {
+            const ajaxUrl = $('.payment-transaction-select').data('url')
+                + '?bankTypeId=' + $('#BankTypeId').val()
+                + '&employeeId=' + $('#EmployeeId').val();
 
-                $.ajax({
-                    url: ajaxUrl,
-                    method: "get",
-                    success: function (results) {
-                        $(".payment-transaction-select").select2().empty();
-                        $(".payment-transaction-select").select2({
-                            width: "100%",
-                            data: results
-                        });
+            $.ajax({
+                url: ajaxUrl,
+                method: 'get',
+                success: function (results) {
+                    $('.payment-transaction-select').select2().empty();
+                    $('.payment-transaction-select').select2({
+                        width: '100%',
+                        data: results
+                    });
 
-                        var selectedPaymentTransactionId = $("#selected-payment-transaction-id").val();
-                        if (selectedPaymentTransactionId !== "0") {
-                            $("#PaymentTransactionId").val(selectedPaymentTransactionId).trigger("change");
-                        }
+                    var selectedPaymentTransactionId = $('#selected-payment-transaction-id').val();
+                    if (selectedPaymentTransactionId !== '0') {
+                        $('#PaymentTransactionId').val(selectedPaymentTransactionId).trigger('change');
                     }
-                });
-            });
-
-        var ajaxUrl = $(".payment-transaction-select").data("url") +
-            "?bankTypeId=" +
-            $("#BankTypeId").val() +
-            "&employeeId=" +
-            $("#EmployeeId").val();
-
-        $.ajax({
-            url: ajaxUrl,
-            method: "get",
-            success: function (results) {
-                $(".payment-transaction-select").select2().empty();
-                $(".payment-transaction-select").select2({
-                    width: "100%",
-                    data: results
-                });
-
-                var selectedPaymentTransactionId = $("#selected-payment-transaction-id").val();
-                if (selectedPaymentTransactionId !== "0") {
-                    $("#PaymentTransactionId").val(selectedPaymentTransactionId).trigger("change");
                 }
-            }
+            });
         });
+
+        if ($('.payment-transaction-select') && $('.payment-transaction-select').length > 0) {
+            const ajaxUrl = $('.payment-transaction-select').data('url')
+                + '?bankTypeId=' + $('#BankTypeId').val()
+                + '&employeeId=' + $('#EmployeeId').val();
+
+            $.ajax({
+                url: ajaxUrl,
+                method: 'get',
+                success: function (results) {
+                    $('.payment-transaction-select').select2().empty();
+                    $('.payment-transaction-select').select2({
+                        width: '100%',
+                        data: results
+                    });
+
+                    var selectedPaymentTransactionId = $('#selected-payment-transaction-id').val();
+                    if (selectedPaymentTransactionId !== '0') {
+                        $('#PaymentTransactionId').val(selectedPaymentTransactionId).trigger('change');
+                    }
+                }
+            });
+        }
     },
 
     checkIfRequired: function (desiredvalue, relatedFieldName) {
-        desiredvalue = (desiredvalue === null ? "" : desiredvalue).toString();
-        var controlType = $("input[id$='" + relatedFieldName + "']").attr("type");
+        desiredvalue = (desiredvalue === null ? '' : desiredvalue).toString();
+        var controlType = $("input[id$='" + relatedFieldName + "']").attr('type');
         var actualvalue;
-        if (controlType === "checkbox" || controlType === "radio") {
+        if (controlType === 'checkbox' || controlType === 'radio') {
             var control = $("input[id$='" + relatedFieldName + "']:checked");
             actualvalue = control.val();
         } else {
-            actualvalue = $("#" + relatedFieldName).val();
+            actualvalue = $('#' + relatedFieldName).val();
         }
 
         return $.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase();
     },
 
     toggleRequiredMarkOnBankTypeChanged: function () {
-        $(".bank-account-form").on("change",
-            "#BankTypeId",
+        $('.bank-account-form').on('change',
+            '#BankTypeId',
             function () {
-                $("[data-val-requiredifrelatedfieldistrue]").each(function () {
-                    var desiredValue = $(this).data("val-requiredifrelatedfieldistrue-desiredvalue");
-                    var relatedFieldName = $(this).data("val-requiredifrelatedfieldistrue-relatedfieldname");
-                    var labelFor = $(this).attr("name");
+                $('[data-val-requiredifrelatedfieldistrue]').each(function () {
+                    var desiredValue = $(this).data('val-requiredifrelatedfieldistrue-desiredvalue');
+                    var relatedFieldName = $(this).data('val-requiredifrelatedfieldistrue-relatedfieldname');
+                    var labelFor = $(this).attr('name');
 
                     if (bankAccountForm.checkIfRequired(desiredValue, relatedFieldName)) {
-                        $("label[for='" + labelFor + "']").addClass("-has-required");
+                        $("label[for='" + labelFor + "']").addClass('-has-required');
                     } else {
-                        $("label[for='" + labelFor + "']").removeClass("-has-required");
+                        $("label[for='" + labelFor + "']").removeClass('-has-required');
                     }
                 });
             });
 
-        $("#BankTypeId").trigger("change");
+        $('#BankTypeId').trigger('change');
     },
 
     addRequiredIfRelatedFieldIsTrueClientValidation: function () {
-        $.validator.addMethod("requiredifrelatedfieldistrue",
+        $.validator.addMethod('requiredifrelatedfieldistrue',
             function (value, element, parameters) {
                 var desiredvalue = parameters.desiredvalue;
-                desiredvalue = (desiredvalue === null ? "" : desiredvalue).toString();
-                var controlType = $("input[id$='" + parameters.relatedfieldname + "']").attr("type");
+                desiredvalue = (desiredvalue === null ? '' : desiredvalue).toString();
+                var controlType = $("input[id$='" + parameters.relatedfieldname + "']").attr('type');
                 var actualvalue;
-                if (controlType === "checkbox" || controlType === "radio") {
+                if (controlType === 'checkbox' || controlType === 'radio') {
                     var control = $("input[id$='" + parameters.relatedfieldname + "']:checked");
                     actualvalue = control.val();
                 } else {
-                    actualvalue = $("#" + parameters.relatedfieldname).val();
+                    actualvalue = $('#' + parameters.relatedfieldname).val();
                 }
 
                 if ($.trim(desiredvalue).toLowerCase() === $.trim(actualvalue).toLocaleLowerCase()) {
@@ -120,48 +116,48 @@ window.bankAccountForm = {
                 return true;
             });
 
-        $.validator.unobtrusive.adapters.add("requiredifrelatedfieldistrue",
-            ["relatedfieldname", "desiredvalue"],
+        $.validator.unobtrusive.adapters.add('requiredifrelatedfieldistrue',
+            ['relatedfieldname', 'desiredvalue'],
             function (options) {
-                options.rules["requiredifrelatedfieldistrue"] = options.params;
-                options.messages["requiredifrelatedfieldistrue"] = options.message;
+                options.rules['requiredifrelatedfieldistrue'] = options.params;
+                options.messages['requiredifrelatedfieldistrue'] = options.message;
             });
 
-        bankAccountForm.reInitValidation($(".bank-account-form"));
+        bankAccountForm.reInitValidation($('.bank-account-form'));
     },
 
     reInitValidation: function ($form) {
-        $form.removeData("validator").removeData("unobtrusiveValidation");
+        $form.removeData('validator').removeData('unobtrusiveValidation');
 
         $.validator.unobtrusive.parse($form);
         $form.validate();
     },
 
     removeBackdropOnModalHide: function () {
-        $("#dynamic-modals").on("hidden.bs.modal",
-            ".modal",
+        $('#dynamic-modals').on('hidden.bs.modal',
+            '.modal',
             function () {
                 $(this).remove();
-                $(".modal-backdrop").remove();
+                $('.modal-backdrop').remove();
             });
     },
 
     resetFormClientValidation: function () {
-        var form = $("#dynamic-modals form")
-            .removeData("validator") /* added by the raw jquery.validate plugin */
-            .removeData("unobtrusiveValidation"); /* added by the jquery unobtrusive plugin*/
+        var form = $('#dynamic-modals form')
+            .removeData('validator') /* added by the raw jquery.validate plugin */
+            .removeData('unobtrusiveValidation'); /* added by the jquery unobtrusive plugin*/
 
         $.validator.unobtrusive.parse(form);
     },
 
     handleFormSubmittedInModal: function () {
-        commonFunctions.disableEnterKeySubmit($(".bank-account-form"));
+        commonFunctions.disableEnterKeySubmit($('.bank-account-form'));
 
-        var isModal = $(".bank-account-form :submit").data("ismodal") === true;
+        var isModal = $('.bank-account-form :submit').data('ismodal') === true;
 
         if (isModal) {
-            $(".modal-bank-account-form").on("submit",
-                "form",
+            $('.modal-bank-account-form').on('submit',
+                'form',
                 function (e) {
                     e.preventDefault();
 
@@ -169,15 +165,15 @@ window.bankAccountForm = {
                     $(this).validate();
 
                     $.ajax({
-                        url: $(this).attr("action"),
-                        method: $(this).attr("method"),
+                        url: $(this).attr('action'),
+                        method: $(this).attr('method'),
                         data: $(this).serialize(),
                         success: function (result) {
-                            $(".modal-bank-account-form").modal("hide");
-                            $("#dynamic-modals").html(result);
+                            $('.modal-bank-account-form').modal('hide');
+                            $('#dynamic-modals').html(result);
 
-                            $("#dynamic-modals select").select2({
-                                width: "100%",
+                            $('#dynamic-modals select').select2({
+                                width: '100%',
                                 minimumResultsForSearch: Infinity
                             });
 
@@ -185,7 +181,7 @@ window.bankAccountForm = {
 
                             bankAccountForm.resetFormClientValidation();
 
-                            $(".modal-bank-account-form").modal();
+                            $('.modal-bank-account-form').modal();
                         }
                     });
                 });
@@ -193,8 +189,8 @@ window.bankAccountForm = {
     },
 
     handleFormSucceeded: function () {
-        var isSuccessful = $("#is-successful").val();
-        var isModal = $(".bank-account-form :submit").data("ismodal") === true;
+        var isSuccessful = $('#is-successful').val();
+        var isModal = $('.bank-account-form :submit').data('ismodal') === true;
         if (isSuccessful) {
             bankAccountForm.disableForm();
 
@@ -202,13 +198,13 @@ window.bankAccountForm = {
 
             setTimeout(function () {
                 if (isModal) {
-                    $(".bank-account-form").closest(".modal").modal("hide");
+                    $('.bank-account-form').closest('.modal').modal('hide');
                 } else {
-                    var redirectLink = $("#redirect-link").prop("href");
+                    var redirectLink = $('#redirect-link').prop('href');
                     if (redirectLink !== undefined) {
                         window.location.replace(redirectLink);
                     } else {
-                        window.location.href = $("#index-link").prop("href");
+                        window.location.href = $('#index-link').prop('href');
                     }
                 }
             },
@@ -221,11 +217,11 @@ window.bankAccountForm = {
     countTimeInSeconds: 5,
 
     checkFormError: function () {
-        if ($(".bank-account-form").find(".field-validation-error").length === 0) {
+        if ($('.bank-account-form').find('.field-validation-error').length === 0) {
             // Valid
-            $(".bank-account-form .list-message-error").addClass("hidden");
+            $('.bank-account-form .list-message-error').addClass('hidden');
         } else {
-            $(".bank-account-form .list-message-error").removeClass("hidden");
+            $('.bank-account-form .list-message-error').removeClass('hidden');
         }
     },
 
@@ -236,43 +232,43 @@ window.bankAccountForm = {
             return;
         }
 
-        $(".bank-account-form .count-down-remaining").text(bankAccountForm.countTimeInSeconds);
+        $('.bank-account-form .count-down-remaining').text(bankAccountForm.countTimeInSeconds);
     },
 
     disableForm: function () {
-        $(".bank-account-form :input").attr("disabled", true).addClass("disabled");
-        $(".bank-account-form button").attr("disabled", true).addClass("disabled");
-        $(".bank-account-form .button").attr("disabled", true).addClass("disabled");
+        $('.bank-account-form :input').attr('disabled', true).addClass('disabled');
+        $('.bank-account-form button').attr('disabled', true).addClass('disabled');
+        $('.bank-account-form .button').attr('disabled', true).addClass('disabled');
     }
 };
 
 $.validator.setDefaults({
     highlight: function (element, errorClass, validClass) {
-        if (element.type === "radio") {
+        if (element.type === 'radio') {
             this.findByName(element.name).addClass(errorClass).removeClass(validClass);
         } else {
             $(element).addClass(errorClass).removeClass(validClass);
         }
 
-        if ($(".bank-account-form").find(".field-validation-error").length === 0) {
+        if ($('.bank-account-form').find('.field-validation-error').length === 0) {
             // Valid
-            $(".bank-account-form .list-message-error").addClass("hidden");
+            $('.bank-account-form .list-message-error').addClass('hidden');
         } else {
-            $(".bank-account-form .list-message-error").removeClass("hidden");
+            $('.bank-account-form .list-message-error').removeClass('hidden');
         }
     },
     unhighlight: function (element, errorClass, validClass) {
-        if (element.type === "radio") {
+        if (element.type === 'radio') {
             this.findByName(element.name).removeClass(errorClass).addClass(validClass);
         } else {
             $(element).removeClass(errorClass).addClass(validClass);
         }
 
-        if ($(".bank-account-form").find(".field-validation-error").length === 0) {
+        if ($('.bank-account-form').find('.field-validation-error').length === 0) {
             // Valid
-            $(".bank-account-form .list-message-error").addClass("hidden");
+            $('.bank-account-form .list-message-error').addClass('hidden');
         } else {
-            $(".bank-account-form .list-message-error").removeClass("hidden");
+            $('.bank-account-form .list-message-error').removeClass('hidden');
         }
     }
 });
