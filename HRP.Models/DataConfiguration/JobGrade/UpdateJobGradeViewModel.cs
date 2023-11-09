@@ -1,7 +1,5 @@
-﻿namespace HRP.Models.DataConfiguration.JobGrade
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
-
     public class UpdateJobGradeViewModel
     {
         public Field Field { get; set; }

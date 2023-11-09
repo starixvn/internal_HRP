@@ -1,18 +1,12 @@
-﻿namespace HRP.Models.DataConfiguration.JobGrade
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CreateJobGradeViewModel
     {
-        public CreateJobGradeViewModel()
-        {
-            JobGrade = new JobGrade();
-        }
-
         public SelectList JobCategoryList { get; set; }
 
-        public JobGrade JobGrade { get; set; }
+        public JobGrade JobGrade { get; set; } = new JobGrade();
 
         public Field Field { get; set; }
     }

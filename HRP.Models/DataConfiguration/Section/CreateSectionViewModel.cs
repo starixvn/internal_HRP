@@ -1,18 +1,12 @@
-﻿namespace HRP.Models.DataConfiguration.Section
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CreateSectionViewModel
     {
-        public CreateSectionViewModel()
-        {
-            Section = new Section();
-        }
-
         public SelectList CompanyList { get; set; }
 
-        public Section Section { get; set; }
+        public Section Section { get; set; } = new Section();
 
         public Field Field { get; set; }
     }

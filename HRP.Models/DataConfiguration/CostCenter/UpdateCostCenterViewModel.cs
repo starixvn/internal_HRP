@@ -1,7 +1,5 @@
-﻿namespace HRP.Models.DataConfiguration.CostCenter
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
-
     public class UpdateCostCenterViewModel
     {
         public Field Field { get; set; }

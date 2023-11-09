@@ -1,7 +1,5 @@
-﻿namespace HRP.Models.DataConfiguration.GradeLevel
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
-
     public class UpdateGradeLevelViewModel
     {
         public Field Field { get; set; }

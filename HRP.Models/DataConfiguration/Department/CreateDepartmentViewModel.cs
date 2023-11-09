@@ -1,6 +1,5 @@
-﻿namespace HRP.Models.DataConfiguration.Department
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CreateDepartmentViewModel

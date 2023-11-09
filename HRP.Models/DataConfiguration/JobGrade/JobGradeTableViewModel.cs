@@ -1,7 +1,6 @@
-﻿namespace HRP.Models.DataConfiguration.JobGrade
+﻿namespace HRP.Models.DataConfiguration
 {
     using System.Collections.Generic;
-    using HRP.Models;
 
     public class JobGradeTableViewModel
     {

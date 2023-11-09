@@ -1,7 +1,5 @@
-﻿namespace HRP.Models.DataConfiguration.Department
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
-
     public class UpdateDepartmentViewModel
     {
         public Field Field { get; set; }

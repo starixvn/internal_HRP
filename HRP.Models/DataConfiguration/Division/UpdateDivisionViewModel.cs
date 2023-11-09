@@ -1,7 +1,5 @@
-﻿namespace HRP.Models.DataConfiguration.Division
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
-
     public class UpdateDivisionViewModel
     {
         public Field Field { get; set; }

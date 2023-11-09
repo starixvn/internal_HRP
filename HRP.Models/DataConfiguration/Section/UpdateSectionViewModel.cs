@@ -1,7 +1,5 @@
-﻿namespace HRP.Models.DataConfiguration.Section
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
-
     public class UpdateSectionViewModel
     {
         public Field Field { get; set; }

@@ -1,18 +1,12 @@
-﻿namespace HRP.Models.DataConfiguration.Division
+﻿namespace HRP.Models.DataConfiguration
 {
-    using HRP.Models;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class CreateDivisionViewModel
     {
-        public CreateDivisionViewModel()
-        {
-            Division = new Division();
-        }
-
         public SelectList CompanyList { get; set; }
 
-        public Division Division { get; set; }
+        public Division Division { get; set; } = new Division();
 
         public Field Field { get; set; }
     }
