@@ -112,7 +112,7 @@ namespace HRP.Core.Services
             {
                 MailTo = email.ReceiverEmail,
                 Subject = email.Subject,
-                SentTime = DateTime.Now,
+                SentTime = DateTimeOffset.Now,
                 IsSuccessful = mailSent,
                 ErrorMessage = errorMessage,
                 StackTrace = stackTrace

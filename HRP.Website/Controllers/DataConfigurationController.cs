@@ -1139,7 +1139,7 @@
 
         private IActionResult JsonResultWithModelStateErrors(ModelStateDictionary modelState)
         {
-            var errors = modelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors.First().ErrorMessage);
+            var errors = modelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => UppercaseFirstLetter(x.Key), x => x.Value.Errors[0].ErrorMessage);
 
             return Json(new { isSuccessful = false, errors });
         }

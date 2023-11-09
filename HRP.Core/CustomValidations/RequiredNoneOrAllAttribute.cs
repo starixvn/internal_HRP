@@ -13,9 +13,9 @@
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var properties = validationContext.ObjectType.GetProperties().Where(x => RelatedProperties.Any(r => r == x.Name));
+            var properties = validationContext.ObjectType.GetProperties().Where(x => RelatedProperties.ToList().Exists(r => r == x.Name)).ToList();
 
-            if (properties.Any(p => p.GetValue(validationContext.ObjectInstance, null) != null) && value == null)
+            if (properties.Exists(p => p.GetValue(validationContext.ObjectInstance, null) != null) && value == null)
             {
                 return new ValidationResult(ErrorMessage);
             }

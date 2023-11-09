@@ -33,13 +33,13 @@
         [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Read)]
         public async Task<IActionResult> Index(DateTime? selectedTime)
         {
-            var date = selectedTime ?? DateTime.Today;
+            var date = selectedTime ?? DateTimeOffset.Now.Date;
             var criteria = new GetExchangeRateCriteria
             {
                 Month = date.Month,
                 Year = date.Year,
             };
-            var today = DateTime.Today;
+            var today = DateTimeOffset.Now.Date;
             var previousMonth = today.AddMonths(-1);
             var isInPaymentProcessDuration = (date.Month == previousMonth.Month && date.Year == previousMonth.Year)
                     || (date.Month == today.Month && date.Year == today.Year);

@@ -124,7 +124,7 @@
             var viewModel = new BankInReportViewModel
             {
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                SelectedTime = DateTime.Now,
+                SelectedTime = DateTimeOffset.Now.Date,
                 BankType = BankTypes.DirectBanking,
                 RijndaelKey = rijndaelKeyPair,
                 RijndaelIV = rijndaelIVPair,
@@ -184,7 +184,7 @@
             var viewModel = new BankInReportViewModel
             {
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                SelectedTime = DateTime.Now,
+                SelectedTime = DateTimeOffset.Now.Date,
                 RijndaelKey = rijndaelKeyPair,
                 RijndaelIV = rijndaelIVPair,
                 EncryptedPassword = rijndaelService.Encrypt(filePassword, rijndaelKeyPair.Value, rijndaelIVPair.Value)
@@ -250,7 +250,7 @@
             var employeeStatuses = (await baseService.GetDataAsync<MultiSelectViewModel>(criteria)).ToList();
             employeeStatuses.ForEach(x =>
             {
-                if (!employeeStatusIds.Any(i => i == x.Value))
+                if (!employeeStatusIds.Exists(i => i == x.Value))
                 {
                     x.Checked = false;
                 }

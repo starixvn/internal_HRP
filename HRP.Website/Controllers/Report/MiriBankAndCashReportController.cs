@@ -56,7 +56,7 @@
             var viewModel = new MiriBankAndCashReportViewModel
             {
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
-                SelectedTime = DateTime.Now,
+                SelectedTime = DateTimeOffset.Now.Date,
                 BankType = BankTypes.DirectBanking,
                 RijndaelKey = rijndaelKeyPair,
                 RijndaelIV = rijndaelIVPair,

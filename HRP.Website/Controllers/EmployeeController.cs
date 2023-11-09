@@ -142,7 +142,7 @@
                 return Json(new { isSuccessful = true });
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors[0].ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -207,7 +207,7 @@
                 return Json(commandResult);
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors[0].ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -284,7 +284,7 @@
                 return Json(new { isSuccessful = commandResult.IsSuccessful, message = returnMessage });
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors[0].ErrorMessage);
 
             return Json(new { isSuccessful = false, errors });
         }
@@ -319,7 +319,7 @@
                 return Json(commandResult);
             }
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors[0].ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 
@@ -427,7 +427,7 @@
                     redirectTo = Url.Action("Index")
                 });
             }
-            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors.First().ErrorMessage);
+            var errors = ModelState.Where(x => x.Value.Errors.Any()).ToDictionary(x => x.Key, x => x.Value.Errors[0].ErrorMessage);
             return Json(new { isSuccessful = false, errors });
         }
 

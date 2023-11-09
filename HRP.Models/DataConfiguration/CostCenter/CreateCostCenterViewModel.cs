@@ -5,14 +5,9 @@
 
     public class CreateCostCenterViewModel
     {
-        public CreateCostCenterViewModel()
-        {
-            CostCenter = new CostCenter();
-        }
-
         public SelectList CompanyList { get; set; }
 
-        public CostCenter CostCenter { get; set; }
+        public CostCenter CostCenter { get; set; } = new CostCenter();
 
         public Field Field { get; set; }
     }

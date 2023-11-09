@@ -230,7 +230,7 @@
                     || string.IsNullOrWhiteSpace(additionDeductionUpload.Allowance_Addition_DutyMeal_NoOfDays))
                 && standardWorkingDays < actualWorkingDays)
             {
-                var dutyMeal = additions.FirstOrDefault(x => x.Type == (byte)MonthlyAllowanceAdditionType.DutyMeal);
+                var dutyMeal = additions.Find(x => x.Type == (byte)MonthlyAllowanceAdditionType.DutyMeal);
                 dutyMeal.NoOfDays = actualWorkingDays - standardWorkingDays;
                 decimal.TryParse(basicAllowance.DutyMealAmount, out decimal dutyMealAmount);
 
@@ -276,7 +276,7 @@
                     || string.IsNullOrWhiteSpace(additionDeductionUpload.Allowance_Deduction_DutyMeal_NoOfDays))
                 && standardWorkingDays > actualWorkingDays)
             {
-                var dutyMeal = deductions.FirstOrDefault(x => x.Type == (byte)MonthlyAllowanceAdditionType.DutyMeal);
+                var dutyMeal = deductions.Find(x => x.Type == (byte)MonthlyAllowanceAdditionType.DutyMeal);
                 dutyMeal.NoOfDays = standardWorkingDays - actualWorkingDays;
                 decimal.TryParse(basicAllowance.DutyMealAmount, out decimal dutyMealAmount);
 

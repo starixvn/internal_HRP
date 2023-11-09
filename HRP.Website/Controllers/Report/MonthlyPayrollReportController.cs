@@ -58,7 +58,7 @@
 
             var viewModel = new MonthlyPayrollReportViewModel
             {
-                SelectedTime = DateTime.Today,
+                SelectedTime = DateTimeOffset.Now.Date,
                 CurrencyId = currency?.CurrencyId,
                 Companies = commonService.GetSelectList(companies, nameof(Company.CompanyId), nameof(Company.Code)),
                 Currencies = commonService.GetSelectList(currencies, nameof(Currency.CurrencyId), nameof(Currency.CurrencyCode)),
@@ -105,7 +105,7 @@
                     var templatePath = Path.Combine(hostingEnvironment.WebRootPath, fileName);
                     var data = excelService.Export(templatePath, report, viewModel.FilePassword);
 
-                    return File(data, MimeType.XLSX, $"Monthly_Payroll_Report_{report.Month.ToString("MM-yyyy")}_{report.Company.Code}.xlsx");
+                    return File(data, MimeType.XLSX, $"Monthly_Payroll_Report_{report.Month:MM-yyyy}_{report.Company.Code}.xlsx");
                 }
                 else
                 {

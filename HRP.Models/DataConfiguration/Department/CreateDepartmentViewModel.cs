@@ -5,14 +5,9 @@
 
     public class CreateDepartmentViewModel
     {
-        public CreateDepartmentViewModel()
-        {
-            Department = new Department();
-        }
-
         public SelectList CompanyList { get; set; }
 
-        public Department Department { get; set; }
+        public Department Department { get; set; } = new Department();
 
         public Field Field { get; set; }
     }

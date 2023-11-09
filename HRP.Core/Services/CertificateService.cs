@@ -170,7 +170,7 @@
             certificateGenerator.SetSubjectDN(subjectDN);
 
             // Valid For
-            var notBefore = DateTime.UtcNow.Date;
+            var notBefore = DateTimeOffset.UtcNow.Date;
             var notAfter = notBefore.AddYears(50);
 
             certificateGenerator.SetNotBefore(notBefore);

@@ -15,7 +15,7 @@
 
         public string Gender { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
+        public DateTimeOffset DateOfBirth { get; set; }
 
         public string PlaceOfBirth { get; set; }
 
@@ -37,9 +37,9 @@
 
         public string OtherPhoneNo { get; set; }
 
-        public DateTime? ExpiredDate { get; set; }
+        public DateTimeOffset? ExpiredDate { get; set; }
 
-        public DateTime? DateIssue { get; set; }
+        public DateTimeOffset? DateIssue { get; set; }
 
         public string PlaceOfIssue { get; set; }
 
@@ -67,37 +67,37 @@
 
         public string Company { get; set; }
 
-        public DateTime? CompanyChangeDate { get; set; }
+        public DateTimeOffset? CompanyChangeDate { get; set; }
 
         public string CompanyReason { get; set; }
 
         public string LocalCompany { get; set; }
 
-        public DateTime? LocalCompanyChangeDate { get; set; }
+        public DateTimeOffset? LocalCompanyChangeDate { get; set; }
 
         public string LocalCompanyReason { get; set; }
 
         public string JobTitle { get; set; }
 
-        public DateTime? JobTitleChangeDate { get; set; }
+        public DateTimeOffset? JobTitleChangeDate { get; set; }
 
         public string JobTitleReason { get; set; }
 
         public string LocalJobTitle { get; set; }
 
-        public DateTime? LocalJobTitleChangeDate { get; set; }
+        public DateTimeOffset? LocalJobTitleChangeDate { get; set; }
 
         public string LocalJobTitleReason { get; set; }
 
-        public DateTime? GroupStartDate { get; set; }
+        public DateTimeOffset? GroupStartDate { get; set; }
 
-        public DateTime? GroupEndDate { get; set; }
+        public DateTimeOffset? GroupEndDate { get; set; }
 
         public string GroupDateReason { get; set; }
 
-        public DateTime? CompanyStartDate { get; set; }
+        public DateTimeOffset? CompanyStartDate { get; set; }
 
-        public DateTime? CompanyEndDate { get; set; }
+        public DateTimeOffset? CompanyEndDate { get; set; }
 
         public string CompanyDateReason { get; set; }
 
@@ -107,7 +107,7 @@
             {
                 if (GroupStartDate.HasValue)
                 {
-                    var endDate = GroupEndDate ?? DateTime.Today;
+                    var endDate = GroupEndDate ?? DateTimeOffset.Now.Date;
                     var totalDays = (endDate - GroupStartDate.Value).TotalDays;
 
                     return $"{totalDays} day(s)";
@@ -123,7 +123,7 @@
             {
                 if (CompanyStartDate.HasValue)
                 {
-                    var endDate = CompanyEndDate ?? DateTime.Today;
+                    var endDate = CompanyEndDate ?? DateTimeOffset.Now.Date;
                     var totalDays = (endDate - CompanyStartDate.Value).TotalDays;
 
                     return $"{totalDays} day(s)";
@@ -135,7 +135,7 @@
 
         public string IDNo { get; set; }
 
-        public DateTime? IDNoChangeDate { get; set; }
+        public DateTimeOffset? IDNoChangeDate { get; set; }
 
         public string IDNoChangeReason { get; set; }
 
@@ -143,11 +143,11 @@
 
         public string EmploymentStatus { get; set; }
 
-        public DateTime? EmploymentStatusChangeDate { get; set; }
+        public DateTimeOffset? EmploymentStatusChangeDate { get; set; }
 
         public string JobCategory { get; set; }
 
-        public DateTime? JobCategoryChangeDate { get; set; }
+        public DateTimeOffset? JobCategoryChangeDate { get; set; }
 
         public string JobCategoryReason { get; set; }
 
@@ -155,31 +155,31 @@
 
         public string JobGrade { get; set; }
 
-        public DateTime? JobGradeChangeDate { get; set; }
+        public DateTimeOffset? JobGradeChangeDate { get; set; }
 
         public string JobGradeReason { get; set; }
 
         public string Department { get; set; }
 
-        public DateTime? DepartmentChangeDate { get; set; }
+        public DateTimeOffset? DepartmentChangeDate { get; set; }
 
         public string DepartmentReason { get; set; }
 
         public string Section { get; set; }
 
-        public DateTime? SectionChangeDate { get; set; }
+        public DateTimeOffset? SectionChangeDate { get; set; }
 
         public string SectionReason { get; set; }
 
         public string Division { get; set; }
 
-        public DateTime? DivisionChangeDate { get; set; }
+        public DateTimeOffset? DivisionChangeDate { get; set; }
 
         public string DivisionReason { get; set; }
 
         public string CostCenter { get; set; }
 
-        public DateTime? CostCenterChangeDate { get; set; }
+        public DateTimeOffset? CostCenterChangeDate { get; set; }
 
         public string CostCenterReason { get; set; }
 
@@ -195,15 +195,15 @@
 
         public string WorkPermitType1 { get; set; }
 
-        public DateTime? StartDateType1 { get; set; }
+        public DateTimeOffset? StartDateType1 { get; set; }
 
-        public DateTime? EndDateType1 { get; set; }
+        public DateTimeOffset? EndDateType1 { get; set; }
 
         public string WorkPermitType2 { get; set; }
 
-        public DateTime? StartDateType2 { get; set; }
+        public DateTimeOffset? StartDateType2 { get; set; }
 
-        public DateTime? EndDateType2 { get; set; }
+        public DateTimeOffset? EndDateType2 { get; set; }
 
         public string DSTCompany { get; set; }
 
@@ -275,7 +275,7 @@
 
         public string CurrencyCode { get; set; }
 
-        public DateTime? EffectiveDate { get; set; }
+        public DateTimeOffset? EffectiveDate { get; set; }
 
         public string Reason { get; set; }
 

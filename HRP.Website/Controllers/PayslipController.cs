@@ -39,7 +39,7 @@
         {
             IEnumerable<Company> companies = await commonService.GetCompanyByFunctionKeyAsync(FunctionKey.Payslip);
             Company company = companies.FirstOrDefault();
-            var monthSelected = month ?? DateTime.Today;
+            var monthSelected = month ?? DateTimeOffset.Now.Date;
             var companyIdSelected = companyId ?? (company != null ? company.CompanyId : 0);
             IEnumerable<PayslipModel> payslips = await payslipService.GetPayslipAsync(monthSelected, companyIdSelected, isSent);
 

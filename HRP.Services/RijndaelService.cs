@@ -15,13 +15,13 @@
         {
             var rijndaelKey = new RijndaelKeyValuePair
             {
-                Key = "RijndaelKey" + DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                Key = "RijndaelKey" + DateTimeOffset.Now.ToString("yyyyMMddHHmmssfff"),
                 Value = Guid.NewGuid().ToString("N").Substring(0, 16)
             };
 
             var rijndaelIV = new RijndaelKeyValuePair
             {
-                Key = "RijndaelIV" + DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                Key = "RijndaelIV" + DateTimeOffset.Now.ToString("yyyyMMddHHmmssfff"),
                 Value = Guid.NewGuid().ToString("N").Substring(0, 16)
             };
 

@@ -1,6 +1,5 @@
 ﻿namespace HRP.Core.Enumerations
 {
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using HRP.Resources;
 
