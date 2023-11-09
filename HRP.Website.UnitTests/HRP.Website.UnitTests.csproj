@@ -421,6 +421,7 @@
     <Compile Include="Controllers\AuthControllerTests.cs" />
     <Compile Include="Controllers\BankAccountControllerTests.cs" />
     <Compile Include="Controllers\MonthlyPayrollReportControllerTests.cs" />
+    <Compile Include="Controllers\MonthlyPayrollControllerTests.cs" />
     <Compile Include="Controllers\SystemSecurityControllerTests.cs" />
     <Compile Include="Controllers\CurrencySettingControllerTests.cs" />
     <Compile Include="Controllers\DataConfigurationControllerTests.cs" />

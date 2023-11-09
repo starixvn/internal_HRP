@@ -23,27 +23,6 @@
 
     public partial class PaymentProcessController : BaseController
     {
-        private const string AccessDenied = "AccessDenied";
-        private const string Error = "Error";
-        private readonly IMonthlyPayrollService monthlyPayrollService;
-        private readonly IMonthlySalaryService monthlySalaryService;
-        private readonly IMonthlyAllowancesService monthlyAllowancesService;
-        private readonly IRijndaelService rijndaelService;
-
-        public PaymentProcessController(
-            IBaseService baseService,
-            ISessionService sessionService,
-            IMonthlyPayrollService monthlyPayrollService,
-            IMonthlySalaryService monthlySalaryService,
-            IMonthlyAllowancesService monthlyAllowancesService,
-            IRijndaelService rijndaelService) : base(baseService, sessionService)
-        {
-            this.monthlyPayrollService = monthlyPayrollService;
-            this.monthlySalaryService = monthlySalaryService;
-            this.monthlyAllowancesService = monthlyAllowancesService;
-            this.rijndaelService = rijndaelService;
-        }
-
         #region Monthly Payroll
 
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Read)]
