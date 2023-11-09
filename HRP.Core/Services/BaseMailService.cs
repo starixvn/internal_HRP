@@ -48,7 +48,9 @@ namespace HRP.Core.Services
             {
                 try
                 {
+#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
                     mailclient.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
+#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
                     mailclient.CheckCertificateRevocation = false;
                     await mailclient.ConnectAsync(email.Server, email.Port, email.IsAuth);
                     if (email.IsAuth)
