@@ -7,7 +7,7 @@
     {
         public string MailTo { get; set; }
         public string Subject { get; set; }
-        public DateTimeOffset SentTime { get; set; }
+        public DateTime SentTime { get; set; }
         public bool IsSuccessful { get; set; }
         public string ErrorMessage { get; set; }
         public string StackTrace { get; set; }
