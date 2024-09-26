@@ -23,7 +23,7 @@
         private const string EmployeeMonthlyPayrollString = "EmployeeMonthlyPayroll";
         private const string AccessDenied = "AccessDenied";
         private const string Error = "Error";
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly ICommonService commonService;
         private readonly IPaymentProcessService paymentProcessService;
         private readonly IMonthlyPayrollService monthlyPayrollService;
@@ -34,7 +34,7 @@
         public PaymentProcessController(
             IBaseService baseService,
             ISessionService sessionService,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             ICommonService commonService,
             IPaymentProcessService paymentProcessService,
             IMonthlyPayrollService monthlyPayrollService,
@@ -109,9 +109,8 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> DownloadAttendance()
         {
-            string sWebRootFolder = hostingEnvironment.WebRootPath;
-            const string sFileName = @"ExcelTemplates\Template - Attendance (Expat).xlsx";
-            var path = Path.Combine(sWebRootFolder, sFileName);
+            const string sFileName = @"ExcelTemplates/Template - Attendance (Expat).xlsx";
+            var path = Path.Combine(hostingEnvironment.ContentRootPath, sFileName);
             MemoryStream stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 
             return File(stream, MimeType.XLSX, Path.GetFileName(path));
@@ -120,9 +119,8 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> DownloadDSTNetSalary()
         {
-            string sWebRootFolder = hostingEnvironment.WebRootPath;
-            const string sFileName = @"ExcelTemplates\Template - DST Salary (Expat).xlsx";
-            var path = Path.Combine(sWebRootFolder, sFileName);
+            const string sFileName = @"ExcelTemplates/Template - DST Salary (Expat).xlsx";
+            var path = Path.Combine(hostingEnvironment.ContentRootPath, sFileName);
             MemoryStream stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 
             return File(stream, MimeType.XLSX, Path.GetFileName(path));
@@ -131,9 +129,8 @@
         [HRPPermission(FunctionKey = FunctionKey.PaymentProcess, Policy = Policy.Host)]
         public async Task<IActionResult> DownloadAdditionDeduction()
         {
-            string sWebRootFolder = hostingEnvironment.WebRootPath;
-            const string sFileName = @"ExcelTemplates\Template - Addition - Deduction.xlsx";
-            var path = Path.Combine(sWebRootFolder, sFileName);
+            const string sFileName = @"ExcelTemplates/Template - Addition - Deduction.xlsx";
+            var path = Path.Combine(hostingEnvironment.ContentRootPath, sFileName);
             MemoryStream stream = await paymentProcessService.CopyFileToMemoryStreamAsync(path);
 
             return File(stream, MimeType.XLSX, Path.GetFileName(path));

@@ -142,7 +142,7 @@
             @if (Model.Functions != null && Model.Functions.Any(x => !x.IsAdmin))
             {
                 Model.Functions = Model.Functions.Where(x => !x.IsAdmin).OrderBy(x => x.Level);
-                @Html.Partial("_TreeFunction", Model)
+                @await Html.PartialAsync("_TreeFunction", Model)
             }
         </tbody>
     </table>

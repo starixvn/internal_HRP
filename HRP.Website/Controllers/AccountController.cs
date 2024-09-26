@@ -16,7 +16,6 @@ namespace HRP.Website.Controllers
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
     using Models;
     using Models.Account;
     using Resources;
@@ -33,7 +32,7 @@ namespace HRP.Website.Controllers
         private readonly ITwoFactorAuthenticatorService twoFactorAuthService;
         private readonly IUserService userService;
         private readonly IRijndaelService rijndaelService;
-        private readonly IOptionsSnapshot<OtpConfig> otpConfig;
+        private readonly OtpConfig otpConfig;
 
         public AccountController(
             ISessionService sessionService,
@@ -41,7 +40,7 @@ namespace HRP.Website.Controllers
             ITwoFactorAuthenticatorService twoFactorAuthService,
             IUserService userService,
             IRijndaelService rijndaelService,
-            IOptionsSnapshot<OtpConfig> otpConfig)
+            OtpConfig otpConfig)
         {
             this.sessionService = sessionService;
             this.baseService = baseService;
@@ -180,7 +179,7 @@ namespace HRP.Website.Controllers
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
-                AppName = otpConfig.Value.AppName,
+                AppName = otpConfig.AppName,
                 Username = user.Username,
                 RijndaelKey = rijndaelKeyPair,
                 RijndaelIV = rijndaelIVPair
@@ -217,7 +216,7 @@ namespace HRP.Website.Controllers
             var setupOtpViewModel = new SetupOtpViewModel
             {
                 TextCode = await GetOtpSetupCode(user.Username),
-                AppName = otpConfig.Value.AppName,
+                AppName = otpConfig.AppName,
                 Username = user.Username,
                 RijndaelKey = rijndaelKeyPair,
                 RijndaelIV = rijndaelIVPair

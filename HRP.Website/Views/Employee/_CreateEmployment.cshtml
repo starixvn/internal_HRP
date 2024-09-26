@@ -14,7 +14,7 @@
         <span> seconds.</span>
     </div>
     <div class="-has-border msg-error hidden"></div>
-    @Html.Partial("_ValidationCreateEmployment", Model)
+    @await Html.PartialAsync("_ValidationCreateEmployment", Model)
 
     <div class="employment">
         <div class="col">

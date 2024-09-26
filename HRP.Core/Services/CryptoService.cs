@@ -7,19 +7,16 @@ namespace HRP.Core.Services
     using System.Text;
     using HRP.Core.Model;
     using HRP.Resources;
-    using Microsoft.Extensions.Options;
 
     public class CryptoService : ICryptoService
     {
-        private const bool OptimalAsymmetricEncryptionPadding = false;
-
         private readonly X509Certificate2 cert2;
         private readonly ICertificateService certificateService;
-        private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
+        private readonly AppSettingsOptions configuration;
 
         public CryptoService(
             ICertificateService certificateService,
-            IOptionsSnapshot<AppSettingsOptions> configuration,
+            AppSettingsOptions configuration,
             X509Certificate2 cert2 = null)
         {
             this.certificateService = certificateService;
@@ -33,12 +30,12 @@ namespace HRP.Core.Services
 
             if (!string.IsNullOrWhiteSpace(plainText))
             {
-                if (configuration.Value.EnableEncrypt)
+                if (configuration.EnableEncrypt)
                 {
                     byte[] bytesToEncrypt = ASCIIEncoding.ASCII.GetBytes(plainText);
 
-                    RSACryptoServiceProvider rsa = (RSACryptoServiceProvider)cert2.PublicKey.Key;
-                    byte[] encryptedBytes = rsa.Encrypt(bytesToEncrypt, OptimalAsymmetricEncryptionPadding);
+                    var rsa = cert2.GetRSAPublicKey();
+                    byte[] encryptedBytes = rsa.Encrypt(bytesToEncrypt, RSAEncryptionPadding.Pkcs1);
                     cipherText = Convert.ToBase64String(encryptedBytes);
                 }
                 else
@@ -56,12 +53,12 @@ namespace HRP.Core.Services
 
             if (!string.IsNullOrWhiteSpace(cipherText))
             {
-                if (configuration.Value.EnableEncrypt)
+                if (configuration.EnableEncrypt)
                 {
-                    RSACryptoServiceProvider rsa = (RSACryptoServiceProvider)cert2.PrivateKey;
                     byte[] bytesToDecrypt = Convert.FromBase64String(cipherText);
-                    byte[] plainbytes = rsa.Decrypt(bytesToDecrypt, OptimalAsymmetricEncryptionPadding);
-                    ASCIIEncoding enc = new ASCIIEncoding();
+                    var rsa = cert2.GetRSAPrivateKey();
+                    byte[] plainbytes = rsa.Decrypt(bytesToDecrypt, RSAEncryptionPadding.Pkcs1);
+                    var enc = new ASCIIEncoding();
                     plainText = enc.GetString(plainbytes);
                 }
                 else

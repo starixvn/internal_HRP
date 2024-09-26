@@ -14,23 +14,13 @@
     using HRP.Models.Currency;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class CommonService : ICommonService
+    public class CommonService(
+        IBaseService baseService,
+        ISessionService sessionService) : ICommonService
     {
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
-
-        public CommonService(
-            IBaseService baseService,
-            ISessionService sessionService)
-        {
-            this.baseService = baseService;
-            this.sessionService = sessionService;
-        }
-
         public async Task<IEnumerable<ReferenceResourceModel>> GetReferenceResourcesByNamesAsync(string[] refNames, bool? isActive = true)
         {
             IEnumerable<ReferenceResourceModel> refResources = new List<ReferenceResourceModel>();
-
             if (refNames != null)
             {
                 var criteria = new GetRefResourceByNamesCriteria
@@ -47,11 +37,10 @@
 
         public IEnumerable<ReferenceResourceModel> FilterReferenceResources(IEnumerable<ReferenceResourceModel> refResources, string refName)
         {
-            IEnumerable<ReferenceResourceModel> referenceResources = new List<ReferenceResourceModel>();
-
+            var referenceResources = new List<ReferenceResourceModel>();
             if (refResources != null && !string.IsNullOrWhiteSpace(refName))
             {
-                referenceResources = refResources.Where(x => x.RefName == refName);
+                referenceResources = refResources.Where(x => x.RefName == refName).ToList();
             }
 
             return referenceResources;

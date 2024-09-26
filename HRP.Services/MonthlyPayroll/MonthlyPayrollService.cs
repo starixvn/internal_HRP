@@ -51,7 +51,7 @@
             (var divisions, var departments, var costcenters) =
                 await baseService.FetchMultipleAsync<MultiSelectViewModel, MultiSelectViewModel, MultiSelectViewModel>(criteria);
 
-            IEnumerable<MultiSelectViewModel> hierarchy = divisions.Select(division => new MultiSelectViewModel
+            var hierarchy = divisions.Select(division => new MultiSelectViewModel
             {
                 Value = division.Value,
                 Text = division.Text,
@@ -91,7 +91,7 @@
                     EmployeeMonthlyPayrollModel,
                     EmployeeMonthlyPayrollBasicSalaryModel,
                     EmployeeMonthlyPayrollBasicSalaryModel>(criteria);
-            foreach (EmployeeMonthlyPayrollModel monthlyPayroll in monthlyPayrolls)
+            foreach (var monthlyPayroll in monthlyPayrolls)
             {
                 monthlyPayroll.BasicSalary = basicSalaries.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new EmployeeMonthlyPayrollBasicSalaryModel();
                 monthlyPayroll.Allowance = allowances.FirstOrDefault(x => x.PayrollId == monthlyPayroll.PayrollId) ?? new EmployeeMonthlyPayrollBasicSalaryModel();

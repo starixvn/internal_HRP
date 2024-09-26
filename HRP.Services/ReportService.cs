@@ -16,25 +16,11 @@
     using Models.Report;
     using Repositories;
 
-    public class ReportService : IReportService
+    public class ReportService(
+        ICryptoService cryptoService,
+        IBaseService baseService,
+        IReportRepository reportRepository) : IReportService
     {
-        private readonly ICryptoService cryptoService;
-        private readonly IReportRepository reportRepository;
-        private readonly ISessionService sessionService;
-        private readonly IBaseService baseService;
-
-        public ReportService(
-            ICryptoService cryptoService,
-            ISessionService sessionService,
-            IBaseService baseService,
-            IReportRepository reportRepository)
-        {
-            this.cryptoService = cryptoService;
-            this.sessionService = sessionService;
-            this.reportRepository = reportRepository;
-            this.baseService = baseService;
-        }
-
         public async Task<string> GetUserFilePasswordAsync(int userId)
         {
             var password = await baseService.GetDataEntityAsync<string>(new GetUserFilePasswordCriteria { UserId = userId });
@@ -49,21 +35,8 @@
             await baseService.ExecuteNonQueryAsync(new EditUserFilePasswordCriteria { UserId = userId, Password = encryptedPassword });
         }
 
-        public async Task<DirectBankingReport> GetDirectBankingBankInAsync(
-            int companyId,
-            DateTime selectedTime,
-            PaymentType typeOfPayment,
-            string selectedPaymentTransactions)
+        public async Task<DirectBankingReport> GetDirectBankingBankInAsync(GetDataForDirectBankingReportCriteria criteria)
         {
-            var criteria = new GetDataForDirectBankingReportCriteria
-            {
-                UserId = sessionService.UserId,
-                CompanyId = companyId,
-                Month = selectedTime,
-                PaymentTransactions = selectedPaymentTransactions,
-                PaymentType = (int)typeOfPayment
-            };
-
             var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria);
 
             if (bankInData != null)
@@ -75,16 +48,8 @@
             return bankInData;
         }
 
-        public async Task<DirectBankingReport> GetEbankingBankInAsync(int companyId, DateTime selectedTime, string selectedPaymentTransactions)
+        public async Task<DirectBankingReport> GetEbankingBankInAsync(GetDataForEbankingReportCriteria criteria)
         {
-            var criteria = new GetDataForEbankingReportCriteria
-            {
-                UserId = sessionService.UserId,
-                CompanyId = companyId,
-                Month = selectedTime,
-                PaymentTransactions = selectedPaymentTransactions
-            };
-
             var bankInData = await reportRepository.GetDataForBankInReportAsync(criteria);
 
             DecryptBankInAmount(bankInData.DirectBankingBankIns);
@@ -99,7 +64,7 @@
             {
                 foreach (BankIn bankIn in bankIns)
                 {
-                    float.TryParse(cryptoService.Decrypt(bankIn.Amount), out float parsedValue);
+                    _ = float.TryParse(cryptoService.Decrypt(bankIn.Amount), out float parsedValue);
                     bankIn.AmountDecrypted = parsedValue;
                 }
             }

@@ -21,45 +21,19 @@
     using HRP.Resources;
     using Microsoft.AspNetCore.Http;
 
-    public class PaymentProcessService : IPaymentProcessService
+    public class PaymentProcessService(IBaseService baseService,
+        ISessionService sessionService,
+        ICryptoService cryptoService,
+        ICommonService commonService,
+        IMonthlySalaryService monthlySalaryService,
+        IMonthlyAllowancesService monthlyAllowancesService,
+        ITemplateReader templateReader,
+        IPaymentProcessRepository paymentProcessRepository,
+        IObjectStream fileStream,
+        IAdditionDeductionTemplateReader additionDeductionTemplateReader) : IPaymentProcessService
     {
         private const int MultipleFileNumber = 2;
         private const int Coefficient = 1024;
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
-        private readonly ICryptoService cryptoService;
-        private readonly ICommonService commonService;
-        private readonly IMonthlySalaryService monthlySalaryService;
-        private readonly IMonthlyAllowancesService monthlyAllowancesService;
-        private readonly IPaymentProcessRepository paymentProcessRepository;
-        private readonly IObjectStream fileStream;
-        private readonly ITemplateReader templateReader;
-        private readonly IAdditionDeductionTemplateReader additionDeductionTemplateReader;
-
-#pragma warning disable S107 // Methods should not have too many parameters
-        public PaymentProcessService(IBaseService baseService,
-            ISessionService sessionService,
-            ICryptoService cryptoService,
-            ICommonService commonService,
-            IMonthlySalaryService monthlySalaryService,
-            IMonthlyAllowancesService monthlyAllowancesService,
-            ITemplateReader templateReader,
-            IPaymentProcessRepository paymentProcessRepository,
-            IObjectStream fileStream,
-            IAdditionDeductionTemplateReader additionDeductionTemplateReader)
-#pragma warning restore S107 // Methods should not have too many parameters
-        {
-            this.baseService = baseService;
-            this.sessionService = sessionService;
-            this.cryptoService = cryptoService;
-            this.commonService = commonService;
-            this.monthlySalaryService = monthlySalaryService;
-            this.monthlyAllowancesService = monthlyAllowancesService;
-            this.templateReader = templateReader;
-            this.paymentProcessRepository = paymentProcessRepository;
-            this.fileStream = fileStream;
-            this.additionDeductionTemplateReader = additionDeductionTemplateReader;
-        }
 
         public async Task<PaymentProcess> GetCurrentDuration()
         {

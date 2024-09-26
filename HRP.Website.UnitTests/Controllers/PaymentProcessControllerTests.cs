@@ -267,7 +267,7 @@
 
             // Assert
             var fileStream = Assert.IsType<FileStreamResult>(actual);
-            Assert.Equal(@"ExcelTemplates\Template - Attendance (Expat).xlsx", filePath);
+            Assert.Equal(@"ExcelTemplates/Template - Attendance (Expat).xlsx", filePath);
             Assert.Equal(MimeType.XLSX, fileStream.ContentType);
             Assert.Equal("Template - Attendance (Expat).xlsx", fileStream.FileDownloadName);
         }
@@ -286,7 +286,7 @@
 
             // Assert
             var fileStream = Assert.IsType<FileStreamResult>(actual);
-            Assert.Equal(@"ExcelTemplates\Template - DST Salary (Expat).xlsx", filePath);
+            Assert.Equal(@"ExcelTemplates/Template - DST Salary (Expat).xlsx", filePath);
             Assert.Equal(MimeType.XLSX, fileStream.ContentType);
             Assert.Equal("Template - DST Salary (Expat).xlsx", fileStream.FileDownloadName);
         }

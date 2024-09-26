@@ -24,25 +24,15 @@
     using Org.BouncyCastle.Utilities;
     using Org.BouncyCastle.X509;
 
-    public class CertificateService : ICertificateService
+    public class CertificateService(
+        IWebHostEnvironment hostingEnvironment,
+        IMemoryCache memoryCache,
+        IBaseService baseService) : ICertificateService
     {
         private const string SubjectName = "CN=HRP";
         private const string IssuerName = "CN=HRP";
         private const int KeyStrength = 2048;
         private const int ValidSequenceCount = 9;
-        private readonly IHostingEnvironment hostingEnvironment;
-        private readonly IMemoryCache memoryCache;
-        private readonly IBaseService baseService;
-
-        public CertificateService(
-            IHostingEnvironment hostingEnvironment,
-            IMemoryCache memoryCache,
-            IBaseService baseService)
-        {
-            this.hostingEnvironment = hostingEnvironment;
-            this.memoryCache = memoryCache;
-            this.baseService = baseService;
-        }
 
         public string GetCertificateFilePath()
         {
@@ -217,10 +207,9 @@
                 rsa.Exponent1,
                 rsa.Exponent2,
                 rsa.Coefficient);
+            var rsa1 = DotNetUtilities.ToRSA(rsaparams);
 
-            x509.PrivateKey = DotNetUtilities.ToRSA(rsaparams);
-
-            return x509;
+            return x509.CopyWithPrivateKey(rsa1);
         }
     }
 }

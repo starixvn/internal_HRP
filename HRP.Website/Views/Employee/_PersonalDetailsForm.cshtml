@@ -7,7 +7,7 @@
     var minDate = Constants.MinDate;
 }
 
-@Html.Partial("_ValidationPersonalDetails", Model)
+@await Html.PartialAsync("_ValidationPersonalDetails", Model)
 
 <div class="form-content">
     <input type="hidden" asp-for="ProfilePic" />

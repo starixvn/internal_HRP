@@ -16,32 +16,16 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService(
+        IWebHostEnvironment hostingEnvironment,
+        IBaseService baseService,
+        ICryptoService cryptoService,
+        ISessionService sessionService,
+        ICommonService commonService,
+        IEmployeeRepository employeeRepository) : IEmployeeService
     {
         private const int MultipleFileNumber = 2;
         private const int Coefficient = 1024;
-        private readonly IBaseService baseService;
-        private readonly IHostingEnvironment hostingEnvironment;
-        private readonly ISessionService sessionService;
-        private readonly ICryptoService cryptoService;
-        private readonly ICommonService commonService;
-        private readonly IEmployeeRepository employeeRepository;
-
-        public EmployeeService(
-            IHostingEnvironment hostingEnvironment,
-            IBaseService baseService,
-            ICryptoService cryptoService,
-            ISessionService sessionService,
-            ICommonService commonService,
-            IEmployeeRepository employeeRepository)
-        {
-            this.baseService = baseService;
-            this.hostingEnvironment = hostingEnvironment;
-            this.cryptoService = cryptoService;
-            this.sessionService = sessionService;
-            this.commonService = commonService;
-            this.employeeRepository = employeeRepository ?? new EmployeeRepository();
-        }
 
         public async Task<EmployeeBasicInfo> GetEmployeeBasicInfoByIdAsync(int employeeId)
         {

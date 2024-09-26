@@ -8,19 +8,8 @@
     using Criteria.BankAccount;
     using Models.BankAccount;
 
-    public class BankAccountService : IBankAccountService
+    public class BankAccountService(IBaseService baseService) : IBankAccountService
     {
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
-
-        public BankAccountService(
-            IBaseService baseService,
-            ISessionService sessionService)
-        {
-            this.baseService = baseService;
-            this.sessionService = sessionService;
-        }
-
         public async Task<IList<BankAccount>> GetBankAccountsByEmployeeIdAsync(int employeeId, int? bankTypeId, bool? isActive)
         {
             var criteria = new GetBankAccountsByEmployeeIdCriteria
@@ -39,7 +28,7 @@
             return await baseService.GetDataEntityAsync<BankAccount>(criteria);
         }
 
-        public async Task<CommandResult> CreateBankAccountAsync(CreateBankAccountViewModel bankAccount)
+        public async Task<CommandResult> CreateBankAccountAsync(int actorId, CreateBankAccountViewModel bankAccount)
         {
             var criteria = new CreateBankAccountCriteria
             {
@@ -54,13 +43,13 @@
                 AccountType = bankAccount.AccountTypeId,
                 BeneficiaryName = bankAccount.BeneficiaryName,
                 IsActive = bankAccount.IsActive,
-                CreatedBy = sessionService.UserId
+                CreatedBy = actorId
             };
 
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        public async Task<CommandResult> EditBankAccountAsync(EditBankAccountViewModel bankAccount)
+        public async Task<CommandResult> EditBankAccountAsync(int actorId, EditBankAccountViewModel bankAccount)
         {
             var criteria = new EditBankAccountCriteria
             {
@@ -76,7 +65,7 @@
                 AccountType = bankAccount.AccountTypeId,
                 BeneficiaryName = bankAccount.BeneficiaryName,
                 IsActive = bankAccount.IsActive,
-                UpdatedBy = sessionService.UserId
+                UpdatedBy = actorId
             };
 
             return await baseService.ExecuteNonQueryAsync(criteria);

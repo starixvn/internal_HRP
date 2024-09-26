@@ -1,14 +1,17 @@
 ﻿namespace HRP.Website
 {
     using System;
-    using System.Linq;
     using Core;
     using Core.Model;
-    using Fanex.Data;
+    using DinkToPdf;
+    using DinkToPdf.Contracts;
+    using Fanex.Data.Repository;
     using Fanex.Data.SqlServer;
-    using HRP.Core.Extensions;
     using HRP.Core.Filters;
-    using HRP.Services.Extensions;
+    using HRP.Core.Repositories;
+    using HRP.Core.Services;
+    using HRP.Repositories;
+    using HRP.Services;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -17,6 +20,7 @@
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
 
     public class Startup
     {
@@ -30,35 +34,13 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //// string encryptedPassword = Cryptography.EncryptPassword("@357$abc^FFZ%");
-            var connections = Configuration.GetSection("ConnectionStrings")
-                         .GetChildren()
-                         .AsEnumerable()
-                         .Where(x => !string.IsNullOrWhiteSpace(x.GetValue<string>("Name")))
-                         .ToDictionary(x => x.GetValue<string>("Name"),
-                             y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName")));
+            var appSettings = Configuration.GetSection("AppSettings").Get<AppSettingsOptions>();
+            services.AddSingleton(appSettings);
 
-            DbSettingProviderManager
-               .StartNewSession()
-               .Use(connections)
-               .WithSqlServer()
-               .UseDefaultDbSettingProvider("~/App_Data")
-               .Run();
+            var otpConfig = Configuration.GetSection("OtpConfig").Get<OtpConfig>();
+            services.AddSingleton(otpConfig);
 
-            services.Configure<AppSettingsOptions>(options => Configuration.GetSection("AppSettings").Bind(options));
-            services.Configure<OtpConfig>(options => Configuration.GetSection(nameof(OtpConfig)).Bind(options));
-
-            // Cookie Authentication
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Cookie.Name = ".HRP.Cookie";
-                    options.AccessDeniedPath = new PathString("/Error/405");
-                    options.LoginPath = new PathString("/Auth/Login");
-                    options.LogoutPath = new PathString("/Auth/Logout");
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
-                    options.SlidingExpiration = true;
-                });
+            services.AddFanexSql(Configuration);
 
             // Cookie Authentication
             services.AddAuthentication(options =>
@@ -66,17 +48,18 @@
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options =>
+            {
+                options.Cookie.Name = ".HRP.Cookie";
+                options.AccessDeniedPath = new PathString("/Error/405");
+                options.LoginPath = new PathString("/Auth/Login");
+                options.LogoutPath = new PathString("/Auth/Logout");
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AppSettings:SessionTimeout"]));
+                options.SlidingExpiration = true;
             });
 
             services.AddMemoryCache();
-            services.AddMvc(options =>
-                {
-                    ////#if !DEBUG
-                    ////options.Filters.Add(new RequireHttpsAttribute());
-                    ////#endif
-                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                }
-            ).AddSessionStateTempDataProvider();
+            services.AddMvc(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())).AddSessionStateTempDataProvider();
 
             services.AddSession(options =>
             {
@@ -89,12 +72,51 @@
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<HRPActionFilterAttribute>();
-            services.ResolveCoreDI();
-            services.ResolveServiceDI();
+            services.AddScoped<ISessionService, SessionService>();
+
+            services.AddSingleton<IDynamicRepository, DynamicRepository>();
+            services.AddSingleton<IBaseRepository, BaseRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddSingleton<IMonthlyPayrollRepository, MonthlyPayrollRepository>();
+            services.AddSingleton<IPaymentProcessRepository, PaymentProcessRepository>();
+            services.AddSingleton<IPayslipRepository, PayslipRepository>();
+            services.AddSingleton<IReportRepository, ReportRepository>();
+
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddScoped<IBaseService, BaseService>();
+            services.AddScoped<IBaseMailService, BaseMailService>();
+            services.AddScoped<ICryptoService, CryptoService>();
+            services.AddScoped<ICertificateService, CertificateService>();
+            services.AddScoped<IObjectStream, ObjectStream>();
+            services.AddScoped<ICommonService, CommonService>();
+            services.AddScoped<IPdfRenderService, PdfRenderService>();
+            services.AddScoped<IRijndaelService, RijndaelService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITwoFactorAuthenticatorService, TwoFactorAuthenticatorService>();
+            services.AddScoped<IFunctionService, FunctionService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IBankAccountService, BankAccountService>();
+            services.AddScoped<IEmployeePayrollService, EmployeePayrollService>();
+            services.AddScoped<IDataConfigurationService, DataConfigurationService>();
+            services.AddScoped<ITemplateReader, TemplateReader>();
+            services.AddScoped<IAdditionDeductionTemplateReader, AdditionDeductionTemplateReader>();
+            services.AddScoped<IPaymentProcessService, PaymentProcessService>();
+            services.AddScoped<IMonthlyPayrollService, MonthlyPayrollService>();
+            services.AddScoped<IMonthlySalaryService, MonthlySalaryService>();
+            services.AddScoped<IMonthlyAllowancesService, MonthlyAllowancesService>();
+            services.AddScoped<IPayslipService, PayslipService>();
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IExportExcelService, ExportExcelService>();
+            services.AddScoped<IMailSettingService, MailSettingService>();
+
+            services.AddScoped<IExportMonthlyPayrollReportService, ExportMonthlyPayrollReportService>();
+            services.AddScoped<IExportMiriBankAndCashReportService, ExportMiriBankAndCashReportService>();
+
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -102,22 +124,22 @@
             }
             else
             {
-                app.UseExceptionHandler("/Error/500");
-            }
-
-            app.UseStaticFiles();
-            app.UseAuthentication();
-            app.UseSession();
-            if (!env.IsDevelopment())
-            {
                 app.UseMiddleware<ErrorHandlingMiddleware>();
+                app.UseHsts();
             }
 
-            app.UseMvc(routes =>
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseSession();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

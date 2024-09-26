@@ -3,15 +3,15 @@
 
 @if (Model.AttendanceResult != null)
 {
-    @Html.Partial("_AttendanceValidationResult", Model.AttendanceResult)
+    @await Html.PartialAsync("_AttendanceValidationResult", Model.AttendanceResult)
 }
 
 @if (Model.DSTNetSalaryResult != null)
 {
-    @Html.Partial("_DSTNetSalaryValidationResult", Model.DSTNetSalaryResult)
+    @await Html.PartialAsync("_DSTNetSalaryValidationResult", Model.DSTNetSalaryResult)
 }
 
 @if (Model.AdditionDeductionResult != null)
 {
-    @Html.Partial("_AdditionDeductionValidationResult", Model.AdditionDeductionResult)
+    @await Html.PartialAsync("_AdditionDeductionValidationResult", Model.AdditionDeductionResult)
 }

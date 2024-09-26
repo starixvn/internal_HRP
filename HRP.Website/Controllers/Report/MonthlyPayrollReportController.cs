@@ -21,7 +21,7 @@
     public class MonthlyPayrollReportController : BaseController
     {
         private readonly IReportService reportService;
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly IExportMonthlyPayrollReportService excelService;
         private readonly ICommonService commonService;
         private readonly IRijndaelService rijndaelService;
@@ -29,7 +29,7 @@
         public MonthlyPayrollReportController(
             IBaseService baseService,
             ISessionService sessionService,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             IExportMonthlyPayrollReportService excelService,
             IReportService reportService,
             IRijndaelService rijndaelService,
@@ -101,8 +101,8 @@
                     var company = await baseService.GetDataEntityAsync<Company>(new GetCompanyByIdCriteria { CompanyId = companyId });
                     report.Company = company;
                     report.SelectedCurrency = currencies.FirstOrDefault(x => x.CurrencyId == currencyId);
-                    const string fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
-                    var templatePath = Path.Combine(hostingEnvironment.WebRootPath, fileName);
+                    const string fileName = @"ExcelTemplates/MonthlyPayrollReport.xlsx";
+                    var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, fileName);
                     var data = excelService.Export(templatePath, report, viewModel.FilePassword);
 
                     return File(data, MimeType.XLSX, $"Monthly_Payroll_Report_{report.Month:MM-yyyy}_{report.Company.Code}.xlsx");

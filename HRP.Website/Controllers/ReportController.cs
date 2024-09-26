@@ -11,6 +11,7 @@
     using Core.Filters;
     using Core.Services;
     using Criteria.Employee;
+    using HRP.Criteria.Report;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -22,7 +23,7 @@
     public class ReportController : BaseController
     {
         private readonly IReportService reportService;
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly IExportExcelService exportExcelService;
         private readonly ICommonService commonService;
         private readonly IRijndaelService rijndaelService;
@@ -32,7 +33,7 @@
         public ReportController(
             IBaseService baseService,
             ISessionService sessionService,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             IExportExcelService exportExcelService,
             IReportService reportService,
             IRijndaelService rijndaelService,
@@ -141,13 +142,17 @@
             var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
             viewModel.FilePassword = rijndaelService.Decrypt(viewModel.EncryptedPassword, rijndaelKey, rijndaelIV);
 
-            var bankInData = await reportService.GetDirectBankingBankInAsync(
-                viewModel.CompanyId,
-                viewModel.SelectedTime,
-                viewModel.TypeOfPayment,
-                viewModel.SelectedPaymentTransactions);
+            var criteria = new GetDataForDirectBankingReportCriteria
+            {
+                UserId = sessionService.UserId,
+                CompanyId = viewModel.CompanyId,
+                Month = viewModel.SelectedTime,
+                PaymentTransactions = viewModel.SelectedPaymentTransactions,
+                PaymentType = (byte)viewModel.TypeOfPayment
+            };
+            var bankInData = await reportService.GetDirectBankingBankInAsync(criteria);
 
-            var fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\DirectBanking.xlsx");
+            var fileInfo = new FileInfo($"{hostingEnvironment.ContentRootPath}/ExcelTemplates/DirectBanking.xlsx");
 
             ModelState.Clear();
 
@@ -200,12 +205,16 @@
             var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
             viewModel.FilePassword = rijndaelService.Decrypt(viewModel.EncryptedPassword, rijndaelKey, rijndaelIV);
 
-            var bankInData = await reportService.GetEbankingBankInAsync(
-                viewModel.CompanyId,
-                viewModel.SelectedTime,
-                viewModel.SelectedPaymentTransactions);
+            var criteria = new GetDataForEbankingReportCriteria
+            {
+                UserId = sessionService.UserId,
+                CompanyId = viewModel.CompanyId,
+                Month = viewModel.SelectedTime,
+                PaymentTransactions = viewModel.SelectedPaymentTransactions
+            };
+            var bankInData = await reportService.GetEbankingBankInAsync(criteria);
 
-            var fileInfo = new FileInfo($"{hostingEnvironment.WebRootPath}\\ExcelTemplates\\Ebanking.xlsx");
+            var fileInfo = new FileInfo($"{hostingEnvironment.ContentRootPath}/ExcelTemplates/Ebanking.xlsx");
 
             IActionResult result = RedirectToAction("Ebanking");
 

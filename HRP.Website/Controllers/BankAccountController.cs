@@ -90,7 +90,7 @@
         {
             if (ModelState.IsValid)
             {
-                CommandResult commandResult = await bankAccountService.CreateBankAccountAsync(viewModel);
+                CommandResult commandResult = await bankAccountService.CreateBankAccountAsync(sessionService.UserId, viewModel);
                 viewModel.IsSuccessful = commandResult.IsSuccessful;
 
                 if (!viewModel.IsSuccessful)
@@ -130,7 +130,7 @@
         {
             if (ModelState.IsValid)
             {
-                CommandResult commandResult = await bankAccountService.CreateBankAccountAsync(viewModel);
+                CommandResult commandResult = await bankAccountService.CreateBankAccountAsync(sessionService.UserId, viewModel);
                 viewModel.IsSuccessful = commandResult.IsSuccessful;
 
                 if (!viewModel.IsSuccessful)
@@ -185,7 +185,7 @@
         {
             if (ModelState.IsValid)
             {
-                CommandResult result = await bankAccountService.EditBankAccountAsync(viewModel);
+                CommandResult result = await bankAccountService.EditBankAccountAsync(sessionService.UserId, viewModel);
                 viewModel.IsSuccessful = result.IsSuccessful;
 
                 if (!viewModel.IsSuccessful)

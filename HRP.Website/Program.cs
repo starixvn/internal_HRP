@@ -1,32 +1,37 @@
 ﻿namespace HRP.Website
 {
-    using System.IO;
+    using System;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
+    using NLog;
+    using NLog.Web;
 
     public static class Program
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+            try
+            {
+                logger.Info("Application start.");
+                CreateWebHostBuilder(args).Build().Run();
+            }
+            catch (Exception exception)
+            {
+                logger.Error(exception, "Stopped program because of exception.");
+                throw;
+            }
+            finally
+            {
+                LogManager.Shutdown();
+            }
+
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseKestrel(c => c.AddServerHeader = false)
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    var env = hostingContext.HostingEnvironment;
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                          .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-                    config.AddEnvironmentVariables();
-                })
-                .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning))
-                .Build();
+                .UseNLog()
+                .UseUrls($"http://*:5000")
+                .UseStartup<Startup>();
     }
 }

@@ -203,7 +203,7 @@
             var expectedPassword = "456";
 
             var webRootPath = "abc";
-            var fileName = @"ExcelTemplates\MonthlyPayrollReport.xlsx";
+            var fileName = @"ExcelTemplates/MonthlyPayrollReport.xlsx";
             var templatePath = Path.Combine(webRootPath, fileName);
             var controller = GetController();
             hostingEnvironment.WebRootPath.Returns(webRootPath);

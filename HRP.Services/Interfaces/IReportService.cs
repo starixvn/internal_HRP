@@ -3,21 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Core.Enumerations;
+    using HRP.Criteria.Report;
     using Models.Report;
 
     public interface IReportService
     {
-        Task<DirectBankingReport> GetDirectBankingBankInAsync(
-            int companyId,
-            DateTime selectedTime,
-            PaymentType typeOfPayment,
-            string selectedPaymentTransactions);
+        Task<DirectBankingReport> GetDirectBankingBankInAsync(GetDataForDirectBankingReportCriteria criteria);
 
-        Task<DirectBankingReport> GetEbankingBankInAsync(
-            int companyId,
-            DateTime selectedTime,
-            string selectedPaymentTransactions);
+        Task<DirectBankingReport> GetEbankingBankInAsync(GetDataForEbankingReportCriteria criteria);
 
         Task<MonthlyPayrollReport> GetDataForMonthlyPayrollReportAsync(DateTime month, int companyId, int currencyId);
 

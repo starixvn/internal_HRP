@@ -16,42 +16,22 @@
     using HRP.Models.ServiceModels;
     using HRP.Repositories;
     using HRP.Resources;
+    using Microsoft.AspNetCore.Hosting;
     using MimeKit;
 
-    public class PayslipService : IPayslipService
+    public class PayslipService(
+        IWebHostEnvironment hostEnvironment,
+        IBaseService baseService,
+        ISessionService sessionService,
+        ICryptoService cryptoService,
+        IBaseMailService emailService,
+        IViewRenderService viewRenderService,
+        IPdfRenderService pdfRenderService,
+        IMailSettingService mailSettingService,
+        IPayslipRepository payslipRepository) : IPayslipService
     {
-        private const string EmailTemplate = @"wwwroot\\EmailTemplates\\Payslip.cshtml";
-        private const string cssFilePath = @"css\\pro\\pages\\payslip\\pdf.chunk.css";
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
-        private readonly ICryptoService cryptoService;
-        private readonly IBaseMailService emailService;
-        private readonly IViewRenderService viewRenderService;
-        private readonly IPdfRenderService pdfRenderService;
-        private readonly IPayslipRepository payslipRepository;
-        private readonly IMailSettingService mailSettingService;
-
-#pragma warning disable S107 // Methods should not have too many parameters
-        public PayslipService(
-            IBaseService baseService,
-            ISessionService sessionService,
-            ICryptoService cryptoService,
-            IBaseMailService emailService,
-            IViewRenderService viewRenderService,
-            IPdfRenderService pdfRenderService,
-            IMailSettingService mailSettingService,
-            IPayslipRepository payslipRepository)
-#pragma warning restore S107 // Methods should not have too many parameters
-        {
-            this.baseService = baseService;
-            this.sessionService = sessionService;
-            this.cryptoService = cryptoService;
-            this.emailService = emailService;
-            this.viewRenderService = viewRenderService;
-            this.pdfRenderService = pdfRenderService;
-            this.mailSettingService = mailSettingService;
-            this.payslipRepository = payslipRepository;
-        }
+        private const string EmailTemplate = @"EmailTemplates/Payslip.txt";
+        private const string cssFilePath = @"css/pro/pages/payslip/pdf.chunk.css";
 
         public async Task<IEnumerable<PayslipModel>> GetPayslipAsync(DateTime month, int companyId, bool? isSent)
         {
@@ -130,12 +110,12 @@
 
         private async Task RenderPdfAndSendMailAsync(MailSettingModel mailSetting, PayslipDetailModel payslip)
         {
-            var body = string.Format(CultureInfo.InvariantCulture, emailService.ReadTextFile(EmailTemplate), payslip.Nickname);
+            var templatePath = Path.Combine(hostEnvironment.ContentRootPath, EmailTemplate);
+            var body = string.Format(CultureInfo.InvariantCulture, emailService.ReadTextFile(templatePath), payslip.Nickname);
             var subject = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}", payslip.Month.ToString("MMMM_yyyy"));
             var fileName = string.Format(CultureInfo.InvariantCulture, "Payslip_{0}.pdf", payslip.Month.ToString("MMMM_yyyy"));
             var htmlString = await viewRenderService.RenderViewToStringAsync("Payslip/Pdf", payslip);
-            var payslipPassword = payslip.PDFPassword;
-            byte[] content = pdfRenderService.RenderContentWithPasswordProtected(cssFilePath, htmlString, payslipPassword, payslip.PDFPassword);
+            byte[] content = pdfRenderService.RenderContentWithPasswordProtected(cssFilePath, htmlString, payslip.PDFPassword, payslip.PDFPassword);
 
             using (var input = new MemoryStream(content))
             {

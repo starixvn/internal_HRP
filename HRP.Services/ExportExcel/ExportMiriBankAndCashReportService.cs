@@ -45,7 +45,7 @@
             {
                 using (var package = new ExcelPackage())
                 {
-                    ExcelWorksheet template = templatePackage.Workbook.Worksheets[1];
+                    ExcelWorksheet template = templatePackage.Workbook.Worksheets.First();
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Miri Bank & Cash");
 
                     WriteHeader(template, worksheet, month, typeOfPayment, report.CompanyName, report.PaymentTransactions);

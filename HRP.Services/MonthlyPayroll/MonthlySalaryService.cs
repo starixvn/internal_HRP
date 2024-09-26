@@ -16,25 +16,12 @@
     using HRP.Repositories;
     using HRP.Resources;
 
-    public class MonthlySalaryService : IMonthlySalaryService
+    public class MonthlySalaryService(
+        ISessionService sessionService,
+        IBaseService baseService,
+        ICryptoService cryptoService,
+        IMonthlyPayrollRepository monthlyPayrollRepository) : IMonthlySalaryService
     {
-        private readonly ISessionService sessionService;
-        private readonly IBaseService baseService;
-        private readonly ICryptoService cryptoService;
-        private readonly IMonthlyPayrollRepository monthlyPayrollRepository;
-
-        public MonthlySalaryService(
-            ISessionService sessionService,
-            IBaseService baseService,
-            ICryptoService cryptoService,
-            IMonthlyPayrollRepository monthlyPayrollRepository)
-        {
-            this.sessionService = sessionService;
-            this.baseService = baseService;
-            this.cryptoService = cryptoService;
-            this.monthlyPayrollRepository = monthlyPayrollRepository;
-        }
-
         #region GetMonthlySalaryAsync
 
         public async Task<(MonthlyBasicSalaryModel,

@@ -28,7 +28,7 @@
     <li class="active">@ViewLang.SelectWorkingMonthCompany</li>
 </ol>
 
-@Html.Partial("_Steps", (short)PaymentProcessStep.SelectMonthAndCompany)
+@await Html.PartialAsync("_Steps", (short)PaymentProcessStep.SelectMonthAndCompany)
 
 <form class="search-form" asp-action="Index" method="post">
     <div class="list-message-error @(ViewData.ModelState.IsValid ? "hidden": "")">

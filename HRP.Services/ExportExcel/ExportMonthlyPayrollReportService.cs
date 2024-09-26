@@ -32,15 +32,15 @@
             {
                 using (var package = new ExcelPackage())
                 {
-                    ExcelWorksheet template = templatePackage.Workbook.Worksheets[1];
+                    ExcelWorksheet template = templatePackage.Workbook.Worksheets.First();
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Monthly Payroll Report");
                     WriteDataSheetBySelectedCurrency(template, worksheet, report);
 
-                    template = templatePackage.Workbook.Worksheets[1];
+                    template = templatePackage.Workbook.Worksheets.First();
                     worksheet = package.Workbook.Worksheets.Add("Monthly Payroll Report (1)");
                     WriteDataSheetByOriginalCurrency(template, worksheet, report);
 
-                    template = templatePackage.Workbook.Worksheets[1];
+                    template = templatePackage.Workbook.Worksheets.First();
                     worksheet = package.Workbook.Worksheets.Add("Monthly Payroll Report (2)");
                     WriteDataSheetByOriginalInputCurrency(template, worksheet, report);
 

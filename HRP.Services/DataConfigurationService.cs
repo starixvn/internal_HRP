@@ -20,19 +20,10 @@
     using HRP.Models.DataConfiguration;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class DataConfigurationService : IDataConfigurationService
+    public class DataConfigurationService(
+        IBaseService baseService,
+        ISessionService sessionService) : IDataConfigurationService
     {
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
-
-        public DataConfigurationService(
-            IBaseService baseService,
-            ISessionService sessionService)
-        {
-            this.baseService = baseService;
-            this.sessionService = sessionService;
-        }
-
         public IEnumerable<Field> GetDataForIndexPage()
         {
             return FieldsDictionary.Fields.Values.OrderBy(x => x.FieldName);

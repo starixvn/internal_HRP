@@ -11,7 +11,7 @@
     <input type="text" hidden value="@Model.EmployeeId" id="EmployeeId" name="EmployeeId" />
     <input type="checkbox" hidden asp-for="IsHost" />
 
-    @Html.Partial("_PersonalDetailsForm", Model)
+    @await Html.PartialAsync("_PersonalDetailsForm", Model)
 
     <div class="list-button">
         <a class="button -second" asp-controller="employee" asp-action="index"

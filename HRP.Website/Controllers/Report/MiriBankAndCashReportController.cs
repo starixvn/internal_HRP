@@ -10,6 +10,7 @@
     using HRP.Core.Extensions;
     using HRP.Core.Filters;
     using HRP.Core.Services;
+    using HRP.Criteria.Report;
     using HRP.Models;
     using HRP.Models.Report;
     using HRP.Services;
@@ -18,7 +19,7 @@
 
     public class MiriBankAndCashReportController : BaseController
     {
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly ICommonService commonService;
         private readonly IRijndaelService rijndaelService;
         private readonly IReportService reportService;
@@ -29,7 +30,7 @@
         public MiriBankAndCashReportController(
             IBaseService baseService,
             ISessionService sessionService,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             IRijndaelService rijndaelService,
             ICommonService commonService,
             IReportService reportService,
@@ -75,11 +76,15 @@
             var rijndaelIV = (string)TempData.Peek(viewModel.RijndaelIV.Key);
             viewModel.FilePassword = rijndaelService.Decrypt(viewModel.EncryptedPassword, rijndaelKey, rijndaelIV);
 
-            var bankInData = await reportService.GetDirectBankingBankInAsync(
-                viewModel.CompanyId,
-                viewModel.SelectedTime,
-                viewModel.TypeOfPayment,
-                viewModel.PaymentTransactions);
+            var criteria = new GetDataForDirectBankingReportCriteria
+            {
+                UserId = sessionService.UserId,
+                CompanyId = viewModel.CompanyId,
+                Month = viewModel.SelectedTime,
+                PaymentTransactions = viewModel.PaymentTransactions,
+                PaymentType = (byte)viewModel.TypeOfPayment
+            };
+            var bankInData = await reportService.GetDirectBankingBankInAsync(criteria);
 
             ModelState.Clear();
 
@@ -90,8 +95,8 @@
                     await reportService.EditUserFilePasswordAsync(sessionService.UserId, viewModel.FilePassword);
                 }
 
-                const string fileName = @"ExcelTemplates\MiriBank&Cash.xlsx";
-                var templatePath = Path.Combine(hostingEnvironment.WebRootPath, fileName);
+                const string fileName = @"ExcelTemplates/MiriBank&Cash.xlsx";
+                var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, fileName);
                 var fileContent = exportExcelService.Export(
                     templatePath,
                     viewModel.SelectedTime,

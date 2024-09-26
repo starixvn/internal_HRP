@@ -13,22 +13,11 @@
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.AspNetCore.Routing;
 
-    public class ViewRenderService : IViewRenderService
+    public class ViewRenderService(
+        IRazorViewEngine razorViewEngine,
+        ITempDataProvider tempDataProvider,
+        IServiceProvider serviceProvider) : IViewRenderService
     {
-        private readonly IRazorViewEngine razorViewEngine;
-        private readonly ITempDataProvider tempDataProvider;
-        private readonly IServiceProvider serviceProvider;
-
-        public ViewRenderService(
-            IRazorViewEngine razorViewEngine,
-            ITempDataProvider tempDataProvider,
-            IServiceProvider serviceProvider)
-        {
-            this.razorViewEngine = razorViewEngine;
-            this.tempDataProvider = tempDataProvider;
-            this.serviceProvider = serviceProvider;
-        }
-
         public async Task<string> RenderViewToStringAsync<TModel>(string viewName, TModel model)
         {
             var httpContext = new DefaultHttpContext { RequestServices = serviceProvider };
@@ -59,7 +48,7 @@
 
                 await viewResult.View.RenderAsync(viewContext);
 
-                return sw.ToString();
+                return sw.GetStringBuilder().ToString();
             }
         }
     }

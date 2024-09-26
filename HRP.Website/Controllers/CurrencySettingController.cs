@@ -15,20 +15,12 @@
     using HRP.Models.Currency;
     using HRP.Resources;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
 
-    public class CurrencySettingController : BaseController
+    public class CurrencySettingController(
+        ISessionService sessionService,
+        IBaseService baseService,
+        AppSettingsOptions configuration) : BaseController(baseService, sessionService)
     {
-        private readonly IOptionsSnapshot<AppSettingsOptions> configuration;
-
-        public CurrencySettingController(
-            ISessionService sessionService,
-            IBaseService baseService,
-            IOptionsSnapshot<AppSettingsOptions> configuration) : base(baseService, sessionService)
-        {
-            this.configuration = configuration;
-        }
-
         [HttpGet]
         [HRPPermission(FunctionKey = FunctionKey.CurrencySetting, Policy = Policy.Read)]
         public async Task<IActionResult> Index(DateTime? selectedTime)
@@ -47,7 +39,7 @@
             var viewModel = new CurrencySettingViewModel
             {
                 SelectedTime = date,
-                MinMonth = configuration.Value.LaunchMonth,
+                MinMonth = configuration.LaunchMonth,
                 CurrencyExchangeRates = await baseService.GetDataAsync<CurrencyExchangeRateModel>(criteria),
                 Currencies = await baseService.GetDataAsync<CurrencyCodeModel>(new GetCurrencyCodesForSettingCriteria { Month = date }),
                 CanUpdate = sessionService.HasPermissionOnFunction(FunctionKey.CurrencySetting, Policy.Host) && isInPaymentProcessDuration

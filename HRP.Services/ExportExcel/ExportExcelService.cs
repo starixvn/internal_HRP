@@ -32,7 +32,7 @@
 
         public byte[] ExportDirectBankingReports(DateTime selectedTime, FileInfo fileInfo, PaymentType typeOfPayment, DirectBankingReport data, string password = null)
         {
-            using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
+            using (var xlPackage = new ExcelPackage(fileInfo, true))
             {
                 var worksheet = xlPackage.Workbook.Worksheets.First();
 
@@ -95,7 +95,7 @@
             DirectBankingReport data,
             string password = null)
         {
-            using (ExcelPackage xlPackage = new ExcelPackage(fileInfo, true))
+            using (var xlPackage = new ExcelPackage(fileInfo, true))
             {
                 ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets.First();
 

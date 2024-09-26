@@ -42,12 +42,12 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane" id="@AccountTab.Profile.ToString()">
-        @Html.Partial("_Profile", Model.UserProfileViewModel)
+        @await Html.PartialAsync("_Profile", Model.UserProfileViewModel)
     </div>
     <div role="tabpanel" class="tab-pane" id="@AccountTab.ChangePassword.ToString()">
-        @Html.Partial("_Password", Model.ChangePasswordViewModel)
+        @await Html.PartialAsync("_Password", Model.ChangePasswordViewModel)
     </div>
     <div role="tabpanel" class="tab-pane otp" id="@AccountTab.Otp.ToString()">
-        @(Model.IsOTPRegistered ? Html.Partial("_OTP") : Html.Partial("_RegisterOTP", Model.SetupOtpViewModel))
+        @(Model.IsOTPRegistered ? await Html.PartialAsync("_OTP") : await Html.PartialAsync("_RegisterOTP", Model.SetupOtpViewModel))
     </div>
 </div>

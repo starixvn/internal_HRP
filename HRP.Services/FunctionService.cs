@@ -7,15 +7,8 @@
     using Criteria;
     using Models.UserPermission;
 
-    public class FunctionService : IFunctionService
+    public class FunctionService(IBaseService baseService) : IFunctionService
     {
-        private readonly IBaseService baseService;
-
-        public FunctionService(IBaseService baseService)
-        {
-            this.baseService = baseService;
-        }
-
         public async Task<IEnumerable<FunctionModel>> GetTreeFunctions(bool? isActive)
         {
             IEnumerable<FunctionModel> functions = await GetFunctions(isActive);

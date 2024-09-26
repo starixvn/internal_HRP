@@ -52,7 +52,7 @@
 
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="PersonalDetailContentTab">
-        @Html.Partial("_CreatePersonalDetailsForm", Model)
+        @await Html.PartialAsync("_CreatePersonalDetailsForm", Model)
     </div>
     <div role="tabpanel" class="tab-pane" id="EmploymentContentTab">
     </div>

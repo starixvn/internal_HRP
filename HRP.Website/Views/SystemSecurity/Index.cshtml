@@ -49,7 +49,7 @@
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="ChangePasswordTab">
-            @Html.Partial("_ChangePassword", Model)
+            @await Html.PartialAsync("_ChangePassword", Model)
         </div>
     </div>
 }

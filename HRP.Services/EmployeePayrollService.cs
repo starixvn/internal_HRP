@@ -8,23 +8,16 @@
     using HRP.Criteria;
     using HRP.Models.ServiceModels;
 
-    public class EmployeePayrollService : IEmployeePayrollService
+    public class EmployeePayrollService(
+        IBaseService baseService,
+        ICryptoService cryptoService) : IEmployeePayrollService
     {
-        private readonly IBaseService baseService;
-        private readonly ICryptoService cryptoService;
-
-        public EmployeePayrollService(IBaseService baseService, ICryptoService cryptoService)
-        {
-            this.baseService = baseService;
-            this.cryptoService = cryptoService;
-        }
-
         public async Task<EmployeePayrollModel> GetEmployeePayroll(int employeeId, int userId)
         {
             var criteria = new GetEmployeePayrollCriteria { EmployeeId = employeeId, UserId = userId };
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
-                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria))
+                using (var multi = await db.QueryMultipleAsync(criteria))
                 {
                     var viewModel = multi.ReadFirstOrDefault<EmployeePayrollModel>();
 

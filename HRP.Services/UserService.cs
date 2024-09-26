@@ -1,6 +1,7 @@
 namespace HRP.Services
 {
     using System.Globalization;
+    using System.IO;
     using System.Threading.Tasks;
     using BCrypt.Net;
     using Core.Model;
@@ -8,31 +9,20 @@ namespace HRP.Services
     using Criteria;
     using HRP.Core.Constants;
     using HRP.Models.MailSetting;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Models;
     using Resources;
 
-    public class UserService : IUserService
+    public class UserService(
+        IWebHostEnvironment hostEnvironment,
+        IHttpContextAccessor httpContextAccessor,
+        IBaseMailService emailService,
+        IBaseService baseService,
+        IMailSettingService mailSettingService) : IUserService
     {
-        private const string EmailTemplateResetPassword = @"wwwroot\\EmailTemplates\\ResetPassword.cshtml";
-        private const string EmailTemplateOTPRegistration = @"wwwroot\\EmailTemplates\\OTPRegistration.cshtml";
-
-        private readonly IBaseMailService emailService;
-        private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IBaseService baseService;
-        private readonly IMailSettingService mailSettingService;
-
-        public UserService(
-            IHttpContextAccessor httpContextAccessor,
-            IBaseMailService emailService,
-            IBaseService baseService,
-            IMailSettingService mailSettingService)
-        {
-            this.httpContextAccessor = httpContextAccessor;
-            this.emailService = emailService;
-            this.baseService = baseService;
-            this.mailSettingService = mailSettingService;
-        }
+        private const string EmailTemplateResetPassword = @"EmailTemplates/ResetPassword.txt";
+        private const string EmailTemplateOTPRegistration = @"EmailTemplates/OTPRegistration.txt";
 
         public async Task<string> GenerateTokenOTPRegisterAsync(string username)
         {
@@ -112,7 +102,8 @@ namespace HRP.Services
                     TokenOTPRegister = tokenOTPRegister
                 });
 
-                var body = emailService.ReadTextFile(EmailTemplateOTPRegistration);
+                var templatePath = Path.Combine(hostEnvironment.ContentRootPath, EmailTemplateOTPRegistration);
+                var body = emailService.ReadTextFile(templatePath);
 
                 var linkToRegisterOTP = string.Format(
                     "{0}://{1}/Account/SetupOTP?token={2}",
@@ -172,7 +163,8 @@ namespace HRP.Services
             if (mailSetting != null)
             {
                 User user = await GetUserByUsernameAsync(username);
-                var body = emailService.ReadTextFile(EmailTemplateResetPassword);
+                var templatePath = Path.Combine(hostEnvironment.ContentRootPath, EmailTemplateResetPassword);
+                var body = emailService.ReadTextFile(templatePath);
 
                 var linkToReset = string.Format(
                     "{0}://{1}/Auth/ResetPassword?token={2}",

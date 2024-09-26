@@ -10,6 +10,7 @@ namespace HRP.Website.Controllers
     using Criteria;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Models.Account;
@@ -197,9 +198,9 @@ namespace HRP.Website.Controllers
 
         private void ClearCookies()
         {
-            HttpContext.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
-            HttpContext.Response.Headers.Add("Pragma", "no-cache");
-            HttpContext.Response.Headers.Add("Expires", "0");
+            HttpContext.Response.Headers.Append("Cache-Control", "no-cache, no-store, must-revalidate");
+            HttpContext.Response.Headers.Append("Pragma", "no-cache");
+            HttpContext.Response.Headers.Append("Expires", "0");
 
             IEnumerable<string> cookies = HttpContext.Request.Cookies.Keys;
             foreach (string cookie in cookies)

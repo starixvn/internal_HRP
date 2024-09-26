@@ -7,19 +7,10 @@
     using HRP.Criteria.Mail;
     using HRP.Models.MailSetting;
 
-    public class MailSettingService : IMailSettingService
+    public class MailSettingService(
+        IBaseService baseService,
+        ISessionService sessionService) : IMailSettingService
     {
-        private readonly IBaseService baseService;
-        private readonly ISessionService sessionService;
-
-        public MailSettingService(
-            IBaseService baseService,
-            ISessionService sessionService)
-        {
-            this.baseService = baseService;
-            this.sessionService = sessionService;
-        }
-
         public async Task<IEnumerable<MailSettingModel>> GetMailSettingAsync()
         {
             var criteria = new GetMailSettingCriteria();

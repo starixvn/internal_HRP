@@ -1,67 +1,60 @@
 ﻿namespace HRP.Services
 {
     using System.IO;
-    using System.Text;
-    using iTextSharp.text;
-    using iTextSharp.text.pdf;
-    using iTextSharp.tool.xml;
+    using DinkToPdf;
+    using DinkToPdf.Contracts;
     using Microsoft.AspNetCore.Hosting;
+    using Spire.Pdf;
 
-    public class PdfRenderService : IPdfRenderService
+    public class PdfRenderService(
+        IWebHostEnvironment hostingEnvironment,
+        IConverter converter): IPdfRenderService
     {
-        private const int A4Width = 595;
-        private const int A4Height = 842;
-        private readonly IHostingEnvironment hostingEnvironment;
-
-        public PdfRenderService(IHostingEnvironment hostingEnvironment)
-        {
-            this.hostingEnvironment = hostingEnvironment;
-        }
-
         public byte[] RenderContent(string cssFilePath, string htmlText)
         {
-            using (var stream = new MemoryStream())
+            var globalSettings = new GlobalSettings
             {
-                using (var pdfDocument = new Document(new Rectangle(A4Width, A4Height), 5, 5, 40, 40))
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4,
+                Margins = new MarginSettings { Unit = Unit.Millimeters, Top = 10, Bottom = 10, Left = 4, Right = 4 }
+            };
+
+            var objectSettings = new ObjectSettings
+            {
+                PagesCount = true,
+                HtmlContent = htmlText,
+                WebSettings =
                 {
-                    pdfDocument.SetPageSize(PageSize.A4);
+                    DefaultEncoding = "utf-8",
+                    Background = true,
+                    LoadImages = true,
+                    UserStyleSheet = Path.Combine(hostingEnvironment.WebRootPath, cssFilePath)
+                },
+                FooterSettings = { FontName = "Arial", FontSize = 7, Spacing = 1.5, Center = "[page]" }
+            };
 
-                    var pdfWriter = PdfWriter.GetInstance(pdfDocument, stream);
-                    var worker = XMLWorkerHelper.GetInstance();
+            var pdf = new HtmlToPdfDocument
+            {
+                GlobalSettings = globalSettings,
+                Objects = { objectSettings }
+            };
 
-                    pdfDocument.Open();
-
-                    using (var htmlTextReader = new MemoryStream(Encoding.Unicode.GetBytes(htmlText)))
-                    {
-                        string webRootPath = hostingEnvironment.WebRootPath;
-                        var cssFile = Path.Combine(webRootPath, cssFilePath);
-
-                        using (var cssStream = new FileStream(cssFile, FileMode.Open, FileAccess.Read))
-                        {
-                            worker.ParseXHtml(pdfWriter, pdfDocument, htmlTextReader, cssStream, Encoding.Unicode);
-                        }
-                    }
-
-                    pdfDocument.Close();
-                }
-
-                return stream.ToArray();
-            }
+            return converter.Convert(pdf);
         }
 
         public byte[] RenderContentWithPasswordProtected(string cssFilePath, string htmlText, string userPassword, string ownerPassword)
         {
             byte[] content = RenderContent(cssFilePath, htmlText);
 
-            using (var input = new MemoryStream(content))
+            using (var output = new MemoryStream())
             {
-                using (var output = new MemoryStream())
-                {
-                    var reader = new PdfReader(input);
-                    PdfEncryptor.Encrypt(reader, output, true, userPassword, ownerPassword, PdfWriter.ALLOW_SCREENREADERS);
+                var pdf = new PdfDocument();
+                pdf.LoadFromBytes(content);
+                pdf.Security.Encrypt(userPassword);
+                pdf.SaveToStream(output);
 
-                    return output.ToArray();
-                }
+                return output.ToArray();
             }
         }
     }

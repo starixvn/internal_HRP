@@ -11,8 +11,8 @@
 
         Task<BankAccount> GetBankAccountByIdAsync(int bankAccountId);
 
-        Task<CommandResult> CreateBankAccountAsync(CreateBankAccountViewModel bankAccount);
+        Task<CommandResult> CreateBankAccountAsync(int actorId, CreateBankAccountViewModel bankAccount);
 
-        Task<CommandResult> EditBankAccountAsync(EditBankAccountViewModel bankAccount);
+        Task<CommandResult> EditBankAccountAsync(int actorId, EditBankAccountViewModel bankAccount);
     }
 }
