@@ -4,9 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="App_Data\ColumnsConfiguration.xml" />
-    <None Remove="App_Data\SPNames.LOCAL.xml" />
-    <None Remove="App_Data\SPNames.PROD.xml" />
-    <None Remove="App_Data\SPNames.xml" />
+    <None Remove="App_Data\SpNames.LOCAL.xml" />
+    <None Remove="App_Data\SpNames.PROD.xml" />
+    <None Remove="App_Data\SpNames.xml" />
     <None Remove="EmailTemplates\OTPRegistration.txt" />
     <None Remove="EmailTemplates\Payslip.txt" />
     <None Remove="EmailTemplates\ResetPassword.txt" />
@@ -26,13 +26,13 @@
     <Content Include="App_Data\SecretKey.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\SPNames.PROD.xml">
+    <Content Include="App_Data\SpNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\SPNames.LOCAL.xml">
+    <Content Include="App_Data\SpNames.PROD.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\SPNames.xml">
+    <Content Include="App_Data\SpNames.LOCAL.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="EmailTemplates\OTPRegistration.txt">
