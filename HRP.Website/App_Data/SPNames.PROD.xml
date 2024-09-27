@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+  <Function Name="Reference Resource">
+    <Setting Key="RefResource_GetByNames" SpName="RefResource_GetByNames" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="RefResource_Create" SpName="RefResource_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="RefResource_GetByNameAndId" SpName="RefResource_GetByNameAndId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="RefResource_Update" SpName="RefResource_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Function">
+    <Setting Key="Function_GetAll" SpName="Function_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Function_GetByUserId" SpName="Function_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Menu">
+    <Setting Key="Menu_GetByUserId" SpName="Menu_GetByUserId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Company">
+    <Setting Key="Company_GetAll" SpName="Company_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_Create" SpName="Company_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_GetById" SpName="Company_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_Update" SpName="Company_Update" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Company_GetByFunctionKey" SpName="Company_GetByFunctionKey" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Division">
+    <Setting Key="Division_GetByCompanyId" SpName="Division_GetByCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_GetAll" SpName="Division_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_Create" SpName="Division_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_GetById" SpName="Division_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Division_Update" SpName="Division_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Department">
+    <Setting Key="Department_GetByDivisionId" SpName="Department_GetByDivisionId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Department_GetAll" SpName="Department_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Department_Create" SpName="Department_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Department_GetById" SpName="Department_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Department_Update" SpName="Department_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Cost Center">
+    <Setting Key="CostCenter_GetByDepartmentId" SpName="CostCenter_GetByDepartmentId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_GetAll" SpName="CostCenter_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_Create" SpName="CostCenter_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_GetById" SpName="CostCenter_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="CostCenter_Update" SpName="CostCenter_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Section">
+    <Setting Key="Section_GetByCostCenterId" SpName="Section_GetByCostCenterId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_GetAll" SpName="Section_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_Create" SpName="Section_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_GetById" SpName="Section_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Section_Update" SpName="Section_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Job Category">
+    <Setting Key="JobCategory_GetAll" SpName="JobCategory_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobCategory_Create" SpName="JobCategory_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobCategory_GetById" SpName="JobCategory_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobCategory_Update" SpName="JobCategory_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Grade Level">
+    <Setting Key="GradeLevel_GetByJobCategoryId" SpName="GradeLevel_GetByJobCategoryId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="GradeLevel_GetAll" SpName="GradeLevel_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="GradeLevel_Create" SpName="GradeLevel_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="GradeLevel_GetById" SpName="GradeLevel_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="GradeLevel_Update" SpName="GradeLevel_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Job Grade">
+    <Setting Key="JobGrade_GetByGradeLevelId" SpName="JobGrade_GetByGradeLevelId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_GetAll" SpName="JobGrade_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_Create" SpName="JobGrade_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_GetById" SpName="JobGrade_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="JobGrade_Update" SpName="JobGrade_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="User">
+    <Setting Key="User_AssignFunction" SpName="User_AssignFunction" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetByUsername" SpName="User_GetByUsername" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetByTokenResetPassword" SpName="User_GetByTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetByTokenOTPRegister" SpName="User_GetByTokenOTPRegister" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdateTokenResetPassword" SpName="User_UpdateTokenResetPassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdateTokenOTPRegister" SpName="User_UpdateTokenOTPRegister" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdatePassword" SpName="User_UpdatePassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdateUserOTPStatus" SpName="User_UpdateUserOTPStatus" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdateSecretKey" SpName="User_UpdateSecretKey" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdateProfile" SpName="User_UpdateProfile" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetUsers" SpName="User_GetUsers" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_CheckUsernameExisted" SpName="User_CheckUsernameExisted" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_CreateUser" SpName="User_CreateUser" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetById" SpName="User_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_EditUser" SpName="User_EditUser" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_CheckIn" SpName="User_CheckIn" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_Logout" SpName="User_Logout" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_ReCheckIn" SpName="User_ReCheckIn" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_UpdateFilePassword" SpName="User_UpdateFilePassword" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="User_GetFilePassword" SpName="User_GetFilePassword" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Currency">
+    <Setting Key="Currency_GetExchangeRates" SpName="Currency_GetExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_GetActiveCurrencyCodes" SpName="Currency_GetActiveCurrencyCodes" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_UpdateExchangeRates" SpName="Currency_UpdateExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_GetLatestExchangeRates" SpName="Currency_GetLatestExchangeRates" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_GetAll" SpName="Currency_GetAll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_Create" SpName="Currency_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_GetById" SpName="Currency_GetById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_Update" SpName="Currency_Update" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Currency_GetCurrencyCodesForSetting" SpName="Currency_GetCurrencyCodesForSetting" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="EmergencyContact">
+    <Setting Key="EmergencyContact_GetByEmployeeId" SpName="EmergencyContact_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Employee">
+    <Setting Key="Employee_GetBasicInfoById" SpName="Employee_GetBasicInfoById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_CreateEmployee" SpName="Employee_CreateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_CheckEmpCodeExisted" SpName="Employee_CheckEmpCodeExisted" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetByEmployeeId" SpName="Employee_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetSuggestionByIDNo" SpName="Employee_GetSuggestionByIDNo" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetAllEmployees" SpName="Employee_GetAllEmployees" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetSuggestionByName" SpName="Employee_GetSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_CheckEmployeePayrollChangedInMonth" SpName="Employee_CheckEmployeePayrollChangedInMonth" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetDepartment" SpName="Employee_GetDepartment" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_GetEmployeeStatus" SpName="Employee_GetEmployeeStatus" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Employment">
+    <Setting Key="Employment_GetByEmployeeId" SpName="Employment_GetByEmployeeId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employment_Update" SpName="Employment_Update" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employment_GetAllEmployeeCodeByCompanyId" SpName="Employment_GetAllEmployeeCodeByCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="EmployeeBankDetails">
+    <Setting Key="BankAccount_Create" SpName="BankAccount_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_GetBankAccountsByEmpId" SpName="BankAccount_GetBankAccountsByEmpId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_GetBankAccountById" SpName="BankAccount_GetBankAccountById" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_Update" SpName="BankAccount_Update" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="BankAccount_Search" SpName="BankAccount_Search" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="EmployeePayroll">
+    <Setting Key="Employee_GetPayroll" SpName="Employee_GetPayroll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Employee_UpdatePayroll" SpName="Employee_UpdatePayroll" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="PaymentProcess">
+    <Setting Key="PaymentProcess_Get" SpName="PaymentProcess_Get" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_GetCurrentDuration" SpName="PaymentProcess_GetCurrentDuration" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_UploadFiles" SpName="PaymentProcess_UploadFiles" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_GetUploadingFilesResult" SpName="PaymentProcess_GetUploadingFilesResult" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_SubmitUploadingFiles" SpName="PaymentProcess_SubmitUploadingFiles" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_DeleteUploadedAttendance" SpName="PaymentProcess_DeleteUploadedAttendance" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_DeleteUploadedDSTNetSalary" SpName="PaymentProcess_DeleteUploadedDSTNetSalary" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_GetDataForGenerateMonthlyPayroll" SpName="PaymentProcess_GetDataForGenerateMonthlyPayroll" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="PaymentProcess_GenerateMonthlyPayroll" SpName="PaymentProcess_GenerateMonthlyPayroll" DbName="bodb_HRP" Plain="0" />
+    <Setting Key="PaymentProcess_DeleteUploadedAdditionDeduction" SpName="PaymentProcess_DeleteUploadedAdditionDeduction" DbName="bodb_HRP" Plain="0" />
+  </Function>
+  <Function Name="Monthly Payroll">
+    <Setting Key="MonthlyPayroll_Get" SpName="MonthlyPayroll_Get" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetEmployeeSuggestionByName" SpName="MonthlyPayroll_GetEmployeeSuggestionByName" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetEmployeeSuggestionByIDNo" SpName="MonthlyPayroll_GetEmployeeSuggestionByIDNo" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetSalary" SpName="MonthlyPayroll_GetSalary" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_UpdateSalary" SpName="MonthlyPayroll_UpdateSalary" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetAllowances" SpName="MonthlyPayroll_GetAllowances" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_UpdateAllowances" SpName="MonthlyPayroll_UpdateAllowances" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetCompaniesHavePayrollForCurrentMonth" SpName="MonthlyPayroll_GetCompaniesHavePayrollForCurrentMonth" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetFilterInfo" SpName="MonthlyPayroll_GetFilterInfo" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MonthlyPayroll_GetHierarchyCompany" SpName="MonthlyPayroll_GetHierarchyCompany" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Payslip">
+    <Setting Key="Payslip_Get" SpName="Payslip_Get" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Payslip_GetDetails" SpName="Payslip_GetDetails" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Payslip_Update" SpName="Payslip_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Report">
+    <Setting Key="Report_GetDataForDirectBankingReport" SpName="Report_GetDataForDirectBankingReport" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Report_GetDataForEbankingReport" SpName="Report_GetDataForEbankingReport" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Report_GetDataForMonthlyPayrollReport" SpName="Report_GetDataForMonthlyPayrollReport" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="Report_GetEmployeeDataForDynamicReport" SpName="Report_GetEmployeeDataForDynamicReport" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+  <Function Name="Mail">
+    <Setting Key="MailRecord_Create" SpName="MailRecord_Create" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MailSetting_Get" SpName="MailSetting_Get" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MailSetting_GetByCompanyId" SpName="MailSetting_GetByCompanyId" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MailSetting_GetForSendMail" SpName="MailSetting_GetForSendMail" DbName="bodb_HRP" Plain="0"></Setting>
+    <Setting Key="MailSetting_Update" SpName="MailSetting_Update" DbName="bodb_HRP" Plain="0"></Setting>
+  </Function>
+</Functions>
